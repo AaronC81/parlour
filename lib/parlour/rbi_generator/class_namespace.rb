@@ -26,14 +26,15 @@ module Parlour
         ).returns(T::Array[String])
       end
       def generate_rbi(indent_level, options)
-        # TODO: abstract
         class_definition = superclass.nil? \
           ? "class #{name}"
           : "class #{name} < #{superclass}"
         
-        [options.indented(indent_level, class_definition)] +
-          super(indent_level + 1, options) +
-          [options.indented(indent_level, "end")]
+        lines = []
+        lines << options.indented(indent_level, class_definition)
+        lines += [options.indented(indent_level + 1, "abstract!"), ""] if abstract
+        lines += super(indent_level + 1, options)
+        lines << options.indented(indent_level, "end")
       end
 
       sig { returns(String) }

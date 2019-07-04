@@ -68,5 +68,32 @@ RSpec.describe Parlour::RbiGenerator do
         end
       RUBY
     end
+
+    it 'handles abstract' do
+      klass = subject.root.create_class('Foo') do |foo|
+        foo.create_class('Bar', abstract: true) do |bar|
+          bar.create_class('A')
+          bar.create_class('B')
+          bar.create_class('C')
+        end
+      end
+
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Foo
+          class Bar
+            abstract!
+
+            class A
+            end
+
+            class B
+            end
+
+            class C
+            end
+          end
+        end
+      RUBY
+    end
   end
 end
