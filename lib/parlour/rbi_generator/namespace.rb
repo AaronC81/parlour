@@ -39,7 +39,7 @@ module Parlour
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ClassNamespace)
       end
-      def create_class(name, superclass=nil, abstract=false, &block)
+      def create_class(name, superclass: nil, abstract: false, &block)
         new_class = ClassNamespace.new(name, superclass, abstract, &block)
         children << new_class
         new_class
