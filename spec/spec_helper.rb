@@ -1,6 +1,8 @@
-# typed: strict
-require "bundler/setup"
-require "parlour"
+require 'simplecov'
+SimpleCov.start
+
+require 'bundler/setup'
+require 'parlour'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
