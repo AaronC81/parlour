@@ -1,3 +1,4 @@
+# typed: strict
 require "bundler/setup"
 require "parlour"
 
