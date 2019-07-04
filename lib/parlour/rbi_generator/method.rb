@@ -14,10 +14,11 @@ module Parlour
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
-          overridable: T::Boolean
+          overridable: T::Boolean,
+          class_method: T::Boolean
         ).void
       end
-      def initialize(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false)
+      def initialize(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false)
         @name = name
         @parameters = parameters
         @return_type = return_type
@@ -25,6 +26,7 @@ module Parlour
         @implementation = implementation
         @override = override
         @overridable = overridable
+        @class_method = class_method
       end
 
       sig { returns(String) }
@@ -47,6 +49,9 @@ module Parlour
 
       sig { returns(T::Boolean) }
       attr_reader :overridable
+
+      sig { returns(T::Boolean) }
+      attr_reader :class_method
 
       sig do
         implementation.params(
@@ -83,7 +88,8 @@ module Parlour
             )]
 
         def_params = parameters.map(&:to_def_param)
-        def_line = "def #{name}(#{def_params.join(', ')}); end"
+        name_prefix = class_method ? 'self.' : ''
+        def_line = "def #{name_prefix}#{name}(#{def_params.join(', ')}); end"
 
         sig_lines + [def_line]
       end

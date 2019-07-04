@@ -160,5 +160,16 @@ RSpec.describe Parlour::RbiGenerator do
         def foo(a = 4); end
       RUBY
     end
+
+    it 'supports class methods' do
+      meth = subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '4')
+      ], 'String', class_method: true)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { params(a: Integer).returns(String) }
+        def self.foo(a = 4); end
+      RUBY
+    end
   end
 end

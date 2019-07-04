@@ -57,10 +57,11 @@ module Parlour
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
-          overridable: T::Boolean
+          overridable: T::Boolean,
+          class_method: T::Boolean
         ).returns(Method)
       end
-      def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false)
+      def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false)
         new_method = RbiGenerator::Method.new(
           name,
           parameters,
@@ -68,7 +69,8 @@ module Parlour
           abstract: abstract,
           implementation: implementation, 
           override: override,
-          overridable: overridable
+          overridable: overridable,
+          class_method: class_method
         )
         children << new_method
         new_method
