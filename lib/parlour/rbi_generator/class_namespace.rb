@@ -4,11 +4,12 @@ module Parlour
     class ClassNamespace < Namespace
       extend T::Sig
 
-      sig { params(name: String, superclass: T.nilable(String)).void }
-      def initialize(name, superclass)
+      sig { params(name: String, superclass: T.nilable(String), abstract: T::Boolean).void }
+      def initialize(name, superclass, abstract)
         super
         @name = name
         @superclass = superclass
+        @abstract = abstract
       end
 
       sig { returns(String) }
@@ -16,6 +17,9 @@ module Parlour
 
       sig { returns(String) }
       attr_reader :superclass
+
+      sig { returns(T::Boolean) }
+      attr_reader :abstract
     end
   end
 end
