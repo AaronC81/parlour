@@ -45,8 +45,33 @@ module Parlour
         new_class
       end
 
-      def create_namespace
+      def create_module
         raise 'NYI'
+      end
+
+      sig do
+        params(
+          name: String,
+          parameters: T::Array[Parameter],
+          return_type: T.nilable(String),
+          abstract: T::Boolean,
+          implementation: T::Boolean,
+          override: T::Boolean,
+          overridable: T::Boolean
+        ).returns(Method)
+      end
+      def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false)
+        new_method = RbiGenerator::Method.new(
+          name,
+          parameters,
+          return_type,
+          abstract: abstract,
+          implementation: implementation, 
+          override: override,
+          overridable: overridable
+        )
+        children << new_method
+        new_method
       end
     end
   end

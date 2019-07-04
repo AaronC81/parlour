@@ -10,6 +10,10 @@ RSpec.describe Parlour::RbiGenerator do
     end.join.rstrip
   end
 
+  def pa(*a)
+    Parlour::RbiGenerator::Parameter.new(*a)
+  end
+
   def opts
     Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2)
   end
@@ -93,6 +97,67 @@ RSpec.describe Parlour::RbiGenerator do
             end
           end
         end
+      RUBY
+    end
+  end
+
+  context 'methods' do
+    it 'can be created blank' do
+      meth = subject.root.create_method('foo', [], nil)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { void }
+        def foo(); end
+      RUBY
+    end
+
+    it 'can be created with return types' do
+      meth = subject.root.create_method('foo', [], 'String')
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { returns(String) }
+        def foo(); end
+      RUBY
+    end
+
+    it 'can be created with parameters' do
+      meth = subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '4')
+      ], 'String')
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { params(a: Integer).returns(String) }
+        def foo(a = 4); end
+      RUBY
+
+      meth = subject.root.create_method('bar', [
+        pa('a'),
+        pa('b', type: 'String'),
+        pa('c', default: '3'),
+        pa('d', type: 'Integer', default: '4')
+      ], nil)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig do
+          params(
+            a: T.untyped,
+            b: String,
+            c: T.untyped,
+            d: Integer,
+          ).void
+        end
+        def bar(a, b, c = 3, d = 4); end
+      RUBY
+    end
+
+    it 'can be created with qualifiers' do
+      meth = subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '4')
+      ], 'String', implementation: true, overridable: true)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { implementation.overridable.params(a: Integer).returns(String) }
+        def foo(a = 4); end
       RUBY
     end
   end

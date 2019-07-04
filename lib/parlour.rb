@@ -3,7 +3,9 @@ require 'sorbet-runtime'
 
 require 'parlour/version'
 
+require 'parlour/rbi_generator/parameter'
 require 'parlour/rbi_generator/rbi_object'
+require 'parlour/rbi_generator/method'
 require 'parlour/rbi_generator/options'
 require 'parlour/rbi_generator/namespace'
 require 'parlour/rbi_generator/class_namespace'
