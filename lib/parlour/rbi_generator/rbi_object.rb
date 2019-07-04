@@ -9,11 +9,10 @@ module Parlour
       sig do
         abstract.params(
           indent_level: Integer,
-          break_params: Integer,
-          tab_size: Integer
-        ).returns(String)
+          options: Options
+        ).returns(T::Array[String])
       end
-      def generate_rbi(indent_level, break_params, tab_size); end
+      def generate_rbi(indent_level, options); end
     end
   end
 end
