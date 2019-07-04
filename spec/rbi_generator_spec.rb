@@ -99,6 +99,40 @@ RSpec.describe Parlour::RbiGenerator do
         end
       RUBY
     end
+
+    it 'handles includes and extends' do
+      klass = subject.root.create_class('Foo') do |foo|
+        foo.create_class('Bar', abstract: true) do |bar|
+          bar.add_extend('X')
+          bar.add_extend('Y')
+          bar.add_include('Z')
+          bar.create_class('A')
+          bar.create_class('B')
+          bar.create_class('C')
+        end
+      end
+
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Foo
+          class Bar
+            abstract!
+
+            include Z
+            extend X
+            extend Y
+
+            class A
+            end
+
+            class B
+            end
+
+            class C
+            end
+          end
+        end
+      RUBY
+    end
   end
 
   context 'methods' do

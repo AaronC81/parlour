@@ -12,24 +12,46 @@ module Parlour
           options: Options
         ).returns(T::Array[String])
       end
-      def generate_rbi(indent_level, options)          
+      def generate_rbi(indent_level, options)
+        result = []
+
+        if includes.any? || extends.any?
+          result += includes.map do |i|
+            options.indented(indent_level, "include #{i}")
+          end
+          result += extends.map do |e|
+            options.indented(indent_level, "extend #{e}")
+          end
+          result << ""
+        end
+
         first, *rest = children
         return [] unless first
 
-        first.generate_rbi(indent_level, options) + T.must(rest)
+        result += first.generate_rbi(indent_level, options) + T.must(rest)
           .map { |obj| obj.generate_rbi(indent_level, options) }
           .map { |lines| [""] + lines }
           .flatten
+
+        result
       end
 
       sig { params(block: T.nilable(T.proc.params(x: Namespace).void)).void }
       def initialize(&block)
         @children = []
+        @extends = []
+        @includes = []
         yield_self(&block)
       end
 
       sig { returns(T::Array[RbiObject]) }
       attr_reader :children
+
+      sig { returns(T::Array[String]) }
+      attr_reader :extends
+
+      sig { returns(T::Array[String]) }
+      attr_reader :includes
 
       sig do
         params(
@@ -74,6 +96,15 @@ module Parlour
         )
         children << new_method
         new_method
+      end
+
+      sig { params(name: String).void }
+      def add_extend(name)
+        extends << name
+      end
+      sig { params(name: String).void }
+      def add_include(name)
+        includes << name
       end
     end
   end
