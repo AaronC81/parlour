@@ -8,7 +8,7 @@ module Parlour
         params(
           name: String,
           type: T.nilable(String),
-          default: T.nilable(String)
+          default: T.nilable(T.untyped)
         ).void
       end
       def initialize(name, type: nil, default: nil)
@@ -20,6 +20,11 @@ module Parlour
         @kind = :keyword if kind == :normal && name.end_with?(':')
 
         @type = type
+        
+        # If the default is a non-nil string, pass it as a string.
+        if !default.nil? && default.class == String
+          default = "'#{default}'"
+        end
         @default = default
       end
 
@@ -48,7 +53,7 @@ module Parlour
       sig { returns(T.nilable(String)) }
       attr_reader :type
 
-      sig { returns(T.nilable(String)) }
+      sig { returns(T.nilable(T.untyped)) }
       attr_reader :default
 
       sig { returns(Symbol) }

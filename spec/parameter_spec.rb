@@ -26,8 +26,8 @@ RSpec.describe Parlour::RbiGenerator::Parameter do
     expect(pa('&foo').to_def_param).to eq '&foo'
     expect(pa('foo:').to_def_param).to eq 'foo:'
 
-    expect(pa('foo', default: '3').to_def_param).to eq 'foo = 3'
-    expect(pa('foo:', default: '3').to_def_param).to eq 'foo: 3'
+    expect(pa('foo', default: 3).to_def_param).to eq 'foo = 3'
+    expect(pa('foo:', default: 3).to_def_param).to eq 'foo: 3'
   end
 
   it 'can generate signatures' do
@@ -38,5 +38,12 @@ RSpec.describe Parlour::RbiGenerator::Parameter do
     expect(pa('foo:').to_sig_param).to eq 'foo: T.untyped'
 
     expect(pa('foo', type: 'Integer', default: '3').to_sig_param).to eq 'foo: Integer'
+  end
+
+  it 'uses the input type for default values' do
+    expect(pa('foo:', default: '3').to_def_param).to eq "foo: '3'"
+    expect(pa('foo:', default: 3).to_def_param).to eq "foo: 3"
+    expect(pa('foo:', default: :symbol).to_def_param).to eq "foo: :symbol"
+    expect(pa('foo:', default: 'nil').to_def_param).to eq "foo: nil"
   end
 end
