@@ -1,3 +1,5 @@
 language: ruby
+before_install:
+  - gem install bundler --no-rdoc --no-ri
 rvm: 
   - 2.6
