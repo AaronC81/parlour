@@ -1,6 +1,7 @@
 # typed: true
 module Parlour
   class RbiGenerator
+    # Represents a method parameter with a Sorbet type signature.
     class Parameter
       extend T::Sig
 

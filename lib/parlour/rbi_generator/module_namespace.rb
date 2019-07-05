@@ -1,6 +1,7 @@
 # typed: true
 module Parlour
   class RbiGenerator
+    # Represents a module definition.
     class ModuleNamespace < Namespace
       extend T::Sig
 

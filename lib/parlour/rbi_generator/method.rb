@@ -1,6 +1,7 @@
 # typed: true
 module Parlour
   class RbiGenerator
+    # Represents a method definition.
     class Method < RbiObject
       extend T::Sig
 
