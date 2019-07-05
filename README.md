@@ -71,7 +71,7 @@ conflict-free output RBI.
 It will be able to do the following merges automatically (checkmark means
 implemented):
 
-  - [.] If many methods are identical, delete all but one.
+  - [X] If many methods are identical, delete all but one.
   - [ ] If many classes are defined with the same name, merge their methods,
         includes and extends. (But only if they are all abstract or all not,
         and only if they don't define more than one superclass together.)
