@@ -14,5 +14,10 @@ module Parlour
 
     sig { returns(Namespace) }
     attr_reader :root
+
+    sig { returns(String) }
+    def rbi
+      root.generate_rbi(0, options).join("\n")
+    end
   end
 end
