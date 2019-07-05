@@ -11,6 +11,16 @@ module Parlour
           default: T.nilable(String)
         ).void
       end
+      # Create a new method parameter.
+      # @param name The name of this parameter. This may start with +*+, +**+,
+      #   or +&+, or end with +:+, which will infer the {kind} of this
+      #   parameter. (If it contains none of those, {kind} will be +:normal+.)
+      # @param type A Sorbet string of this parameter's type, such as
+      #   +"String"+ or +"T.untyped"+.
+      # @param default A string of Ruby code for this parameter's default value.
+      #   For example, the default value of an empty string would be represented
+      #   as +"\"\""+ (or +'""'+). The default value of the decimal +3.14+
+      #   would be +"3.14"+.
       def initialize(name, type: nil, default: nil)
         @name = name
 
@@ -24,6 +34,9 @@ module Parlour
       end
 
       sig { params(other: Object).returns(T::Boolean) }
+      # Returns true if this instance is equal to another method.
+      # @param other The other instance. If this is not a {Parameter} (or a
+      #   subclass of it), this will always return false.
       def ==(other)
         Parameter === other &&
           name    == other.name &&
@@ -33,9 +46,13 @@ module Parlour
       end
 
       sig { returns(String) }
+      # The name of this parameter, including any prefixes or suffixes such as
+      # +*+.
       attr_reader :name
 
       sig { returns(String) }
+      # The name of this parameter, stripped of any prefixes or suffixes. For
+      # example, +*rest+ would become +rest+, or +foo:+ would become +foo+.
       def name_without_kind
         return T.must(name[0..-2]) if kind == :keyword
 
@@ -46,15 +63,23 @@ module Parlour
       end
 
       sig { returns(T.nilable(String)) }
+      # A Sorbet string of this parameter's type, such as +"String"+ or
+      # +"T.untyped"+.
       attr_reader :type
 
       sig { returns(T.nilable(String)) }
+      # A string of Ruby code for this parameter's default value. For example,
+      # the default value of an empty string would be represented as +"\"\""+
+      # (or +'""'+). The default value of the decimal +3.14+ would be +"3.14"+.
       attr_reader :default
 
       sig { returns(Symbol) }
+      # The kind of parameter that this is. This will be one of +:normal+, 
+      #   +:splat+, +:double_splat+, +:block+ or +:keyword+.
       attr_reader :kind
 
       sig { returns(String) }
+      # A string of how this parameter should be defined in a method definition.
       def to_def_param
         if default.nil?
           "#{name}"
@@ -66,10 +91,12 @@ module Parlour
       end
 
       sig { returns(String) }
+      # A string of how this parameter should be defined in a Sorbet `sig`.
       def to_sig_param
         "#{name_without_kind}: #{type || 'T.untyped'}"
       end
 
+      # A mapping of {kind} values to the characteristic prefixes each kind has.
       PREFIXES = {
         normal: '',
         splat: '*',
