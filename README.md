@@ -1,5 +1,7 @@
 # Parlour
 
+[![Build Status](https://travis-ci.org/AaronC81/parlour.svg?branch=master)](https://travis-ci.org/AaronC81/parlour)
+
 Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
 
   - The generator, which outputs beautifully formatted RBI files, created using
@@ -39,7 +41,7 @@ generator.rbi # => Our RBI as a string
 
 This will generate the following RBI:
 
-```ruby
+```rubyhttps://api.travis-ci.org/AaronC81/parlour.svg?branch=master
 module A
   class Foo
     sig { params(a: Integer, b: Integer).returns(Integer) }
