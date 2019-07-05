@@ -12,7 +12,7 @@ command :run do |c|
   c.syntax = 'parlour run <plugins...> <output-file> [options]'
   c.description = 'Generates an RBI file from a list of plugins'
   c.option '--requires STRING', String, 'A comma-separated string of gems to require'
-  c.option '--relative-requires STRING', String, 'A comma-separated string of files to require_relative'
+  c.option '--relative-requires STRING', String, 'A comma-separated string of files to require, relative to the working dir'
   c.option '--tab-size INTEGER', Integer, 'The size of tabs to use'
   c.option '--break-params INTEGER', Integer, 'Break params onto their own lines if there are this many'
 
@@ -25,7 +25,9 @@ command :run do |c|
     )
 
     options.requires.split(',').each { |source| require(source) }
-    options.relative_requires.split(',').each { |source| require_relative(source) }
+    options.relative_requires.split(',').each do |source|
+      require(File.join(Dir.pwd, source))
+    end
 
     *plugin_names, output_file = args
 
@@ -36,7 +38,7 @@ command :run do |c|
     # Collect the instances of each plugin into an array
     plugin_names.each do |name|
       plugin = Parlour::Plugin.registered_plugins[name]
-      raise "missing plugin #{name}"
+      raise "missing plugin #{name}" unless plugin
       plugin_instances << plugin
     end
 
