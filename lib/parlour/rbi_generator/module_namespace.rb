@@ -36,6 +36,33 @@ module Parlour
 
       sig { returns(T::Boolean) }
       attr_reader :interface
+
+      sig do
+        override.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).returns(T::Boolean)
+      end
+      def mergeable?(others)
+        others = T.cast(others, T::Array[RbiGenerator::ModuleNamespace]) rescue (return false)
+        all = others + [self]
+
+        all.map(&:interface).uniq.length == 1
+      end
+
+      sig do 
+        override.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).void
+      end
+      def merge_into_self(others)
+        others.each do |other|
+          other = T.cast(other, ModuleNamespace)
+
+          other.children.each { |c| children << c }
+          other.extends.each { |e| extends << e }
+          other.includes.each { |i| includes << i }
+        end
+      end
     end
   end
 end

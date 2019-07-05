@@ -94,15 +94,14 @@ a namespace from the `RbiGenerator` and merges duplicate items in it together.
 This means that many plugins can generate their own signatures which are all 
 bundled into one, conflict-free output RBI.
 
-It will be able to do the following merges automatically (checkmark means
-implemented):
+It is able to do the following merges automatically:
 
-  - [X] If many methods are identical, delete all but one.
-  - [ ] If many classes are defined with the same name, merge their methods,
-        includes and extends. (But only if they are all abstract or all not,
-        and only if they don't define more than one superclass together.)
-  - [ ] If many modules are defined with the same name, merge their methods,
-        includes and extends. (But only if they are all interfaces or all not.)
+  - If many methods are identical, delete all but one.
+  - If many classes are defined with the same name, merge their methods,
+    includes and extends. (But only if they are all abstract or all not,
+    and only if they don't define more than one superclass together.)
+  - If many modules are defined with the same name, merge their methods,
+    includes and extends. (But only if they are all interfaces or all not.)
 
 If a merge can't be performed automatically, then the `#resolve_conflicts`
 method takes a block. This block is passed all the conflicting objects, and one

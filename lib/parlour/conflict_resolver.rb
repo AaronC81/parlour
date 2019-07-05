@@ -34,24 +34,29 @@ module Parlour
 
           # We can only try to resolve automatically if they're all the same 
           # type of object, so check that first
-          children_types = children.map { |c| T.cast(c, Object).class }.uniq
-          if children_types.size != 1
+          children_type = single_type_of_array(children)
+          unless children_type
             # The types aren't the same, so ask the resovler what to do, and
             # insert that (if not nil)
             choice = resolver.call("Different kinds of definition for the same name", children)
             namespace.children << choice if choice
             next
           end
-          children_type = T.must(children_types.first)
 
           # Are all of the children equivalent? If so, just keep one of them
-          if children.each_cons(2).all? { |x, y| x == y }
+          if all_eql?(children)
             namespace.children << T.must(children.first)
             next
           end
 
-          # TODO: merge classes if their subclass and abstractness are compatible
-          # TODO: merge modules if their interfaceness is compatible
+          # Can the children merge themselves automatically? If so, let them
+          first, *rest = children
+          first, rest = T.must(first), T.must(rest)
+          if T.must(first).mergeable?(T.must(rest))
+            first.merge_into_self(rest)
+            namespace.children << first
+            next
+          end
 
           # I give up! Let it be resolved manually somehow
           choice = resolver.call("Can't automatically resolve", children)
@@ -60,6 +65,17 @@ module Parlour
       end
 
       # TODO: recurse to deeper namespaces
+    end
+
+    sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
+    def single_type_of_array(arr)
+      array_types = arr.map { |c| T.cast(c, Object).class }.uniq
+      array_types.length == 1 ? array_types.first : nil
+    end
+
+    sig { params(arr: T::Array[T.untyped]).returns(T::Boolean) }
+    def all_eql?(arr)
+      arr.each_cons(2).all? { |x, y| x == y }
     end
   end
 end

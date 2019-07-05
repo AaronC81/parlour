@@ -119,6 +119,24 @@ module Parlour
         result += 'overridable.' if overridable
         result
       end
+
+      sig do
+        implementation.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).returns(T::Boolean)
+      end
+      def mergeable?(others)
+        false
+      end
+
+      sig do 
+        implementation.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).void
+      end
+      def merge_into_self(others)
+        raise 'methods can never be merged like this'
+      end
     end
   end
 end

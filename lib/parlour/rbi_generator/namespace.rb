@@ -62,9 +62,6 @@ module Parlour
         ).returns(ClassNamespace)
       end
       def create_class(name, superclass: nil, abstract: false, &block)
-        # If a class with this name already exists, just return that
-        
-
         new_class = ClassNamespace.new(name, superclass, abstract, &block)
         children << new_class
         new_class
@@ -117,6 +114,30 @@ module Parlour
       sig { params(name: String).void }
       def add_include(name)
         includes << name
+      end
+
+      sig do
+        implementation.overridable.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).returns(T::Boolean)
+      end
+      def mergeable?(others)
+        true
+      end
+
+      sig do 
+        implementation.overridable.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).void
+      end
+      def merge_into_self(others)
+        others.each do |other|
+          other = T.cast(other, Namespace)
+
+          other.children.each { |c| children << c }
+          other.extends.each { |e| extends << e }
+          other.includes.each { |i| includes << i }
+        end
       end
     end
   end

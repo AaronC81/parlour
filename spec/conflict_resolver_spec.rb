@@ -7,6 +7,21 @@ RSpec.describe Parlour::ConflictResolver do
     Parlour::RbiGenerator::Parameter.new(*a)
   end
 
+  it 'does not merge different kinds of definition' do
+    m = gen.root.create_module('M') do |m|
+      m.create_module('A')
+      m.create_class('A')
+    end
+
+    expect(m.children.length).to be 2
+
+    invocations = 0
+    subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+    expect(invocations).to be 1
+    expect(m.children.length).to be 0
+  end
+
   context 'when resolving conflicts on methods' do
     it 'merges multiple of the same method definition' do
       a = gen.root.create_class('A') do |a|
@@ -51,11 +66,154 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.length).to be 2
 
       invocations = 0
-
       subject.resolve_conflicts(a) { |*| invocations += 1; nil }
 
       expect(invocations).to be 1
-      expect(a.children.length).to be 0 # the block returned nil, so both deleted
+      expect(a.children.length).to be 0
+    end
+  end
+
+  context 'when resolving conflicts on classes' do
+    it 'merges identical empty classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('A')
+        m.create_class('A')
+      end
+
+      expect(m.children.length).to be 2
+
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(m.children.first.name).to eq 'A'
+    end
+
+    it 'does not merge empty classes with conflicting signatures' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('A', abstract: true)
+        m.create_class('A')
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(invocations).to be 1
+      expect(m.children.length).to be 0
+    end
+
+    it 'merges definitions inside compatible classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('A') do |a|
+          a.add_extend('E1')
+          a.add_include('I1')
+          a.create_method('foo', [], nil)
+        end
+        m.create_class('A') do |a|
+          a.add_extend('E2')
+          a.add_include('I2')
+          a.create_method('bar', [], nil)
+        end
+      end
+
+      expect(m.children.length).to be 2
+
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      a = m.children.first
+      expect(a.children.map(&:name)).to contain_exactly('foo', 'bar')
+      expect(a.includes).to contain_exactly('I1', 'I2')
+      expect(a.extends).to contain_exactly('E1', 'E2')
+    end
+
+    it 'merges compatible superclasses' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('A', superclass: 'X')
+        m.create_class('A')
+        m.create_class('A', superclass: 'X')
+      end
+
+      expect(m.children.length).to be 3
+
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(m.children.first.name).to eq 'A'
+      expect(m.children.first.superclass).to eq 'X'
+    end
+
+    it 'does not merge incompatible superclasses' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('A', superclass: 'X')
+        m.create_class('A')
+        m.create_class('A', superclass: 'Y')
+      end
+
+      expect(m.children.length).to be 3
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+  end
+
+  context 'when resolving conflicts on modules' do
+    it 'merges identical empty modules' do
+      m = gen.root.create_module('M') do |m|
+        m.create_module('A')
+        m.create_module('A')
+      end
+
+      expect(m.children.length).to be 2
+
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(m.children.first.name).to eq 'A'
+    end
+
+    it 'does not merge empty modules with conflicting signatures' do
+      m = gen.root.create_module('M') do |m|
+        m.create_module('A', interface: true)
+        m.create_module('A')
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(invocations).to be 1
+      expect(m.children.length).to be 0
+    end
+
+    it 'merges definitions inside compatible modules' do
+      m = gen.root.create_module('M') do |m|
+        m.create_module('A') do |a|
+          a.add_extend('E1')
+          a.add_include('I1')
+          a.create_method('foo', [], nil)
+        end
+        m.create_module('A') do |a|
+          a.add_extend('E2')
+          a.add_include('I2')
+          a.create_method('bar', [], nil)
+        end
+      end
+
+      expect(m.children.length).to be 2
+
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      a = m.children.first
+      expect(a.children.map(&:name)).to contain_exactly('foo', 'bar')
+      expect(a.includes).to contain_exactly('I1', 'I2')
+      expect(a.extends).to contain_exactly('E1', 'E2')
     end
   end
 end
