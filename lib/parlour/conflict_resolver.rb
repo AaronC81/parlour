@@ -20,7 +20,7 @@ module Parlour
           || RbiGenerator::Method === rbi_obj
           rbi_obj.name
         else
-          raise "unsupported child of type #{T.cast(rbi_obj, Object).class}"
+          raise "unsupported child of type #{rbi_obj.class}"
         end
       end
 
@@ -69,7 +69,7 @@ module Parlour
 
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
     def single_type_of_array(arr)
-      array_types = arr.map { |c| T.cast(c, Object).class }.uniq
+      array_types = arr.map { |c| c.class }.uniq
       array_types.length == 1 ? array_types.first : nil
     end
 
