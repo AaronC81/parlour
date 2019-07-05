@@ -1,6 +1,7 @@
 # typed: true
 module Parlour
   class RbiGenerator
+    # Represents a class definition.
     class ClassNamespace < Namespace
       extend T::Sig
 
@@ -13,6 +14,14 @@ module Parlour
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
+      # Creates a new class definition. (You should use {Namespace#create_class}
+      # rather than this directly.)
+      # @param generator The current RbiGenerator.
+      # @param name The name of this class.
+      # @param superclass The superclass of this class, or nil if it doesn't
+      #   have one.
+      # @param abstract A boolean indicating whether this class is abstract.
+      # @param block A block which the new instance yields itself to.
       def initialize(generator, name, superclass, abstract, &block)
         super(generator, name, &block)
         @superclass = superclass
@@ -25,6 +34,10 @@ module Parlour
           options: Options
         ).returns(T::Array[String])
       end
+      # Generates the RBI lines for this class.
+      # @param indent_level The indentation level to generate the lines at.
+      # @param options The formatting options to use.
+      # @return The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         class_definition = superclass.nil? \
           ? "class #{name}"
@@ -38,9 +51,11 @@ module Parlour
       end
 
       sig { returns(T.nilable(String)) }
+      # The superclass of this class, or nil if it doesn't have one.
       attr_reader :superclass
 
       sig { returns(T::Boolean) }
+      # A boolean indicating whether this class is abstract or not.
       attr_reader :abstract
 
       sig do
@@ -48,6 +63,12 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
+      # Given an array of {ClassNamespace} instances, returns true if they may
+      # be merged into this instance using {merge_into_self}. For instances to
+      # be mergeable, they must either all be abstract or all not be abstract,
+      # and they must define the same superclass (or none at all).
+      # @param others An array of other {ClassNamespace} instances.
+      # @return Whether this instance may be merged with them.
       def mergeable?(others)
         others = T.cast(others, T::Array[ClassNamespace]) rescue (return false)
         all = others + [self]
@@ -61,6 +82,10 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end
+      # Given an array of {ClassNamespace} instances, merges them into this one.
+      # All children, extends and includes are copied into this instance.
+      # You MUST ensure that {mergeable?} is true for those instances.
+      # @param others An array of other {ClassNamespace} instances.
       def merge_into_self(others)
         others.each do |other|
           other = T.cast(other, ClassNamespace)
@@ -74,6 +99,7 @@ module Parlour
       end
 
       sig { override.returns(String) }
+      # Returns a human-readable brief string description of this class.
       def describe
         "Class #{name} - #{"superclass #{superclass}, " if superclass}" +
           "#{"abstract, " if abstract}#{children.length} children, " +
