@@ -13,10 +13,11 @@ module Parlour
           implementation: T::Boolean,
           override: T::Boolean,
           overridable: T::Boolean,
-          class_method: T::Boolean
+          class_method: T::Boolean,
+          block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
-      def initialize(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false)
+      def initialize(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         super(name)
         @parameters = parameters
         @return_type = return_type
@@ -25,6 +26,7 @@ module Parlour
         @override = override
         @overridable = overridable
         @class_method = class_method
+        yield_self(&block)
       end
 
       sig { params(other: Object).returns(T::Boolean) }
