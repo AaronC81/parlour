@@ -62,6 +62,9 @@ module Parlour
         ).returns(ClassNamespace)
       end
       def create_class(name, superclass: nil, abstract: false, &block)
+        # If a class with this name already exists, just return that
+        
+
         new_class = ClassNamespace.new(name, superclass, abstract, &block)
         children << new_class
         new_class

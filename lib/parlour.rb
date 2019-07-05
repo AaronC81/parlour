@@ -12,3 +12,5 @@ require 'parlour/rbi_generator/module_namespace'
 require 'parlour/rbi_generator/class_namespace'
 require 'parlour/rbi_generator'
 
+require 'parlour/conflict_resolver'
+
