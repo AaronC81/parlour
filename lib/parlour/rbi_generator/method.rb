@@ -135,6 +135,13 @@ module Parlour
       def merge_into_self(others)
         raise 'methods can never be merged like this'
       end
+
+      sig { override.returns(String) }
+      def describe
+        # TODO: more info
+        "Method #{name} - #{parameters.length} parameters, " +
+          " returns #{return_type}"
+      end
     end
   end
 end

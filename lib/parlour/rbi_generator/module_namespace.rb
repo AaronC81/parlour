@@ -61,6 +61,12 @@ module Parlour
           other.includes.each { |i| includes << i }
         end
       end
+
+      sig { override.returns(String) }
+      def describe
+        "Module #{name} - #{"interface, " if interface}#{children.length} " +
+          "children, #{includes.length} includes, #{extends.length} extends"
+      end
     end
   end
 end

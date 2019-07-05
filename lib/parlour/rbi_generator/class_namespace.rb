@@ -72,6 +72,13 @@ module Parlour
           @superclass = other.superclass unless superclass
         end
       end
+
+      sig { override.returns(String) }
+      def describe
+        "Class #{name} - #{"superclass #{superclass}, " if superclass}" +
+          "#{"abstract, " if abstract}#{children.length} children, " +
+          "#{includes.length} includes, #{extends.length} extends"
+      end
     end
   end
 end

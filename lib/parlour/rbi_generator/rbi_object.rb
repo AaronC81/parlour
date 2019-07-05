@@ -64,6 +64,9 @@ module Parlour
         ).void
       end
       def merge_into_self(others); end
+
+      sig { abstract.returns(String) }
+      def describe; end
     end
   end
 end

@@ -158,6 +158,12 @@ module Parlour
           other.includes.each { |i| includes << i }
         end
       end
+
+      sig { implementation.overridable.returns(String) }
+      def describe
+        "Namespace #{name} - #{children.length} children, #{includes.length} " +
+          "includes, #{extends.length} extends"
+      end
     end
   end
 end

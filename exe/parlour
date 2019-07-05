@@ -2,6 +2,7 @@
 require 'parlour'
 require 'commander/import'
 require 'bundler'
+require 'rainbow'
 
 program :name, 'parlour'
 program :version, Parlour::VERSION
@@ -51,9 +52,21 @@ command :run do |c|
 
     # Run a pass of the conflict resolver
     Parlour::ConflictResolver.new.resolve_conflicts(gen.root) do |msg, candidates|
-      # TODO: make this a proper choice
-      puts msg
-      nil
+      puts Rainbow('Conflict! ').red.bright.bold + Rainbow(msg).blue.bright
+      puts 'Multiple different definitions have been produced for the same object.'
+      puts 'They could not be merged automatically.'
+      puts Rainbow('What would you like to do?').bold + ' Type a choice and press Enter.'
+      puts
+      puts Rainbow('  [0] ').yellow + 'Remove ALL definitions'
+      puts
+      puts "Or select one definition to keep:"
+      puts
+      candidates.each.with_index do |candidate, i|
+        puts Rainbow("  [#{i + 1}] ").yellow + candidate.describe
+      end
+      puts
+      choice = ask("?  ", Integer) { |q| q.in = 0..candidates.length }
+      choice == 0 ? nil : candidates[choice - 1]
     end
  
     # Write the final RBI
