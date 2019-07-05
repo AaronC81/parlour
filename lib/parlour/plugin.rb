@@ -17,9 +17,9 @@ module Parlour
       registered_plugins[T.must(new_plugin.name)] = new_plugin.new
     end
 
-    sig { params(generator: RbiGenerator).void }
-    def self.run_all_plugins(generator)
-      registered_plugins.each do |_, plugin|
+    sig { params(plugins: T::Array[Plugin], generator: RbiGenerator).void }
+    def self.run_plugins(plugins, generator)
+      plugins.each do |plugin|
         generator.current_plugin = plugin
         plugin.generate(generator.root)
       end

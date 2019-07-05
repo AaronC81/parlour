@@ -47,7 +47,7 @@ command :run do |c|
       break_params: options.break_params,
       tab_size: options.tab_size
     )
-    Parlour::Plugin.run_all_plugins(gen)
+    Parlour::Plugin.run_plugins(plugin_instances, gen)
 
     # Run a pass of the conflict resolver
     Parlour::ConflictResolver.new.resolve_conflicts(gen.root) do |msg, candidates|
