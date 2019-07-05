@@ -3,6 +3,8 @@ require 'sorbet-runtime'
 
 require 'parlour/version'
 
+require 'parlour/plugin'
+
 require 'parlour/rbi_generator/parameter'
 require 'parlour/rbi_generator/rbi_object'
 require 'parlour/rbi_generator/method'

@@ -47,12 +47,13 @@ module Parlour
 
       sig do
         params(
+          generator: RbiGenerator,
           name: T.nilable(String),
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
-      def initialize(name = nil, &block)
-        super(name || '<anonymous namespace>')
+      def initialize(generator, name = nil, &block)
+        super(generator, name || '<anonymous namespace>')
         @children = []
         @extends = []
         @includes = []
@@ -77,7 +78,7 @@ module Parlour
         ).returns(ClassNamespace)
       end
       def create_class(name, superclass: nil, abstract: false, &block)
-        new_class = ClassNamespace.new(name, superclass, abstract, &block)
+        new_class = ClassNamespace.new(generator, name, superclass, abstract, &block)
         children << new_class
         new_class
       end
@@ -90,7 +91,7 @@ module Parlour
         ).returns(ModuleNamespace)
       end
       def create_module(name, interface: false, &block)
-        new_module = ModuleNamespace.new(name, interface, &block)
+        new_module = ModuleNamespace.new(generator, name, interface, &block)
         children << new_module
         new_module
       end
@@ -110,6 +111,7 @@ module Parlour
       end
       def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         new_method = RbiGenerator::Method.new(
+          generator,
           name,
           parameters,
           return_type,

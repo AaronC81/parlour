@@ -6,6 +6,7 @@ module Parlour
 
       sig do
         params(
+          generator: RbiGenerator,
           name: String,
           parameters: T::Array[Parameter],
           return_type: T.nilable(String),
@@ -17,8 +18,8 @@ module Parlour
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
-      def initialize(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
-        super(name)
+      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
+        super(generator, name)
         @parameters = parameters
         @return_type = return_type
         @abstract = abstract

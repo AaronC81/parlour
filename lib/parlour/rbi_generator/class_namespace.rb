@@ -6,14 +6,15 @@ module Parlour
 
       sig do
         params(
+          generator: RbiGenerator,
           name: String,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      def initialize(name, superclass, abstract, &block)
-        super(name, &block)
+      def initialize(generator, name, superclass, abstract, &block)
+        super(generator, name, &block)
         @superclass = superclass
         @abstract = abstract
       end

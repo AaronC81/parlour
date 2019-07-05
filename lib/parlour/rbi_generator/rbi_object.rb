@@ -6,11 +6,19 @@ module Parlour
       extend T::Sig
       abstract!
 
-      sig { params(name: String).void }
-      def initialize(name)
+      sig { params(generator: RbiGenerator, name: String).void }
+      def initialize(generator, name)
+        @generator = generator
+        @generated_by = generator.current_plugin
         @name = name
         @comments = []
       end
+
+      sig { returns(RbiGenerator) }
+      attr_reader :generator
+
+      sig { returns(T.nilable(Plugin)) }
+      attr_reader :generated_by
 
       sig { returns(String) }
       attr_reader :name

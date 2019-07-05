@@ -6,13 +6,14 @@ module Parlour
 
       sig do
         params(
+          generator: RbiGenerator,
           name: String,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      def initialize(name, interface, &block)
-        super(name, &block)
+      def initialize(generator, name, interface, &block)
+        super(generator, name, &block)
         @name = name
         @interface = interface
       end
