@@ -17,7 +17,7 @@ module Parlour
         ).void
       end
       def initialize(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false)
-        @name = name
+        super(name)
         @parameters = parameters
         @return_type = return_type
         @abstract = abstract
@@ -39,9 +39,6 @@ module Parlour
           overridable    == other.overridable &&
           class_method   == other.class_method
       end
-
-      sig { returns(String) }
-      attr_reader :name
 
       sig { returns(T::Array[Parameter]) }
       attr_reader :parameters

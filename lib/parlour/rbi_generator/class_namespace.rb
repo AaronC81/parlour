@@ -13,8 +13,7 @@ module Parlour
         ).void
       end
       def initialize(name, superclass, abstract, &block)
-        super(&block)
-        @name = name
+        super(name, &block)
         @superclass = superclass
         @abstract = abstract
       end
@@ -36,9 +35,6 @@ module Parlour
         lines += super(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
       end
-
-      sig { returns(String) }
-      attr_reader :name
 
       sig { returns(T.nilable(String)) }
       attr_reader :superclass

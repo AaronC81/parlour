@@ -34,8 +34,14 @@ module Parlour
         result
       end
 
-      sig { params(block: T.nilable(T.proc.params(x: Namespace).void)).void }
-      def initialize(&block)
+      sig do
+        params(
+          name: T.nilable(String),
+          block: T.nilable(T.proc.params(x: Namespace).void)
+        ).void
+      end
+      def initialize(name = nil, &block)
+        super(name || '<anonymous namespace>')
         @children = []
         @extends = []
         @includes = []

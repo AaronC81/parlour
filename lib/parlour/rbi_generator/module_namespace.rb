@@ -12,7 +12,7 @@ module Parlour
         ).void
       end
       def initialize(name, interface, &block)
-        super(&block)
+        super(name, &block)
         @name = name
         @interface = interface
       end
@@ -30,9 +30,6 @@ module Parlour
         lines += super(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
       end
-
-      sig { returns(String) }
-      attr_reader :name
 
       sig { returns(T::Boolean) }
       attr_reader :interface

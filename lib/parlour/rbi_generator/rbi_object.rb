@@ -6,6 +6,14 @@ module Parlour
       extend T::Sig
       abstract!
 
+      sig { params(name: String).void }
+      def initialize(name)
+        @name = name
+      end
+
+      sig { returns(String) }
+      attr_reader :name
+
       sig do
         abstract.params(
           indent_level: Integer,

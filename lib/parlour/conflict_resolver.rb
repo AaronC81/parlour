@@ -14,15 +14,7 @@ module Parlour
     end
     def resolve_conflicts(namespace, &resolver)
       # Check for multiple definitions with the same name
-      grouped_by_name_children = namespace.children.group_by do |rbi_obj|
-        if RbiGenerator::ModuleNamespace === rbi_obj \
-          || RbiGenerator::ClassNamespace === rbi_obj \
-          || RbiGenerator::Method === rbi_obj
-          rbi_obj.name
-        else
-          raise "unsupported child of type #{rbi_obj.class}"
-        end
-      end
+      grouped_by_name_children = namespace.children.group_by(&:name)
 
       grouped_by_name_children.each do |name, children|
         if children.length > 1
