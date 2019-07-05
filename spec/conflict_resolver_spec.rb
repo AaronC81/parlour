@@ -216,4 +216,23 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.extends).to contain_exactly('E1', 'E2')
     end
   end
+
+  it 'handles nested conflicts' do
+    m = gen.root.create_module('M') do |m|
+      m.create_module('A') do |a|
+        a.create_method('foo', [], nil)
+      end
+      m.create_module('A') do |a|
+        a.create_method('foo', [], nil)
+      end
+    end
+
+    expect(m.children.length).to be 2
+
+    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+    expect(m.children.length).to be 1
+    expect(m.children.first.children.length).to be 1
+    expect(m.children.first.children.first.name).to eq 'foo'
+  end
 end

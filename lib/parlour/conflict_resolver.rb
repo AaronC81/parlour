@@ -64,7 +64,10 @@ module Parlour
         end
       end
 
-      # TODO: recurse to deeper namespaces
+      # Recurse to child namespaces
+      namespace.children.each do |child|
+        resolve_conflicts(child, &resolver) if RbiGenerator::Namespace === child
+      end
     end
 
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
