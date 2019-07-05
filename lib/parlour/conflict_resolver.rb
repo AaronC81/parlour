@@ -1,5 +1,7 @@
 # typed: true
 module Parlour
+  # Responsible for resolving conflicts (that is, multiple definitions with the
+  # same name) between objects defined in the same namespace.
   class ConflictResolver
     extend T::Sig
 
@@ -12,6 +14,27 @@ module Parlour
         ).returns(RbiGenerator::RbiObject)
       ).void
     end
+    # Given a namespace, attempts to automatically resolve conflicts in the
+    # namespace's definitions. (A conflict occurs when multiple objects share
+    # the same name.)
+    #
+    # All children of the given namespace which are also namespaces are
+    # processed recursively, so passing {RbiGenerator#root} will eliminate all
+    # conflicts in the entire object tree.
+    # 
+    # If automatic resolution is not possible, the block passed to this method
+    # is invoked and passed two arguments: a message on what the conflict is,
+    # and an array of candidate objects. The block should return one of these
+    # candidate objects, which will be kept, and all other definitions are
+    # deleted. Alternatively, the block may return nil, which will delete all
+    # definitions. The block may be invoked many times from one call to 
+    # {resolve_conflicts}, one for each unresolvable conflict.
+    #
+    # @param namespace The starting namespace to resolve conflicts in.
+    # @yieldparam message A descriptional message on what the conflict is.
+    # @yieldparam candidates The objects for which there is a conflict.
+    # @yieldreturn One of the +candidates+, which will be kept, or nil to keep
+    #   none of them.
     def resolve_conflicts(namespace, &resolver)
       # Check for multiple definitions with the same name
       grouped_by_name_children = namespace.children.group_by(&:name)
@@ -57,12 +80,20 @@ module Parlour
     end
 
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
+    # Given an array, if all elements in the array are instances of the exact
+    # same class, returns that class. If they are not, returns nil.
+    # @param arr The array.
+    # @return Either a class, or nil.
     def single_type_of_array(arr)
       array_types = arr.map { |c| c.class }.uniq
       array_types.length == 1 ? array_types.first : nil
     end
 
     sig { params(arr: T::Array[T.untyped]).returns(T::Boolean) }
+    # Given an array, returns true if all elements in the array are equal by
+    # +==+. (Assumes a transitive definition of +==+.)
+    # @param arr The array.
+    # @return A boolean indicating if all elements are equal by +==+.
     def all_eql?(arr)
       arr.each_cons(2).all? { |x, y| x == y }
     end
