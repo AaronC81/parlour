@@ -35,12 +35,6 @@ module Parlour
             next
           end
 
-          # Are all of the children equivalent? If so, just keep one of them
-          if all_eql?(children)
-            namespace.children << T.must(children.first)
-            next
-          end
-
           # Can the children merge themselves automatically? If so, let them
           first, *rest = children
           first, rest = T.must(first), T.must(rest)

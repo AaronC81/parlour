@@ -124,7 +124,7 @@ module Parlour
         ).returns(T::Boolean)
       end
       def mergeable?(others)
-        false
+        others.all? { |other| self == other }
       end
 
       sig do 
@@ -133,7 +133,7 @@ module Parlour
         ).void
       end
       def merge_into_self(others)
-        raise 'methods can never be merged like this'
+        # We don't need to change anything! We only merge identical methods
       end
 
       sig { override.returns(String) }
