@@ -102,7 +102,10 @@ module Parlour
 
         def_params = parameters.map(&:to_def_param)
         name_prefix = class_method ? 'self.' : ''
-        def_line = "def #{name_prefix}#{name}(#{def_params.join(', ')}); end"
+        def_line = options.indented(
+          indent_level,
+          "def #{name_prefix}#{name}(#{def_params.join(', ')}); end"
+        )
 
         sig_lines + [def_line]
       end
