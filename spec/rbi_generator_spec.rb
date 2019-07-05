@@ -22,6 +22,17 @@ RSpec.describe Parlour::RbiGenerator do
     expect(subject.root).to be_a Parlour::RbiGenerator::Namespace
   end
 
+  context 'module namespace' do
+    it 'generates an empty module correctly' do
+      mod = subject.root.create_module('Foo')
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module Foo
+        end
+      RUBY
+    end
+  end
+
   context 'class namespace' do
     it 'generates an empty class correctly' do
       klass = subject.root.create_class('Foo')

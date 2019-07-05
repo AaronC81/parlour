@@ -67,8 +67,17 @@ module Parlour
         new_class
       end
 
-      def create_module
-        raise 'NYI'
+      sig do
+        params(
+          name: String,
+          interface: T::Boolean,
+          block: T.nilable(T.proc.params(x: ClassNamespace).void)
+        ).returns(ModuleNamespace)
+      end
+      def create_module(name, interface: false, &block)
+        new_module = ModuleNamespace.new(name, interface, &block)
+        children << new_module
+        new_module
       end
 
       sig do
