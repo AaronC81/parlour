@@ -9,10 +9,31 @@ module Parlour
       sig { params(name: String).void }
       def initialize(name)
         @name = name
+        @comments = []
       end
 
       sig { returns(String) }
       attr_reader :name
+
+      sig { returns(T::Array[String]) }
+      attr_reader :comments
+
+      sig { params(comment: String).void }
+      def add_comment(comment)
+        comments << comment
+      end
+
+      sig do
+        params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      def generate_comments(indent_level, options)
+        comments.any? \
+          ? comments.map { |c| options.indented(indent_level, "# #{c}") }
+          : []
+      end
 
       sig do
         abstract.params(

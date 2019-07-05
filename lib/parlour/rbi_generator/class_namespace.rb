@@ -29,10 +29,10 @@ module Parlour
           ? "class #{name}"
           : "class #{name} < #{superclass}"
         
-        lines = []
+        lines = generate_comments(indent_level, options)
         lines << options.indented(indent_level, class_definition)
         lines += [options.indented(indent_level + 1, "abstract!"), ""] if abstract
-        lines += super(indent_level + 1, options)
+        lines += generate_body(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
       end
 

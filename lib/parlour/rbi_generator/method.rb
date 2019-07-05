@@ -104,7 +104,7 @@ module Parlour
           "def #{name_prefix}#{name}(#{def_params.join(', ')}); end"
         )
 
-        sig_lines + [def_line]
+        generate_comments(indent_level, options) + sig_lines + [def_line]
       end
 
       sig { returns(String) }

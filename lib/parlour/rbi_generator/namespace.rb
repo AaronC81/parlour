@@ -11,6 +11,17 @@ module Parlour
         ).returns(T::Array[String])
       end
       def generate_rbi(indent_level, options)
+        generate_comments(indent_level, options) +  
+          generate_body(indent_level, options)
+      end
+
+      sig do
+        params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      def generate_body(indent_level, options)
         result = []
 
         if includes.any? || extends.any?
@@ -93,10 +104,11 @@ module Parlour
           implementation: T::Boolean,
           override: T::Boolean,
           overridable: T::Boolean,
-          class_method: T::Boolean
+          class_method: T::Boolean,
+          block: T.nilable(T.proc.params(x: Method).void)
         ).returns(Method)
       end
-      def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false)
+      def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         new_method = RbiGenerator::Method.new(
           name,
           parameters,
@@ -105,7 +117,8 @@ module Parlour
           implementation: implementation, 
           override: override,
           overridable: overridable,
-          class_method: class_method
+          class_method: class_method,
+          &block
         )
         children << new_method
         new_method

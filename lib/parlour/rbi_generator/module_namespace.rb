@@ -24,10 +24,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       def generate_rbi(indent_level, options)        
-        lines = []
+        lines = generate_comments(indent_level, options)
         lines << options.indented(indent_level, "module #{name}")
         lines += [options.indented(indent_level + 1, "interface!"), ""] if interface
-        lines += super(indent_level + 1, options)
+        lines += generate_body(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
       end
 

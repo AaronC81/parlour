@@ -234,4 +234,28 @@ RSpec.describe Parlour::RbiGenerator do
       RUBY
     end
   end
+
+  it 'supports comments' do
+    mod = subject.root.create_module('M') do |m|
+      m.add_comment('This is a module')
+      m.create_class('A') do |a|
+        a.add_comment('This is a class')
+        a.create_method('foo', [], nil) do |foo|
+          foo.add_comment('This is a method')
+        end
+      end
+    end
+
+    expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+      # This is a module
+      module M
+        # This is a class
+        class A
+          # This is a method
+          sig { void }
+          def foo(); end
+        end
+      end
+    RUBY
+  end
 end
