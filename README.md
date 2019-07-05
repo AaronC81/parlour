@@ -89,10 +89,10 @@ I think generation is quite close to done, but it still needs features like
 constants and type parameters.
 
 ### Conflict Resolution
-This will be a key part of the plugin/build system. The `ConflcitResolver` takes
-a namespace and merges duplicate items in it together. This means that many
-plugins can generate their own signatures which are all bundled into one, 
-conflict-free output RBI.
+This will be a key part of the plugin/build system. The `ConflictResolver` takes
+a namespace from the `RbiGenerator` and merges duplicate items in it together. 
+This means that many plugins can generate their own signatures which are all 
+bundled into one, conflict-free output RBI.
 
 It will be able to do the following merges automatically (checkmark means
 implemented):
