@@ -11,20 +11,26 @@ default_command :run
 command :run do |c|
   c.syntax = 'parlour run <plugins...> <output-file> [options]'
   c.description = 'Generates an RBI file from a list of plugins'
-  c.option '--sources STRING', Integer, 'A comma-separated string of gems to require'
+  c.option '--requires STRING', String, 'A comma-separated string of gems to require'
+  c.option '--relative-requires STRING', String, 'A comma-separated string of files to require_relative'
   c.option '--tab-size INTEGER', Integer, 'The size of tabs to use'
   c.option '--break-params INTEGER', Integer, 'Break params onto their own lines if there are this many'
 
   c.action do |args, options|
     options.default(
-      tab_size: 2
+      tab_size: 2,
       break_params: 4,
-      sources: String
+      requires: '',
+      relative_requires: ''
     )
 
-    options.sources.split(',').each do { |source| require(source) }
+    options.requires.split(',').each { |source| require(source) }
+    options.relative_requires.split(',').each { |source| require_relative(source) }
 
-    plugin_names*, output_file = args
+    *plugin_names, output_file = args
+
+    raise 'no output file specified' if output_file.nil?
+
     plugin_instances = []
 
     # Collect the instances of each plugin into an array
@@ -34,16 +40,15 @@ command :run do |c|
       plugin_instances << plugin
     end
 
-
     # Create a generator instance and run all plugins on it
     gen = Parlour::RbiGenerator.new(
       break_params: options.break_params,
       tab_size: options.tab_size
     )
-    Plugin.run_all_plugins(gen)
+    Parlour::Plugin.run_all_plugins(gen)
 
     # Run a pass of the conflict resolver
-    Parlour::ConflictResolver.new.resolve_conflicts(gen) do |msg, candidates|
+    Parlour::ConflictResolver.new.resolve_conflicts(gen.root) do |msg, candidates|
       # TODO: make this a proper choice
       puts msg
       nil
