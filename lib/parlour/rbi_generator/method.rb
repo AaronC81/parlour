@@ -29,6 +29,19 @@ module Parlour
         @class_method = class_method
       end
 
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Method === other &&
+          name           == other.name && 
+          parameters     == other.parameters &&
+          return_type    == other.return_type &&
+          abstract       == other.abstract &&
+          implementation == other.implementation &&
+          override       == other.override &&
+          overridable    == other.overridable &&
+          class_method   == other.class_method
+      end
+
       sig { returns(String) }
       attr_reader :name
 

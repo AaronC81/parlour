@@ -147,6 +147,23 @@ RSpec.describe Parlour::RbiGenerator do
   end
 
   context 'methods' do
+    it 'have working equality' do
+      expect(subject.root.create_method('foo', [], nil)).to eq \
+        subject.root.create_method('foo', [], nil)
+
+      expect(subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '4')
+      ], 'String')).to eq subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '4')
+      ], 'String')
+
+      expect(subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '4')
+      ], 'String')).not_to eq subject.root.create_method('foo', [
+        pa('a', type: 'Integer', default: '5')
+      ], 'String')
+    end
+
     it 'can be created blank' do
       meth = subject.root.create_method('foo', [], nil)
 

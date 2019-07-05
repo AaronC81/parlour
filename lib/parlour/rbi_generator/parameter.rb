@@ -23,6 +23,15 @@ module Parlour
         @default = default
       end
 
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Parameter === other &&
+          name    == other.name &&
+          kind    == other.kind &&
+          type    == other.type &&
+          default == other.default
+      end
+
       sig { returns(String) }
       attr_reader :name
 
