@@ -1,10 +1,8 @@
 # typed: true
 module Parlour
   class RbiGenerator
-    class Method
+    class Method < RbiObject
       extend T::Sig
-
-      include RbiObject
 
       sig do
         params(

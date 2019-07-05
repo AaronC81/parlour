@@ -1,10 +1,10 @@
 # typed: true
 module Parlour
   class RbiGenerator
-    module RbiObject
+    class RbiObject
       extend T::Helpers
       extend T::Sig
-      interface!
+      abstract!
 
       sig do
         abstract.params(

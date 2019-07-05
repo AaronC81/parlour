@@ -1,10 +1,8 @@
 # typed: true
 module Parlour
   class RbiGenerator
-    class Namespace
+    class Namespace < RbiObject
       extend T::Sig
-
-      include RbiObject
 
       sig do
         implementation.overridable.params(
