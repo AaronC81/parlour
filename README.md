@@ -52,6 +52,32 @@ any extra options you may need.
 
 ## Code Structure
 
+### Overall Flow
+```
+                        STEP 1
+                 All plugins mutate the
+                 instance of RbiGenerator
+                 They generate a tree
+                 structure of RbiObjects
+
+                 +--------+  +--------+
+                 |Plugin 1|  |Plugin 2|
+                 +----+---+  +----+---+         STEP 2
+                      ^           ^        ConflictResolver
+                      |           |        mutates the structure
++-------------------+ |           |        to fix conflicts
+|                   | |           |
+| One instance of   +-------------+        +----------------+
+| RbiGenerator      +--------------------->+ConflictResolver|
+|                   |                      +----------------+
++---------+---------+
+          |
+          |
+          |          +-------+          STEP 3
+          +--------->+ File  |    The final RBI is written
+                     +-------+    to a file
+```
+
 ### Generation
 Everything that can generate lines of the RBI implements the 
 `RbiGenerator::RbiObject` interface. This defines one function, `generate_rbi`,
