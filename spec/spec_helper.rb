@@ -1,3 +1,4 @@
+# typed: ignore
 require 'simplecov'
 SimpleCov.start
 
