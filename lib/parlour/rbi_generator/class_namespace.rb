@@ -89,18 +89,15 @@ module Parlour
         ).void
       end
       # Given an array of {ClassNamespace} instances, merges them into this one.
-      # All children, extends and includes are copied into this instance.
       # You MUST ensure that {mergeable?} is true for those instances.
       # 
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {ClassNamespace} instances.
       # @return [void]
       def merge_into_self(others)
+        super
+
         others.each do |other|
           other = T.cast(other, ClassNamespace)
-
-          other.children.each { |c| children << c }
-          other.extends.each { |e| extends << e }
-          other.includes.each { |i| includes << i }
 
           @superclass = other.superclass unless superclass
         end
