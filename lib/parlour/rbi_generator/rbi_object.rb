@@ -40,12 +40,18 @@ module Parlour
       # file.
       attr_reader :comments
 
-      sig { params(comment: String).void }
-      # Adds a comment to this RBI object.
-      # @param comment The new comment.
+      sig { params(comment: T.any(String, T::Array[String])).void }
+      # Adds one or more comments to this RBI object.
+      # @param comment The new comment(s).
       def add_comment(comment)
-        comments << comment
+        if comment.is_a?(String)
+          comments << comment
+        elsif comment.is_a?(Array)
+          comments.concat(comment)
+        end
       end
+
+      alias_method :add_comments, :add_comment
 
       sig do
         params(
