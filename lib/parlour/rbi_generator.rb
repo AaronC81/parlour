@@ -6,6 +6,7 @@ module Parlour
 
     sig { params(break_params: Integer, tab_size: Integer).void }
     # Creates a new RBI generator.
+    #
     # @param break_params If there are at least this many parameters in a 
     #   Sorbet `sig`, then it is broken onto separate lines.
     # @param tab_size The number of spaces to use per indent.
@@ -29,6 +30,8 @@ module Parlour
 
     sig { returns(String) }
     # Returns the complete contents of the generated RBI file as a string.
+    #
+    # @return [String] The generated RBI file
     def rbi
       root.generate_rbi(0, options).join("\n")
     end

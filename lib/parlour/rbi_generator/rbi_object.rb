@@ -13,8 +13,10 @@ module Parlour
 
       sig { params(generator: RbiGenerator, name: String).void }
       # Creates a new RBI object. Don't call this directly.
-      # @param generator The current RbiGenerator.
-      # @param name The name of this module.
+      #
+      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param name [String] The name of this module.
+      # @return [void]
       def initialize(generator, name)
         @generator = generator
         @generated_by = generator.current_plugin
@@ -42,7 +44,9 @@ module Parlour
 
       sig { params(comment: T.any(String, T::Array[String])).void }
       # Adds one or more comments to this RBI object.
-      # @param comment The new comment(s).
+      #
+      # @param comment [String, Array<String>] The new comment(s).
+      # @return [void]
       def add_comment(comment)
         if comment.is_a?(String)
           comments << comment
@@ -60,9 +64,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this object's comments.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines for each comment, formatted as specified.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines for each comment, formatted as specified.
       def generate_comments(indent_level, options)
         comments.any? \
           ? comments.map { |c| options.indented(indent_level, "# #{c}") }
@@ -76,10 +81,11 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this object.
+      #
       # @abstract
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines, formatted as specified.
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options); end
 
       sig do
@@ -90,9 +96,10 @@ module Parlour
       # Given an array of other objects, returns true if they may be merged
       # into this instance using {merge_into_self}. Each subclass will have its
       # own criteria on what allows objects to be mergeable.
+      #
       # @abstract
-      # @param others An array of other {RbiObject} instances.
-      # @return Whether this instance may be merged with them.
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {RbiObject} instances.
+      # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others); end
 
       sig do 
@@ -102,15 +109,19 @@ module Parlour
       end
       # Given an array of other objects, merges them into this one. Each
       # subclass will do this differently.
-      # @abstract
       # You MUST ensure that {mergeable?} is true for those instances.
-      # @param others An array of other {RbiObject} instances.
+      #
+      # @abstract
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {RbiObject} instances.
+      # @return [void]
       def merge_into_self(others); end
 
       sig { abstract.returns(String) }
       # Returns a human-readable brief string description of this object. This
       # is displayed during manual conflict resolution with the +parlour+ CLI.
+      #
       # @abstract
+      # @return [String]
       def describe; end
     end
   end

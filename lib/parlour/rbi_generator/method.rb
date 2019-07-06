@@ -21,22 +21,24 @@ module Parlour
       end
       # Creates a new method definition. (You should use
       # {Namespace#create_method} rather than this directly.)
-      # @param generator The current RbiGenerator.
-      # @param name The name of this method. You should not specify +self.+ in
+      #
+      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param name [String] The name of this method. You should not specify +self.+ in
       #   this - use the +class_method+ parameter instead.
-      # @param parameters An array of {Parameter} instances representing this 
+      # @param parameters [Array<Parameter>] An array of {Parameter} instances representing this 
       #   method's parameters.
-      # @param return_type A Sorbet string of what this method returns, such as
+      # @param return_type [String, nil] A Sorbet string of what this method returns, such as
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
-      # @param abstract Whether this method is abstract.
-      # @param implementation Whether this method is an implementation of a
+      # @param abstract [Boolean] Whether this method is abstract.
+      # @param implementation [Boolean] Whether this method is an implementation of a
       #   parent abstract method.
-      # @param override Whether this method is overriding a parent overridable
+      # @param override [Boolean] Whether this method is overriding a parent overridable
       #   method.
-      # @param overridable Whether this method is overridable by subclasses.
-      # @param class_method Whether this method is a class method; that is, it
+      # @param overridable [Boolean] Whether this method is overridable by subclasses.
+      # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
       # @param block A block which the new instance yields itself to.
+      # @return [void]
       def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         super(generator, name)
         @parameters = parameters
@@ -51,8 +53,10 @@ module Parlour
 
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another method.
-      # @param other The other instance. If this is not a {Method} (or a
+      #
+      # @param other [Object] The other instance. If this is not a {Method} (or a
       #   subclass of it), this will always return false.
+      # @return [Boolean]
       def ==(other)
         Method === other &&
           name           == other.name && 
@@ -102,9 +106,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this method.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines, formatted as specified.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         return_call = return_type ? "returns(#{return_type})" : 'void'
 
@@ -162,6 +167,8 @@ module Parlour
       # Returns the qualifiers which go in front of the +params+ part of this
       # method's Sorbet +sig+. For example, if {abstract} is true, then this
       # will return +abstract.+.
+      #
+      # @return [String]
       def qualifiers
         result = ''
         result += 'abstract.' if abstract
@@ -179,8 +186,9 @@ module Parlour
       # Given an array of {Method} instances, returns true if they may be merged
       # into this instance using {merge_into_self}. For instances to be
       # mergeable, their signatures and definitions must be identical.
-      # @param others An array of other {Method} instances.
-      # @return Whether this instance may be merged with them.
+      #
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {Method} instances.
+      # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
         others.all? { |other| self == other }
       end
@@ -195,13 +203,17 @@ module Parlour
       # instances are only mergeable if they are identical, so nothing needs
       # to be changed.
       # You MUST ensure that {mergeable?} is true for those instances.
-      # @param others An array of other {Method} instances.
+      #
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {Method} instances.
+      # @return [void]
       def merge_into_self(others)
         # We don't need to change anything! We only merge identical methods
       end
 
       sig { override.returns(String) }
       # Returns a human-readable brief string description of this method.
+      #
+      # @return [String]
       def describe
         # TODO: more info
         "Method #{name} - #{parameters.length} parameters, " +

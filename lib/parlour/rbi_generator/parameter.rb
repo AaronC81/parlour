@@ -13,15 +13,17 @@ module Parlour
         ).void
       end
       # Create a new method parameter.
-      # @param name The name of this parameter. This may start with +*+, +**+,
+      #
+      # @param name [String] The name of this parameter. This may start with +*+, +**+,
       #   or +&+, or end with +:+, which will infer the {kind} of this
       #   parameter. (If it contains none of those, {kind} will be +:normal+.)
-      # @param type A Sorbet string of this parameter's type, such as
+      # @param type [String, nil] A Sorbet string of this parameter's type, such as
       #   +"String"+ or +"T.untyped"+.
-      # @param default A string of Ruby code for this parameter's default value.
+      # @param default [String, nil] A string of Ruby code for this parameter's default value.
       #   For example, the default value of an empty string would be represented
       #   as +"\"\""+ (or +'""'+). The default value of the decimal +3.14+
       #   would be +"3.14"+.
+      # @return [void]
       def initialize(name, type: nil, default: nil)
         @name = name
 
@@ -36,8 +38,10 @@ module Parlour
 
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another method.
-      # @param other The other instance. If this is not a {Parameter} (or a
+      #
+      # @param other [Object] The other instance. If this is not a {Parameter} (or a
       #   subclass of it), this will always return false.
+      # @return [Boolean]
       def ==(other)
         Parameter === other &&
           name    == other.name &&
@@ -54,6 +58,8 @@ module Parlour
       sig { returns(String) }
       # The name of this parameter, stripped of any prefixes or suffixes. For
       # example, +*rest+ would become +rest+, or +foo:+ would become +foo+.
+      #
+      # @return [String]
       def name_without_kind
         return T.must(name[0..-2]) if kind == :keyword
 
@@ -81,6 +87,8 @@ module Parlour
 
       sig { returns(String) }
       # A string of how this parameter should be defined in a method definition.
+      #
+      # @return [String]
       def to_def_param
         if default.nil?
           "#{name}"
@@ -93,6 +101,8 @@ module Parlour
 
       sig { returns(String) }
       # A string of how this parameter should be defined in a Sorbet `sig`.
+      #
+      # @return [String]
       def to_sig_param
         "#{name_without_kind}: #{type || 'T.untyped'}"
       end

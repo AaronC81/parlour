@@ -30,11 +30,14 @@ module Parlour
     # definitions. The block may be invoked many times from one call to 
     # {resolve_conflicts}, one for each unresolvable conflict.
     #
-    # @param namespace The starting namespace to resolve conflicts in.
-    # @yieldparam message A descriptional message on what the conflict is.
-    # @yieldparam candidates The objects for which there is a conflict.
-    # @yieldreturn One of the +candidates+, which will be kept, or nil to keep
-    #   none of them.
+    # @param namespace [RbiGenerator::Namespace] The starting namespace to
+    #   resolve conflicts in.
+    # @yieldparam message [String] A descriptional message on what the conflict is.
+    # @yieldparam candidates [Array<RbiGenerator::RbiObject>] The objects for
+    #   which there is a conflict.
+    # @yieldreturn [RbiGenerator::RbiObject] One of the +candidates+, which
+    #   will be kept, or nil to keep none of them.
+    # @return [void]
     def resolve_conflicts(namespace, &resolver)
       # Check for multiple definitions with the same name
       grouped_by_name_children = namespace.children.group_by(&:name)
@@ -82,8 +85,9 @@ module Parlour
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
     # Given an array, if all elements in the array are instances of the exact
     # same class, returns that class. If they are not, returns nil.
-    # @param arr The array.
-    # @return Either a class, or nil.
+    #
+    # @param arr [Array] The array.
+    # @return [Class, nil] Either a class, or nil.
     def single_type_of_array(arr)
       array_types = arr.map { |c| c.class }.uniq
       array_types.length == 1 ? array_types.first : nil
@@ -92,8 +96,9 @@ module Parlour
     sig { params(arr: T::Array[T.untyped]).returns(T::Boolean) }
     # Given an array, returns true if all elements in the array are equal by
     # +==+. (Assumes a transitive definition of +==+.)
-    # @param arr The array.
-    # @return A boolean indicating if all elements are equal by +==+.
+    #
+    # @param arr [Array] The array.
+    # @return [Boolean] A boolean indicating if all elements are equal by +==+.
     def all_eql?(arr)
       arr.each_cons(2).all? { |x, y| x == y }
     end
