@@ -10,7 +10,7 @@ module Parlour
       # Creates a new set of formatting options.
       #
       # @param break_params [Integer] If there are at least this many parameters in a 
-      #   Sorbet `sig`, then it is broken onto separate lines.
+      #   Sorbet +sig+, then it is broken onto separate lines.
       # @param tab_size [Integer] The number of spaces to use per indent.
       # @return [void]
       def initialize(break_params:, tab_size:)
@@ -19,7 +19,7 @@ module Parlour
       end
       
       sig { returns(Integer) }
-      # If there are at least this many parameters in a  Sorbet `sig`, then it 
+      # If there are at least this many parameters in a Sorbet +sig+, then it 
       # is broken onto separate lines.
       # @return [Integer]
       attr_reader :break_params

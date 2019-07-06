@@ -85,7 +85,7 @@ module Parlour
 
       sig { returns(Symbol) }
       # The kind of parameter that this is. This will be one of +:normal+, 
-      #   +:splat+, +:double_splat+, +:block+ or +:keyword+.
+      # +:splat+, +:double_splat+, +:block+ or +:keyword+.
       # @return [Symbol]
       attr_reader :kind
 
@@ -104,7 +104,7 @@ module Parlour
       end
 
       sig { returns(String) }
-      # A string of how this parameter should be defined in a Sorbet `sig`.
+      # A string of how this parameter should be defined in a Sorbet +sig+.
       #
       # @return [String]
       def to_sig_param
