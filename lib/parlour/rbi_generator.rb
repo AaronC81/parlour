@@ -17,15 +17,18 @@ module Parlour
 
     sig { returns(Options) }
     # The formatting options for this generator.
+    # @return [Options]
     attr_reader :options
 
     sig { returns(Namespace) }
     # The root {Namespace} of this generator.
+    # @return [Namespace]
     attr_reader :root
 
     sig { returns(T.nilable(Plugin)) }
     # The plugin which is currently generating new definitions.
     # {Plugin#run_plugins} controls this value.
+    # @return [Plugin, nil]
     attr_accessor :current_plugin
 
     sig { returns(String) }

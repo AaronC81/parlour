@@ -21,10 +21,12 @@ module Parlour
       sig { returns(Integer) }
       # If there are at least this many parameters in a  Sorbet `sig`, then it 
       # is broken onto separate lines.
+      # @return [Integer]
       attr_reader :break_params
 
       sig { returns(Integer) }
-      # The number of spaces to use per indent.      
+      # The number of spaces to use per indent.
+      # @return [Integer]
       attr_reader :tab_size
 
       sig { params(level: Integer, str: String).returns(String) }

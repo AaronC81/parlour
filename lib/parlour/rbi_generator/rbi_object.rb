@@ -26,20 +26,24 @@ module Parlour
 
       sig { returns(RbiGenerator) }
       # The generator which this object belongs to.
+      # @return [RbiGenerator]
       attr_reader :generator
 
       sig { returns(T.nilable(Plugin)) }
       # The {Plugin} which was controlling the {generator} when this object was
       # created.
+      # @return [Plugin, nil]
       attr_reader :generated_by
 
       sig { returns(String) }
       # The name of this object.
+      # @return [String]
       attr_reader :name
 
       sig { returns(T::Array[String]) }
       # An array of comments which will be placed above the object in the RBI
       # file.
+      # @return [Array<String>]
       attr_reader :comments
 
       sig { params(comment: T.any(String, T::Array[String])).void }

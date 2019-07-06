@@ -53,6 +53,7 @@ module Parlour
       sig { returns(String) }
       # The name of this parameter, including any prefixes or suffixes such as
       # +*+.
+      # @return [String]
       attr_reader :name
 
       sig { returns(String) }
@@ -72,17 +73,20 @@ module Parlour
       sig { returns(T.nilable(String)) }
       # A Sorbet string of this parameter's type, such as +"String"+ or
       # +"T.untyped"+.
+      # @return [String, nil]
       attr_reader :type
 
       sig { returns(T.nilable(String)) }
       # A string of Ruby code for this parameter's default value. For example,
       # the default value of an empty string would be represented as +"\"\""+
       # (or +'""'+). The default value of the decimal +3.14+ would be +"3.14"+.
+      # @return [String, nil]
       attr_reader :default
 
       sig { returns(Symbol) }
       # The kind of parameter that this is. This will be one of +:normal+, 
       #   +:splat+, +:double_splat+, +:block+ or +:keyword+.
+      # @return [Symbol]
       attr_reader :kind
 
       sig { returns(String) }

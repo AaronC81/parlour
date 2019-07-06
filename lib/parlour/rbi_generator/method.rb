@@ -71,32 +71,39 @@ module Parlour
 
       sig { returns(T::Array[Parameter]) }
       # An array of {Parameter} instances representing this method's parameters.
+      # @return [Array<Parameter>]
       attr_reader :parameters
 
       sig { returns(T.nilable(String)) }
       # A Sorbet string of what this method returns, such as "String" or
       # "T.untyped". Passing nil denotes a void return.
+      # @return [String, nil]
       attr_reader :return_type
 
       sig { returns(T::Boolean) }
       # Whether this method is abstract.
+      # @return [Boolean]
       attr_reader :abstract
 
       sig { returns(T::Boolean) }
       # Whether this method is an implementation of a parent abstract method.
+      # @return [Boolean]
       attr_reader :implementation
 
       sig { returns(T::Boolean) }
       # Whether this method is overriding a parent overridable method.
+      # @return [Boolean]
       attr_reader :override
 
       sig { returns(T::Boolean) }
       # Whether this method is overridable by subclasses.
+      # @return [Boolean]
       attr_reader :overridable
 
       sig { returns(T::Boolean) }
       # Whether this method is a class method; that is, it it is defined using
       # +self.+.
+      # @return [Boolean]
       attr_reader :class_method
 
       sig do

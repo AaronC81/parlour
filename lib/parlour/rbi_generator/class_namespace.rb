@@ -55,10 +55,12 @@ module Parlour
 
       sig { returns(T.nilable(String)) }
       # The superclass of this class, or nil if it doesn't have one.
+      # @return [String, nil]
       attr_reader :superclass
 
       sig { returns(T::Boolean) }
       # A boolean indicating whether this class is abstract or not.
+      # @return [Boolean]
       attr_reader :abstract
 
       sig do

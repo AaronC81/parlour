@@ -82,16 +82,19 @@ module Parlour
 
       sig { returns(T::Array[RbiObject]) }
       # The child {RbiObject} instances inside this namespace.
+      # @return [Array<RbiObject>]
       attr_reader :children
 
       sig { returns(T::Array[String]) }
       # A list of strings which are each used in an +extend+ statement in this
       # namespace.
+      # @return [Array<String>]
       attr_reader :extends
 
       sig { returns(T::Array[String]) }
       # A list of strings which are each used in an +include+ statement in this
       # namespace.
+      # @return [Array<String>]
       attr_reader :includes
 
       sig do

@@ -49,6 +49,7 @@ module Parlour
 
       sig { returns(T::Boolean) }
       # A boolean indicating whether this module is an interface or not.
+      # @return [Boolean]
       attr_reader :interface
 
       sig do
