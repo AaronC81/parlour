@@ -15,11 +15,13 @@ module Parlour
       end
       # Creates a new module definition. (You should use 
       # {Namespace#create_module} rather than this directly.)
-      # @param generator The current RbiGenerator.
-      # @param name The name of this module.
-      # @param interface A boolean indicating whether this module is an
+      # 
+      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param name [String] The name of this module.
+      # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
       # @param block A block which the new instance yields itself to.
+      # @return [void]
       def initialize(generator, name, interface, &block)
         super(generator, name, &block)
         @name = name
@@ -33,9 +35,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this module.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines, formatted as specified.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)        
         lines = generate_comments(indent_level, options)
         lines << options.indented(indent_level, "module #{name}")
@@ -46,6 +49,7 @@ module Parlour
 
       sig { returns(T::Boolean) }
       # A boolean indicating whether this module is an interface or not.
+      # @return [Boolean]
       attr_reader :interface
 
       sig do
@@ -57,8 +61,9 @@ module Parlour
       # be merged into this instance using {merge_into_self}. For instances to
       # be mergeable, they must either all be interfaces or all not be 
       # interfaces.
-      # @param others An array of other {ModuleNamespace} instances.
-      # @return Whether this instance may be merged with them.
+      #
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {ModuleNamespace} instances.
+      # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
         others = T.cast(others, T::Array[RbiGenerator::ModuleNamespace]) rescue (return false)
         all = others + [self]
@@ -74,7 +79,9 @@ module Parlour
       # Given an array of {ModuleNamespace} instances, merges them into this one.
       # All children, extends and includes are copied into this instance.
       # You MUST ensure that {mergeable?} is true for those instances.
-      # @param others An array of other {ModuleNamespace} instances.
+      #
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {ModuleNamespace} instances.
+      # @return [void]
       def merge_into_self(others)
         others.each do |other|
           other = T.cast(other, ModuleNamespace)
@@ -87,6 +94,7 @@ module Parlour
 
       sig { override.returns(String) }
       # Returns a human-readable brief string description of this module.
+      # @return [String]
       def describe
         "Module #{name} - #{"interface, " if interface}#{children.length} " +
           "children, #{includes.length} includes, #{extends.length} extends"

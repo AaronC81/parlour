@@ -13,9 +13,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this namespace.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines, formatted as specified.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         generate_comments(indent_level, options) +  
           generate_body(indent_level, options)
@@ -29,9 +30,10 @@ module Parlour
       end
       # Generates the RBI lines for the body of this namespace. This consists of
       # {includes}, {extends} and {children}.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines for the body, formatted as specified.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines for the body, formatted as specified.
       def generate_body(indent_level, options)
         result = []
 
@@ -65,9 +67,11 @@ module Parlour
       end
       # Creates a new namespace. Unless you're doing something impressively 
       # hacky, this shouldn't be invoked outside of {RbiGenerator#initialize}.
-      # @param generator The current RbiGenerator.
-      # @param name The name of this module.
+      #
+      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param name [String, nil] The name of this module.
       # @param block A block which the new instance yields itself to.
+      # @return [void]
       def initialize(generator, name = nil, &block)
         super(generator, name || '<anonymous namespace>')
         @children = []
@@ -78,16 +82,19 @@ module Parlour
 
       sig { returns(T::Array[RbiObject]) }
       # The child {RbiObject} instances inside this namespace.
+      # @return [Array<RbiObject>]
       attr_reader :children
 
       sig { returns(T::Array[String]) }
       # A list of strings which are each used in an +extend+ statement in this
       # namespace.
+      # @return [Array<String>]
       attr_reader :extends
 
       sig { returns(T::Array[String]) }
       # A list of strings which are each used in an +include+ statement in this
       # namespace.
+      # @return [Array<String>]
       attr_reader :includes
 
       sig do
@@ -99,11 +106,13 @@ module Parlour
         ).returns(ClassNamespace)
       end
       # Creates a new class definition as a child of this namespace.
-      # @param name The name of this class.
-      # @param superclass The superclass of this class, or nil if it doesn't
+      #
+      # @param name [String] The name of this class.
+      # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
-      # @param abstract A boolean indicating whether this class is abstract.
+      # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
+      # @return [ClassNamespace]
       def create_class(name, superclass: nil, abstract: false, &block)
         new_class = ClassNamespace.new(generator, name, superclass, abstract, &block)
         children << new_class
@@ -118,10 +127,12 @@ module Parlour
         ).returns(ModuleNamespace)
       end
       # Creates a new module definition as a child of this namespace.
-      # @param name The name of this module.
-      # @param interface A boolean indicating whether this module is an
+      #
+      # @param name [String] The name of this module.
+      # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
       # @param block A block which the new instance yields itself to.
+      # @return [ModuleNamespace]
       def create_module(name, interface: false, &block)
         new_module = ModuleNamespace.new(generator, name, interface, &block)
         children << new_module
@@ -142,21 +153,23 @@ module Parlour
         ).returns(Method)
       end
       # Creates a new method definition as a child of this namespace.
-      # @param name The name of this method. You should not specify +self.+ in
+      #
+      # @param name [String] The name of this method. You should not specify +self.+ in
       #   this - use the +class_method+ parameter instead.
-      # @param parameters An array of {Parameter} instances representing this 
+      # @param parameters [Array<Parameter>] An array of {Parameter} instances representing this 
       #   method's parameters.
-      # @param return_type A Sorbet string of what this method returns, such as
+      # @param return_type [String, nil] A Sorbet string of what this method returns, such as
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
-      # @param abstract Whether this method is abstract.
-      # @param implementation Whether this method is an implementation of a
+      # @param abstract [Boolean] Whether this method is abstract.
+      # @param implementation [Boolean] Whether this method is an implementation of a
       #   parent abstract method.
-      # @param override Whether this method is overriding a parent overridable
+      # @param override [Boolean] Whether this method is overriding a parent overridable
       #   method.
-      # @param overridable Whether this method is overridable by subclasses.
-      # @param class_method Whether this method is a class method; that is, it
+      # @param overridable [Boolean] Whether this method is overridable by subclasses.
+      # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
       # @param block A block which the new instance yields itself to.
+      # @return [Method]
       def create_method(name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         new_method = RbiGenerator::Method.new(
           generator,
@@ -175,12 +188,14 @@ module Parlour
       end
 
       # Creates a new attribute.
-      # @param name The name of this attribute.
-      # @param kind The kind of attribute this is; one of :writer, :reader or
+      #
+      # @param name [String] The name of this attribute.
+      # @param kind [Symbol] The kind of attribute this is; one of :writer, :reader or
       #   :accessor.
-      # @param type A Sorbet string of this attribute's type, such as
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attribute(name, kind, type, &block)
         new_attribute = RbiGenerator::Attribute.new(
           generator,
@@ -195,44 +210,54 @@ module Parlour
       alias_method :create_attr, :create_attribute
 
       # Creates a new read-only attribute (attr_reader).
-      # @param name The name of this attribute.
-      # @param type A Sorbet string of this attribute's type, such as
+      #
+      # @param name [String] The name of this attribute.
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attr_reader(name, type, &block)
         create_attribute(name, :reader, type, &block)
       end
 
       # Creates a new write-only attribute (attr_writer).
-      # @param name The name of this attribute.
-      # @param type A Sorbet string of this attribute's type, such as
+      #
+      # @param name [String] The name of this attribute.
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attr_writer(name, type, &block)
         create_attribute(name, :writer, type, &block)
       end
 
       # Creates a new read and write attribute (attr_accessor).
-      # @param name The name of this attribute.
-      # @param type A Sorbet string of this attribute's type, such as
+      #
+      # @param name [String] The name of this attribute.
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attr_accessor(name, type, &block)
         create_attribute(name, :accessor, type, &block)
       end
 
       sig { params(name: String).void }
       # Adds a new +extend+ to this namespace.
-      # @param name A code string for what is extended, for example
+      #
+      # @param name [String] A code string for what is extended, for example
       #   +"MyModule"+.
+      # @return [void]
       def add_extend(name)
         extends << name
       end
 
       sig { params(name: String).void }
       # Adds a new +include+ to this namespace.
-      # @param name A code string for what is included, for example
+      #
+      # @param name [String] A code string for what is included, for example
       #   +"Enumerable"+.
+      # @return [void]
       def add_include(name)
         includes << name
       end
@@ -247,8 +272,9 @@ module Parlour
       # can be merged into each other, as they lack definitions for themselves,
       # so there is nothing to conflict. (This isn't the case for subclasses
       # such as {ClassNamespace}.)
-      # @param others An array of other {Namespace} instances.
-      # @return Always true.
+      # 
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
+      # @return [true] Always true.
       def mergeable?(others)
         true
       end
@@ -260,7 +286,9 @@ module Parlour
       end
       # Given an array of {Namespace} instances, merges them into this one.
       # All children, extends and includes are copied into this instance.
-      # @param others An array of other {Namespace} instances.
+      # 
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
+      # @return [void]
       def merge_into_self(others)
         others.each do |other|
           other = T.cast(other, Namespace)
@@ -273,6 +301,8 @@ module Parlour
 
       sig { implementation.overridable.returns(String) }
       # Returns a human-readable brief string description of this namespace.
+      #
+      # @return [String]
       def describe
         "Namespace #{name} - #{children.length} children, #{includes.length} " +
           "includes, #{extends.length} extends"

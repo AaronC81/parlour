@@ -14,13 +14,15 @@ module Parlour
       end
       # Creates a new attribute. (You should use
       # {Namespace#create_attribute} rather than this directly.)
-      # @param generator The current RbiGenerator.
-      # @param name The name of this attribute.
-      # @param kind The kind of attribute this is; one of :writer, :reader or
+      #
+      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param name [String] The name of this attribute.
+      # @param kind [Symbol] The kind of attribute this is; one of :writer, :reader or
       #   :accessor.
-      # @param type A Sorbet string of this attribute's type, such as
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [void]
       def initialize(generator, name, kind, type, &block)
         # According to this source: 
         #   https://github.com/sorbet/sorbet/blob/2275752e51604acfb79b30a0a96debc996c089d9/test/testdata/dsl/attr_multi.rb
@@ -41,7 +43,8 @@ module Parlour
       end
 
       sig { returns(Symbol) }
-      # The kind of attribute this is; one of :writer, :reader or :accessor. 
+      # The kind of attribute this is; one of :writer, :reader or :accessor.
+      # @return [Symbol]
       attr_reader :kind
 
       sig do
@@ -51,9 +54,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this method.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines, formatted as specified.
+      # 
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_definition(indent_level, options)
         [options.indented(indent_level, "attr_#{kind} :#{name}")]
       end

@@ -12,6 +12,8 @@ module Parlour
     sig { returns(T::Hash[String, Plugin]) }
     # Returns all registered plugins, as a hash of their paths to the {Plugin}
     # instances themselves.
+    #
+    # @return [{String, Plugin}]
     def self.registered_plugins
       @@registered_plugins
     end
@@ -19,15 +21,19 @@ module Parlour
     sig { params(new_plugin: T.class_of(Plugin)).void }
     # Called automatically by the Ruby interpreter when {Plugin} is subclassed.
     # This registers the new subclass into {registered_plugins}.
-    # @param new_plugin The new plugin.
+    #
+    # @param new_plugin [Plugin] The new plugin.
+    # @return [void]
     def self.inherited(new_plugin)
       registered_plugins[T.must(new_plugin.name)] = new_plugin.new
     end
 
     sig { params(plugins: T::Array[Plugin], generator: RbiGenerator).void }
     # Runs an array of plugins on a given generator instance.
-    # @param plugins An array of {Plugin} instances.
-    # @param generator The {RbiGenerator} to run the plugins on.
+    #
+    # @param plugins [Array<Plugin>] An array of {Plugin} instances.
+    # @param generator [RbiGenerator] The {RbiGenerator} to run the plugins on.
+    # @return [void]
     def self.run_plugins(plugins, generator)
       plugins.each do |plugin|
         generator.current_plugin = plugin
@@ -38,8 +44,10 @@ module Parlour
     sig { abstract.params(root: RbiGenerator::Namespace).void }
     # Plugin subclasses should redefine this method and do their RBI generation
     # inside it.
+    #
     # @abstract
-    # @param root The root {RbiGenerator::Namespace}.
+    # @param root [RbiGenerator::Namespace] The root {RbiGenerator::Namespace}.
+    # @return [void]
     def generate(root); end
   end
 end
