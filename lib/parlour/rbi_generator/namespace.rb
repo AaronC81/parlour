@@ -185,12 +185,14 @@ module Parlour
       end
 
       # Creates a new attribute.
-      # @param name The name of this attribute.
-      # @param kind The kind of attribute this is; one of :writer, :reader or
+      #
+      # @param name [String] The name of this attribute.
+      # @param kind [Symbol] The kind of attribute this is; one of :writer, :reader or
       #   :accessor.
-      # @param type A Sorbet string of this attribute's type, such as
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attribute(name, kind, type, &block)
         new_attribute = RbiGenerator::Attribute.new(
           generator,
@@ -205,28 +207,34 @@ module Parlour
       alias_method :create_attr, :create_attribute
 
       # Creates a new read-only attribute (attr_reader).
-      # @param name The name of this attribute.
-      # @param type A Sorbet string of this attribute's type, such as
+      #
+      # @param name [String] The name of this attribute.
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attr_reader(name, type, &block)
         create_attribute(name, :reader, type, &block)
       end
 
       # Creates a new write-only attribute (attr_writer).
-      # @param name The name of this attribute.
-      # @param type A Sorbet string of this attribute's type, such as
+      #
+      # @param name [String] The name of this attribute.
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attr_writer(name, type, &block)
         create_attribute(name, :writer, type, &block)
       end
 
       # Creates a new read and write attribute (attr_accessor).
-      # @param name The name of this attribute.
-      # @param type A Sorbet string of this attribute's type, such as
+      #
+      # @param name [String] The name of this attribute.
+      # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Attribute]
       def create_attr_accessor(name, type, &block)
         create_attribute(name, :accessor, type, &block)
       end
