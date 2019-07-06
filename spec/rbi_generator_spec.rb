@@ -169,7 +169,7 @@ RSpec.describe Parlour::RbiGenerator do
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { void }
-        def foo(); end
+        def foo; end
       RUBY
     end
 
@@ -178,7 +178,7 @@ RSpec.describe Parlour::RbiGenerator do
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { returns(String) }
-        def foo(); end
+        def foo; end
       RUBY
     end
 
@@ -253,7 +253,7 @@ RSpec.describe Parlour::RbiGenerator do
         class A
           # This is a method
           sig { void }
-          def foo(); end
+          def foo; end
         end
       end
     RUBY

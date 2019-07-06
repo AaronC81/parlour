@@ -137,7 +137,8 @@ module Parlour
         name_prefix = class_method ? 'self.' : ''
         def_line = options.indented(
           indent_level,
-          "def #{name_prefix}#{name}(#{def_params.join(', ')}); end"
+          "def #{name_prefix}#{name}#{
+            "(#{def_params.join(', ')})" unless parameters.empty?}; end"
         )
 
         generate_comments(indent_level, options) + sig_lines + [def_line]
