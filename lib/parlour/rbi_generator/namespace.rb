@@ -174,6 +174,53 @@ module Parlour
         new_method
       end
 
+      # Creates a new attribute.
+      # @param name The name of this attribute.
+      # @param kind The kind of attribute this is; one of :writer, :reader or
+      #   :accessor.
+      # @param type A Sorbet string of this attribute's type, such as
+      #   +"String"+ or +"T.untyped"+.
+      # @param block A block which the new instance yields itself to.
+      def create_attribute(name, kind, type, &block)
+        new_attribute = RbiGenerator::Attribute.new(
+          generator,
+          name,
+          kind,
+          type,
+          &block
+        )
+        children << new_attribute
+        new_attribute
+      end
+      alias_method :create_attr, :create_attribute
+
+      # Creates a new read-only attribute (attr_reader).
+      # @param name The name of this attribute.
+      # @param type A Sorbet string of this attribute's type, such as
+      #   +"String"+ or +"T.untyped"+.
+      # @param block A block which the new instance yields itself to.
+      def create_attr_reader(name, type, &block)
+        create_attribute(name, :reader, type, &block)
+      end
+
+      # Creates a new write-only attribute (attr_writer).
+      # @param name The name of this attribute.
+      # @param type A Sorbet string of this attribute's type, such as
+      #   +"String"+ or +"T.untyped"+.
+      # @param block A block which the new instance yields itself to.
+      def create_attr_writer(name, type, &block)
+        create_attribute(name, :writer, type, &block)
+      end
+
+      # Creates a new read and write attribute (attr_accessor).
+      # @param name The name of this attribute.
+      # @param type A Sorbet string of this attribute's type, such as
+      #   +"String"+ or +"T.untyped"+.
+      # @param block A block which the new instance yields itself to.
+      def create_attr_accessor(name, type, &block)
+        create_attribute(name, :accessor, type, &block)
+      end
+
       sig { params(name: String).void }
       # Adds a new +extend+ to this namespace.
       # @param name A code string for what is extended, for example

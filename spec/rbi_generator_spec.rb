@@ -235,6 +235,50 @@ RSpec.describe Parlour::RbiGenerator do
     end
   end
 
+  context 'attributes' do
+    it 'can be created using #create_attribute' do
+      mod = subject.root.create_module('M') do |m|
+        m.create_attribute('r', :reader, 'String')
+        m.create_attribute('w', :writer, 'Integer')
+        m.create_attr('a', :accessor, 'T::Boolean') # test alias too
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module M
+          sig { returns(String) }
+          attr_reader :r
+
+          sig { params(w: Integer).returns(Integer) }
+          attr_writer :w
+
+          sig { returns(T::Boolean) }
+          attr_accessor :a
+        end
+      RUBY
+    end
+
+    it 'can be created using #create_attr_writer etc' do
+      mod = subject.root.create_module('M') do |m|
+        m.create_attr_reader('r', 'String')
+        m.create_attr_writer('w', 'Integer')
+        m.create_attr_accessor('a', 'T::Boolean')
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module M
+          sig { returns(String) }
+          attr_reader :r
+
+          sig { params(w: Integer).returns(Integer) }
+          attr_writer :w
+
+          sig { returns(T::Boolean) }
+          attr_accessor :a
+        end
+      RUBY
+    end
+  end
+
   it 'supports comments' do
     mod = subject.root.create_module('M') do |m|
       m.add_comment('This is a module')

@@ -131,8 +131,23 @@ module Parlour
               }#{
                 qualifiers.empty? && parameters.empty? ? '' : '.'
               }#{return_call} }"
-            )]
+            )]        
 
+        generate_comments(indent_level, options) + sig_lines +
+          generate_definition(indent_level, options)
+      end
+
+      sig do
+        overridable.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBI lines for this method.
+      # @param indent_level The indentation level to generate the lines at.
+      # @param options The formatting options to use.
+      # @return The RBI lines, formatted as specified.
+      def generate_definition(indent_level, options)
         def_params = parameters.map(&:to_def_param)
         name_prefix = class_method ? 'self.' : ''
         def_line = options.indented(
@@ -140,8 +155,7 @@ module Parlour
           "def #{name_prefix}#{name}#{
             "(#{def_params.join(', ')})" unless parameters.empty?}; end"
         )
-
-        generate_comments(indent_level, options) + sig_lines + [def_line]
+        [def_line]
       end
 
       sig { returns(String) }
