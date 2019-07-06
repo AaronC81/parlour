@@ -149,9 +149,10 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this method.
-      # @param indent_level The indentation level to generate the lines at.
-      # @param options The formatting options to use.
-      # @return The RBI lines, formatted as specified.
+      # 
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_definition(indent_level, options)
         def_params = parameters.map(&:to_def_param)
         name_prefix = class_method ? 'self.' : ''
