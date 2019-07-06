@@ -41,7 +41,7 @@ generator.rbi # => Our RBI as a string
 
 This will generate the following RBI:
 
-```rubyhttps://api.travis-ci.org/AaronC81/parlour.svg?branch=master
+```ruby
 module A
   class Foo
     sig { params(a: Integer, b: Integer).returns(Integer) }
