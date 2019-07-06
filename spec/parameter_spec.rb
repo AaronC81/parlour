@@ -39,4 +39,17 @@ RSpec.describe Parlour::RbiGenerator::Parameter do
 
     expect(pa('foo', type: 'Integer', default: '3').to_sig_param).to eq 'foo: Integer'
   end
+
+  it 'can generate various types of defaults' do
+    expect(pa('foo:', default: '5').to_def_param).to eq 'foo: 5'
+    expect(pa('foo:', default: "'bar'").to_def_param).to eq "foo: 'bar'"
+    expect(pa('foo:', default: '\'bar\'').to_def_param).to eq "foo: 'bar'"
+    expect(pa('foo:', default: ':bar').to_def_param).to eq "foo: :bar"
+    expect(pa('foo:', default: ":'bar'").to_def_param).to eq "foo: :'bar'"
+    expect(pa('foo:', default: 'nil').to_def_param).to eq "foo: nil"
+    expect(pa('foo:', default: '3.14159').to_def_param).to eq "foo: 3.14159"
+    expect(pa('foo:', default: 'true').to_def_param).to eq "foo: true"
+    expect(pa('foo:', default: '{ key: "value", key2: "value" }').to_def_param).to eq 'foo: { key: "value", key2: "value" }'
+    expect(pa('foo:', default: '[1, 2, 3]').to_def_param).to eq 'foo: [1, 2, 3]'
+  end
 end
