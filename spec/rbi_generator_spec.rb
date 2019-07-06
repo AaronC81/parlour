@@ -111,12 +111,14 @@ RSpec.describe Parlour::RbiGenerator do
       RUBY
     end
 
-    it 'handles includes and extends' do
+    it 'handles includes, extends and constants' do
       klass = subject.root.create_class('Foo') do |foo|
         foo.create_class('Bar', abstract: true) do |bar|
           bar.add_extend('X')
           bar.add_extend('Y')
           bar.add_include('Z')
+          bar.add_constant('PI', '3.14')
+          bar.add_constant('Text', 'T.type_alias(T.any(String, Symbol))')
           bar.create_class('A')
           bar.create_class('B')
           bar.create_class('C')
@@ -131,6 +133,8 @@ RSpec.describe Parlour::RbiGenerator do
             include Z
             extend X
             extend Y
+            PI = 3.14
+            Text = T.type_alias(T.any(String, Symbol))
 
             class A
             end

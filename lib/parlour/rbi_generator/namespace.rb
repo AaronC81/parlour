@@ -37,12 +37,16 @@ module Parlour
       def generate_body(indent_level, options)
         result = []
 
-        if includes.any? || extends.any?
+        if includes.any? || extends.any? || constants.any?
           result += includes.map do |i|
             options.indented(indent_level, "include #{i}")
           end
           result += extends.map do |e|
             options.indented(indent_level, "extend #{e}")
+          end
+          result += constants.map do |c|
+            name, value = c
+            options.indented(indent_level, "#{name} = #{value}")
           end
           result << ""
         end
@@ -77,6 +81,7 @@ module Parlour
         @children = []
         @extends = []
         @includes = []
+        @constants = []
         yield_self(&block)
       end
 
@@ -96,6 +101,12 @@ module Parlour
       # namespace.
       # @return [Array<String>]
       attr_reader :includes
+
+      sig { returns(T::Array[[String, String]]) }
+      # A list of constants which are defined in this namespace, in the form of
+      # pairs [name, value].
+      # @return [Array<(String, String)>]
+      attr_reader :constants
 
       sig do
         params(
@@ -262,6 +273,17 @@ module Parlour
         includes << name
       end
 
+      sig { params(name: String, value: String).void }
+      # Adds a new constant definition to this namespace.
+      #
+      # @param name [String] The name of the constant.
+      # @param value [String] A Ruby code string for this constant's value, for
+      #   example +"3.14"+ or +"T.type_alias(X)"+
+      # @return [void]
+      def add_constant(name, value)
+        constants << [name, value]
+      end
+
       sig do
         implementation.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
@@ -285,7 +307,8 @@ module Parlour
         ).void
       end
       # Given an array of {Namespace} instances, merges them into this one.
-      # All children, extends and includes are copied into this instance.
+      # All children, constants, extends and includes are copied into this 
+      # instance.
       # 
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
       # @return [void]
@@ -296,6 +319,7 @@ module Parlour
           other.children.each { |c| children << c }
           other.extends.each { |e| extends << e }
           other.includes.each { |i| includes << i }
+          other.constants.each { |i| constants << i }
         end
       end
 
@@ -305,7 +329,7 @@ module Parlour
       # @return [String]
       def describe
         "Namespace #{name} - #{children.length} children, #{includes.length} " +
-          "includes, #{extends.length} extends"
+          "includes, #{extends.length} extends, #{constants.length} constants"
       end
     end
   end
