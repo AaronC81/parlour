@@ -258,4 +258,18 @@ RSpec.describe Parlour::RbiGenerator do
       end
     RUBY
   end
+
+  it 'supports multi-line comments' do
+    mod = subject.root.create_module('M') do |m|
+      m.add_comment(['This is a', 'multi-line', 'comment'])
+    end
+
+    expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+      # This is a
+      # multi-line
+      # comment
+      module M
+      end
+    RUBY
+  end
 end
