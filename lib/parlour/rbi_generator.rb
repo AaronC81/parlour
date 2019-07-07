@@ -10,7 +10,7 @@ module Parlour
     # @example Create a default generator.
     #   generator = Parlour::RbiGenerator.new
     # 
-    # @example Create a with custom +tab_size+ of 3.
+    # @example Create a generator with a custom +tab_size+ of 3.
     #   generator = Parlour::RbiGenerator.new(tab_size: 3)
     #
     # @param break_params [Integer] If there are at least this many parameters in a 

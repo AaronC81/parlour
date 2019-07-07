@@ -43,7 +43,7 @@ module Parlour
       end
 
       sig { returns(Symbol) }
-      # The kind of attribute this is; one of :writer, :reader or :accessor.
+      # The kind of attribute this is; one of +:writer+, +:reader+, or +:accessor+.
       # @return [Symbol]
       attr_reader :kind
 
