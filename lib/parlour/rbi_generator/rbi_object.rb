@@ -50,12 +50,12 @@ module Parlour
       # Adds one or more comments to this RBI object.
       #
       # @example Creating a module with a comment.
-      #   Parlour::RbiGenerator::Namespace.create_module('M') do |m|
+      #   namespace.create_module('M') do |m|
       #     m.add_comment('This is a module')
       #   end
       #
       # @example Creating a class with a multi-line comment.
-      #   Parlour::RbiGenerator::Namespace.create_class('C') do |c|
+      #   namespace.create_class('C') do |c|
       #     c.add_comment(['This is a multi-line comment!', 'It can be as long as you want!'])
       #   end
       #
