@@ -29,8 +29,9 @@ module Parlour
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
-      # Creates a new namespace. Unless you're doing something impressively 
-      # hacky, this shouldn't be invoked outside of {RbiGenerator#initialize}.
+      # Creates a new namespace.
+      # @note Unless you're doing something impressively hacky, this shouldn't
+      #   be invoked outside of {RbiGenerator#initialize}.
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String, nil] The name of this module.
