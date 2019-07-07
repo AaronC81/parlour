@@ -48,7 +48,8 @@ module Parlour
       attr_reader :comments
 
       sig { params(comment: T.any(String, T::Array[String])).void }
-      # Adds one or more comments to this RBI object.
+      # Adds one or more comments to this RBI object. Comments always go above 
+      # the definition for this object, not in the definition's body.
       #
       # @example Creating a module with a comment.
       #   namespace.create_module('M') do |m|
