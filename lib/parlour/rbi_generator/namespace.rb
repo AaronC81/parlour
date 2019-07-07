@@ -29,8 +29,9 @@ module Parlour
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
-      # Creates a new namespace. Unless you're doing something impressively 
-      # hacky, this shouldn't be invoked outside of {RbiGenerator#initialize}.
+      # Creates a new namespace.
+      # @note Unless you're doing something impressively hacky, this shouldn't
+      #   be invoked outside of {RbiGenerator#initialize}.
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String, nil] The name of this module.
@@ -78,6 +79,14 @@ module Parlour
       end
       # Creates a new class definition as a child of this namespace.
       #
+      # @example Create a class with a nested module.
+      #   namespace.create_class('Foo') do |foo|
+      #     foo.create_module('Bar')
+      #   end
+      #
+      # @example Create a class that is the child of another class.
+      #   namespace.create_class('Bar', superclass: 'Foo') #=> class Bar < Foo
+      #
       # @param name [String] The name of this class.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
@@ -98,6 +107,14 @@ module Parlour
         ).returns(ModuleNamespace)
       end
       # Creates a new module definition as a child of this namespace.
+      #
+      # @example Create a basic module.
+      #   namespace.create_module('Foo')
+      #
+      # @example Create a module with a method.
+      #   namespace.create_module('Foo') do |foo|
+      #     foo.create_method('method_name', [], 'Integer')
+      #   end
       #
       # @param name [String] The name of this module.
       # @param interface [Boolean] A boolean indicating whether this module is an
@@ -231,6 +248,9 @@ module Parlour
       sig { params(name: String).void }
       # Adds a new +extend+ to this namespace.
       #
+      # @example Add an +extend+ to a class.
+      #   class.add_extend('ExtendableClass') #=> extend ExtendableClass
+      #
       # @param name [String] A code string for what is extended, for example
       #   +"MyModule"+.
       # @return [void]
@@ -240,6 +260,9 @@ module Parlour
 
       sig { params(name: String).void }
       # Adds a new +include+ to this namespace.
+      #
+      # @example Add an +include+ to a class.
+      #   class.add_include('IncludableClass') #=> include IncludableClass
       #
       # @param name [String] A code string for what is included, for example
       #   +"Enumerable"+.

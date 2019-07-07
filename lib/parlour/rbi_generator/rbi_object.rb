@@ -12,7 +12,8 @@ module Parlour
       abstract!
 
       sig { params(generator: RbiGenerator, name: String).void }
-      # Creates a new RBI object. Don't call this directly.
+      # Creates a new RBI object.
+      # @note Don't call this directly.
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this module.

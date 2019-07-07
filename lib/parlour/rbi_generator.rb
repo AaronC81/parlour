@@ -7,6 +7,12 @@ module Parlour
     sig { params(break_params: Integer, tab_size: Integer).void }
     # Creates a new RBI generator.
     #
+    # @example Create a default generator.
+    #   generator = Parlour::RbiGenerator.new
+    # 
+    # @example Create a generator with a custom +tab_size+ of 3.
+    #   generator = Parlour::RbiGenerator.new(tab_size: 3)
+    #
     # @param break_params [Integer] If there are at least this many parameters in a 
     #   Sorbet +sig+, then it is broken onto separate lines.
     # @param tab_size [Integer] The number of spaces to use per indent.

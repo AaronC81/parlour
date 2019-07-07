@@ -13,8 +13,8 @@ module Parlour
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      # Creates a new module definition. (You should use 
-      # {Namespace#create_module} rather than this directly.)
+      # Creates a new module definition.
+      # @note You should use {Namespace#create_module} rather than this directly.
       # 
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this module.
