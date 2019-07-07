@@ -78,6 +78,11 @@ module Parlour
       end
       # Creates a new class definition as a child of this namespace.
       #
+      # @example Create a class with a nested module.
+      #   namespace.create_class('Foo') do |foo|
+      #     foo.create_module('Bar')
+      #   end
+      #
       # @param name [String] The name of this class.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
@@ -98,6 +103,14 @@ module Parlour
         ).returns(ModuleNamespace)
       end
       # Creates a new module definition as a child of this namespace.
+      #
+      # @example Create a basic module.
+      #   namespace.create_module('Foo')
+      #
+      # @example Create a module with a method.
+      #   namespace.create_module('Foo') do |foo|
+      #     foo.create_method('method_name', [], 'Integer')
+      #   end
       #
       # @param name [String] The name of this module.
       # @param interface [Boolean] A boolean indicating whether this module is an
