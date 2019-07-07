@@ -49,6 +49,16 @@ module Parlour
       sig { params(comment: T.any(String, T::Array[String])).void }
       # Adds one or more comments to this RBI object.
       #
+      # @example Creating a module with a comment.
+      #   namespace.create_module('M') do |m|
+      #     m.add_comment('This is a module')
+      #   end
+      #
+      # @example Creating a class with a multi-line comment.
+      #   namespace.create_class('C') do |c|
+      #     c.add_comment(['This is a multi-line comment!', 'It can be as long as you want!'])
+      #   end
+      #
       # @param comment [String, Array<String>] The new comment(s).
       # @return [void]
       def add_comment(comment)

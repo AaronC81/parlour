@@ -200,9 +200,24 @@ module Parlour
 
       # Creates a new attribute.
       #
+      # @example Create an +attr_reader+.
+      #   module.create_attribute('readable', :reader, 'String')
+      #   # #=> sig { returns(String) }
+      #   #     attr_reader :readable
+      #
+      # @example Create an +attr_writer+.
+      #   module.create_attribute('writable', :writer, 'Integer')
+      #   # #=> sig { params(writable: Integer).returns(Integer) }
+      #   #     attr_writer :writable
+      #
+      # @example Create an +attr_accessor+.
+      #   module.create_attribute('accessible', :accessor, 'T::Boolean')
+      #   # #=> sig { returns(T::Boolean) }
+      #   #     attr_accessor :accessible
+      #
       # @param name [String] The name of this attribute.
-      # @param kind [Symbol] The kind of attribute this is; one of :writer, :reader or
-      #   :accessor.
+      # @param kind [Symbol] The kind of attribute this is; one of +:writer+, +:reader+, or
+      #   +:accessor+.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
@@ -220,7 +235,7 @@ module Parlour
       end
       alias_method :create_attr, :create_attribute
 
-      # Creates a new read-only attribute (attr_reader).
+      # Creates a new read-only attribute (+attr_reader+).
       #
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
@@ -231,7 +246,7 @@ module Parlour
         create_attribute(name, :reader, type, &block)
       end
 
-      # Creates a new write-only attribute (attr_writer).
+      # Creates a new write-only attribute (+attr_writer+).
       #
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
@@ -242,7 +257,7 @@ module Parlour
         create_attribute(name, :writer, type, &block)
       end
 
-      # Creates a new read and write attribute (attr_accessor).
+      # Creates a new read and write attribute (+attr_accessor+).
       #
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as

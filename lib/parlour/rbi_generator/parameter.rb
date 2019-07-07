@@ -14,6 +14,15 @@ module Parlour
       end
       # Create a new method parameter.
       #
+      # @example Create a simple Integer parameter named +num+.
+      #   Parlour::RbiGenerator::Parameter.new('num', type: 'Integer')
+      # @example Create a nilable array parameter.
+      #   Parlour::RbiGenerator::Parameter.new('array_of_strings_or_symbols', type: 'T.nilable(T::Array(String, Symbol))')
+      # @example Create a block parameter.
+      #   Parlour::RbiGenerator::Parameter.new('&blk', type: 'T.proc.void')
+      # @example Create a parameter with a default value.
+      #   Parlour::RbiGenerator::Parameter.new('name', type: 'String', default: 'Parlour')
+      #
       # @param name [String] The name of this parameter. This may start with +*+, +**+,
       #   or +&+, or end with +:+, which will infer the {kind} of this
       #   parameter. (If it contains none of those, {kind} will be +:normal+.)
