@@ -43,6 +43,7 @@ module Parlour
         @extends = []
         @includes = []
         @constants = []
+        @next_comments = []
         yield_self(&block)
       end
 
@@ -68,6 +69,27 @@ module Parlour
       # pairs [name, value].
       # @return [Array<(String, String)>]
       attr_reader :constants
+
+      sig { params(comment: T.any(String, T::Array[String])).void }
+      # Adds one or more comments to the next child RBI object to be created.
+      #
+      # @example Creating a module with a comment.
+      #   namespace.add_comment_to_next_child('This is a module')
+      #   namespace.create_module('M')
+      #
+      # @example Creating a class with a multi-line comment.
+      #   namespace.add_comment_to_next_child(['This is a multi-line comment!', 'It can be as long as you want!'])
+      #   namespace.create_class('C')
+      #
+      # @param comment [String, Array<String>] The new comment(s).
+      # @return [void]
+      def add_comment_to_next_child(comment)
+        if comment.is_a?(String)
+          @next_comments << comment
+        elsif comment.is_a?(Array)
+          @next_comments.concat(comment)
+        end
+      end
 
       sig do
         params(
@@ -95,6 +117,7 @@ module Parlour
       # @return [ClassNamespace]
       def create_class(name, superclass: nil, abstract: false, &block)
         new_class = ClassNamespace.new(generator, name, superclass, abstract, &block)
+        move_next_comments(new_class)
         children << new_class
         new_class
       end
@@ -123,6 +146,7 @@ module Parlour
       # @return [ModuleNamespace]
       def create_module(name, interface: false, &block)
         new_module = ModuleNamespace.new(generator, name, interface, &block)
+        move_next_comments(new_module)
         children << new_module
         new_module
       end
@@ -171,6 +195,7 @@ module Parlour
           class_method: class_method,
           &block
         )
+        move_next_comments(new_method)
         children << new_method
         new_method
       end
@@ -207,6 +232,7 @@ module Parlour
           type,
           &block
         )
+        move_next_comments(new_attribute)
         children << new_attribute
         new_attribute
       end
@@ -370,6 +396,16 @@ module Parlour
           .flatten
 
         result
+      end
+
+      sig { params(object: RbiObject).void }
+      # Copies the comments added with {#add_comment_to_next_child} into the
+      # given object, and clears the list of pending comments.
+      # @param object [RbiObject] The object to move the comments into.
+      # @return [void]
+      def move_next_comments(object)
+        object.comments.prepend(*@next_comments)
+        @next_comments.clear
       end
     end
   end
