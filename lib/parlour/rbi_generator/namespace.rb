@@ -200,18 +200,20 @@ module Parlour
 
       # Creates a new attribute.
       #
-      # @example Create a module with reader, writer, and accessor attributes.
-      #   namespace.create_module('M') do |m|
-      #     m.create_attribute('readable', :reader, 'String')
-      #     # #=> sig { returns(String) }
-      #     #     attr_reader :readable
-      #     m.create_attribute('writable', :writer, 'Integer')
-      #     # #=> sig { params(writable: Integer).returns(Integer) }
-      #     #     attr_writer :writable
-      #     m.create_attribute('accessible', :accessor, 'T::Boolean')
-      #     # #=> sig { returns(T::Boolean) }
-      #     #     attr_accessor :accessible
-      #   end
+      # @example Create an +attr_reader+.
+      #   module.create_attribute('readable', :reader, 'String')
+      #   # #=> sig { returns(String) }
+      #   #     attr_reader :readable
+      #
+      # @example Create an +attr_writer+.
+      #   module.create_attribute('writable', :writer, 'Integer')
+      #   # #=> sig { params(writable: Integer).returns(Integer) }
+      #   #     attr_writer :writable
+      #
+      # @example Create an +attr_accessor+.
+      #   module.create_attribute('accessible', :accessor, 'T::Boolean')
+      #   # #=> sig { returns(T::Boolean) }
+      #   #     attr_accessor :accessible
       #
       # @param name [String] The name of this attribute.
       # @param kind [Symbol] The kind of attribute this is; one of +:writer+, +:reader+, or
