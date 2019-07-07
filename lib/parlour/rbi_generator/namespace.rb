@@ -83,6 +83,9 @@ module Parlour
       #     foo.create_module('Bar')
       #   end
       #
+      # @example Create a class that is the child of another class.
+      #   namespace.create_class('Bar', superclass: 'Foo') #=> class Bar < Foo
+      #
       # @param name [String] The name of this class.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
