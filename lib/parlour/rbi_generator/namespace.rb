@@ -247,6 +247,9 @@ module Parlour
       sig { params(name: String).void }
       # Adds a new +extend+ to this namespace.
       #
+      # @example Add an +extend+ to a class.
+      #   class.add_extend('ExtendableClass') #=> extend ExtendableClass
+      #
       # @param name [String] A code string for what is extended, for example
       #   +"MyModule"+.
       # @return [void]
@@ -256,6 +259,9 @@ module Parlour
 
       sig { params(name: String).void }
       # Adds a new +include+ to this namespace.
+      #
+      # @example Add an +include+ to a class.
+      #   class.add_include('IncludableClass') #=> include IncludableClass
       #
       # @param name [String] A code string for what is included, for example
       #   +"Enumerable"+.
