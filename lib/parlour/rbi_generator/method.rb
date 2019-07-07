@@ -19,8 +19,8 @@ module Parlour
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
-      # Creates a new method definition. (You should use
-      # {Namespace#create_method} rather than this directly.)
+      # Creates a new method definition.
+      # @note You should use {Namespace#create_method} rather than this directly.
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this method. You should not specify +self.+ in

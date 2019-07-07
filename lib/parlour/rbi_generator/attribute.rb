@@ -12,8 +12,8 @@ module Parlour
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
-      # Creates a new attribute. (You should use
-      # {Namespace#create_attribute} rather than this directly.)
+      # Creates a new attribute.
+      # @note You should use {Namespace#create_attribute} rather than this directly.
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this attribute.
