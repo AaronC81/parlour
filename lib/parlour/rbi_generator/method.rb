@@ -150,43 +150,6 @@ module Parlour
       end
 
       sig do
-        overridable.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBI lines for this method.
-      # 
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBI lines, formatted as specified.
-      def generate_definition(indent_level, options)
-        def_params = parameters.map(&:to_def_param)
-        name_prefix = class_method ? 'self.' : ''
-        def_line = options.indented(
-          indent_level,
-          "def #{name_prefix}#{name}#{
-            "(#{def_params.join(', ')})" unless parameters.empty?}; end"
-        )
-        [def_line]
-      end
-
-      sig { returns(String) }
-      # Returns the qualifiers which go in front of the +params+ part of this
-      # method's Sorbet +sig+. For example, if {abstract} is true, then this
-      # will return +abstract.+.
-      #
-      # @return [String]
-      def qualifiers
-        result = ''
-        result += 'abstract.' if abstract
-        result += 'implementation.' if implementation
-        result += 'override.' if override
-        result += 'overridable.' if overridable
-        result
-      end
-
-      sig do
         implementation.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
@@ -226,6 +189,45 @@ module Parlour
         # TODO: more info
         "Method #{name} - #{parameters.length} parameters, " +
           " returns #{return_type}"
+      end
+
+      private
+
+      sig do
+        overridable.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBI lines for this method.
+      # 
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines, formatted as specified.
+      def generate_definition(indent_level, options)
+        def_params = parameters.map(&:to_def_param)
+        name_prefix = class_method ? 'self.' : ''
+        def_line = options.indented(
+          indent_level,
+          "def #{name_prefix}#{name}#{
+            "(#{def_params.join(', ')})" unless parameters.empty?}; end"
+        )
+        [def_line]
+      end
+
+      sig { returns(String) }
+      # Returns the qualifiers which go in front of the +params+ part of this
+      # method's Sorbet +sig+. For example, if {abstract} is true, then this
+      # will return +abstract.+.
+      #
+      # @return [String]
+      def qualifiers
+        result = ''
+        result += 'abstract.' if abstract
+        result += 'implementation.' if implementation
+        result += 'override.' if override
+        result += 'overridable.' if overridable
+        result
       end
     end
   end

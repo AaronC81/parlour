@@ -118,7 +118,7 @@ module Parlour
       # @return [String]
       def to_sig_param
         "#{name_without_kind}: #{type || 'T.untyped'}"
-      end
+      end#
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.
       PREFIXES = {

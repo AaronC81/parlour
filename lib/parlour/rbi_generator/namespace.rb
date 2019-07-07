@@ -24,46 +24,6 @@ module Parlour
 
       sig do
         params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBI lines for the body of this namespace. This consists of
-      # {includes}, {extends} and {children}.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBI lines for the body, formatted as specified.
-      def generate_body(indent_level, options)
-        result = []
-
-        if includes.any? || extends.any? || constants.any?
-          result += includes.map do |i|
-            options.indented(indent_level, "include #{i}")
-          end
-          result += extends.map do |e|
-            options.indented(indent_level, "extend #{e}")
-          end
-          result += constants.map do |c|
-            name, value = c
-            options.indented(indent_level, "#{name} = #{value}")
-          end
-          result << ""
-        end
-
-        first, *rest = children
-        return [] unless first
-
-        result += first.generate_rbi(indent_level, options) + T.must(rest)
-          .map { |obj| obj.generate_rbi(indent_level, options) }
-          .map { |lines| [""] + lines }
-          .flatten
-
-        result
-      end
-
-      sig do
-        params(
           generator: RbiGenerator,
           name: T.nilable(String),
           block: T.nilable(T.proc.params(x: Namespace).void)
@@ -345,6 +305,48 @@ module Parlour
       def describe
         "Namespace #{name} - #{children.length} children, #{includes.length} " +
           "includes, #{extends.length} extends, #{constants.length} constants"
+      end
+
+      private
+
+      sig do
+        params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBI lines for the body of this namespace. This consists of
+      # {includes}, {extends} and {children}.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines for the body, formatted as specified.
+      def generate_body(indent_level, options)
+        result = []
+
+        if includes.any? || extends.any? || constants.any?
+          result += includes.map do |i|
+            options.indented(indent_level, "include #{i}")
+          end
+          result += extends.map do |e|
+            options.indented(indent_level, "extend #{e}")
+          end
+          result += constants.map do |c|
+            name, value = c
+            options.indented(indent_level, "#{name} = #{value}")
+          end
+          result << ""
+        end
+
+        first, *rest = children
+        return [] unless first
+
+        result += first.generate_rbi(indent_level, options) + T.must(rest)
+          .map { |obj| obj.generate_rbi(indent_level, options) }
+          .map { |lines| [""] + lines }
+          .flatten
+
+        result
       end
     end
   end

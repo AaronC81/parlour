@@ -82,6 +82,8 @@ module Parlour
       end
     end
 
+    private
+
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
     # Given an array, if all elements in the array are instances of the exact
     # same class, returns that class. If they are not, returns nil.

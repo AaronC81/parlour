@@ -47,6 +47,8 @@ module Parlour
       # @return [Symbol]
       attr_reader :kind
 
+      private
+
       sig do
         override.params(
           indent_level: Integer,

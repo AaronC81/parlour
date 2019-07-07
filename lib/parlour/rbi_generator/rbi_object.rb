@@ -72,23 +72,6 @@ module Parlour
       alias_method :add_comments, :add_comment
 
       sig do
-        params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBI lines for this object's comments.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBI lines for each comment, formatted as specified.
-      def generate_comments(indent_level, options)
-        comments.any? \
-          ? comments.map { |c| options.indented(indent_level, "# #{c}") }
-          : []
-      end
-
-      sig do
         abstract.params(
           indent_level: Integer,
           options: Options
@@ -137,6 +120,25 @@ module Parlour
       # @abstract
       # @return [String]
       def describe; end
+      
+      private
+
+      sig do
+        params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBI lines for this object's comments.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines for each comment, formatted as specified.
+      def generate_comments(indent_level, options)
+        comments.any? \
+          ? comments.map { |c| options.indented(indent_level, "# #{c}") }
+          : []
+      end
     end
   end
 end
