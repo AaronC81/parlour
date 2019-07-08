@@ -388,7 +388,11 @@ module Parlour
         end
 
         first, *rest = children
-        return [] unless first
+        unless first
+          # Remove any trailing whitespace due to includes
+          result.pop if result.last == ''
+          return result
+        end
 
         result += first.generate_rbi(indent_level, options) + T.must(rest)
           .map { |obj| obj.generate_rbi(indent_level, options) }
