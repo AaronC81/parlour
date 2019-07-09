@@ -220,7 +220,7 @@ RSpec.describe Parlour::RbiGenerator do
             a: T.untyped,
             b: String,
             c: T.untyped,
-            d: Integer,
+            d: Integer
           ).void
         end
         def bar(a, b, c = 3, d = 4); end
