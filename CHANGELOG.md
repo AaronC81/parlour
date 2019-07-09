@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.1] - 2019-07-09
+### Changed
+- Multi-line parameter lists no longer have a trailing comma.
+
 ## [0.3.0] - 2019-07-09
 ### Changed
 - Breaking change: all `Namespace#create_` methods, and the `Parameter` constructor, now take entirely keyword arguments.
