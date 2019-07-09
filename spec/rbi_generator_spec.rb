@@ -156,15 +156,15 @@ RSpec.describe Parlour::RbiGenerator do
         subject.root.create_method('foo', [], nil)
 
       expect(subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '4')
+        pa(name: 'a', type: 'Integer', default: '4')
       ], 'String')).to eq subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '4')
+        pa(name: 'a', type: 'Integer', default: '4')
       ], 'String')
 
       expect(subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '4')
+        pa(name: 'a', type: 'Integer', default: '4')
       ], 'String')).not_to eq subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '5')
+        pa(name: 'a', type: 'Integer', default: '5')
       ], 'String')
     end
 
@@ -188,7 +188,7 @@ RSpec.describe Parlour::RbiGenerator do
 
     it 'can be created with parameters' do
       meth = subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '4')
+        pa(name: 'a', type: 'Integer', default: '4')
       ], 'String')
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
@@ -197,10 +197,10 @@ RSpec.describe Parlour::RbiGenerator do
       RUBY
 
       meth = subject.root.create_method('bar', [
-        pa('a'),
-        pa('b', type: 'String'),
-        pa('c', default: '3'),
-        pa('d', type: 'Integer', default: '4')
+        pa(name: 'a'),
+        pa(name: 'b', type: 'String'),
+        pa(name: 'c', default: '3'),
+        pa(name: 'd', type: 'Integer', default: '4')
       ], nil)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
@@ -218,7 +218,7 @@ RSpec.describe Parlour::RbiGenerator do
 
     it 'can be created with qualifiers' do
       meth = subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '4')
+        pa(name: 'a', type: 'Integer', default: '4')
       ], 'String', implementation: true, overridable: true)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
@@ -229,7 +229,7 @@ RSpec.describe Parlour::RbiGenerator do
 
     it 'supports class methods' do
       meth = subject.root.create_method('foo', [
-        pa('a', type: 'Integer', default: '4')
+        pa(name: 'a', type: 'Integer', default: '4')
       ], 'String', class_method: true)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)

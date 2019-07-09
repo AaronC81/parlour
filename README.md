@@ -28,8 +28,8 @@ generator = Parlour::RbiGenerator.new
 generator.root.create_module('A') do |a|
   a.create_class('Foo') do |foo|
     foo.create_method('add_two_integers', [
-      Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),
-      Parlour::RbiGenerator::Parameter.new('b', type: 'Integer')
+      Parlour::RbiGenerator::Parameter.new(name: 'a', type: 'Integer'),
+      Parlour::RbiGenerator::Parameter.new(name: 'b', type: 'Integer')
     ], 'Integer')
   end
 
@@ -67,8 +67,8 @@ class MyPlugin < Parlour::Plugin
     root.create_module('A') do |a|
       a.create_class('Foo') do |foo|
         foo.create_method('add_two_integers', [
-          Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),
-          Parlour::RbiGenerator::Parameter.new('b', type: 'Integer')
+          Parlour::RbiGenerator::Parameter.new(name: 'a', type: 'Integer'),
+          Parlour::RbiGenerator::Parameter.new(name: 'b', type: 'Integer')
         ], 'Integer')
       end
 

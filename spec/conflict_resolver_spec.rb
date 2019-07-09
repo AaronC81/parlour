@@ -26,10 +26,10 @@ RSpec.describe Parlour::ConflictResolver do
     it 'merges multiple of the same method definition' do
       a = gen.root.create_class('A') do |a|
         a.create_method('foo', [
-          pa('a', type: 'String')
+          pa(name: 'a', type: 'String')
         ], nil)
         a.create_method('foo', [
-          pa('a', type: 'String')
+          pa(name: 'a', type: 'String')
         ], nil)
       end
 
@@ -56,10 +56,10 @@ RSpec.describe Parlour::ConflictResolver do
     it 'will not attempt to automatically merge conflicting methods' do
       a = gen.root.create_class('A') do |a|
         a.create_method('foo', [
-          pa('a', type: 'String')
+          pa(name: 'a', type: 'String')
         ], nil)
         a.create_method('foo', [
-          pa('a', type: 'Integer')
+          pa(name: 'a', type: 'Integer')
         ], nil)
       end
 
