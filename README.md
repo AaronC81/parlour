@@ -25,15 +25,15 @@ API is very likely to change:
 require 'parlour'
 
 generator = Parlour::RbiGenerator.new
-generator.root.create_module('A') do |a|
-  a.create_class('Foo') do |foo|
-    foo.create_method('add_two_integers', [
+generator.root.create_module(name: 'A') do |a|
+  a.create_class(name: 'Foo') do |foo|
+    foo.create_method(name: 'add_two_integers', parameters: [
       Parlour::RbiGenerator::Parameter.new(name: 'a', type: 'Integer'),
       Parlour::RbiGenerator::Parameter.new(name: 'b', type: 'Integer')
-    ], 'Integer')
+    ], return_type: 'Integer')
   end
 
-  a.create_class('Bar', superclass: 'Foo')
+  a.create_class(name: 'Bar', superclass: 'Foo')
 end
 
 generator.rbi # => Our RBI as a string
@@ -64,15 +64,15 @@ require 'parlour'
 
 class MyPlugin < Parlour::Plugin
   def generate(root)
-    root.create_module('A') do |a|
-      a.create_class('Foo') do |foo|
-        foo.create_method('add_two_integers', [
+    root.create_module(name: 'A') do |a|
+      a.create_class(name: 'Foo') do |foo|
+        foo.create_method(name: 'add_two_integers', parameters: [
           Parlour::RbiGenerator::Parameter.new(name: 'a', type: 'Integer'),
           Parlour::RbiGenerator::Parameter.new(name: 'b', type: 'Integer')
-        ], 'Integer')
+        ], return_type: 'Integer')
       end
 
-      a.create_class('Bar', superclass: 'Foo')
+      a.create_class(name: 'Bar', superclass: 'Foo')
     end
   end
 end

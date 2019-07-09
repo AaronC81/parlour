@@ -24,7 +24,7 @@ RSpec.describe Parlour::RbiGenerator do
 
   context 'module namespace' do
     it 'generates an empty module correctly' do
-      mod = subject.root.create_module('Foo')
+      mod = subject.root.create_module(name: 'Foo')
 
       expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         module Foo
@@ -35,7 +35,7 @@ RSpec.describe Parlour::RbiGenerator do
 
   context 'class namespace' do
     it 'generates an empty class correctly' do
-      klass = subject.root.create_class('Foo')
+      klass = subject.root.create_class(name: 'Foo')
 
       expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         class Foo
@@ -44,16 +44,16 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'nests classes correctly' do
-      klass = subject.root.create_class('Foo') do |foo|
-        foo.create_class('Bar') do |bar|
-          bar.create_class('A')
-          bar.create_class('B')
-          bar.create_class('C')
+      klass = subject.root.create_class(name: 'Foo') do |foo|
+        foo.create_class(name: 'Bar') do |bar|
+          bar.create_class(name: 'A')
+          bar.create_class(name: 'B')
+          bar.create_class(name: 'C')
         end
-        foo.create_class('Baz') do |baz|
-          baz.create_class('A')
-          baz.create_class('B')
-          baz.create_class('C')
+        foo.create_class(name: 'Baz') do |baz|
+          baz.create_class(name: 'A')
+          baz.create_class(name: 'B')
+          baz.create_class(name: 'C')
         end
       end
 
@@ -85,11 +85,11 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'handles abstract' do
-      klass = subject.root.create_class('Foo') do |foo|
-        foo.create_class('Bar', abstract: true) do |bar|
-          bar.create_class('A')
-          bar.create_class('B')
-          bar.create_class('C')
+      klass = subject.root.create_class(name: 'Foo') do |foo|
+        foo.create_class(name: 'Bar', abstract: true) do |bar|
+          bar.create_class(name: 'A')
+          bar.create_class(name: 'B')
+          bar.create_class(name: 'C')
         end
       end
 
@@ -112,16 +112,16 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'handles includes, extends and constants' do
-      klass = subject.root.create_class('Foo') do |foo|
-        foo.create_class('Bar', abstract: true) do |bar|
+      klass = subject.root.create_class(name: 'Foo') do |foo|
+        foo.create_class(name: 'Bar', abstract: true) do |bar|
           bar.add_extend('X')
           bar.add_extend('Y')
           bar.add_include('Z')
           bar.add_constant('PI', '3.14')
           bar.add_constant('Text', 'T.type_alias(T.any(String, Symbol))')
-          bar.create_class('A')
-          bar.create_class('B')
-          bar.create_class('C')
+          bar.create_class(name: 'A')
+          bar.create_class(name: 'B')
+          bar.create_class(name: 'C')
         end
       end
 
@@ -152,24 +152,24 @@ RSpec.describe Parlour::RbiGenerator do
 
   context 'methods' do
     it 'have working equality' do
-      expect(subject.root.create_method('foo', [], nil)).to eq \
-        subject.root.create_method('foo', [], nil)
+      expect(subject.root.create_method(name: 'foo')).to eq \
+        subject.root.create_method(name: 'foo')
 
-      expect(subject.root.create_method('foo', [
+      expect(subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '4')
-      ], 'String')).to eq subject.root.create_method('foo', [
+      ], return_type: 'String')).to eq subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '4')
-      ], 'String')
+      ], return_type: 'String')
 
-      expect(subject.root.create_method('foo', [
+      expect(subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '4')
-      ], 'String')).not_to eq subject.root.create_method('foo', [
+      ], return_type: 'String')).not_to eq subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '5')
-      ], 'String')
+      ], return_type: 'String')
     end
 
     it 'can be created blank' do
-      meth = subject.root.create_method('foo', [], nil)
+      meth = subject.root.create_method(name: 'foo')
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { void }
@@ -178,7 +178,7 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'can be created with return types' do
-      meth = subject.root.create_method('foo', [], 'String')
+      meth = subject.root.create_method(name: 'foo', return_type: 'String')
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { returns(String) }
@@ -186,22 +186,33 @@ RSpec.describe Parlour::RbiGenerator do
       RUBY
     end
 
+    it 'can accept keyword alias for return types' do
+      expect(subject.root.create_method(name: 'foo', returns: 'String')).to eq \
+        subject.root.create_method(name: 'foo', return_type: 'String')
+    end
+
+    it 'cannot accept both returns: and return_type:' do
+      expect do
+        subject.root.create_method(name: 'foo', returns: 'String', return_type: 'String')
+      end.to raise_error
+    end
+ 
     it 'can be created with parameters' do
-      meth = subject.root.create_method('foo', [
+      meth = subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '4')
-      ], 'String')
+      ], return_type: 'String')
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { params(a: Integer).returns(String) }
         def foo(a = 4); end
       RUBY
 
-      meth = subject.root.create_method('bar', [
+      meth = subject.root.create_method(name: 'bar', parameters: [
         pa(name: 'a'),
         pa(name: 'b', type: 'String'),
         pa(name: 'c', default: '3'),
         pa(name: 'd', type: 'Integer', default: '4')
-      ], nil)
+      ], return_type: nil)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig do
@@ -217,9 +228,9 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'can be created with qualifiers' do
-      meth = subject.root.create_method('foo', [
+      meth = subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '4')
-      ], 'String', implementation: true, overridable: true)
+      ], return_type: 'String', implementation: true, overridable: true)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { implementation.overridable.params(a: Integer).returns(String) }
@@ -228,9 +239,9 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'supports class methods' do
-      meth = subject.root.create_method('foo', [
+      meth = subject.root.create_method(name: 'foo', parameters: [
         pa(name: 'a', type: 'Integer', default: '4')
-      ], 'String', class_method: true)
+      ], return_type: 'String', class_method: true)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { params(a: Integer).returns(String) }
@@ -241,10 +252,10 @@ RSpec.describe Parlour::RbiGenerator do
 
   context 'attributes' do
     it 'can be created using #create_attribute' do
-      mod = subject.root.create_module('M') do |m|
-        m.create_attribute('r', :reader, 'String')
-        m.create_attribute('w', :writer, 'Integer')
-        m.create_attr('a', :accessor, 'T::Boolean') # test alias too
+      mod = subject.root.create_module(name: 'M') do |m|
+        m.create_attribute(name: 'r', kind: :reader, type: 'String')
+        m.create_attribute(name: 'w', kind: :writer, type: 'Integer')
+        m.create_attr(name: 'a', kind: :accessor, type: 'T::Boolean') # test alias too
       end
 
       expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
@@ -262,10 +273,10 @@ RSpec.describe Parlour::RbiGenerator do
     end
 
     it 'can be created using #create_attr_writer etc' do
-      mod = subject.root.create_module('M') do |m|
-        m.create_attr_reader('r', 'String')
-        m.create_attr_writer('w', 'Integer')
-        m.create_attr_accessor('a', 'T::Boolean')
+      mod = subject.root.create_module(name: 'M') do |m|
+        m.create_attr_reader(name: 'r', type: 'String')
+        m.create_attr_writer(name: 'w', type: 'Integer')
+        m.create_attr_accessor(name: 'a', type: 'T::Boolean')
       end
 
       expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
@@ -284,11 +295,11 @@ RSpec.describe Parlour::RbiGenerator do
   end
 
   it 'supports comments' do
-    mod = subject.root.create_module('M') do |m|
+    mod = subject.root.create_module(name: 'M') do |m|
       m.add_comment('This is a module')
-      m.create_class('A') do |a|
+      m.create_class(name: 'A') do |a|
         a.add_comment('This is a class')
-        a.create_method('foo', [], nil) do |foo|
+        a.create_method(name: 'foo') do |foo|
           foo.add_comment('This is a method')
         end
       end
@@ -308,7 +319,7 @@ RSpec.describe Parlour::RbiGenerator do
   end
 
   it 'supports multi-line comments' do
-    mod = subject.root.create_module('M') do |m|
+    mod = subject.root.create_module(name: 'M') do |m|
       m.add_comment(['This is a', 'multi-line', 'comment'])
     end
 
@@ -323,12 +334,12 @@ RSpec.describe Parlour::RbiGenerator do
 
   it 'supports comments on the next child' do
     subject.root.add_comment_to_next_child('This is a module')
-    mod = subject.root.create_module('M') do |m|
+    mod = subject.root.create_module(name: 'M') do |m|
       m.add_comment('This was added internally')
       m.add_comment_to_next_child('This is a class')
-      m.create_class('A') do |a|
+      m.create_class(name: 'A') do |a|
         a.add_comment_to_next_child('This is a method')
-        a.create_method('foo', [], nil)
+        a.create_method(name: 'foo')
       end
     end
 

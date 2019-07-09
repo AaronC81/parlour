@@ -8,9 +8,9 @@ RSpec.describe Parlour::ConflictResolver do
   end
 
   it 'does not merge different kinds of definition' do
-    m = gen.root.create_module('M') do |m|
-      m.create_module('A')
-      m.create_class('A')
+    m = gen.root.create_module(name: 'M') do |m|
+      m.create_module(name: 'A')
+      m.create_class(name: 'A')
     end
 
     expect(m.children.length).to be 2
@@ -24,13 +24,9 @@ RSpec.describe Parlour::ConflictResolver do
 
   context 'when resolving conflicts on methods' do
     it 'merges multiple of the same method definition' do
-      a = gen.root.create_class('A') do |a|
-        a.create_method('foo', [
-          pa(name: 'a', type: 'String')
-        ], nil)
-        a.create_method('foo', [
-          pa(name: 'a', type: 'String')
-        ], nil)
+      a = gen.root.create_class(name: 'A') do |a|
+        a.create_method(name: 'foo', parameters: [pa(name: 'a', type: 'String')])
+        a.create_method(name: 'foo', parameters: [pa(name: 'a', type: 'String')])
       end
 
       expect(a.children.length).to be 2
@@ -41,9 +37,9 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'will not merge methods with different names' do
-      a = gen.root.create_class('A') do |a|
-        a.create_method('foo', [], nil)
-        a.create_method('bar', [], nil)
+      a = gen.root.create_class(name: 'A') do |a|
+        a.create_method(name: 'foo')
+        a.create_method(name: 'bar')
       end
 
       expect(a.children.length).to be 2
@@ -54,13 +50,9 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'will not attempt to automatically merge conflicting methods' do
-      a = gen.root.create_class('A') do |a|
-        a.create_method('foo', [
-          pa(name: 'a', type: 'String')
-        ], nil)
-        a.create_method('foo', [
-          pa(name: 'a', type: 'Integer')
-        ], nil)
+      a = gen.root.create_class(name: 'A') do |a|
+        a.create_method(name: 'foo', parameters: [pa(name: 'a', type: 'String')])
+        a.create_method(name: 'foo', parameters: [pa(name: 'a', type: 'Integer')])
       end
 
       expect(a.children.length).to be 2
@@ -75,9 +67,9 @@ RSpec.describe Parlour::ConflictResolver do
 
   context 'when resolving conflicts on classes' do
     it 'merges identical empty classes' do
-      m = gen.root.create_module('M') do |m|
-        m.create_class('A')
-        m.create_class('A')
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_class(name: 'A')
+        m.create_class(name: 'A')
       end
 
       expect(m.children.length).to be 2
@@ -89,9 +81,9 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'does not merge empty classes with conflicting signatures' do
-      m = gen.root.create_module('M') do |m|
-        m.create_class('A', abstract: true)
-        m.create_class('A')
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_class(name: 'A', abstract: true)
+        m.create_class(name: 'A')
       end
 
       expect(m.children.length).to be 2
@@ -104,16 +96,16 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'merges definitions inside compatible classes' do
-      m = gen.root.create_module('M') do |m|
-        m.create_class('A') do |a|
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_class(name: 'A') do |a|
           a.add_extend('E1')
           a.add_include('I1')
-          a.create_method('foo', [], nil)
+          a.create_method(name: 'foo')
         end
-        m.create_class('A') do |a|
+        m.create_class(name: 'A') do |a|
           a.add_extend('E2')
           a.add_include('I2')
-          a.create_method('bar', [], nil)
+          a.create_method(name: 'bar')
         end
       end
 
@@ -129,10 +121,10 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'merges compatible superclasses' do
-      m = gen.root.create_module('M') do |m|
-        m.create_class('A', superclass: 'X')
-        m.create_class('A')
-        m.create_class('A', superclass: 'X')
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_class(name: 'A', superclass: 'X')
+        m.create_class(name: 'A')
+        m.create_class(name: 'A', superclass: 'X')
       end
 
       expect(m.children.length).to be 3
@@ -145,10 +137,10 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'does not merge incompatible superclasses' do
-      m = gen.root.create_module('M') do |m|
-        m.create_class('A', superclass: 'X')
-        m.create_class('A')
-        m.create_class('A', superclass: 'Y')
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_class(name: 'A', superclass: 'X')
+        m.create_class(name: 'A')
+        m.create_class(name: 'A', superclass: 'Y')
       end
 
       expect(m.children.length).to be 3
@@ -163,9 +155,9 @@ RSpec.describe Parlour::ConflictResolver do
 
   context 'when resolving conflicts on modules' do
     it 'merges identical empty modules' do
-      m = gen.root.create_module('M') do |m|
-        m.create_module('A')
-        m.create_module('A')
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_module(name: 'A')
+        m.create_module(name: 'A')
       end
 
       expect(m.children.length).to be 2
@@ -177,9 +169,9 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'does not merge empty modules with conflicting signatures' do
-      m = gen.root.create_module('M') do |m|
-        m.create_module('A', interface: true)
-        m.create_module('A')
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_module(name: 'A', interface: true)
+        m.create_module(name: 'A')
       end
 
       expect(m.children.length).to be 2
@@ -192,16 +184,16 @@ RSpec.describe Parlour::ConflictResolver do
     end
 
     it 'merges definitions inside compatible modules' do
-      m = gen.root.create_module('M') do |m|
-        m.create_module('A') do |a|
+      m = gen.root.create_module(name: 'M') do |m|
+        m.create_module(name: 'A') do |a|
           a.add_extend('E1')
           a.add_include('I1')
-          a.create_method('foo', [], nil)
+          a.create_method(name: 'foo')
         end
-        m.create_module('A') do |a|
+        m.create_module(name: 'A') do |a|
           a.add_extend('E2')
           a.add_include('I2')
-          a.create_method('bar', [], nil)
+          a.create_method(name: 'bar')
         end
       end
 
@@ -218,12 +210,12 @@ RSpec.describe Parlour::ConflictResolver do
   end
 
   it 'handles nested conflicts' do
-    m = gen.root.create_module('M') do |m|
-      m.create_module('A') do |a|
-        a.create_method('foo', [], nil)
+    m = gen.root.create_module(name: 'M') do |m|
+      m.create_module(name: 'A') do |a|
+        a.create_method(name: 'foo')
       end
-      m.create_module('A') do |a|
-        a.create_method('foo', [], nil)
+      m.create_module(name: 'A') do |a|
+        a.create_method(name: 'foo')
       end
     end
 
