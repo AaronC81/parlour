@@ -127,8 +127,12 @@ module Parlour
               options.indented(indent_level + 1, "#{qualifiers}params("),
             ] +
             (
-              parameters.empty? ? [] : sig_params.map do |x|
-                options.indented(indent_level + 2, "#{x},") 
+              parameters.empty? ? [] : sig_params.map.with_index do |x, i|
+                options.indented(
+                  indent_level + 2,
+                  # Don't include the comma on the last parameter.
+                  parameters.length == i + 1 ? "#{x}" : "#{x},"
+                )
               end
             ) +
             [
