@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.0] - 2019-07-09
+### Changed
+- Breaking change: all `Namespace#create_` methods, and the `Parameter` constructor, now take entirely keyword arguments.
+  For example, `create_method('A', [], 'String')` is now written as `create_method(name: 'A', returns: 'String')`.
+
 ## [0.2.2] - 2019-07-08
 ### Fixed
 - Fixed a bug which occasionally caused includes and extends to generate incorrectly.
