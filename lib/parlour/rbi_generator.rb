@@ -43,7 +43,7 @@ module Parlour
     #
     # @return [String] The generated RBI file
     def rbi
-      root.generate_rbi(0, options).join("\n")
+      "# typed: strong\n" + root.generate_rbi(0, options).join("\n")
     end
   end
 end
