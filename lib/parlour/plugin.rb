@@ -9,7 +9,7 @@ module Parlour
 
     @@registered_plugins = {}
 
-    sig { returns(T::Hash[String, Plugin]) }
+    sig { returns(T::Hash[String, T.class_of(Plugin)]) }
     # Returns all registered plugins, as a hash of their paths to the {Plugin}
     # instances themselves.
     #
@@ -25,7 +25,7 @@ module Parlour
     # @param new_plugin [Plugin] The new plugin.
     # @return [void]
     def self.inherited(new_plugin)
-      registered_plugins[T.must(new_plugin.name)] = new_plugin.new
+      registered_plugins[T.must(new_plugin.name)] = new_plugin
     end
 
     sig { params(plugins: T::Array[Plugin], generator: RbiGenerator).void }
@@ -36,8 +36,11 @@ module Parlour
     # @return [void]
     def self.run_plugins(plugins, generator)
       plugins.each do |plugin|
+        puts "=== #{plugin.class.name}"
         generator.current_plugin = plugin
         plugin.generate(generator.root)
+      rescue Exception => e
+        puts "!!! This plugin threw an exception: #{e}"
       end
     end
 

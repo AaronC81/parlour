@@ -3,6 +3,7 @@ require 'parlour'
 require 'commander/import'
 require 'bundler'
 require 'rainbow'
+require 'yaml'
 
 program :name, 'parlour'
 program :version, Parlour::VERSION
@@ -10,43 +11,45 @@ program :description, 'An RBI generator and plugin system'
 
 default_command :run
 command :run do |c|
+  # TODO: re-add support for flags and figure out how to merge them with .parlour
   c.syntax = 'parlour run <plugins...> <output-file> [options]'
-  c.description = 'Generates an RBI file from a list of plugins'
-  c.option '--requires STRING', String, 'A comma-separated string of gems to require'
-  c.option '--relative-requires STRING', String, 'A comma-separated string of files to require, relative to the working dir'
-  c.option '--tab-size INTEGER', Integer, 'The size of tabs to use'
-  c.option '--break-params INTEGER', Integer, 'Break params onto their own lines if there are this many'
+  c.description = 'Generates an RBI file from your .parlour file'
 
   c.action do |args, options|
-    options.default(
-      tab_size: 2,
-      break_params: 4,
-      requires: '',
-      relative_requires: ''
-    )
+    configuration = keys_to_symbols(YAML.load_file(File.join(Dir.pwd, '.parlour')))
 
-    options.requires.split(',').each { |source| require(source) }
-    options.relative_requires.split(',').each do |source|
-      require(File.join(Dir.pwd, source))
-    end
+    raise 'you must specify output_file in your .parlour file' unless configuration[:output_file]
 
-    *plugin_names, output_file = args
+    # Style defaults
+    configuration[:style] ||= {}
+    configuration[:style][:tab_size] ||= 2
+    configuration[:style][:break_params] ||= 4
 
-    raise 'no output file specified' if output_file.nil?
+    # Require defaults
+    configuration[:requires] ||= []
+    configuration[:relative_requires] ||= []
+
+    # Plugin defaults
+    configuration[:plugins] ||= []
 
     plugin_instances = []
 
+    configuration[:requires].each { |source| require(source) }
+    configuration[:relative_requires].each do |source|
+      require_relative(File.join(Dir.pwd, source))
+    end
+
     # Collect the instances of each plugin into an array
-    plugin_names.each do |name|
-      plugin = Parlour::Plugin.registered_plugins[name]
+    configuration[:plugins].each do |name, options|
+      plugin = Parlour::Plugin.registered_plugins[name.to_s]&.new(options)
       raise "missing plugin #{name}" unless plugin
       plugin_instances << plugin
     end
 
     # Create a generator instance and run all plugins on it
     gen = Parlour::RbiGenerator.new(
-      break_params: options.break_params,
-      tab_size: options.tab_size
+      break_params: configuration[:style][:break_params],
+      tab_size: configuration[:style][:tab_size]
     )
     Parlour::Plugin.run_plugins(plugin_instances, gen)
 
@@ -70,6 +73,27 @@ command :run do |c|
     end
  
     # Write the final RBI
-    File.write(output_file, gen.rbi)
+    File.write(configuration[:output_file], gen.rbi)
   end
+end
+
+private
+
+# Given a hash, converts its keys and any keys of child hashes to symbols.
+# @param [Hash] hash
+# @return [void]
+def keys_to_symbols(hash)
+  hash.map do |k, v|
+    [
+      k.to_sym,
+      case v
+      when Hash
+        keys_to_symbols(v)
+      when Array
+        v.map { |x| x.is_a?(Hash) ? keys_to_symbols(x) : x }
+      else
+        v
+      end
+    ]
+  end.to_h
 end
