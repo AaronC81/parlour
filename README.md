@@ -1,6 +1,7 @@
 # Parlour
 
 [![Build Status](https://travis-ci.org/AaronC81/parlour.svg?branch=master)](https://travis-ci.org/AaronC81/parlour)
+![Gem](https://img.shields.io/gem/v/parlour.svg)
 
 Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
 
@@ -21,9 +22,10 @@ Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
     RBI output file.
 
 
-## Usage
+Please [**read the wiki**](https://github.com/AaronC81/parlour/wiki) to get
+started!
 
-Please [**read the wiki**](https://github.com/AaronC81/parlour/wiki) to get started!
+## Creating RBIs
 
 ### Using just the generator
 
