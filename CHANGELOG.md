@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.4.0] - 2019-07-10
+### Changed
+- Breaking change: The Parlour CLI tool no longer takes command-line arguments, and instead uses a `.parlour` configuration file. See the README!
+- RBIs now begin with `# typed: strong`.
+- Plugins now define a stub constructor to avoid an exception if they don't define one.
+
 ## [0.3.1] - 2019-07-09
 ### Changed
 - Multi-line parameter lists no longer have a trailing comma.
