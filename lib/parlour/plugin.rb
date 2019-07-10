@@ -44,6 +44,9 @@ module Parlour
       end
     end
 
+    sig { params(options: Hash).void }
+    def initialize(options); end
+
     sig { abstract.params(root: RbiGenerator::Namespace).void }
     # Plugin subclasses should redefine this method and do their RBI generation
     # inside it.
