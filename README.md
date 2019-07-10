@@ -82,24 +82,58 @@ end
 useful!)
 
 You can then run several plugins, combining their output and saving it into one
-RBI file, using the command-line tool. For example, if that code was in a file
-called `plugin.rb`, this would save the RBI into `output.rbi`:
+RBI file, using the command-line tool. The command line tool is configurated
+using a `.parlour` YAML file. For example, if that code was in a file
+called `plugin.rb`, then using this `.parlour` file and then running `parlour`
+would save the RBI into `output.rbi`:
 
+```yaml
+output_file: output.rbi
+
+relative_requires:
+  - plugin.rb
+  
+plugins:
+  MyPlugin: {}
 ```
-parlour --relative-requires plugin.rb MyPlugin output.rbi
+
+The `{}` indicates that this plugin needs no extra configuration. If it did need
+configuration, this could be specified like so:
+
+```yaml
+plugins:
+  MyPlugin:
+    foo: something
+    bar: something else
 ```
 
 You can also use plugins from gems. If that plugin was published as a gem called
 `parlour-gem`:
 
-```
-parlour --requires parlour-gem MyPlugin output.rbi
+```yaml
+output_file: output.rbi
+
+requires:
+  - parlour-gem
+  
+plugins:
+  MyPlugin: {}
 ```
 
 The real power of this is the ability to use many plugins at once:
 
-```
-parlour --requires gem1,gem2,gem3 Gem1::Plugin Gem2::Plugin Gem3::Plugin output.rbi
+```yaml
+output_file: output.rbi
+
+requires:
+  - gem1
+  - gem2
+  - gem3
+  
+plugins:
+  Gem1::Plugin: {}
+  Gem2::Plugin: {}
+  Gem3::Plugin: {}
 ```
 
 ## Code Structure
