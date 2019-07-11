@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-Parlour">Parlour</h1>
+
+<p><a href="https://travis-ci.org/AaronC81/parlour"><img src="https://travis-ci.org/AaronC81/parlour.svg?branch=master"></a> <img src="https://img.shields.io/gem/v/parlour.svg"></p>
+
+<p>Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:</p>
+<ul><li>
+<p>The generator, which outputs beautifully formatted RBI files, created using an intuitive DSL.</p>
+</li><li>
+<p>The plugin/build system, which allows multiple Parlour plugins to generate RBIs for the same codebase. These are combined automatically as much as possible, but any other conflicts can be resolved manually through prompts.</p>
+</li></ul>
+
+<h2 id="label-Why+should+I+use+this-3F">Why should I use this?</h2>
+<ul><li>
+<p>Parlour enables <strong>much easier creation of RBI generators</strong>, as formatting is all handled for you, and you don&#39;t need to write your own CLI.</p>
+</li><li>
+<p>You can <strong>use many plugins together seamlessly</strong>, running them all with a single command and consolidating all of their definitions into a single RBI output file.</p>
+</li></ul>
+
+<p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a> to get started!</p>
+
+<h2 id="label-Creating+RBIs">Creating RBIs</h2>
+
+<h3 id="label-Using+just+the+generator">Using just the generator</h3>
+
+<p>Here&#39;s a quick example of how you can generate an RBI:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_generator'>generator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator.html#initialize-instance_method" title="Parlour::RbiGenerator#initialize (method)">new</a></span></span>
+<span class='id identifier rubyid_generator'>generator</span><span class='period'>.</span><span class='id identifier rubyid_root'>root</span><span class='period'>.</span><span class='id identifier rubyid_create_module'>create_module</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>A</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span>
+  <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_create_class'>create_class</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Foo</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_foo'>foo</span><span class='op'>|</span>
+    <span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_create_method'>create_method</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>add_two_integers</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>parameters:</span> <span class='lbracket'>[</span>
+      <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html#initialize-instance_method" title="Parlour::RbiGenerator::Parameter#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>a</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html#initialize-instance_method" title="Parlour::RbiGenerator::Parameter#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>b</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+    <span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>return_type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_create_class'>create_class</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Bar</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>superclass:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Foo</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_generator'>generator</span><span class='period'>.</span><span class='id identifier rubyid_rbi'>rbi</span> <span class='comment'># =&gt; Our RBI as a string
+</span></code></pre>
+
+<p>This will generate the following RBI:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>module</span> <span class='const'>A</span>
+  <span class='kw'>class</span> <span class='const'>Foo</span>
+    <span class='id identifier rubyid_sig'>sig</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='label'>a:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>b:</span> <span class='const'>Integer</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_returns'>returns</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='kw'>def</span> <span class='id identifier rubyid_add_two_integers'>add_two_integers</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>class</span> <span class='const'>Bar</span> <span class='op'>&lt;</span> <span class='const'>Foo</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h3 id="label-Writing+a+plugin">Writing a plugin</h3>
+
+<p>Plugins are better than using the generator alone, as your plugin can be combined with others to produce larger RBIs without conflicts.</p>
+
+<p>We could write the above example as a plugin like this:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='kw'>class</span> <span class='const'>MyPlugin</span> <span class='op'>&lt;</span> <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span></span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_generate'>generate</span><span class='lparen'>(</span><span class='id identifier rubyid_root'>root</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_root'>root</span><span class='period'>.</span><span class='id identifier rubyid_create_module'>create_module</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>A</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span>
+      <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_create_class'>create_class</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Foo</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_foo'>foo</span><span class='op'>|</span>
+        <span class='id identifier rubyid_foo'>foo</span><span class='period'>.</span><span class='id identifier rubyid_create_method'>create_method</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>add_two_integers</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>parameters:</span> <span class='lbracket'>[</span>
+          <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html#initialize-instance_method" title="Parlour::RbiGenerator::Parameter#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>a</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+          <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator/Parameter.html#initialize-instance_method" title="Parlour::RbiGenerator::Parameter#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>b</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+        <span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>return_type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+
+      <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_create_class'>create_class</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Bar</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>superclass:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Foo</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>(Obviously, your plugin will probably examine a codebase somehow, to be more useful!)</p>
+
+<p>You can then run several plugins, combining their output and saving it into one RBI file, using the command-line tool. The command line tool is configurated using a <code>.parlour</code> YAML file. For example, if that code was in a file called <code>plugin.rb</code>, then using this <code>.parlour</code> file and then running <code>parlour</code> would save the RBI into <code>output.rbi</code>:</p>
+
+<pre class="code ruby"><code class="ruby">output_file: output.rbi
+
+relative_requires:
+  - plugin.rb
+  
+plugins:
+  MyPlugin: {}
+</code></pre>
+
+<p>The <code>{}</code> indicates that this plugin needs no extra configuration. If it did need configuration, this could be specified like so:</p>
+
+<pre class="code ruby"><code class="ruby">plugins:
+  MyPlugin:
+    foo: something
+    bar: something else
+</code></pre>
+
+<p>You can also use plugins from gems. If that plugin was published as a gem called <code>parlour-gem</code>:</p>
+
+<pre class="code ruby"><code class="ruby">output_file: output.rbi
+
+requires:
+  - parlour-gem
+  
+plugins:
+  MyPlugin: {}
+</code></pre>
+
+<p>The real power of this is the ability to use many plugins at once:</p>
+
+<pre class="code ruby"><code class="ruby">output_file: output.rbi
+
+requires:
+  - gem1
+  - gem2
+  - gem3
+  
+plugins:
+  Gem1::Plugin: {}
+  Gem2::Plugin: {}
+  Gem3::Plugin: {}
+</code></pre>
+
+<h2 id="label-Parlour+Plugins">Parlour Plugins</h2>
+
+<p><em>Have you written an awesome Parlour plugin? Please submit a PR to add it to this list!</em></p>
+<ul><li>
+<p><a href="https://github.com/AaronC81/sord">Sord</a> - Generate RBIs from YARD documentation</p>
+</li></ul>
+
+<h2 id="label-Contributing">Contributing</h2>
+
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/AaronC81/parlour">github.com/AaronC81/parlour</a>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the <a href="http://contributor-covenant.org">Contributor Covenant</a> code of conduct.</p>
+
+<h2 id="label-License">License</h2>
+
+<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+
+<h2 id="label-Code+of+Conduct">Code of Conduct</h2>
+
+<p>Everyone interacting in the Parlour project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the <a href="https://github.com/AaronC81/parlour/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Thu Jul 11 22:42:28 2019 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.20 (ruby-2.6.3).
+</div>
+
+    </div>
+  </body>
+</html>
