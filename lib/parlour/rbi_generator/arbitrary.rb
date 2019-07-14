@@ -27,7 +27,7 @@ module Parlour
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another arbitrary code line.
       #
-      # @param other [Object] The other instance. If this is not a {Method} (or a
+      # @param other [Object] The other instance. If this is not a {Arbitrary} (or a
       #   subclass of it), this will always return false.
       # @return [Boolean]
       def ==(other)
