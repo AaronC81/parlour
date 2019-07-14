@@ -295,7 +295,6 @@ module Parlour
           code: code,
           &block
         )
-        move_next_comments(new_arbitrary)
         children << new_arbitrary
         new_arbitrary
       end
