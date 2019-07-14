@@ -282,6 +282,24 @@ module Parlour
         create_attribute(name: name, kind: :accessor, type: type, &block)
       end
 
+      # Creates a new arbitrary code section.
+      # You should rarely have to use this!
+      #
+      # @param code [String] The code to insert.
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Arbitrary]
+      def create_arbitrary(code: nil, &block)
+        code = T.must(code)
+        new_arbitrary = RbiGenerator::Arbitrary.new(
+          generator,
+          code: code,
+          &block
+        )
+        move_next_comments(new_arbitrary)
+        children << new_arbitrary
+        new_arbitrary
+      end
+
       sig { params(name: String).void }
       # Adds a new +extend+ to this namespace.
       #

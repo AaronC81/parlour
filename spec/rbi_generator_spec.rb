@@ -294,6 +294,42 @@ RSpec.describe Parlour::RbiGenerator do
     end
   end
 
+  context 'arbitrary code' do
+    it 'is generated correctly for single lines' do
+      mod = subject.root.create_module(name: 'M') do |m|
+        m.create_arbitrary(code: 'some_call')
+        m.create_method(name: 'foo')
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module M
+          some_call
+
+          sig { void }
+          def foo; end
+        end
+      RUBY
+    end
+
+    it 'is generated correctly for multiple lines' do
+      mod = subject.root.create_module(name: 'M') do |m|
+        m.create_arbitrary(code: "foo\nbar\nbaz")
+        m.create_method(name: 'foo')
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module M
+          foo
+          bar
+          baz
+
+          sig { void }
+          def foo; end
+        end
+      RUBY
+    end
+  end
+
   it 'supports comments' do
     mod = subject.root.create_module(name: 'M') do |m|
       m.add_comment('This is a module')
