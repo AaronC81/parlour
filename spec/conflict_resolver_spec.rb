@@ -98,13 +98,13 @@ RSpec.describe Parlour::ConflictResolver do
     it 'merges definitions inside compatible classes' do
       m = gen.root.create_module(name: 'M') do |m|
         m.create_class(name: 'A') do |a|
-          a.add_extend('E1')
-          a.add_include('I1')
+          a.create_extend(name: 'E1')
+          a.create_include(name: 'I1')
           a.create_method(name: 'foo')
         end
         m.create_class(name: 'A') do |a|
-          a.add_extend('E2')
-          a.add_include('I2')
+          a.create_extend(name: 'E2')
+          a.create_include(name: 'I2')
           a.create_method(name: 'bar')
         end
       end
@@ -115,9 +115,9 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 1
       a = m.children.first
-      expect(a.children.map(&:name)).to contain_exactly('foo', 'bar')
-      expect(a.includes).to contain_exactly('I1', 'I2')
-      expect(a.extends).to contain_exactly('E1', 'E2')
+      expect(a.children.map(&:name)).to contain_exactly('foo', 'bar', 'I1', 'I2', 'E1', 'E2')
+      expect(a.includes.map(&:name)).to contain_exactly('I1', 'I2')
+      expect(a.extends.map(&:name)).to contain_exactly('E1', 'E2')
     end
 
     it 'merges compatible superclasses' do
@@ -186,13 +186,13 @@ RSpec.describe Parlour::ConflictResolver do
     it 'merges definitions inside compatible modules' do
       m = gen.root.create_module(name: 'M') do |m|
         m.create_module(name: 'A') do |a|
-          a.add_extend('E1')
-          a.add_include('I1')
+          a.create_extend(name: 'E1')
+          a.create_include(name: 'I1')
           a.create_method(name: 'foo')
         end
         m.create_module(name: 'A') do |a|
-          a.add_extend('E2')
-          a.add_include('I2')
+          a.create_extend(name: 'E2')
+          a.create_include(name: 'I2')
           a.create_method(name: 'bar')
         end
       end
@@ -203,9 +203,9 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 1
       a = m.children.first
-      expect(a.children.map(&:name)).to contain_exactly('foo', 'bar')
-      expect(a.includes).to contain_exactly('I1', 'I2')
-      expect(a.extends).to contain_exactly('E1', 'E2')
+      expect(a.children.map(&:name)).to contain_exactly('foo', 'bar', 'I1', 'I2', 'E1', 'E2')
+      expect(a.includes.map(&:name)).to contain_exactly('I1', 'I2')
+      expect(a.extends.map(&:name)).to contain_exactly('E1', 'E2')
     end
   end
 

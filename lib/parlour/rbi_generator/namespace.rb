@@ -52,17 +52,25 @@ module Parlour
       # @return [Array<RbiObject>]
       attr_reader :children
 
-      sig { returns(T::Array[String]) }
-      # A list of strings which are each used in an +extend+ statement in this
-      # namespace.
-      # @return [Array<String>]
-      attr_reader :extends
+      sig { returns(T::Array[RbiGenerator::Extend]) }
+      # The {RbiGenerator::Extend} objects from {children}.
+      # @return [Array<RbiGenerator::Extend>]
+      def extends
+        T.cast(
+          children.select { |c| c.is_a?(RbiGenerator::Extend) },
+          T::Array[RbiGenerator::Extend]
+        )
+      end
 
-      sig { returns(T::Array[String]) }
-      # A list of strings which are each used in an +include+ statement in this
-      # namespace.
-      # @return [Array<String>]
-      attr_reader :includes
+      sig { returns(T::Array[RbiGenerator::Include]) }
+      # The {RbiGenerator::Include} objects from {children}.
+      # @return [Array<RbiGenerator::Include>]
+      def includes
+        T.cast(
+          children.select { |c| c.is_a?(RbiGenerator::Include) },
+          T::Array[RbiGenerator::Include]
+        )
+      end
 
       sig { returns(T::Array[[String, String]]) }
       # A list of constants which are defined in this namespace, in the form of
@@ -300,30 +308,48 @@ module Parlour
         new_arbitrary
       end
 
-      sig { params(name: String).void }
+      sig { params(name: String, block: T.nilable(T.proc.params(x: Extend).void)).returns(RbiGenerator::Extend) }
       # Adds a new +extend+ to this namespace.
       #
       # @example Add an +extend+ to a class.
-      #   class.add_extend('ExtendableClass') #=> extend ExtendableClass
+      #   class.create_extend(name: 'ExtendableClass') #=> extend ExtendableClass
       #
-      # @param name [String] A code string for what is extended, for example
+      # @param object [String] A code string for what is extended, for example
       #   +"MyModule"+.
-      # @return [void]
-      def add_extend(name)
-        extends << name
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Extend]
+      def create_extend(name: nil, &block)
+        name = T.must(name)
+        new_extend = RbiGenerator::Extend.new(
+          generator,
+          name: name,
+          &block
+        )
+        move_next_comments(new_extend)
+        children << new_extend
+        new_extend
       end
 
-      sig { params(name: String).void }
+      sig { params(name: String, block: T.nilable(T.proc.params(x: Include).void)).returns(Include) }
       # Adds a new +include+ to this namespace.
       #
       # @example Add an +include+ to a class.
-      #   class.add_include('IncludableClass') #=> include IncludableClass
+      #   class.create_include(name:  'IncludableClass') #=> include IncludableClass
       #
-      # @param name [String] A code string for what is included, for example
+      # @param object [String] A code string for what is included, for example
       #   +"Enumerable"+.
-      # @return [void]
-      def add_include(name)
-        includes << name
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Include]
+      def create_include(name: nil, &block)
+        name = T.must(name)
+        new_include = RbiGenerator::Include.new(
+          generator,
+          name: name,
+          &block
+        )
+        move_next_comments(new_include)
+        children << new_include
+        new_include
       end
 
       sig { params(name: String, value: String).void }
@@ -370,8 +396,6 @@ module Parlour
           other = T.cast(other, Namespace)
 
           other.children.each { |c| children << c }
-          other.extends.each { |e| extends << e }
-          other.includes.each { |i| includes << i }
           other.constants.each { |i| constants << i }
         end
       end
@@ -403,12 +427,12 @@ module Parlour
         result = []
 
         if includes.any? || extends.any? || constants.any?
-          result += includes.map do |i|
-            options.indented(indent_level, "include #{i}")
-          end
-          result += extends.map do |e|
-            options.indented(indent_level, "extend #{e}")
-          end
+          result += includes
+            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .reject { |x| x.strip == '' }
+          result += extends
+            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .reject { |x| x.strip == '' }
           result += constants.map do |c|
             name, value = c
             options.indented(indent_level, "#{name} = #{value}")
@@ -416,7 +440,10 @@ module Parlour
           result << ""
         end
 
-        first, *rest = children
+        first, *rest = children.reject do |child|
+          # We already processed these kinds of children
+          child.is_a?(Include) || child.is_a?(Extend)
+        end
         unless first
           # Remove any trailing whitespace due to includes
           result.pop if result.last == ''

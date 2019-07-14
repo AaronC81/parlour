@@ -6,22 +6,17 @@ module Parlour
       sig do
         params(
           generator: RbiGenerator,
-          object: String,
+          name: String,
           block: T.nilable(T.proc.params(x: Extend).void)
         ).void
       end
       # Creates a new +extend+ call.
       #
-      # @param object [String] The name of the object to be extended.
-      def initialize(generator, object: '', &block)
-        super(generator, '')
-        @object = object
+      # @param name [String] The name of the object to be extended.
+      def initialize(generator, name: '', &block)
+        super(generator, name)
         yield_self(&block)
       end
-
-      sig { returns(String) }
-      # Returns the name of the object to be extended.
-      attr_accessor :object
 
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another extend.
@@ -30,7 +25,7 @@ module Parlour
       #   subclass of it), this will always return false.
       # @return [Boolean]
       def ==(other)
-        Extend === other && object == other.object
+        Extend === other && name == other.name
       end
 
       sig do
@@ -45,7 +40,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        [options.indented(indent_level, "extend #{object}")]
+        [options.indented(indent_level, "extend #{name}")]
       end
 
       sig do
@@ -60,7 +55,7 @@ module Parlour
       #   {Extend} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
-        false
+        others.all? { |other| self == other }
       end
 
       sig do 
@@ -80,12 +75,12 @@ module Parlour
         # We don't need to change anything! We only merge identical extends
       end
 
-      sig { override.returns(String) }
+      sig { implementation.returns(String) }
       # Returns a human-readable brief string description of this code.
       #
       # @return [String]
       def describe
-        "Extend (#{object})"
+        "Extend (#{name})"
       end
     end
   end

@@ -114,9 +114,9 @@ RSpec.describe Parlour::RbiGenerator do
     it 'handles includes, extends and constants' do
       klass = subject.root.create_class(name: 'Foo') do |foo|
         foo.create_class(name: 'Bar', abstract: true) do |bar|
-          bar.add_extend('X')
-          bar.add_extend('Y')
-          bar.add_include('Z')
+          bar.create_extend(name:  'X')
+          bar.create_extend(name:  'Y')
+          bar.create_include(name:  'Z')
           bar.add_constant('PI', '3.14')
           bar.add_constant('Text', 'T.type_alias(T.any(String, Symbol))')
           bar.create_class(name: 'A')
