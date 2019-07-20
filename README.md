@@ -151,6 +151,7 @@ plugins:
 _Have you written an awesome Parlour plugin? Please submit a PR to add it to this list!_
 
   - [Sord](https://github.com/AaronC81/sord) - Generate RBIs from YARD documentation
+  - [parlour-datamapper](https://github.com/AaronC81/parlour-datamapper) - Simple plugin for generating DataMapper model types
 
 
 ## Contributing
