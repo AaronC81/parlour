@@ -676,7 +676,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Given a Class or Module object, generates all classes and modules in the path to that object, then executes the given block on the last <span class='object_link'><a href="" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -2978,7 +2980,49 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Given a Class or Module object, generates all classes and modules in the path to that object, then executes the given block on the last <span class='object_link'><a href="" title="Parlour::RbiGenerator::Namespace (class)">Parlour::RbiGenerator::Namespace</a></span>. This should only be executed on the root namespace.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>Class</tt>, <tt>Module</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>block</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A block which the new <span class='object_link'><a href="" title="Parlour::RbiGenerator::Namespace (class)">Parlour::RbiGenerator::Namespace</a></span> yields itself to.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -3040,7 +3084,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jul 20 23:40:02 2019 by
+  Generated on Sat Jul 20 23:57:10 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
