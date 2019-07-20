@@ -18,7 +18,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        generate_comments(indent_level, options) +  
+        generate_comments(indent_level, options) +
           generate_body(indent_level, options)
       end
 
@@ -40,9 +40,6 @@ module Parlour
       def initialize(generator, name = nil, &block)
         super(generator, name || '<anonymous namespace>')
         @children = []
-        @extends = []
-        @includes = []
-        @constants = []
         @next_comments = []
         yield_self(&block)
       end
@@ -72,11 +69,15 @@ module Parlour
         )
       end
 
-      sig { returns(T::Array[[String, String]]) }
-      # A list of constants which are defined in this namespace, in the form of
-      # pairs [name, value].
-      # @return [Array<(String, String)>]
-      attr_reader :constants
+      sig { returns(T::Array[RbiGenerator::Constant]) }
+      # The {RbiGenerator::Constant} objects from {children}.
+      # @return [Array<RbiGenerator::Constant>]
+      def constants
+        T.cast(
+          children.select { |c| c.is_a?(RbiGenerator::Constant) },
+          T::Array[RbiGenerator::Constant]
+        )
+      end
 
       sig { params(comment: T.any(String, T::Array[String])).void }
       # Adds one or more comments to the next child RBI object to be created.
@@ -352,15 +353,28 @@ module Parlour
         new_include
       end
 
-      sig { params(name: String, value: String).void }
+      sig { params(name: String, value: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
       # Adds a new constant definition to this namespace.
       #
+      # @example Add an +Elem+ constant to the class.
+      #   class.create_include(name: 'IncludableClass') #=> Elem = String
+      #
       # @param name [String] The name of the constant.
-      # @param value [String] A Ruby code string for this constant's value, for
-      #   example +"3.14"+ or +"T.type_alias(X)"+
-      # @return [void]
-      def add_constant(name, value)
-        constants << [name, value]
+      # @param value [String] The value of the constant, as a Ruby code string.
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Constant]
+      def create_constant(name: nil, value: nil, &block)
+        name = T.must(name)
+        value = T.must(value)
+        new_constant = RbiGenerator::Constant.new(
+          generator,
+          name: name,
+          value: value,
+          &block
+        )
+        move_next_comments(new_constant)
+        children << new_constant
+        new_constant
       end
 
       sig do
@@ -396,7 +410,6 @@ module Parlour
           other = T.cast(other, Namespace)
 
           other.children.each { |c| children << c }
-          other.constants.each { |i| constants << i }
         end
       end
 
@@ -433,16 +446,15 @@ module Parlour
           result += extends
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += constants.map do |c|
-            name, value = c
-            options.indented(indent_level, "#{name} = #{value}")
-          end
+          result += constants
+            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .reject { |x| x.strip == '' }
           result << ""
         end
 
         first, *rest = children.reject do |child|
           # We already processed these kinds of children
-          child.is_a?(Include) || child.is_a?(Extend)
+          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
         end
         unless first
           # Remove any trailing whitespace due to includes
