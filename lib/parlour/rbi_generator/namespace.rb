@@ -79,6 +79,11 @@ module Parlour
         )
       end
 
+      # Given a Class or Module object, generates all classes and modules in the
+      # path to that object, then executes the given block on the last
+      # {Namespace}. This should only be executed on the root namespace.
+      # @param [Class, Module] object
+      # @param block A block which the new {Namespace} yields itself to.
       sig { params(object: T.untyped, block: T.proc.params(x: Namespace).void).void }
       def path(object, &block)
         raise 'only call #path on root' if is_a?(ClassNamespace) || is_a?(ModuleNamespace)
