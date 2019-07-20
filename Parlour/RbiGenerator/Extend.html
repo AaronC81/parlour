@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: Parlour::RbiGenerator::Arbitrary
+  Class: Parlour::RbiGenerator::Extend
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "Parlour::RbiGenerator::Arbitrary";
+  pathId = "Parlour::RbiGenerator::Extend";
   relpath = '../../';
 </script>
 
@@ -36,10 +36,10 @@
       <div id="header">
         <div id="menu">
   
-    <a href="../../_index.html">Index (A)</a> &raquo;
+    <a href="../../_index.html">Index (E)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../Parlour.html" title="Parlour (module)">Parlour</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span>
      &raquo; 
-    <span class="title">Arbitrary</span>
+    <span class="title">Extend</span>
   
 </div>
 
@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Class: Parlour::RbiGenerator::Arbitrary
+      <div id="content"><h1>Class: Parlour::RbiGenerator::Extend
   
   
   
@@ -76,7 +76,7 @@
           
             <li class="next"><span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></li>
           
-            <li class="next">Parlour::RbiGenerator::Arbitrary</li>
+            <li class="next">Parlour::RbiGenerator::Extend</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -96,7 +96,7 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/rbi_generator/arbitrary.rb</dd>
+    <dd>lib/parlour/rbi_generator/extend.rb</dd>
   </dl>
   
 </div>
@@ -104,7 +104,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Represents miscellaneous Ruby code.</p>
+<p>Represents an <code>extend</code> call.</p>
 
 
   </div>
@@ -116,41 +116,9 @@
 
 
 
-  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#code-instance_method" title="#code (instance method)">#<strong>code</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns arbitrary code string.</p>
-</div></span>
-  
-</li>
-
-    
-  </ul>
 
 
-
-  
+  <h2>Instance Attribute Summary</h2>
   
   <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="RbiObject.html#comments-instance_method" title="Parlour::RbiGenerator::RbiObject#comments (method)">#comments</a></span>, <span class='object_link'><a href="RbiObject.html#generated_by-instance_method" title="Parlour::RbiGenerator::RbiObject#generated_by (method)">#generated_by</a></span>, <span class='object_link'><a href="RbiObject.html#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span>, <span class='object_link'><a href="RbiObject.html#name-instance_method" title="Parlour::RbiGenerator::RbiObject#name (method)">#name</a></span></p>
@@ -182,7 +150,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns true if this instance is equal to another arbitrary code line.</p>
+<p>Returns true if this instance is equal to another extend.</p>
 </div></span>
   
 </li>
@@ -230,7 +198,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Generates the RBI lines for this arbitrary code.</p>
+<p>Generates the RBI lines for this extend.</p>
 </div></span>
   
 </li>
@@ -239,7 +207,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, code: &#39;&#39;, &amp;block)  &#x21d2; Arbitrary </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name: &#39;&#39;, &amp;block)  &#x21d2; Extend </a>
     
 
     
@@ -256,7 +224,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates new arbitrary code.</p>
+<p>Creates a new <code>extend</code> call.</p>
 </div></span>
   
 </li>
@@ -280,7 +248,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span> instances, merges them into this one.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span> instances, merges them into this one.</p>
 </div></span>
   
 </li>
@@ -304,7 +272,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span> instances, returns true if they may be  merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::Arbitrary#merge_into_self (method)">#merge_into_self</a></span>.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span> instances, returns true if they may be  merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::Extend#merge_into_self (method)">#merge_into_self</a></span>.</p>
 </div></span>
   
 </li>
@@ -332,7 +300,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(generator, code: &#39;&#39;, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span></tt> 
+    #<strong>initialize</strong>(generator, name: &#39;&#39;, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span></tt> 
   
 
   
@@ -341,7 +309,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates new arbitrary code.</p>
+<p>Creates a new <code>extend</code> call.</p>
 
 
   </div>
@@ -352,7 +320,7 @@
   
     <li>
       
-        <span class='name'>code</span>
+        <span class='name'>name</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -361,7 +329,7 @@
       
         &mdash;
         <div class='inline'>
-<p>The arbitrary code string. Indentation is added to the beginning of each line.</p>
+<p>The name of the object to be extended.</p>
 </div>
       
     </li>
@@ -375,18 +343,16 @@
       <pre class="lines">
 
 
+16
 17
 18
-19
-20
-21</pre>
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/extend.rb', line 16</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='label'>code:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='ivar'>@code</span> <span class='op'>=</span> <span class='id identifier rubyid_code'>code</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_yield_self'>yield_self</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -395,54 +361,6 @@
 </div>
   
 </div>
-
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
-    
-      
-      <span id="code=-instance_method"></span>
-      <div class="method_details first">
-  <h3 class="signature first" id="code-instance_method">
-  
-    #<strong>code</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns arbitrary code string.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-25
-26
-27</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 25</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_code'>code</span>
-  <span class='ivar'>@code</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -461,7 +379,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true if this instance is equal to another arbitrary code line.</p>
+<p>Returns true if this instance is equal to another extend.</p>
 
 
   </div>
@@ -481,7 +399,7 @@
       
         &mdash;
         <div class='inline'>
-<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Parlour::RbiGenerator::Arbitrary</a></span> (or a subclass of it), this will always return false.</p>
+<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Parlour::RbiGenerator::Extend</a></span> (or a subclass of it), this will always return false.</p>
 </div>
       
     </li>
@@ -508,15 +426,15 @@
       <pre class="lines">
 
 
-33
-34
-35</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/extend.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
-  <span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span></span> <span class='op'>===</span> <span class='id identifier rubyid_other'>other</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_code'>code</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span>
+  <span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span></span> <span class='op'>===</span> <span class='id identifier rubyid_other'>other</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -562,15 +480,15 @@
       <pre class="lines">
 
 
-87
-88
-89</pre>
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/extend.rb', line 82</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Arbitrary code (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Extend (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -589,7 +507,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Generates the RBI lines for this arbitrary code.</p>
+<p>Generates the RBI lines for this extend.</p>
 
 
   </div>
@@ -657,15 +575,15 @@
       <pre class="lines">
 
 
-48
-49
-50</pre>
+42
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/extend.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_l'>l</span><span class='op'>|</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_l'>l</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>extend </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -684,7 +602,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Parlour::RbiGenerator::Arbitrary</a></span> instances, merges them into this one. This particular implementation always throws an exception, because <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::Arbitrary#mergeable? (method)">#mergeable?</a></span> is always false.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Parlour::RbiGenerator::Extend</a></span> instances, merges them into this one. This particular implementation will simply do nothing, as instances are only mergeable if they are indentical. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::Extend#mergeable? (method)">#mergeable?</a></span> is true for those instances.</p>
 
 
   </div>
@@ -704,7 +622,7 @@
       
         &mdash;
         <div class='inline'>
-<p>An array of other <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Parlour::RbiGenerator::Arbitrary</a></span> instances.</p>
+<p>An array of other <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Parlour::RbiGenerator::Extend</a></span> instances.</p>
 </div>
       
     </li>
@@ -718,16 +636,16 @@
       <pre class="lines">
 
 
-79
-80
-81</pre>
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 79</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/extend.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>arbitrary code is never mergeable</span><span class='tstring_end'>&#39;</span></span>
-<span class='kw'>end</span></pre>
+  <span class='comment'># We don&#39;t need to change anything! We only merge identical extends
+</span><span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -745,7 +663,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Parlour::RbiGenerator::Arbitrary</a></span> instances, returns true if they may be  merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::Arbitrary#merge_into_self (method)">#merge_into_self</a></span>. This is always false.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Parlour::RbiGenerator::Extend</a></span> instances, returns true if they may be  merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::Extend#merge_into_self (method)">#merge_into_self</a></span>. This is always false.</p>
 
 
   </div>
@@ -765,7 +683,7 @@
       
         &mdash;
         <div class='inline'>
-<p>An array of other <span class='object_link'><a href="" title="Parlour::RbiGenerator::Arbitrary (class)">Parlour::RbiGenerator::Arbitrary</a></span> instances.</p>
+<p>An array of other <span class='object_link'><a href="" title="Parlour::RbiGenerator::Extend (class)">Parlour::RbiGenerator::Extend</a></span> instances.</p>
 </div>
       
     </li>
@@ -797,15 +715,15 @@
       <pre class="lines">
 
 
-63
-64
-65</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/extend.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
-  <span class='kw'>false</span>
+  <span class='id identifier rubyid_others'>others</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_other'>other</span><span class='op'>|</span> <span class='kw'>self</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -817,7 +735,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jul 20 20:11:54 2019 by
+  Generated on Sat Jul 20 20:11:53 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
