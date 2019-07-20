@@ -392,4 +392,33 @@ RSpec.describe Parlour::RbiGenerator do
       end
     RUBY
   end
+
+  context '#path' do
+    before :all do
+      ::A = Module.new
+      ::A::B = Module.new
+      ::A::B::C = Class.new
+    end
+
+    it 'generates correctly' do
+      subject.root.path(::A::B::C) do |c|
+        c.create_method(name: 'foo')
+      end
+
+      expect(subject.root.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module A
+          module B
+            class C
+              sig { void }
+              def foo; end
+            end
+          end
+        end
+      RUBY
+    end
+
+    it 'throws on a non-root namespace' do
+      expect { subject.root.create_module(name: 'X').path(::A::B::C) { |*| } }.to raise_error(RuntimeError)
+    end
+  end
 end

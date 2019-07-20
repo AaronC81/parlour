@@ -79,6 +79,29 @@ module Parlour
         )
       end
 
+      sig { params(object: T.untyped, block: T.proc.params(x: Namespace).void).void }
+      def path(object, &block)
+        raise 'only call #path on root' if is_a?(ClassNamespace) || is_a?(ModuleNamespace)
+
+        parts = object.to_s.split('::')
+        parts_with_types = parts.size.times.map do |i|
+          [parts[i], Module.const_get(parts[0..i].join('::')).class]
+        end
+
+        current_part = self
+        parts_with_types.each do |(name, type)|
+          if type == Class
+            current_part = current_part.create_class(name: name)
+          elsif type == Module
+            current_part = current_part.create_module(name: name)
+          else
+            raise "unexpected type: path part #{name} is a #{type}"
+          end
+        end
+
+        block.call(current_part)
+      end
+
       sig { params(comment: T.any(String, T::Array[String])).void }
       # Adds one or more comments to the next child RBI object to be created.
       #
