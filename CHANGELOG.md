@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.5.1] - 2019-07-21
+### Added
+- Added the `Namespace#path` method for plugins to use.
+
 ## [0.5.0] - 2019-07-20
 ### Added
 - Added the `create_arbitrary` method for inserting arbitrary code into the
