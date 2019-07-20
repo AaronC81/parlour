@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.5.0] - 2019-07-20
+### Added
+- Added the `create_arbitrary` method for inserting arbitrary code into the
+generated RBI file. This is intended for using constructs which Parlour does
+not yet support.
+
+### Changed
+- Breaking change: `add_constant`, `add_include` and `add_extend` have been
+replaced with `create_constant`, `create_include` and `create_extend`.
+
 ## [0.4.0] - 2019-07-10
 ### Changed
 - Breaking change: The Parlour CLI tool no longer takes command-line arguments, and instead uses a `.parlour` configuration file. See the README!
