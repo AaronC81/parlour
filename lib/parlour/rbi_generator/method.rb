@@ -185,7 +185,7 @@ module Parlour
         # We don't need to change anything! We only merge identical methods
       end
 
-      sig { override.returns(String) }
+      sig { implementation.returns(String) }
       # Returns a human-readable brief string description of this method.
       #
       # @return [String]
