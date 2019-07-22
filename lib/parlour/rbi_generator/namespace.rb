@@ -130,7 +130,7 @@ module Parlour
 
       sig do
         params(
-          name: T.nilable(String),
+          name: String,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
@@ -152,8 +152,7 @@ module Parlour
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [ClassNamespace]
-      def create_class(name: nil, superclass: nil, abstract: false, &block)
-        name = T.must(name)
+      def create_class(name:, superclass: nil, abstract: false, &block)
         new_class = ClassNamespace.new(generator, name, superclass, abstract, &block)
         move_next_comments(new_class)
         children << new_class
@@ -162,7 +161,7 @@ module Parlour
 
       sig do
         params(
-          name: T.nilable(String),
+          name: String,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
@@ -182,8 +181,7 @@ module Parlour
       #   interface.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
-      def create_module(name: nil, interface: false, &block)
-        name = T.must(name)
+      def create_module(name:, interface: false, &block)
         new_module = ModuleNamespace.new(generator, name, interface, &block)
         move_next_comments(new_module)
         children << new_module
@@ -192,7 +190,7 @@ module Parlour
 
       sig do
         params(
-          name: T.nilable(String),
+          name: String,
           parameters: T.nilable(T::Array[Parameter]),
           return_type: T.nilable(String),
           returns: T.nilable(String),
@@ -223,8 +221,7 @@ module Parlour
       #   it is defined using +self.+.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
-      def create_method(name: nil, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
-        name = T.must(name)
+      def create_method(name:, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         parameters = parameters || []
         raise 'cannot specify both return_type: and returns:' if return_type && returns
         return_type ||= returns
@@ -269,10 +266,7 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attribute(name: nil, kind: nil, type: nil, &block)
-        name = T.must(name)
-        kind = T.must(kind)
-        type = T.must(type)
+      def create_attribute(name:, kind:, type:, &block)
         new_attribute = RbiGenerator::Attribute.new(
           generator,
           name,
@@ -293,7 +287,7 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_reader(name: nil, type: nil, &block)
+      def create_attr_reader(name:, type:, &block)
         create_attribute(name: name, kind: :reader, type: type, &block)
       end
 
@@ -304,7 +298,7 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_writer(name: nil, type: nil, &block)
+      def create_attr_writer(name:, type:, &block)
         create_attribute(name: name, kind: :writer, type: type, &block)
       end
 
@@ -315,7 +309,7 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_accessor(name: nil, type: nil, &block)
+      def create_attr_accessor(name:, type:, &block)
         create_attribute(name: name, kind: :accessor, type: type, &block)
       end
 
@@ -325,8 +319,7 @@ module Parlour
       # @param code [String] The code to insert.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Arbitrary]
-      def create_arbitrary(code: nil, &block)
-        code = T.must(code)
+      def create_arbitrary(code:, &block)
         new_arbitrary = RbiGenerator::Arbitrary.new(
           generator,
           code: code,
@@ -347,8 +340,7 @@ module Parlour
       #   +"MyModule"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Extend]
-      def create_extend(name: nil, &block)
-        name = T.must(name)
+      def create_extend(name:, &block)
         new_extend = RbiGenerator::Extend.new(
           generator,
           name: name,
@@ -359,18 +351,33 @@ module Parlour
         new_extend
       end
 
+      sig { params(extendables: T::Array[String]).returns(T::Array[Extend]) }
+      # Adds new +extend+s to this namespace.
+      #
+      # @example Add +extend+s to a class.
+      #   class.create_extends(['Foo', 'Bar'])
+      #
+      # @param [Array<String>] extendables An array of names for whatever is being extended.
+      # @return [Array<RbiGenerator::Extend>]
+      def create_extends(extendables)
+        returned_extendables = []
+        extendables.each do |extendable|
+          returned_extendables << create_extend(name: extendable)
+        end
+        returned_extendables
+      end
+
       sig { params(name: String, block: T.nilable(T.proc.params(x: Include).void)).returns(Include) }
       # Adds a new +include+ to this namespace.
       #
       # @example Add an +include+ to a class.
-      #   class.create_include(name:  'IncludableClass') #=> include IncludableClass
+      #   class.create_include(name: 'IncludableClass') #=> include IncludableClass
       #
-      # @param object [String] A code string for what is included, for example
+      # @param [String] name A code string for what is included, for example
       #   +"Enumerable"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Include]
-      def create_include(name: nil, &block)
-        name = T.must(name)
+      def create_include(name:, &block)
         new_include = RbiGenerator::Include.new(
           generator,
           name: name,
@@ -381,19 +388,33 @@ module Parlour
         new_include
       end
 
+      sig { params(includables: T::Array[String]).returns(T::Array[Include]) }
+      # Adds new +include+s to this namespace.
+      #
+      # @example Add +include+s to a class.
+      #   class.create_includes(['Foo', 'Bar'])
+      #
+      # @param [Array<String>] includables An array of names for whatever is being included.
+      # @return [Array<RbiGenerator::Include>]
+      def create_includes(includables)
+        returned_includables = []
+        includables.each do |includable|
+          returned_includables << create_include(name: includable)
+        end
+        returned_includables
+      end
+
       sig { params(name: String, value: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
       # Adds a new constant definition to this namespace.
       #
       # @example Add an +Elem+ constant to the class.
-      #   class.create_include(name: 'IncludableClass') #=> Elem = String
+      #   class.create_constant(name: 'Elem', value: 'String') #=> Elem = String
       #
       # @param name [String] The name of the constant.
       # @param value [String] The value of the constant, as a Ruby code string.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Constant]
-      def create_constant(name: nil, value: nil, &block)
-        name = T.must(name)
-        value = T.must(value)
+      def create_constant(name:, value:, &block)
         new_constant = RbiGenerator::Constant.new(
           generator,
           name: name,

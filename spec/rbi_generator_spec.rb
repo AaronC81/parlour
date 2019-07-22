@@ -148,6 +148,24 @@ RSpec.describe Parlour::RbiGenerator do
         end
       RUBY
     end
+
+    it 'handles multiple includes and extends' do
+      klass = subject.root.create_class(name: 'Foo') do |foo|
+        foo.create_extends(['X', 'Y', 'Z'])
+        foo.create_includes(['A', 'B', 'C'])
+      end
+
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Foo
+          include A
+          include B
+          include C
+          extend X
+          extend Y
+          extend Z
+        end
+      RUBY
+    end
   end
 
   context 'methods' do
