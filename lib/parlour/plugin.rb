@@ -33,13 +33,16 @@ module Parlour
     #
     # @param plugins [Array<Plugin>] An array of {Plugin} instances.
     # @param generator [RbiGenerator] The {RbiGenerator} to run the plugins on.
+    # @param allow_failure [Boolean] Whether to keep running plugins if a plugin
+    #   throws an exception. If false, the exception is re-raised when caught.
     # @return [void]
-    def self.run_plugins(plugins, generator)
+    def self.run_plugins(plugins, generator, allow_failure: true)
       plugins.each do |plugin|
         puts "=== #{plugin.class.name}"
         generator.current_plugin = plugin
         plugin.generate(generator.root)
       rescue Exception => e
+        raise e unless allow_failure
         puts "!!! This plugin threw an exception: #{e}"
       end
     end
