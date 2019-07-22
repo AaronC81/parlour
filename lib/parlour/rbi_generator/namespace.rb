@@ -359,13 +359,29 @@ module Parlour
         new_extend
       end
 
+      sig { params(extendables: T::Array[String]).returns(T::Array[Extend]) }
+      # Adds new +extend+s to this namespace.
+      #
+      # @example Add +extend+s to a class.
+      #   class.create_extends(['Foo', 'Bar'])
+      #
+      # @param [Array<String>] extendables An array of names for whatever is being extended.
+      # @return [Array<RbiGenerator::Extend>]
+      def create_extends(extendables)
+        returned_extendables = []
+        extendables.each do |extendable|
+          returned_extendables << create_extend(name: extendable)
+        end
+        returned_extendables
+      end
+
       sig { params(name: String, block: T.nilable(T.proc.params(x: Include).void)).returns(Include) }
       # Adds a new +include+ to this namespace.
       #
       # @example Add an +include+ to a class.
-      #   class.create_include(name:  'IncludableClass') #=> include IncludableClass
+      #   class.create_include(name: 'IncludableClass') #=> include IncludableClass
       #
-      # @param object [String] A code string for what is included, for example
+      # @param [String] name A code string for what is included, for example
       #   +"Enumerable"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Include]
@@ -379,6 +395,22 @@ module Parlour
         move_next_comments(new_include)
         children << new_include
         new_include
+      end
+
+      sig { params(includables: T::Array[String]).returns(T::Array[Include]) }
+      # Adds new +include+s to this namespace.
+      #
+      # @example Add +include+s to a class.
+      #   class.create_includes(['Foo', 'Bar'])
+      #
+      # @param [Array<String>] includables An array of names for whatever is being included.
+      # @return [Array<RbiGenerator::Include>]
+      def create_includes(includables)
+        returned_includables = []
+        includables.each do |includable|
+          returned_includables << create_include(name: includable)
+        end
+        returned_includables
       end
 
       sig { params(name: String, value: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
