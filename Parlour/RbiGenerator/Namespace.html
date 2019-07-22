@@ -420,6 +420,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#create_extends-instance_method" title="#create_extends (instance method)">#<strong>create_extends</strong>(extendables)  &#x21d2; Array&lt;RbiGenerator::Extend&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Adds new <tt>extend</tt>s to this namespace.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#create_include-instance_method" title="#create_include (instance method)">#<strong>create_include</strong>(name: nil, &amp;block)  &#x21d2; RbiGenerator::Include </a>
     
 
@@ -436,6 +460,30 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Adds a new <code>include</code> to this namespace.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_includes-instance_method" title="#create_includes (instance method)">#<strong>create_includes</strong>(includables)  &#x21d2; Array&lt;RbiGenerator::Include&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Adds new <tt>include</tt>s to this namespace.</p>
 </div></span>
   
 </li>
@@ -1890,22 +1938,22 @@
       <pre class="lines">
 
 
-394
-395
-396
-397
-398
-399
-400
-401
-402
-403
-404
-405
-406</pre>
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 394</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 426</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_constant'>create_constant</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>value:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_must'>must</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
@@ -2044,6 +2092,100 @@
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="create_extends-instance_method">
+  
+    #<strong>create_extends</strong>(extendables)  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="Extend.html" title="Parlour::RbiGenerator::Extend (class)">RbiGenerator::Extend</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Adds new <tt>extend</tt>s to this namespace.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Add <tt>extend</tt>s to a class.</p>
+</div></p>
+      
+      <pre class="example code"><code>class.create_extends([&#39;Foo&#39;, &#39;Bar&#39;])</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>extendables</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of names for whatever is being extended.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Extend.html" title="Parlour::RbiGenerator::Extend (class)">RbiGenerator::Extend</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+370
+371
+372
+373
+374
+375
+376</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 370</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_extends'>create_extends</span><span class='lparen'>(</span><span class='id identifier rubyid_extendables'>extendables</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_returned_extendables'>returned_extendables</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_extendables'>extendables</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_extendable'>extendable</span><span class='op'>|</span>
+    <span class='id identifier rubyid_returned_extendables'>returned_extendables</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_create_extend'>create_extend</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='id identifier rubyid_extendable'>extendable</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_returned_extendables'>returned_extendables</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="create_include-instance_method">
   
     #<strong>create_include</strong>(name: nil, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="Include.html" title="Parlour::RbiGenerator::Include (class)">RbiGenerator::Include</a></span></tt> 
@@ -2070,7 +2212,7 @@
 <p>Add an <code>include</code> to a class.</p>
 </div></p>
       
-      <pre class="example code"><code>class.create_include(name:  &#39;IncludableClass&#39;) #=&gt; include IncludableClass</code></pre>
+      <pre class="example code"><code>class.create_include(name: &#39;IncludableClass&#39;) #=&gt; include IncludableClass</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -2078,7 +2220,7 @@
   
     <li>
       
-        <span class='name'>object</span>
+        <span class='name'>name</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -2130,20 +2272,20 @@
       <pre class="lines">
 
 
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382</pre>
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 372</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 388</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_include'>create_include</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_must'>must</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
@@ -2155,6 +2297,100 @@
   <span class='id identifier rubyid_move_next_comments'>move_next_comments</span><span class='lparen'>(</span><span class='id identifier rubyid_new_include'>new_include</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_children'>children</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_new_include'>new_include</span>
   <span class='id identifier rubyid_new_include'>new_include</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="create_includes-instance_method">
+  
+    #<strong>create_includes</strong>(includables)  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="Include.html" title="Parlour::RbiGenerator::Include (class)">RbiGenerator::Include</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Adds new <tt>include</tt>s to this namespace.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Add <tt>include</tt>s to a class.</p>
+</div></p>
+      
+      <pre class="example code"><code>class.create_includes([&#39;Foo&#39;, &#39;Bar&#39;])</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>includables</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of names for whatever is being included.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Include.html" title="Parlour::RbiGenerator::Include (class)">RbiGenerator::Include</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+408
+409
+410
+411
+412
+413
+414</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 408</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_includes'>create_includes</span><span class='lparen'>(</span><span class='id identifier rubyid_includables'>includables</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_returned_includables'>returned_includables</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_includables'>includables</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_includable'>includable</span><span class='op'>|</span>
+    <span class='id identifier rubyid_returned_includables'>returned_includables</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_create_include'>create_include</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='id identifier rubyid_includable'>includable</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_returned_includables'>returned_includables</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2589,13 +2825,13 @@
       <pre class="lines">
 
 
-448
-449
-450
-451</pre>
+480
+481
+482
+483</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 448</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 480</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Namespace </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> children, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_includes'>includes</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
@@ -2869,16 +3105,16 @@
       <pre class="lines">
 
 
-436
-437
-438
-439
-440
-441
-442</pre>
+468
+469
+470
+471
+472
+473
+474</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 436</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 468</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_other'>other</span><span class='op'>|</span>
@@ -2956,12 +3192,12 @@
       <pre class="lines">
 
 
-421
-422
-423</pre>
+453
+454
+455</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 421</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 453</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='kw'>true</span>
@@ -3084,7 +3320,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jul 20 23:57:10 2019 by
+  Generated on Mon Jul 22 06:06:37 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.3).
 </div>
