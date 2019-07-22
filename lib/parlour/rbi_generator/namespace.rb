@@ -385,7 +385,7 @@ module Parlour
       # Adds a new constant definition to this namespace.
       #
       # @example Add an +Elem+ constant to the class.
-      #   class.create_include(name: 'IncludableClass') #=> Elem = String
+      #   class.create_constant(name: 'Elem', value: 'String') #=> Elem = String
       #
       # @param name [String] The name of the constant.
       # @param value [String] The value of the constant, as a Ruby code string.
