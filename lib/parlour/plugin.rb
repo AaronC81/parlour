@@ -38,12 +38,14 @@ module Parlour
     # @return [void]
     def self.run_plugins(plugins, generator, allow_failure: true)
       plugins.each do |plugin|
-        puts "=== #{plugin.class.name}"
-        generator.current_plugin = plugin
-        plugin.generate(generator.root)
-      rescue Exception => e
-        raise e unless allow_failure
-        puts "!!! This plugin threw an exception: #{e}"
+        begin
+          puts "=== #{plugin.class.name}"
+          generator.current_plugin = plugin
+          plugin.generate(generator.root)
+        rescue Exception => e
+          raise e unless allow_failure
+          puts "!!! This plugin threw an exception: #{e}"
+        end
       end
     end
 
