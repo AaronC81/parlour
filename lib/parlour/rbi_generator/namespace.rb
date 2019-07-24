@@ -525,7 +525,7 @@ module Parlour
       # @param object [RbiObject] The object to move the comments into.
       # @return [void]
       def move_next_comments(object)
-        object.comments.prepend(*@next_comments)
+        object.comments.unshift(*@next_comments)
         @next_comments.clear
       end
     end
