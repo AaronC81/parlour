@@ -96,9 +96,9 @@ module Parlour
         current_part = self
         parts_with_types.each do |(name, type)|
           if type == Class
-            current_part = current_part.create_class(name: name)
+            current_part = current_part.create_class(name)
           elsif type == Module
-            current_part = current_part.create_module(name: name)
+            current_part = current_part.create_module(name)
           else
             raise "unexpected type: path part #{name} is a #{type}"
           end
@@ -112,11 +112,11 @@ module Parlour
       #
       # @example Creating a module with a comment.
       #   namespace.add_comment_to_next_child('This is a module')
-      #   namespace.create_module(name: 'M')
+      #   namespace.create_module('M')
       #
       # @example Creating a class with a multi-line comment.
       #   namespace.add_comment_to_next_child(['This is a multi-line comment!', 'It can be as long as you want!'])
-      #   namespace.create_class(name: 'C')
+      #   namespace.create_class('C')
       #
       # @param comment [String, Array<String>] The new comment(s).
       # @return [void]
@@ -139,12 +139,12 @@ module Parlour
       # Creates a new class definition as a child of this namespace.
       #
       # @example Create a class with a nested module.
-      #   namespace.create_class(name: 'Foo') do |foo|
-      #     foo.create_module(name: 'Bar')
+      #   namespace.create_class('Foo') do |foo|
+      #     foo.create_module('Bar')
       #   end
       #
       # @example Create a class that is the child of another class.
-      #   namespace.create_class(name: 'Bar', superclass: 'Foo') #=> class Bar < Foo
+      #   namespace.create_class('Bar', superclass: 'Foo') #=> class Bar < Foo
       #
       # @param name [String] The name of this class.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
@@ -152,7 +152,7 @@ module Parlour
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [ClassNamespace]
-      def create_class(name:, superclass: nil, abstract: false, &block)
+      def create_class(name, superclass: nil, abstract: false, &block)
         new_class = ClassNamespace.new(generator, name, superclass, abstract, &block)
         move_next_comments(new_class)
         children << new_class
@@ -169,11 +169,11 @@ module Parlour
       # Creates a new module definition as a child of this namespace.
       #
       # @example Create a basic module.
-      #   namespace.create_module(name: 'Foo')
+      #   namespace.create_module('Foo')
       #
       # @example Create a module with a method.
-      #   namespace.create_module(name: 'Foo') do |foo|
-      #     foo.create_method(name: 'method_name', parameters: [], return_type: 'Integer')
+      #   namespace.create_module('Foo') do |foo|
+      #     foo.create_method('method_name', parameters: [], return_type: 'Integer')
       #   end
       #
       # @param name [String] The name of this module.
@@ -181,7 +181,7 @@ module Parlour
       #   interface.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
-      def create_module(name:, interface: false, &block)
+      def create_module(name, interface: false, &block)
         new_module = ModuleNamespace.new(generator, name, interface, &block)
         move_next_comments(new_module)
         children << new_module
@@ -221,7 +221,7 @@ module Parlour
       #   it is defined using +self.+.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
-      def create_method(name:, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
+      def create_method(name, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
         parameters = parameters || []
         raise 'cannot specify both return_type: and returns:' if return_type && returns
         return_type ||= returns
@@ -266,7 +266,7 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attribute(name:, kind:, type:, &block)
+      def create_attribute(name, kind:, type:, &block)
         new_attribute = RbiGenerator::Attribute.new(
           generator,
           name,
@@ -287,8 +287,8 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_reader(name:, type:, &block)
-        create_attribute(name: name, kind: :reader, type: type, &block)
+      def create_attr_reader(name, type:, &block)
+        create_attribute(name, kind: :reader, type: type, &block)
       end
 
       # Creates a new write-only attribute (+attr_writer+).
@@ -298,8 +298,8 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_writer(name:, type:, &block)
-        create_attribute(name: name, kind: :writer, type: type, &block)
+      def create_attr_writer(name, type:, &block)
+        create_attribute(name, kind: :writer, type: type, &block)
       end
 
       # Creates a new read and write attribute (+attr_accessor+).
@@ -309,8 +309,8 @@ module Parlour
       #   +"String"+ or +"T.untyped"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_accessor(name:, type:, &block)
-        create_attribute(name: name, kind: :accessor, type: type, &block)
+      def create_attr_accessor(name, type:, &block)
+        create_attribute(name, kind: :accessor, type: type, &block)
       end
 
       # Creates a new arbitrary code section.
@@ -334,13 +334,13 @@ module Parlour
       # Adds a new +extend+ to this namespace.
       #
       # @example Add an +extend+ to a class.
-      #   class.create_extend(name: 'ExtendableClass') #=> extend ExtendableClass
+      #   class.create_extend('ExtendableClass') #=> extend ExtendableClass
       #
       # @param object [String] A code string for what is extended, for example
       #   +"MyModule"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Extend]
-      def create_extend(name:, &block)
+      def create_extend(name, &block)
         new_extend = RbiGenerator::Extend.new(
           generator,
           name: name,
@@ -362,7 +362,7 @@ module Parlour
       def create_extends(extendables)
         returned_extendables = []
         extendables.each do |extendable|
-          returned_extendables << create_extend(name: extendable)
+          returned_extendables << create_extend(extendable)
         end
         returned_extendables
       end
@@ -371,13 +371,13 @@ module Parlour
       # Adds a new +include+ to this namespace.
       #
       # @example Add an +include+ to a class.
-      #   class.create_include(name: 'IncludableClass') #=> include IncludableClass
+      #   class.create_include('IncludableClass') #=> include IncludableClass
       #
       # @param [String] name A code string for what is included, for example
       #   +"Enumerable"+.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Include]
-      def create_include(name:, &block)
+      def create_include(name, &block)
         new_include = RbiGenerator::Include.new(
           generator,
           name: name,
@@ -399,7 +399,7 @@ module Parlour
       def create_includes(includables)
         returned_includables = []
         includables.each do |includable|
-          returned_includables << create_include(name: includable)
+          returned_includables << create_include(includable)
         end
         returned_includables
       end
@@ -408,13 +408,13 @@ module Parlour
       # Adds a new constant definition to this namespace.
       #
       # @example Add an +Elem+ constant to the class.
-      #   class.create_constant(name: 'Elem', value: 'String') #=> Elem = String
+      #   class.create_constant('Elem', value: 'String') #=> Elem = String
       #
       # @param name [String] The name of the constant.
       # @param value [String] The value of the constant, as a Ruby code string.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Constant]
-      def create_constant(name:, value:, &block)
+      def create_constant(name, value:, &block)
         new_constant = RbiGenerator::Constant.new(
           generator,
           name: name,

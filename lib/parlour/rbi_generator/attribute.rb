@@ -35,7 +35,7 @@ module Parlour
           super(generator, name, [], type, &block)
         when :writer
           super(generator, name, [
-            Parameter.new(name: name, type: type)
+            Parameter.new(name, type: type)
           ], type, &block)
         else
           raise 'unknown kind'

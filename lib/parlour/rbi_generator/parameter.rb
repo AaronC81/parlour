@@ -15,13 +15,13 @@ module Parlour
       # Create a new method parameter.
       #
       # @example Create a simple Integer parameter named +num+.
-      #   Parlour::RbiGenerator::Parameter.new(name: 'num', type: 'Integer')
+      #   Parlour::RbiGenerator::Parameter.new('num', type: 'Integer')
       # @example Create a nilable array parameter.
-      #   Parlour::RbiGenerator::Parameter.new(name: 'array_of_strings_or_symbols', type: 'T.nilable(T::Array(String, Symbol))')
+      #   Parlour::RbiGenerator::Parameter.new('array_of_strings_or_symbols', type: 'T.nilable(T::Array(String, Symbol))')
       # @example Create a block parameter.
-      #   Parlour::RbiGenerator::Parameter.new(name: '&blk', type: 'T.proc.void')
+      #   Parlour::RbiGenerator::Parameter.new('&blk', type: 'T.proc.void')
       # @example Create a parameter with a default value.
-      #   Parlour::RbiGenerator::Parameter.new(name: 'name', type: 'String', default: 'Parlour')
+      #   Parlour::RbiGenerator::Parameter.new('name', type: 'String', default: 'Parlour')
       #
       # @param name [String] The name of this parameter. This may start with +*+, +**+,
       #   or +&+, or end with +:+, which will infer the {kind} of this
@@ -33,7 +33,7 @@ module Parlour
       #   as +"\"\""+ (or +'""'+). The default value of the decimal +3.14+
       #   would be +"3.14"+.
       # @return [void]
-      def initialize(name: nil, type: nil, default: nil)
+      def initialize(name, type: nil, default: nil)
         name = T.must(name)
         @name = name
 
