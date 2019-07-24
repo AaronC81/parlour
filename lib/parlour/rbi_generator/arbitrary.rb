@@ -17,7 +17,7 @@ module Parlour
       def initialize(generator, code: '', &block)
         super(generator, '')
         @code = code
-        tap(&block)
+        yield_self(&block)
       end
 
       sig { returns(String) }

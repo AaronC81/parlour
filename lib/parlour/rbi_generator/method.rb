@@ -48,7 +48,7 @@ module Parlour
         @override = override
         @overridable = overridable
         @class_method = class_method
-        tap(&block)
+        yield_self(&block)
       end
 
       sig { params(other: Object).returns(T::Boolean) }
