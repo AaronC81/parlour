@@ -4,7 +4,14 @@ before_install:
   - gem install bundler
   - gem install yard
 rvm: 
+  - 2.3
+  - 2.4
+  - 2.5
   - 2.6
+  - ruby-head
+matrix:
+  allow_failures:
+    - rvm: ruby-head
 after_success:
   - yard
 deploy:
