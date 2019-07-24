@@ -28,7 +28,7 @@ module Parlour
       registered_plugins[T.must(new_plugin.name)] = new_plugin
     end
 
-    sig { params(plugins: T::Array[Plugin], generator: RbiGenerator).void }
+    sig { params(plugins: T::Array[Plugin], generator: RbiGenerator, allow_failure: T::Boolean).void }
     # Runs an array of plugins on a given generator instance.
     #
     # @param plugins [Array<Plugin>] An array of {Plugin} instances.
