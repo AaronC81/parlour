@@ -15,7 +15,7 @@ module Parlour
       # @param name [String] The name of the object to be included.
       def initialize(generator, name: '', &block)
         super(generator, name)
-        yield_self(&block)
+        yield_self(&block) if block
       end
 
       sig { params(other: Object).returns(T::Boolean) }

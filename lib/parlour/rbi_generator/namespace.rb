@@ -41,7 +41,7 @@ module Parlour
         super(generator, name || '<anonymous namespace>')
         @children = []
         @next_comments = []
-        yield_self(&block)
+        yield_self(&block) if block
       end
 
       sig { returns(T::Array[RbiObject]) }

@@ -18,7 +18,7 @@ module Parlour
       def initialize(generator, name: '', value: '', &block)
         super(generator, name)
         @value = value
-        yield_self(&block)
+        yield_self(&block) if block
       end
 
       # @return [String] The value of the constant, as a Ruby code string.

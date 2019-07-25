@@ -28,11 +28,7 @@
 # wrong constant name <RESERVED_114>
 # wrong constant name <RESERVED_115>
 # wrong constant name <RESERVED_116>
-# wrong constant name <RESERVED_117>
-# wrong constant name <RESERVED_118>
-# wrong constant name <RESERVED_119>
 # wrong constant name <RESERVED_11>
-# wrong constant name <RESERVED_120>
 # wrong constant name <RESERVED_12>
 # wrong constant name <RESERVED_13>
 # wrong constant name <RESERVED_14>
@@ -310,13 +306,10 @@
 # wrong constant name initialize$1
 # wrong constant name power$2
 # wrong constant name to_s$1
-# wrong constant name _load
-# wrong constant name double_fig
-# wrong constant name limit
-# wrong constant name mode
-# wrong constant name save_exception_mode
-# wrong constant name save_limit
-# wrong constant name save_rounding_mode
+# undefined singleton method `limit$1' for `BigDecimal'
+# undefined singleton method `mode$1' for `BigDecimal'
+# wrong constant name limit$1
+# wrong constant name mode$1
 # wrong constant name ver
 # wrong constant name clone
 # wrong constant name irb
@@ -730,8 +723,11 @@
 # wrong constant name rectangular
 # uninitialized constant Configatron
 # uninitialized constant Configatron
-# uninitialized constant Coverage
-# uninitialized constant Coverage
+# undefined singleton method `start$1' for `Coverage'
+# wrong constant name peek_result
+# wrong constant name running?
+# wrong constant name start$1
+# wrong constant name initialize
 # wrong constant name !=
 # wrong constant name ==
 # wrong constant name __getobj__
@@ -812,6 +808,25 @@
 # wrong constant name mkdir$1
 # wrong constant name mktmpdir$2
 # wrong constant name tmpdir
+# wrong constant name <Class:ChainingFallbackContextProxy>
+# wrong constant name <Class:Execution>
+# wrong constant name <Class:FallbackContextProxy>
+# uninitialized constant Docile::ChainingFallbackContextProxy::NON_FALLBACK_METHODS
+# Did you mean?  Docile::ChainingFallbackContextProxy::NON_FALLBACK_METHODS
+# uninitialized constant Docile::ChainingFallbackContextProxy::NON_PROXIED_INSTANCE_VARIABLES
+# Did you mean?  Docile::ChainingFallbackContextProxy::NON_PROXIED_INSTANCE_VARIABLES
+# uninitialized constant Docile::ChainingFallbackContextProxy::NON_PROXIED_METHODS
+# Did you mean?  Docile::ChainingFallbackContextProxy::NON_PROXIED_METHODS
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name exec_in_proxy_context
+# wrong constant name initialize
+# wrong constant name method_missing
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name dsl_eval
+# wrong constant name dsl_eval_immutable
+# wrong constant name dsl_eval_with_block_return
 # wrong constant name def_method
 # wrong constant name def_module
 # wrong constant name result_with_hash
@@ -875,14 +890,12 @@
 # wrong constant name detect$2
 # wrong constant name each_entry
 # wrong constant name each_with_index$2
-# wrong constant name each_with_object
 # wrong constant name entries$1
 # wrong constant name find$2
 # wrong constant name find_index$2
 # wrong constant name first$2
 # wrong constant name grep_v
 # wrong constant name inject$2
-# wrong constant name lazy
 # wrong constant name max$2
 # wrong constant name max_by$2
 # wrong constant name min$2
@@ -900,6 +913,14 @@
 # wrong constant name to_set
 # wrong constant name uniq
 # wrong constant name zip
+# undefined method `each$2' for class `Enumerator'
+# undefined method `initialize$1' for class `Enumerator'
+# Did you mean?  initialize
+# undefined method `with_index$2' for class `Enumerator'
+# wrong constant name each$2
+# wrong constant name each_with_index
+# wrong constant name initialize$1
+# wrong constant name with_index$2
 # wrong constant name each
 # wrong constant name initialize
 # wrong constant name chunk
@@ -1143,12 +1164,19 @@
 # undefined method `rationalize$2' for class `Float'
 # Did you mean?  Rational
 # wrong constant name rationalize$2
-# uninitialized constant Forwardable
-# uninitialized constant Forwardable
+# wrong constant name def_delegator
+# wrong constant name def_delegators
+# wrong constant name def_instance_delegator
+# wrong constant name def_instance_delegators
+# wrong constant name delegate
+# wrong constant name instance_delegate
+# wrong constant name _compile_method
+# wrong constant name _delegator_method
+# wrong constant name _valid_method?
+# wrong constant name debug
+# wrong constant name debug=
 # wrong constant name <static-init>
 # wrong constant name garbage_collect
-# undefined singleton method `report$1' for `GC::Profiler'
-# wrong constant name report$1
 # undefined singleton method `start$1' for `GC'
 # undefined singleton method `stat$2' for `GC'
 # wrong constant name latest_gc_info
@@ -3045,6 +3073,7 @@
 # undefined method `fetch$2' for class `Hash'
 # undefined method `initialize$2' for class `Hash'
 # Did you mean?  initialize
+# undefined method `merge$2' for class `Hash'
 # wrong constant name <
 # wrong constant name <=
 # wrong constant name >
@@ -3060,6 +3089,7 @@
 # wrong constant name flatten
 # wrong constant name index
 # wrong constant name initialize$2
+# wrong constant name merge$2
 # wrong constant name merge!
 # wrong constant name replace
 # wrong constant name slice
@@ -3199,84 +3229,8 @@
 # wrong constant name to_bn
 # wrong constant name to_s$1
 # wrong constant name sqrt
-# wrong constant name <Class:Generator>
-# wrong constant name <Class:Parser>
-# wrong constant name <Class:GeneratorMethods>
-# wrong constant name <Class:State>
-# wrong constant name <Class:Array>
-# wrong constant name <Class:FalseClass>
-# wrong constant name <Class:Float>
-# wrong constant name <Class:Hash>
-# wrong constant name <Class:Integer>
-# wrong constant name <Class:NilClass>
-# wrong constant name <Class:Object>
-# wrong constant name <Class:String>
-# wrong constant name <Class:TrueClass>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name <Class:Extend>
-# wrong constant name to_json
-# wrong constant name to_json_raw
-# wrong constant name to_json_raw_object
-# wrong constant name json_create
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name to_json
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name []
-# wrong constant name []=
-# wrong constant name allow_nan?
-# wrong constant name array_nl
-# wrong constant name array_nl=
-# wrong constant name ascii_only?
-# wrong constant name buffer_initial_length
-# wrong constant name buffer_initial_length=
-# wrong constant name check_circular?
-# wrong constant name configure
-# wrong constant name depth
-# wrong constant name depth=
-# wrong constant name generate
-# wrong constant name indent
-# wrong constant name indent=
-# wrong constant name initialize
-# wrong constant name max_nesting
-# wrong constant name max_nesting=
-# wrong constant name merge
-# wrong constant name object_nl
-# wrong constant name object_nl=
-# wrong constant name space
-# wrong constant name space=
-# wrong constant name space_before
-# wrong constant name space_before=
-# wrong constant name to_h
-# wrong constant name to_hash
-# wrong constant name <static-init>
 # wrong constant name from_state
-# wrong constant name <static-init>
 # wrong constant name initialize
-# wrong constant name parse
-# wrong constant name source
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# undefined singleton method `dump$1' for `JSON'
-# undefined singleton method `generate$1' for `JSON'
-# undefined singleton method `pretty_generate$1' for `JSON'
-# wrong constant name dump$1
-# wrong constant name generate$1
-# wrong constant name pretty_generate$1
 # undefined method `clone$1' for module `Kernel'
 # Did you mean?  clone
 # undefined method `define_singleton_method$2' for module `Kernel'
@@ -3310,7 +3264,6 @@
 #                singleton_method
 # undefined method `to_enum$2' for module `Kernel'
 # Did you mean?  to_enum
-# wrong constant name class
 # wrong constant name clone$1
 # wrong constant name define_singleton_method$2
 # wrong constant name display$1
@@ -3345,8 +3298,6 @@
 # undefined method `[]$2' for class `MatchData'
 # wrong constant name []$2
 # wrong constant name named_captures
-# undefined singleton method `log$1' for `Math'
-# wrong constant name log$1
 # uninitialized constant MessagePack
 # uninitialized constant MessagePack
 # wrong constant name ===
@@ -3362,7 +3313,7 @@
 # wrong constant name source_location
 # wrong constant name super_method
 # wrong constant name unbind
-# undefined method `class_eval$1' for class `Module'
+# undefined method `class_eval$2' for class `Module'
 # Did you mean?  class_eval
 # undefined method `class_variables$1' for class `Module'
 # Did you mean?  class_variables
@@ -3380,7 +3331,7 @@
 # undefined method `instance_methods$1' for class `Module'
 # Did you mean?  instance_methods
 #                instance_method
-# undefined method `module_eval$1' for class `Module'
+# undefined method `module_eval$2' for class `Module'
 # Did you mean?  module_eval
 # undefined method `private_instance_methods$1' for class `Module'
 # Did you mean?  private_instance_methods
@@ -3391,7 +3342,7 @@
 #                public_instance_method
 # undefined method `remove_method$1' for class `Module'
 # Did you mean?  remove_method
-# wrong constant name class_eval$1
+# wrong constant name class_eval$2
 # wrong constant name class_variables$1
 # wrong constant name const_defined?$1
 # wrong constant name const_get$1
@@ -3399,7 +3350,7 @@
 # wrong constant name define_method$2
 # wrong constant name deprecate_constant
 # wrong constant name instance_methods$1
-# wrong constant name module_eval$1
+# wrong constant name module_eval$2
 # wrong constant name private_instance_methods$1
 # wrong constant name protected_instance_methods$1
 # wrong constant name public_instance_methods$1
@@ -3536,169 +3487,13 @@
 # Did you mean?  OpenSSL::Digest::SHA1
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
-# wrong constant name <Class:Acceptables>
-# wrong constant name <Class:AmbiguousArgument>
-# wrong constant name <Class:AmbiguousOption>
-# wrong constant name <Class:Arguable>
-# wrong constant name <Class:CompletingHash>
-# wrong constant name <Class:Completion>
-# wrong constant name <Class:InvalidArgument>
-# wrong constant name <Class:InvalidOption>
-# wrong constant name <Class:List>
-# wrong constant name <Class:MissingArgument>
-# wrong constant name <Class:NeedlessArgument>
-# wrong constant name <Class:OptionMap>
-# wrong constant name <Class:ParseError>
-# wrong constant name <Class:Switch>
-# wrong constant name abort
-# wrong constant name accept
-# wrong constant name add_officious
-# wrong constant name banner
-# wrong constant name banner=
-# wrong constant name base
-# wrong constant name candidate
-# wrong constant name compsys
 # wrong constant name def_head_option
 # wrong constant name def_option
 # wrong constant name def_tail_option
-# wrong constant name default_argv
-# wrong constant name default_argv=
-# wrong constant name define
-# wrong constant name define_head
-# wrong constant name define_tail
-# wrong constant name environment
-# wrong constant name getopts
-# wrong constant name help
-# wrong constant name inc
-# wrong constant name initialize
-# wrong constant name load
-# wrong constant name make_switch
-# wrong constant name new
-# wrong constant name on
-# wrong constant name on_head
-# wrong constant name on_tail
-# wrong constant name order
-# wrong constant name order!
-# wrong constant name parse
-# wrong constant name parse!
-# wrong constant name permute
-# wrong constant name permute!
-# wrong constant name program_name
-# wrong constant name program_name=
-# wrong constant name reject
-# wrong constant name release
-# wrong constant name release=
-# wrong constant name remove
-# wrong constant name separator
 # wrong constant name set_banner
 # wrong constant name set_program_name
 # wrong constant name set_summary_indent
 # wrong constant name set_summary_width
-# wrong constant name summarize
-# wrong constant name summary_indent
-# wrong constant name summary_indent=
-# wrong constant name summary_width
-# wrong constant name summary_width=
-# wrong constant name terminate
-# wrong constant name to_a
-# wrong constant name top
-# wrong constant name ver
-# wrong constant name version
-# wrong constant name version=
-# wrong constant name warn
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name getopts
-# wrong constant name initialize
-# wrong constant name options
-# wrong constant name options=
-# wrong constant name order!
-# wrong constant name parse!
-# wrong constant name permute!
-# wrong constant name <static-init>
-# wrong constant name extend_object
-# uninitialized constant OptionParser::CompletingHash::Elem
-# uninitialized constant OptionParser::CompletingHash::K
-# uninitialized constant OptionParser::CompletingHash::V
-# wrong constant name match
-# wrong constant name <static-init>
-# wrong constant name candidate
-# wrong constant name complete
-# wrong constant name convert
-# wrong constant name <static-init>
-# wrong constant name candidate
-# wrong constant name regexp
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name accept
-# wrong constant name add_banner
-# wrong constant name append
-# wrong constant name atype
-# wrong constant name complete
-# wrong constant name compsys
-# wrong constant name each_option
-# wrong constant name list
-# wrong constant name long
-# wrong constant name prepend
-# wrong constant name reject
-# wrong constant name search
-# wrong constant name short
-# wrong constant name summarize
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# uninitialized constant OptionParser::OptionMap::Elem
-# uninitialized constant OptionParser::OptionMap::K
-# uninitialized constant OptionParser::OptionMap::V
-# wrong constant name <static-init>
-# wrong constant name args
-# wrong constant name initialize
-# wrong constant name reason
-# wrong constant name reason=
-# wrong constant name recover
-# wrong constant name set_backtrace
-# wrong constant name set_option
-# wrong constant name <static-init>
-# wrong constant name filter_backtrace
-# wrong constant name <Class:NoArgument>
-# wrong constant name <Class:OptionalArgument>
-# wrong constant name <Class:PlacedArgument>
-# wrong constant name <Class:RequiredArgument>
-# wrong constant name add_banner
-# wrong constant name arg
-# wrong constant name block
-# wrong constant name compsys
-# wrong constant name conv
-# wrong constant name desc
-# wrong constant name initialize
-# wrong constant name long
-# wrong constant name match_nonswitch?
-# wrong constant name pattern
-# wrong constant name short
-# wrong constant name summarize
-# wrong constant name switch_name
-# wrong constant name parse
-# wrong constant name <static-init>
-# wrong constant name incompatible_argument_styles
-# wrong constant name parse
-# wrong constant name <static-init>
-# wrong constant name parse
-# wrong constant name <static-init>
-# wrong constant name parse
-# wrong constant name <static-init>
-# wrong constant name <static-init>
-# wrong constant name guess
-# wrong constant name incompatible_argument_styles
-# wrong constant name pattern
-# wrong constant name <static-init>
-# wrong constant name accept
-# wrong constant name getopts
-# wrong constant name inc
-# wrong constant name reject
-# wrong constant name terminate
-# wrong constant name top
-# wrong constant name with
 # uninitialized constant Opus
 # uninitialized constant Opus
 # undefined method `basename$1' for class `Pathname'
@@ -3735,11 +3530,8 @@
 # wrong constant name symlink?$2
 # wrong constant name sysopen$1
 # wrong constant name write$1
-# undefined singleton method `glob$1' for `Pathname'
-# wrong constant name glob$1
 # undefined method `curry$1' for class `Proc'
 # wrong constant name ===
-# wrong constant name []
 # wrong constant name clone
 # wrong constant name curry$1
 # wrong constant name lambda?
@@ -4038,8 +3830,220 @@
 # wrong constant name split
 # wrong constant name signm
 # wrong constant name signo
-# uninitialized constant SingleForwardable
-# uninitialized constant SingleForwardable
+# wrong constant name <Class:ArrayFilter>
+# wrong constant name <Class:BlockFilter>
+# wrong constant name <Class:CommandGuesser>
+# wrong constant name <Class:Configuration>
+# wrong constant name <Class:ExitCodes>
+# wrong constant name <Class:FileList>
+# wrong constant name <Class:Filter>
+# wrong constant name <Class:Formatter>
+# wrong constant name <Class:LastRun>
+# wrong constant name <Class:LinesClassifier>
+# wrong constant name <Class:Profiles>
+# wrong constant name <Class:RawCoverage>
+# wrong constant name <Class:RegexFilter>
+# wrong constant name <Class:Result>
+# wrong constant name <Class:ResultMerger>
+# wrong constant name <Class:SourceFile>
+# wrong constant name <Class:StringFilter>
+# wrong constant name matches?
+# wrong constant name <static-init>
+# wrong constant name matches?
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name guess
+# wrong constant name original_run_command
+# wrong constant name original_run_command=
+# wrong constant name adapters
+# wrong constant name add_filter
+# wrong constant name add_group
+# wrong constant name at_exit
+# wrong constant name command_name
+# wrong constant name configure
+# wrong constant name coverage_dir
+# wrong constant name coverage_path
+# wrong constant name filters
+# wrong constant name filters=
+# wrong constant name formatter
+# wrong constant name formatter=
+# wrong constant name formatters
+# wrong constant name formatters=
+# wrong constant name groups
+# wrong constant name groups=
+# wrong constant name maximum_coverage_drop
+# wrong constant name merge_timeout
+# wrong constant name minimum_coverage
+# wrong constant name minimum_coverage_by_file
+# wrong constant name nocov_token
+# wrong constant name profiles
+# wrong constant name project_name
+# wrong constant name refuse_coverage_drop
+# wrong constant name root
+# wrong constant name skip_token
+# wrong constant name track_files
+# wrong constant name tracked_files
+# wrong constant name use_merging
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# uninitialized constant SimpleCov::FileList::Elem
+# wrong constant name covered_lines
+# wrong constant name covered_percent
+# wrong constant name covered_percentages
+# wrong constant name covered_strength
+# wrong constant name least_covered_file
+# wrong constant name lines_of_code
+# wrong constant name missed_lines
+# wrong constant name never_lines
+# wrong constant name skipped_lines
+# wrong constant name <static-init>
+# wrong constant name filter_argument
+# wrong constant name initialize
+# wrong constant name matches?
+# wrong constant name passes?
+# wrong constant name <static-init>
+# wrong constant name build_filter
+# wrong constant name class_for_argument
+# wrong constant name <Class:HTMLFormatter>
+# wrong constant name <Class:MultiFormatter>
+# wrong constant name <Class:SimpleFormatter>
+# wrong constant name format
+# wrong constant name output_message
+# wrong constant name <static-init>
+# wrong constant name <Class:InstanceMethods>
+# wrong constant name format
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name new
+# wrong constant name format
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name last_run_path
+# wrong constant name read
+# wrong constant name write
+# wrong constant name classify
+# wrong constant name <static-init>
+# wrong constant name no_cov_line
+# wrong constant name no_cov_line?
+# wrong constant name whitespace_line?
+# uninitialized constant SimpleCov::Profiles::Elem
+# uninitialized constant SimpleCov::Profiles::K
+# uninitialized constant SimpleCov::Profiles::V
+# wrong constant name define
+# wrong constant name load
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name merge_file_coverage
+# wrong constant name merge_line_coverage
+# wrong constant name merge_results
+# wrong constant name merge_resultsets
+# wrong constant name matches?
+# wrong constant name <static-init>
+# wrong constant name command_name
+# wrong constant name command_name=
+# wrong constant name covered_lines
+# wrong constant name covered_percent
+# wrong constant name covered_percentages
+# wrong constant name covered_strength
+# wrong constant name created_at
+# wrong constant name created_at=
+# wrong constant name filenames
+# wrong constant name files
+# wrong constant name format!
+# wrong constant name groups
+# wrong constant name initialize
+# wrong constant name least_covered_file
+# wrong constant name missed_lines
+# wrong constant name original_result
+# wrong constant name source_files
+# wrong constant name to_hash
+# wrong constant name total_lines
+# wrong constant name <static-init>
+# wrong constant name from_hash
+# wrong constant name <static-init>
+# wrong constant name clear_resultset
+# wrong constant name merge_results
+# wrong constant name merged_result
+# wrong constant name results
+# wrong constant name resultset
+# wrong constant name resultset_path
+# wrong constant name resultset_writelock
+# wrong constant name store_result
+# wrong constant name stored_data
+# wrong constant name synchronize_resultset
+# wrong constant name <Class:Line>
+# wrong constant name build_lines
+# wrong constant name coverage
+# wrong constant name coverage_exceeding_source_warn
+# wrong constant name covered_lines
+# wrong constant name covered_percent
+# wrong constant name covered_strength
+# wrong constant name filename
+# wrong constant name initialize
+# wrong constant name line
+# wrong constant name lines
+# wrong constant name lines_of_code
+# wrong constant name lines_strength
+# wrong constant name missed_lines
+# wrong constant name never_lines
+# wrong constant name no_lines?
+# wrong constant name process_skipped_lines
+# wrong constant name project_filename
+# wrong constant name relevant_lines
+# wrong constant name skipped_lines
+# wrong constant name source
+# wrong constant name source_lines
+# wrong constant name src
+# wrong constant name coverage
+# wrong constant name covered?
+# wrong constant name initialize
+# wrong constant name line
+# wrong constant name line_number
+# wrong constant name missed?
+# wrong constant name never?
+# wrong constant name number
+# wrong constant name skipped
+# wrong constant name skipped!
+# wrong constant name skipped?
+# wrong constant name source
+# wrong constant name src
+# wrong constant name status
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name matches?
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name add_not_loaded_files
+# wrong constant name clear_result
+# wrong constant name exit_exception
+# wrong constant name exit_status_from_exception
+# wrong constant name filtered
+# wrong constant name final_result_process?
+# wrong constant name grouped
+# wrong constant name load_adapter
+# wrong constant name load_profile
+# wrong constant name pid
+# wrong constant name pid=
+# wrong constant name process_result
+# wrong constant name result
+# wrong constant name result?
+# wrong constant name result_exit_status
+# wrong constant name run_exit_tasks!
+# wrong constant name running
+# wrong constant name running=
+# wrong constant name set_exit_exception
+# wrong constant name start
+# wrong constant name usable?
+# wrong constant name wait_for_other_processes
+# wrong constant name write_last_run
+# wrong constant name def_delegator
+# wrong constant name def_delegators
+# wrong constant name def_single_delegator
+# wrong constant name def_single_delegators
+# wrong constant name delegate
+# wrong constant name single_delegate
 # wrong constant name _dump
 # wrong constant name clone
 # wrong constant name dup
@@ -4144,9 +4148,10 @@
 # wrong constant name <static-init>
 # wrong constant name cyan
 # wrong constant name emojify
+# wrong constant name init
 # wrong constant name main
 # wrong constant name make_step
-# wrong constant name parse_command
+# wrong constant name usage
 # wrong constant name yellow
 # wrong constant name <static-init>
 # wrong constant name real_ancestors
@@ -4205,7 +4210,6 @@
 # wrong constant name <static-init>
 # wrong constant name main
 # wrong constant name output_file
-# wrong constant name <static-init>
 # uninitialized constant SortedSet::InspectKey
 # Did you mean?  SortedSet::InspectKey
 # wrong constant name initialize
@@ -4234,6 +4238,7 @@
 # undefined method `lines$1' for class `String'
 # undefined method `ljust$1' for class `String'
 # undefined method `match$2' for class `String'
+# undefined method `match?$2' for class `String'
 # undefined method `prepend$1' for class `String'
 # Did you mean?  prepend
 #                prepended
@@ -4288,7 +4293,7 @@
 # wrong constant name lines$1
 # wrong constant name ljust$1
 # wrong constant name match$2
-# wrong constant name match?
+# wrong constant name match?$2
 # wrong constant name prepend$1
 # wrong constant name reverse!
 # wrong constant name rindex$1
@@ -4500,18 +4505,6 @@
 # wrong constant name enclose
 # wrong constant name enclosed?
 # wrong constant name list
-# undefined singleton method `at$2' for `Time'
-# undefined singleton method `gm$1' for `Time'
-# undefined singleton method `local$1' for `Time'
-# undefined singleton method `mktime$1' for `Time'
-# undefined singleton method `utc$1' for `Time'
-# undefined singleton method `zone_offset$1' for `Time'
-# wrong constant name at$2
-# wrong constant name gm$1
-# wrong constant name local$1
-# wrong constant name mktime$1
-# wrong constant name utc$1
-# wrong constant name zone_offset$1
 # wrong constant name event
 # wrong constant name decode
 # wrong constant name encode
