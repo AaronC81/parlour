@@ -35,15 +35,15 @@ Here's a quick example of how you can generate an RBI:
 require 'parlour'
 
 generator = Parlour::RbiGenerator.new
-generator.root.create_module(name: 'A') do |a|
-  a.create_class(name: 'Foo') do |foo|
-    foo.create_method(name: 'add_two_integers', parameters: [
-      Parlour::RbiGenerator::Parameter.new(name: 'a', type: 'Integer'),
-      Parlour::RbiGenerator::Parameter.new(name: 'b', type: 'Integer')
+generator.root.create_module('A') do |a|
+  a.create_class('Foo') do |foo|
+    foo.create_method('add_two_integers', parameters: [
+      Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),
+      Parlour::RbiGenerator::Parameter.new('b', type: 'Integer')
     ], return_type: 'Integer')
   end
 
-  a.create_class(name: 'Bar', superclass: 'Foo')
+  a.create_class('Bar', superclass: 'Foo')
 end
 
 generator.rbi # => Our RBI as a string
@@ -74,15 +74,15 @@ require 'parlour'
 
 class MyPlugin < Parlour::Plugin
   def generate(root)
-    root.create_module(name: 'A') do |a|
-      a.create_class(name: 'Foo') do |foo|
-        foo.create_method(name: 'add_two_integers', parameters: [
-          Parlour::RbiGenerator::Parameter.new(name: 'a', type: 'Integer'),
-          Parlour::RbiGenerator::Parameter.new(name: 'b', type: 'Integer')
+    root.create_module('A') do |a|
+      a.create_class('Foo') do |foo|
+        foo.create_method('add_two_integers', parameters: [
+          Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),
+          Parlour::RbiGenerator::Parameter.new('b', type: 'Integer')
         ], return_type: 'Integer')
       end
 
-      a.create_class(name: 'Bar', superclass: 'Foo')
+      a.create_class('Bar', superclass: 'Foo')
     end
   end
 end

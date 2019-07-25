@@ -52,12 +52,12 @@ module Parlour
       # the definition for this object, not in the definition's body.
       #
       # @example Creating a module with a comment.
-      #   namespace.create_module(name: 'M') do |m|
+      #   namespace.create_module('M') do |m|
       #     m.add_comment('This is a module')
       #   end
       #
       # @example Creating a class with a multi-line comment.
-      #   namespace.create_class(name: 'C') do |c|
+      #   namespace.create_class('C') do |c|
       #     c.add_comment(['This is a multi-line comment!', 'It can be as long as you want!'])
       #   end
       #
