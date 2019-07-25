@@ -3,6 +3,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.5.2] - 2019-07-24
+### Added
+- Added the `Namespace#create_includes` and `Namespace#create_extends` methods
+to add multiple `include` and `extend` calls at once.
+
+### Changed
+- Signatures for some methods using keyword parameters have been altered such
+that those keywords are required. Previously, these parameters defaulted to
+`nil`, and the Sorbet runtime would fail an assertion if they weren't present.
+
+### Fixed
+- Fixed some incorrect documentation for the `Namespace` methods `path` and
+`create_constant`.
+- Fixed a Sorbet signature for `Method#describe` which was causing an exception.
+
 ## [0.5.1] - 2019-07-21
 ### Added
 - Added the `Namespace#path` method for plugins to use.

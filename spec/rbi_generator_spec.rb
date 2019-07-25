@@ -1,3 +1,4 @@
+# typed: ignore
 RSpec.describe Parlour::RbiGenerator do
   def fix_heredoc(x)
     lines = x.lines
@@ -212,7 +213,7 @@ RSpec.describe Parlour::RbiGenerator do
     it 'cannot accept both returns: and return_type:' do
       expect do
         subject.root.create_method('foo', returns: 'String', return_type: 'String')
-      end.to raise_error
+      end.to raise_error(RuntimeError)
     end
  
     it 'can be created with parameters' do

@@ -28,7 +28,7 @@ module Parlour
       registered_plugins[T.must(new_plugin.name)] = new_plugin
     end
 
-    sig { params(plugins: T::Array[Plugin], generator: RbiGenerator).void }
+    sig { params(plugins: T::Array[Plugin], generator: RbiGenerator, allow_failure: T::Boolean).void }
     # Runs an array of plugins on a given generator instance.
     #
     # @param plugins [Array<Plugin>] An array of {Plugin} instances.
@@ -38,12 +38,14 @@ module Parlour
     # @return [void]
     def self.run_plugins(plugins, generator, allow_failure: true)
       plugins.each do |plugin|
-        puts "=== #{plugin.class.name}"
-        generator.current_plugin = plugin
-        plugin.generate(generator.root)
-      rescue Exception => e
-        raise e unless allow_failure
-        puts "!!! This plugin threw an exception: #{e}"
+        begin
+          puts "=== #{plugin.class.name}"
+          generator.current_plugin = plugin
+          plugin.generate(generator.root)
+        rescue Exception => e
+          raise e unless allow_failure
+          puts "!!! This plugin threw an exception: #{e}"
+        end
       end
     end
 
