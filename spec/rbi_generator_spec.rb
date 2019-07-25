@@ -212,7 +212,7 @@ RSpec.describe Parlour::RbiGenerator do
     it 'cannot accept both returns: and return_type:' do
       expect do
         subject.root.create_method(name: 'foo', returns: 'String', return_type: 'String')
-      end.to raise_error
+      end.to raise_error(RuntimeError)
     end
  
     it 'can be created with parameters' do
