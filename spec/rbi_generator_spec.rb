@@ -1,3 +1,4 @@
+# typed: ignore
 RSpec.describe Parlour::RbiGenerator do
   def fix_heredoc(x)
     lines = x.lines
