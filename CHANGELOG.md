@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.6.0] - 2019-07-25
+### Changed
+- **Breaking change: the `name: ` keyword argument is now positional instead.**
+Instead of `create_method(name: 'A', returns: 'String')`, use
+`create_method('A', returns: 'String')`.
+- Altered some syntax to improve compatibility with previous Ruby versions.
+(Full compatibility is still WIP.)
+
+### Fixed
+- Fixed some Sorbet type signatures.
+- Fixed an RSpec warning.
+
 ## [0.5.2] - 2019-07-24
 ### Added
 - Added the `Namespace#create_includes` and `Namespace#create_extends` methods
