@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.6.1] - 2019-07-29
+### Changed
+- Various areas of the codebase have been made compatible with older Ruby
+versions.
+
 ## [0.6.0] - 2019-07-25
 ### Changed
 - **Breaking change: the `name: ` keyword argument is now positional instead.**
