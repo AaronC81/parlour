@@ -166,8 +166,7 @@ relative_requires:
   - plugin.rb
   
 plugins:
-  MyPlugin: {}
-</code></pre>
+  MyPlugin: {}</code></pre>
 
 <p>The <code>{}</code> indicates that this plugin needs no extra
 configuration. If it did need configuration, this could be specified like
@@ -176,8 +175,7 @@ so:</p>
 <pre class="code ruby"><code class="ruby">plugins:
   MyPlugin:
     foo: something
-    bar: something else
-</code></pre>
+    bar: something else</code></pre>
 
 <p>You can also use plugins from gems. If that plugin was published as a gem
 called <code>parlour-gem</code>:</p>
@@ -188,8 +186,7 @@ requires:
   - parlour-gem
   
 plugins:
-  MyPlugin: {}
-</code></pre>
+  MyPlugin: {}</code></pre>
 
 <p>The real power of this is the ability to use many plugins at once:</p>
 
@@ -203,8 +200,7 @@ requires:
 plugins:
   Gem1::Plugin: {}
   Gem2::Plugin: {}
-  Gem3::Plugin: {}
-</code></pre>
+  Gem3::Plugin: {}</code></pre>
 
 <h2 id="label-Parlour+Plugins">Parlour Plugins</h2>
 
@@ -242,9 +238,9 @@ of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Jul 29 11:13:31 2019 by
+  Generated on Mon Jul 29 11:13:40 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.5.5).
+  0.9.20 (ruby-2.3.8).
 </div>
 
     </div>
