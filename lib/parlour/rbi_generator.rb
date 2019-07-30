@@ -38,12 +38,12 @@ module Parlour
     # @return [Plugin, nil]
     attr_accessor :current_plugin
 
-    sig { returns(String) }
+    sig { params(strictness: String).returns(String) }
     # Returns the complete contents of the generated RBI file as a string.
     #
     # @return [String] The generated RBI file
-    def rbi
-      "# typed: strong\n" + root.generate_rbi(0, options).join("\n")
+    def rbi(strictness = 'strong')
+      "# typed: #{strictness}\n" + root.generate_rbi(0, options).join("\n")
     end
   end
 end
