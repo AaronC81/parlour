@@ -16,3 +16,11 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+def suppress_stdout
+  prev_stdout = $stdout
+  $stdout = StringIO.new
+  yield
+rescue StandardError
+  $stdout = prev_stdout
+end
