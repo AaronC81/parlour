@@ -63,8 +63,9 @@ module Parlour
 
     sig { returns(String) }
     # The strictness level which this plugin would prefer the generated RBI
-    # uses. There is no guarantee that this level will be used if other plugins
-    # request different strictness levels.
+    # uses. If other plugins request different strictness levels, then the 
+    # lowest strictness will be used, meaning there is no guarantee that this
+    # level will be used.
     attr_accessor :strictness
   end
 end
