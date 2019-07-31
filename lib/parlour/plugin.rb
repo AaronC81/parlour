@@ -60,5 +60,11 @@ module Parlour
     # @param root [RbiGenerator::Namespace] The root {RbiGenerator::Namespace}.
     # @return [void]
     def generate(root); end
+
+    sig { returns(String) }
+    # The strictness level which this plugin would prefer the generated RBI
+    # uses. There is no guarantee that this level will be used if other plugins
+    # request different strictness levels.
+    attr_accessor :strictness
   end
 end
