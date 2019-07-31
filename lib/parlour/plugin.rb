@@ -61,7 +61,7 @@ module Parlour
     # @return [void]
     def generate(root); end
 
-    sig { returns(String) }
+    sig { returns(T.nilable(String)) }
     # The strictness level which this plugin would prefer the generated RBI
     # uses. If other plugins request different strictness levels, then the 
     # lowest strictness will be used, meaning there is no guarantee that this
