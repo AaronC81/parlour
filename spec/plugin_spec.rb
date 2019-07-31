@@ -12,31 +12,38 @@ RSpec.describe Parlour::Plugin do
   end
 
   it 'executes a list of plugins' do
-    @@executed_plugins = []
+    class Tracker
+      @executed_plugins = []
+      class << self
+        attr_reader :executed_plugins
+      end
+    end
 
     class B < Parlour::Plugin
       def generate(*)
-        @@executed_plugins << self.class
+        Tracker.executed_plugins << self.class
       end
     end
 
     class C < Parlour::Plugin
       def generate(*)
-        @@executed_plugins << self.class
+        Tracker.executed_plugins << self.class
       end
     end
 
     class D < Parlour::Plugin
       def generate(*)
-        @@executed_plugins << self.class
+        Tracker.executed_plugins << self.class
       end
     end
 
-    described_class.run_plugins(
-      [B.new({}), C.new({}), D.new({})],
-      Parlour::RbiGenerator.new,
-      allow_failure: false
-    )
-    expect(@@executed_plugins).to eq [B, C, D]
+    suppress_stdout do
+      described_class.run_plugins(
+        [B.new({}), C.new({}), D.new({})],
+        Parlour::RbiGenerator.new,
+        allow_failure: false
+      )
+    end
+    expect(Tracker.executed_plugins).to eq [B, C, D]
   end
 end
