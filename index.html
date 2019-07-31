@@ -60,34 +60,23 @@
       <div id="content"><div id='filecontents'>
 <h1 id="label-Parlour">Parlour</h1>
 
-<p><a href="https://travis-ci.org/AaronC81/parlour"><img
-src="https://travis-ci.org/AaronC81/parlour.svg?branch=master"></a> <img
-src="https://img.shields.io/gem/v/parlour.svg"></p>
+<p><a href="https://travis-ci.org/AaronC81/parlour"><img src="https://travis-ci.org/AaronC81/parlour.svg?branch=master"></a> <img src="https://img.shields.io/gem/v/parlour.svg"></p>
 
-<p>Parlour is an RBI generator and merger for Sorbet. It consists of two key
-parts:</p>
+<p>Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:</p>
 <ul><li>
-<p>The generator, which outputs beautifully formatted RBI files, created using
-an intuitive DSL.</p>
+<p>The generator, which outputs beautifully formatted RBI files, created using an intuitive DSL.</p>
 </li><li>
-<p>The plugin/build system, which allows multiple Parlour plugins to generate
-RBIs for the same codebase. These are combined automatically as much as
-possible, but any other conflicts can be resolved manually through prompts.</p>
+<p>The plugin/build system, which allows multiple Parlour plugins to generate RBIs for the same codebase. These are combined automatically as much as possible, but any other conflicts can be resolved manually through prompts.</p>
 </li></ul>
 
 <h2 id="label-Why+should+I+use+this-3F">Why should I use this?</h2>
 <ul><li>
-<p>Parlour enables <strong>much easier creation of RBI generators</strong>, as
-formatting is all handled for you, and you don&#39;t need to write your own
-CLI.</p>
+<p>Parlour enables <strong>much easier creation of RBI generators</strong>, as formatting is all handled for you, and you don&#39;t need to write your own CLI.</p>
 </li><li>
-<p>You can <strong>use many plugins together seamlessly</strong>, running them
-all with a single command and consolidating all of their definitions into a
-single RBI output file.</p>
+<p>You can <strong>use many plugins together seamlessly</strong>, running them all with a single command and consolidating all of their definitions into a single RBI output file.</p>
 </li></ul>
 
-<p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a>
-to get started!</p>
+<p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a> to get started!</p>
 
 <h2 id="label-Creating+RBIs">Creating RBIs</h2>
 
@@ -127,8 +116,7 @@ to get started!</p>
 
 <h3 id="label-Writing+a+plugin">Writing a plugin</h3>
 
-<p>Plugins are better than using the generator alone, as your plugin can be
-combined with others to produce larger RBIs without conflicts.</p>
+<p>Plugins are better than using the generator alone, as your plugin can be combined with others to produce larger RBIs without conflicts.</p>
 
 <p>We could write the above example as a plugin like this:</p>
 
@@ -150,15 +138,9 @@ combined with others to produce larger RBIs without conflicts.</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<p>(Obviously, your plugin will probably examine a codebase somehow, to be
-more useful!)</p>
+<p>(Obviously, your plugin will probably examine a codebase somehow, to be more useful!)</p>
 
-<p>You can then run several plugins, combining their output and saving it into
-one RBI file, using the command-line tool. The command line tool is
-configurated using a <code>.parlour</code> YAML file. For example, if that
-code was in a file called <code>plugin.rb</code>, then using this
-<code>.parlour</code> file and then running <code>parlour</code> would save
-the RBI into <code>output.rbi</code>:</p>
+<p>You can then run several plugins, combining their output and saving it into one RBI file, using the command-line tool. The command line tool is configurated using a <code>.parlour</code> YAML file. For example, if that code was in a file called <code>plugin.rb</code>, then using this <code>.parlour</code> file and then running <code>parlour</code> would save the RBI into <code>output.rbi</code>:</p>
 
 <pre class="code ruby"><code class="ruby">output_file: output.rbi
 
@@ -166,19 +148,18 @@ relative_requires:
   - plugin.rb
   
 plugins:
-  MyPlugin: {}</code></pre>
+  MyPlugin: {}
+</code></pre>
 
-<p>The <code>{}</code> indicates that this plugin needs no extra
-configuration. If it did need configuration, this could be specified like
-so:</p>
+<p>The <code>{}</code> indicates that this plugin needs no extra configuration. If it did need configuration, this could be specified like so:</p>
 
 <pre class="code ruby"><code class="ruby">plugins:
   MyPlugin:
     foo: something
-    bar: something else</code></pre>
+    bar: something else
+</code></pre>
 
-<p>You can also use plugins from gems. If that plugin was published as a gem
-called <code>parlour-gem</code>:</p>
+<p>You can also use plugins from gems. If that plugin was published as a gem called <code>parlour-gem</code>:</p>
 
 <pre class="code ruby"><code class="ruby">output_file: output.rbi
 
@@ -186,7 +167,8 @@ requires:
   - parlour-gem
   
 plugins:
-  MyPlugin: {}</code></pre>
+  MyPlugin: {}
+</code></pre>
 
 <p>The real power of this is the ability to use many plugins at once:</p>
 
@@ -200,47 +182,35 @@ requires:
 plugins:
   Gem1::Plugin: {}
   Gem2::Plugin: {}
-  Gem3::Plugin: {}</code></pre>
+  Gem3::Plugin: {}
+</code></pre>
 
 <h2 id="label-Parlour+Plugins">Parlour Plugins</h2>
 
-<p><em>Have you written an awesome Parlour plugin? Please submit a PR to add
-it to this list!</em></p>
+<p><em>Have you written an awesome Parlour plugin? Please submit a PR to add it to this list!</em></p>
 <ul><li>
-<p><a href="https://github.com/AaronC81/sord">Sord</a> - Generate RBIs from
-YARD documentation</p>
+<p><a href="https://github.com/AaronC81/sord">Sord</a> - Generate RBIs from YARD documentation</p>
 </li><li>
-<p><a
-href="https://github.com/AaronC81/parlour-datamapper">parlour-datamapper</a>
-- Simple plugin for generating DataMapper model types</p>
+<p><a href="https://github.com/AaronC81/parlour-datamapper">parlour-datamapper</a> - Simple plugin for generating DataMapper model types</p>
 </li></ul>
 
 <h2 id="label-Contributing">Contributing</h2>
 
-<p>Bug reports and pull requests are welcome on GitHub at <a
-href="https://github.com/AaronC81/parlour">github.com/AaronC81/parlour</a>.
-This project is intended to be a safe, welcoming space for collaboration,
-and contributors are expected to adhere to the <a
-href="http://contributor-covenant.org">Contributor Covenant</a> code of
-conduct.</p>
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/AaronC81/parlour">github.com/AaronC81/parlour</a>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the <a href="http://contributor-covenant.org">Contributor Covenant</a> code of conduct.</p>
 
 <h2 id="label-License">License</h2>
 
-<p>The gem is available as open source under the terms of the <a
-href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
 
 <h2 id="label-Code+of+Conduct">Code of Conduct</h2>
 
-<p>Everyone interacting in the Parlour project’s codebases, issue trackers,
-chat rooms and mailing lists is expected to follow the <a
-href="https://github.com/AaronC81/parlour/blob/master/CODE_OF_CONDUCT.md">code
-of conduct</a>.</p>
+<p>Everyone interacting in the Parlour project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the <a href="https://github.com/AaronC81/parlour/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Wed Jul 31 10:36:43 2019 by
+  Generated on Wed Jul 31 10:36:49 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.4.6).
+  0.9.20 (ruby-2.6.3).
 </div>
 
     </div>
