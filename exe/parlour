@@ -76,7 +76,7 @@ command :run do |c|
     requested_strictness_levels = plugin_instances.map do |plugin|
       s = plugin.strictness&.to_s
       puts "WARNING: Plugin #{plugin.class.name} requested an invalid strictness #{s}" \
-        unless %w[ignore false true strict strong].include?(s)
+        unless s && %w[ignore false true strict strong].include?(s)
       s
     end.compact
     unique_strictness_levels = requested_strictness_levels.uniq
