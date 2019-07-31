@@ -74,7 +74,7 @@ command :run do |c|
 
     # Figure out strictness levels
     requested_strictness_levels = plugin_instances.map do |plugin|
-      s = plugin.strictness.to_s
+      s = plugin.strictness&.to_s
       puts "WARNING: Plugin #{plugin.class.name} requested an invalid strictness #{s}" \
         unless %w[ignore false true strict strong].include?(s)
       s
