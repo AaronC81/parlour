@@ -111,7 +111,10 @@
   <div class='inline'></div>
 </div>
 
-<p>An abstract class which is subclassed by any classes which can generate entire lines of an RBI, such as <span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span> and <span class='object_link'><a href="Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span>. (As an example, <span class='object_link'><a href="Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span> is <em>not</em> a subclass because it does not generate lines, only segments of definition and signature lines.)</p>
+<p>An abstract class which is subclassed by any classes which can generate
+entire lines of an RBI, such as <span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span> and <span class='object_link'><a href="Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span>. (As an example,
+<span class='object_link'><a href="Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span> is <em>not</em> a subclass because it does not generate lines,
+only segments of definition and signature lines.)</p>
 
 
   </div>
@@ -182,7 +185,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>The <span class='object_link'><a href="../Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span> which was controlling the <span class='object_link'><a href="#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span> when this object was created.</p>
+<p>The <span class='object_link'><a href="../Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span> which was controlling the <span class='object_link'><a href="#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span> when this object was
+created.</p>
 </div></span>
   
 </li>
@@ -401,7 +405,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given an array of other objects, returns true if they may be merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>.</p>
+<p>Given an array of other objects, returns true if they may be merged into
+this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>.</p>
 </div></span>
   
 </li>
@@ -581,7 +586,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>The <span class='object_link'><a href="../Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span> which was controlling the <span class='object_link'><a href="#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span> when this object was created.</p>
+<p>The <span class='object_link'><a href="../Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span> which was controlling the <span class='object_link'><a href="#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span> when this object was
+created.</p>
 
 
   </div>
@@ -758,7 +764,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>Adds one or more comments to this RBI object. Comments always go above  the definition for this object, not in the definition&#39;s body.</p>
+<p>Adds one or more comments to this RBI object. Comments always go above  the
+definition for this object, not in the definition&#39;s body.</p>
 
 
   </div>
@@ -854,7 +861,9 @@
   <div class='inline'></div>
 </div>
 
-<p>Returns a human-readable brief string description of this object. This is displayed during manual conflict resolution with the <code>parlour</code> CLI.</p>
+<p>Returns a human-readable brief string description of this object. This is
+displayed during manual conflict resolution with the <code>parlour</code>
+CLI.</p>
 
 
   </div>
@@ -1003,7 +1012,9 @@
   <div class='inline'></div>
 </div>
 <p class="note returns_void">This method returns an undefined value.</p>
-<p>Given an array of other objects, merges them into this one. Each subclass will do this differently. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::RbiObject#mergeable? (method)">#mergeable?</a></span> is true for those instances.</p>
+<p>Given an array of other objects, merges them into this one. Each subclass
+will do this differently. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::RbiObject#mergeable? (method)">#mergeable?</a></span> is true for
+those instances.</p>
 
 
   </div>
@@ -1064,7 +1075,9 @@
   <div class='inline'></div>
 </div>
 
-<p>Given an array of other objects, returns true if they may be merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>. Each subclass will have its own criteria on what allows objects to be mergeable.</p>
+<p>Given an array of other objects, returns true if they may be merged into
+this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>. Each subclass will have its own
+criteria on what allows objects to be mergeable.</p>
 
 
   </div>
@@ -1132,9 +1145,9 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 31 10:36:52 2019 by
+  Generated on Wed Jul 31 10:36:57 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.3).
+  0.9.20 (ruby-2.5.5).
 </div>
 
     </div>
