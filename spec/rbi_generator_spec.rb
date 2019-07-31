@@ -1,16 +1,5 @@
 # typed: ignore
 RSpec.describe Parlour::RbiGenerator do
-  def fix_heredoc(x)
-    lines = x.lines
-    /^( *)/ === lines.first
-    indent_amount = $1.length
-    lines.map do |line|
-      /^ +$/ === line[0...indent_amount] \
-        ? line[indent_amount..-1]
-        : line
-    end.join.rstrip
-  end
-
   def pa(*a)
     Parlour::RbiGenerator::Parameter.new(*a)
   end

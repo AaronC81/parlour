@@ -24,3 +24,14 @@ def suppress_stdout
 rescue StandardError
   $stdout = prev_stdout
 end
+
+def fix_heredoc(x)
+  lines = x.lines
+  /^( *)/ === lines.first
+  indent_amount = $1.length
+  lines.map do |line|
+    /^ +$/ === line[0...indent_amount] \
+      ? line[indent_amount..-1]
+      : line
+  end.join.rstrip
+end
