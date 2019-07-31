@@ -16,7 +16,10 @@ command :run do |c|
   c.description = 'Generates an RBI file from your .parlour file'
 
   c.action do |args, options|
-    configuration = keys_to_symbols(YAML.load_file(File.join(Dir.pwd, '.parlour')))
+    configuration_path = File.join(Dir.pwd, '.parlour')
+    raise 'there is no .parlour file in the current directory' \
+      unless File.file?(configuration_path)
+    configuration = keys_to_symbols(YAML.load_file(configuration_path))
 
     raise 'you must specify output_file in your .parlour file' unless configuration[:output_file]
 
