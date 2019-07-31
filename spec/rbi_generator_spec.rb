@@ -440,4 +440,9 @@ RSpec.describe Parlour::RbiGenerator do
       expect { subject.root.create_module('X').path(::A::B::C) { |*| } }.to raise_error(RuntimeError)
     end
   end
+
+  it 'allows a strictness level to be specified' do
+    expect(subject.rbi).to match /^\# typed: strong/
+    expect(subject.rbi('true')).to match /^\# typed: true/
+  end
 end
