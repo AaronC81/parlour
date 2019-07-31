@@ -71,9 +71,32 @@ command :run do |c|
       choice = ask("?  ", Integer) { |q| q.in = 0..candidates.length }
       choice == 0 ? nil : candidates[choice - 1]
     end
+
+    # Figure out strictness levels
+    requested_strictness_levels = plugin_instances.map do |plugin|
+      s = plugin.strictness.to_s
+      puts "WARNING: Plugin #{plugin.class.name} requested an invalid strictness #{s}" \
+        unless %w[ignore false true strict strong].include?(s)
+      s
+    end.compact
+    unique_strictness_levels = requested_strictness_levels.uniq
+    if unique_strictness_levels.empty?
+      # If no requests were made, just use the default
+      strictness = 'strong' 
+    else
+      # Sort the strictnesses into "strictness order" and pick the weakest
+      strictness = unique_strictness_levels.min_by do |level|
+        %w[ignore false true strict strong].index(level) || Float::INFINITY
+      end
+      if unique_strictness_levels.one?
+        puts Rainbow('Note: ').yellow.bold + "All plugins specified the same strictness level, using it (#{strictness})"
+      else
+        puts Rainbow('Note: ').yellow.bold + "Plugins specified multiple strictness levels, chose the weakest (#{strictness})"
+      end
+    end
  
     # Write the final RBI
-    File.write(configuration[:output_file], gen.rbi)
+    File.write(configuration[:output_file], gen.rbi(strictness))
   end
 end
 
