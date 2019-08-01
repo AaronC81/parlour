@@ -12,13 +12,16 @@ rvm:
 matrix:
   allow_failures:
     - rvm: ruby-head
-after_success:
-  - yard
-deploy:
-  provider: pages
-  local_dir: doc
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  keep_history: true
-  on:
-    branch: master
+
+jobs:
+  include:
+    - stage: deploy documentation
+      script: yard
+      deploy:
+        provider: pages
+        local_dir: doc
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        keep_history: true
+        on:
+          branch: master
