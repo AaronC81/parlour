@@ -107,7 +107,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Responsible for resolving conflicts (that is, multiple definitions with the same name) between objects defined in the same namespace.</p>
+<p>Responsible for resolving conflicts (that is, multiple definitions with the
+same name) between objects defined in the same namespace.</p>
 
 
   </div>
@@ -148,7 +149,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given a namespace, attempts to automatically resolve conflicts in the namespace&#39;s definitions.</p>
+<p>Given a namespace, attempts to automatically resolve conflicts in the
+namespace&#39;s definitions.</p>
 </div></span>
   
 </li>
@@ -176,11 +178,21 @@
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>Given a namespace, attempts to automatically resolve conflicts in the namespace&#39;s definitions. (A conflict occurs when multiple objects share the same name.)</p>
+<p>Given a namespace, attempts to automatically resolve conflicts in the
+namespace&#39;s definitions. (A conflict occurs when multiple objects share
+the same name.)</p>
 
-<p>All children of the given namespace which are also namespaces are processed recursively, so passing <span class='object_link'><a href="RbiGenerator.html#root-instance_method" title="Parlour::RbiGenerator#root (method)">RbiGenerator#root</a></span> will eliminate all conflicts in the entire object tree.</p>
+<p>All children of the given namespace which are also namespaces are processed
+recursively, so passing <span class='object_link'><a href="RbiGenerator.html#root-instance_method" title="Parlour::RbiGenerator#root (method)">RbiGenerator#root</a></span> will eliminate all conflicts in
+the entire object tree.</p>
 
-<p>If automatic resolution is not possible, the block passed to this method is invoked and passed two arguments: a message on what the conflict is, and an array of candidate objects. The block should return one of these candidate objects, which will be kept, and all other definitions are deleted. Alternatively, the block may return nil, which will delete all definitions. The block may be invoked many times from one call to  <span class='object_link'><a href="#resolve_conflicts-instance_method" title="Parlour::ConflictResolver#resolve_conflicts (method)">#resolve_conflicts</a></span>, one for each unresolvable conflict.</p>
+<p>If automatic resolution is not possible, the block passed to this method is
+invoked and passed two arguments: a message on what the conflict is, and an
+array of candidate objects. The block should return one of these candidate
+objects, which will be kept, and all other definitions are deleted.
+Alternatively, the block may return nil, which will delete all definitions.
+The block may be invoked many times from one call to  <span class='object_link'><a href="#resolve_conflicts-instance_method" title="Parlour::ConflictResolver#resolve_conflicts (method)">#resolve_conflicts</a></span>,
+one for each unresolvable conflict.</p>
 
 
   </div>
@@ -255,7 +267,8 @@
       
         &mdash;
         <div class='inline'>
-<p>One of the <code>candidates</code>, which will be kept, or nil to keep none of them.</p>
+<p>One of the <code>candidates</code>, which will be kept, or nil to keep none
+of them.</p>
 </div>
       
     </li>
@@ -368,9 +381,9 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 31 14:54:45 2019 by
+  Generated on Thu Aug  1 16:26:18 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.3).
+  0.9.20 (ruby-2.3.8).
 </div>
 
     </div>
