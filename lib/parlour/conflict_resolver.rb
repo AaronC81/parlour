@@ -44,6 +44,12 @@ module Parlour
 
       grouped_by_name_children.each do |name, children|
         if children.length > 1
+          # Special case: do we have two methods, one of which is a class method 
+          # and the other isn't? If so, do nothing - this is fine
+          next if children.length == 2 &&
+            children.all? { |c| c.is_a?(RbiGenerator::Method) } &&
+            children.count { |c| T.cast(c, RbiGenerator::Method).class_method } == 1
+
           # We found a conflict!
           # Start by removing all the conflicting items
           children.each do |c|
