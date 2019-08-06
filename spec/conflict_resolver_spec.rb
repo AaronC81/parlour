@@ -151,6 +151,21 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 0
       expect(invocations).to be 1
     end
+
+    it 'preserves methods and class methods with the same name' do
+      a = gen.root.create_class('A') do |a|
+        a.create_method('foo', class_method: true)
+        a.create_method('foo')
+      end
+
+      expect(a.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(a) { |*| invocations += 1; nil }
+
+      expect(a.children.length).to be 2
+      expect(invocations).to be 0
+    end
   end
 
   context 'when resolving conflicts on modules' do
