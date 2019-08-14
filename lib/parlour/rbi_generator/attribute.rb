@@ -9,6 +9,7 @@ module Parlour
           name: String,
           kind: Symbol,
           type: String,
+          class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
@@ -21,15 +22,18 @@ module Parlour
       #   :accessor.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, kind, type, &block)
+      def initialize(generator, name, kind, type, class_attribute: false, &block)
         # According to this source: 
         #   https://github.com/sorbet/sorbet/blob/2275752e51604acfb79b30a0a96debc996c089d9/test/testdata/dsl/attr_multi.rb
         # attr_accessor and attr_reader should have: sig { returns(X) }
         # attr_writer :foo should have: sig { params(foo: X).returns(X) }
 
         @kind = kind
+        @class_attribute = class_attribute
         case kind
         when :accessor, :reader
           super(generator, name, [], type, &block)
@@ -46,6 +50,10 @@ module Parlour
       # The kind of attribute this is; one of +:writer+, +:reader+, or +:accessor+.
       # @return [Symbol]
       attr_reader :kind
+
+      sig { returns(T::Boolean) }
+      # Whether this attribute belongs to the singleton class.
+      attr_reader :class_attribute
 
       private
 

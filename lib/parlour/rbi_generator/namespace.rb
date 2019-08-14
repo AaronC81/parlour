@@ -264,14 +264,17 @@ module Parlour
       #   +:accessor+.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attribute(name, kind:, type:, &block)
+      def create_attribute(name, kind:, type:, class_attribute: false, &block)
         new_attribute = RbiGenerator::Attribute.new(
           generator,
           name,
           kind,
           type,
+          class_attribute: class_attribute,
           &block
         )
         move_next_comments(new_attribute)
@@ -285,10 +288,12 @@ module Parlour
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_reader(name, type:, &block)
-        create_attribute(name, kind: :reader, type: type, &block)
+      def create_attr_reader(name, type:, class_attribute: false, &block)
+        create_attribute(name, kind: :reader, type: type, class_attribute: class_attribute, &block)
       end
 
       # Creates a new write-only attribute (+attr_writer+).
@@ -296,10 +301,12 @@ module Parlour
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_writer(name, type:, &block)
-        create_attribute(name, kind: :writer, type: type, &block)
+      def create_attr_writer(name, type:, class_attribute: false, &block)
+        create_attribute(name, kind: :writer, type: type, class_attribute: class_attribute, &block)
       end
 
       # Creates a new read and write attribute (+attr_accessor+).
@@ -307,10 +314,12 @@ module Parlour
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_accessor(name, type:, &block)
-        create_attribute(name, kind: :accessor, type: type, &block)
+      def create_attr_accessor(name, type:, class_attribute: false, &block)
+        create_attribute(name, kind: :accessor, type: type, class_attribute: class_attribute, &block)
       end
 
       # Creates a new arbitrary code section.
