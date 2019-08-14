@@ -1538,7 +1538,7 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
 <p>Create an <code>attr_reader</code>.</p>
 </div></p>
       
-      <pre class="example code"><code>module.create_attribute(&#39;readable&#39;, :reader, &#39;String&#39;)
+      <pre class="example code"><code>module.create_attribute(&#39;readable&#39;, kind: :reader, type: &#39;String&#39;)
 # #=&gt; sig { returns(String) }
 #     attr_reader :readable</code></pre>
     
@@ -1547,7 +1547,7 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
 <p>Create an <code>attr_writer</code>.</p>
 </div></p>
       
-      <pre class="example code"><code>module.create_attribute(&#39;writable&#39;, :writer, &#39;Integer&#39;)
+      <pre class="example code"><code>module.create_attribute(&#39;writable&#39;, kind: :writer, type: &#39;Integer&#39;)
 # #=&gt; sig { params(writable: Integer).returns(Integer) }
 #     attr_writer :writable</code></pre>
     
@@ -1556,7 +1556,7 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
 <p>Create an <code>attr_accessor</code>.</p>
 </div></p>
       
-      <pre class="example code"><code>module.create_attribute(&#39;accessible&#39;, :accessor, &#39;T::Boolean&#39;)
+      <pre class="example code"><code>module.create_attribute(&#39;accessible&#39;, kind: :accessor, type: &#39;T::Boolean&#39;)
 # #=&gt; sig { returns(T::Boolean) }
 #     attr_accessor :accessible</code></pre>
     
@@ -3318,7 +3318,7 @@ This should only be executed on the root namespace.</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Aug  6 20:50:28 2019 by
+  Generated on Wed Aug 14 16:18:25 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
