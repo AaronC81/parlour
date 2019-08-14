@@ -245,17 +245,17 @@ module Parlour
       # Creates a new attribute.
       #
       # @example Create an +attr_reader+.
-      #   module.create_attribute('readable', :reader, 'String')
+      #   module.create_attribute('readable', kind: :reader, type: 'String')
       #   # #=> sig { returns(String) }
       #   #     attr_reader :readable
       #
       # @example Create an +attr_writer+.
-      #   module.create_attribute('writable', :writer, 'Integer')
+      #   module.create_attribute('writable', kind: :writer, type: 'Integer')
       #   # #=> sig { params(writable: Integer).returns(Integer) }
       #   #     attr_writer :writable
       #
       # @example Create an +attr_accessor+.
-      #   module.create_attribute('accessible', :accessor, 'T::Boolean')
+      #   module.create_attribute('accessible', kind: :accessor, type: 'T::Boolean')
       #   # #=> sig { returns(T::Boolean) }
       #   #     attr_accessor :accessible
       #
