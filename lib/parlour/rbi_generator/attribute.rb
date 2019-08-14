@@ -55,6 +55,20 @@ module Parlour
       # Whether this attribute belongs to the singleton class.
       attr_reader :class_attribute
 
+      sig { override.params(other: Object).returns(T::Boolean) }
+      # Returns true if this instance is equal to another attribute.
+      #
+      # @param other [Object] The other instance. If this is not a {Attribute}
+      #   (or a subclass of it), this will always return false.
+      # @return [Boolean]
+      def ==(other)
+        T.must(
+          super(other) && Attribute === other &&
+            kind            == other.kind &&
+            class_attribute == other.class_attribute
+        )
+      end
+
       private
 
       sig do

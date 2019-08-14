@@ -510,13 +510,29 @@ module Parlour
           result << ""
         end
 
-        first, *rest = children.reject do |child|
+        # Process singleton class attributes
+        class_attributes, remaining_children = children.partition do |child|
+          child.is_a?(Attribute) && child.class_attribute
+        end
+        if class_attributes.any?
+          result << options.indented(indent_level, 'class << self')
+
+          first, *rest = class_attributes
+          result += T.must(first).generate_rbi(indent_level + 1, options) + T.must(rest)
+            .map { |obj| obj.generate_rbi(indent_level + 1, options) }
+            .map { |lines| [""] + lines }
+            .flatten
+          result << options.indented(indent_level, 'end')
+          result << ''
+        end
+
+        first, *rest = remaining_children.reject do |child|
           # We already processed these kinds of children
           child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
         end
         unless first
-          # Remove any trailing whitespace due to includes
-          result.pop if result.last == ''
+          # Remove any trailing whitespace due to includes or class attributes
+          result.pop while result.last == ''
           return result
         end
 
