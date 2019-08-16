@@ -329,7 +329,13 @@ of them.</p>
 86
 87
 88
-89</pre>
+89
+90
+91
+92
+93
+94
+95</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/parlour/conflict_resolver.rb', line 41</span>
@@ -345,6 +351,12 @@ of them.</p>
 </span>      <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>2</span> <span class='op'>&amp;&amp;</span>
         <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span></span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='op'>&amp;&amp;</span>
         <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_c'>c</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_class_method'>class_method</span> <span class='rbrace'>}</span> <span class='op'>==</span> <span class='int'>1</span>
+
+      <span class='comment'># Special case: do we have two attributes, one of which is a class 
+</span>      <span class='comment'># attribute and the other isn&#39;t? If so, do nothing - this is fine
+</span>      <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>2</span> <span class='op'>&amp;&amp;</span>
+        <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Attribute.html" title="Parlour::RbiGenerator::Attribute (class)">Attribute</a></span></span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='op'>&amp;&amp;</span>
+        <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_c'>c</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Attribute.html" title="Parlour::RbiGenerator::Attribute (class)">Attribute</a></span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_class_attribute'>class_attribute</span> <span class='rbrace'>}</span> <span class='op'>==</span> <span class='int'>1</span>
 
       <span class='comment'># We found a conflict!
 </span>      <span class='comment'># Start by removing all the conflicting items
@@ -393,7 +405,7 @@ of them.</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Aug 14 16:18:21 2019 by
+  Generated on Fri Aug 16 19:58:00 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
