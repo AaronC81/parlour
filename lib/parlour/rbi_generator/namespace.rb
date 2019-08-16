@@ -259,6 +259,13 @@ module Parlour
       #   # #=> sig { returns(T::Boolean) }
       #   #     attr_accessor :accessible
       #
+      # @example Create an +attr_accessor+ on the singleton class.
+      #   module.create_attribute('singleton_attr', kind: :accessor, type: 'T::Boolean')
+      #   # #=> class << self
+      #   #       sig { returns(T::Boolean) }
+      #   #       attr_accessor :singleton_attr
+      #   #     end
+      #
       # @param name [String] The name of this attribute.
       # @param kind [Symbol] The kind of attribute this is; one of +:writer+, +:reader+, or
       #   +:accessor+.
