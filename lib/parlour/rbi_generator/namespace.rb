@@ -242,6 +242,15 @@ module Parlour
         new_method
       end
 
+      sig do
+        params(
+          name: String,
+          kind: Symbol,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new attribute.
       #
       # @example Create an +attr_reader+.
@@ -290,6 +299,14 @@ module Parlour
       end
       alias_method :create_attr, :create_attribute
 
+      sig do
+        params(
+          name: String,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new read-only attribute (+attr_reader+).
       #
       # @param name [String] The name of this attribute.
@@ -303,6 +320,14 @@ module Parlour
         create_attribute(name, kind: :reader, type: type, class_attribute: class_attribute, &block)
       end
 
+      sig do
+        params(
+          name: String,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new write-only attribute (+attr_writer+).
       #
       # @param name [String] The name of this attribute.
@@ -316,6 +341,14 @@ module Parlour
         create_attribute(name, kind: :writer, type: type, class_attribute: class_attribute, &block)
       end
 
+      sig do
+        params(
+          name: String,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new read and write attribute (+attr_accessor+).
       #
       # @param name [String] The name of this attribute.
