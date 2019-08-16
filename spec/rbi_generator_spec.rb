@@ -267,6 +267,17 @@ RSpec.describe Parlour::RbiGenerator do
         def self.foo(a = 4); end
       RUBY
     end
+
+    it 'can be final' do
+      meth = subject.root.create_method('foo', parameters: [
+        pa('a', type: 'Integer', default: '4')
+      ], return_type: 'String', final: true)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig(:final) { params(a: Integer).returns(String) }
+        def foo(a = 4); end
+      RUBY
+    end
   end
 
   context 'attributes' do
