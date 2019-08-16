@@ -242,4 +242,17 @@ RSpec.describe Parlour::ConflictResolver do
     expect(m.children.first.children.length).to be 1
     expect(m.children.first.children.first.name).to eq 'foo'
   end
+
+  it 'does not conflict between instance attributes and class attributes' do
+    a = gen.root.create_class('A') do |a|
+      a.create_attr_accessor('foo', type: 'String', class_attribute: true)
+      a.create_attr_accessor('foo', type: 'String')
+    end
+
+    expect(a.children.length).to be 2
+
+    subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+
+    expect(a.children.length).to be 2
+  end
 end

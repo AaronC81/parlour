@@ -50,6 +50,12 @@ module Parlour
             children.all? { |c| c.is_a?(RbiGenerator::Method) } &&
             children.count { |c| T.cast(c, RbiGenerator::Method).class_method } == 1
 
+          # Special case: do we have two attributes, one of which is a class 
+          # attribute and the other isn't? If so, do nothing - this is fine
+          next if children.length == 2 &&
+            children.all? { |c| c.is_a?(RbiGenerator::Attribute) } &&
+            children.count { |c| T.cast(c, RbiGenerator::Attribute).class_attribute } == 1
+
           # We found a conflict!
           # Start by removing all the conflicting items
           children.each do |c|

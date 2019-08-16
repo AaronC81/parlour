@@ -242,6 +242,15 @@ module Parlour
         new_method
       end
 
+      sig do
+        params(
+          name: String,
+          kind: Symbol,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new attribute.
       #
       # @example Create an +attr_reader+.
@@ -259,19 +268,29 @@ module Parlour
       #   # #=> sig { returns(T::Boolean) }
       #   #     attr_accessor :accessible
       #
+      # @example Create an +attr_accessor+ on the singleton class.
+      #   module.create_attribute('singleton_attr', kind: :accessor, type: 'T::Boolean')
+      #   # #=> class << self
+      #   #       sig { returns(T::Boolean) }
+      #   #       attr_accessor :singleton_attr
+      #   #     end
+      #
       # @param name [String] The name of this attribute.
       # @param kind [Symbol] The kind of attribute this is; one of +:writer+, +:reader+, or
       #   +:accessor+.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attribute(name, kind:, type:, &block)
+      def create_attribute(name, kind:, type:, class_attribute: false, &block)
         new_attribute = RbiGenerator::Attribute.new(
           generator,
           name,
           kind,
           type,
+          class_attribute: class_attribute,
           &block
         )
         move_next_comments(new_attribute)
@@ -280,37 +299,67 @@ module Parlour
       end
       alias_method :create_attr, :create_attribute
 
+      sig do
+        params(
+          name: String,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new read-only attribute (+attr_reader+).
       #
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_reader(name, type:, &block)
-        create_attribute(name, kind: :reader, type: type, &block)
+      def create_attr_reader(name, type:, class_attribute: false, &block)
+        create_attribute(name, kind: :reader, type: type, class_attribute: class_attribute, &block)
       end
 
+      sig do
+        params(
+          name: String,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new write-only attribute (+attr_writer+).
       #
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_writer(name, type:, &block)
-        create_attribute(name, kind: :writer, type: type, &block)
+      def create_attr_writer(name, type:, class_attribute: false, &block)
+        create_attribute(name, kind: :writer, type: type, class_attribute: class_attribute, &block)
       end
 
+      sig do
+        params(
+          name: String,
+          type: String,
+          class_attribute: T::Boolean,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
       # Creates a new read and write attribute (+attr_accessor+).
       #
       # @param name [String] The name of this attribute.
       # @param type [String] A Sorbet string of this attribute's type, such as
       #   +"String"+ or +"T.untyped"+.
+      # @param class_attribute [Boolean] Whether this attribute belongs to the
+      #   singleton class.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Attribute]
-      def create_attr_accessor(name, type:, &block)
-        create_attribute(name, kind: :accessor, type: type, &block)
+      def create_attr_accessor(name, type:, class_attribute: false, &block)
+        create_attribute(name, kind: :accessor, type: type, class_attribute: class_attribute, &block)
       end
 
       # Creates a new arbitrary code section.
@@ -501,13 +550,29 @@ module Parlour
           result << ""
         end
 
-        first, *rest = children.reject do |child|
+        # Process singleton class attributes
+        class_attributes, remaining_children = children.partition do |child|
+          child.is_a?(Attribute) && child.class_attribute
+        end
+        if class_attributes.any?
+          result << options.indented(indent_level, 'class << self')
+
+          first, *rest = class_attributes
+          result += T.must(first).generate_rbi(indent_level + 1, options) + T.must(rest)
+            .map { |obj| obj.generate_rbi(indent_level + 1, options) }
+            .map { |lines| [""] + lines }
+            .flatten
+          result << options.indented(indent_level, 'end')
+          result << ''
+        end
+
+        first, *rest = remaining_children.reject do |child|
           # We already processed these kinds of children
           child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
         end
         unless first
-          # Remove any trailing whitespace due to includes
-          result.pop if result.last == ''
+          # Remove any trailing whitespace due to includes or class attributes
+          result.pop while result.last == ''
           return result
         end
 

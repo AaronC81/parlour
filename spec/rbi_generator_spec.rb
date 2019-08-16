@@ -311,6 +311,29 @@ RSpec.describe Parlour::RbiGenerator do
         end
       RUBY
     end
+
+    it 'supports class attributes' do
+      mod = subject.root.create_class('A') do |m|
+        m.create_attr_accessor('a', type: 'String', class_attribute: true)
+        m.create_attr_accessor('b', type: 'Integer')
+        m.create_attr_accessor('c', type: 'T::Boolean', class_attribute: true)
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class A
+          class << self
+            sig { returns(String) }
+            attr_accessor :a
+
+            sig { returns(T::Boolean) }
+            attr_accessor :c
+          end
+
+          sig { returns(Integer) }
+          attr_accessor :b
+        end
+      RUBY
+    end
   end
 
   context 'arbitrary code' do
