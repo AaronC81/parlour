@@ -267,6 +267,17 @@ RSpec.describe Parlour::RbiGenerator do
         def self.foo(a = 4); end
       RUBY
     end
+
+    it 'supports type parameters' do
+      meth = subject.root.create_method('box', type_parameters: [:A], parameters: [
+        pa('a', type: 'T.type_parameter(:A)')
+      ], return_type: 'T::Array[T.type_parameter(:A)]')
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { type_parameters(:A).params(a: T.type_parameter(:A)).returns(T::Array[T.type_parameter(:A)]) }
+        def box(a); end
+      RUBY
+    end
   end
 
   context 'attributes' do
