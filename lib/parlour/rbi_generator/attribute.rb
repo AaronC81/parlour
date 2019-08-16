@@ -10,7 +10,7 @@ module Parlour
           kind: Symbol,
           type: String,
           class_attribute: T::Boolean,
-          block: T.nilable(T.proc.params(x: Method).void)
+          block: T.nilable(T.proc.params(x: Attribute).void)
         ).void
       end
       # Creates a new attribute.
