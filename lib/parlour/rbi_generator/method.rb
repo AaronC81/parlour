@@ -51,7 +51,7 @@ module Parlour
         yield_self(&block) if block
       end
 
-      sig { params(other: Object).returns(T::Boolean) }
+      sig { overridable.params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another method.
       #
       # @param other [Object] The other instance. If this is not a {Method} (or a
