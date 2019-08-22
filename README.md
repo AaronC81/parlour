@@ -158,6 +158,13 @@ _Have you written an awesome Parlour plugin? Please submit a PR to add it to thi
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/AaronC81/parlour. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+After making changes, you may wish to regenerate the RBI definitions in the `sorbet` folder by running these `srb rbi` commands:
+
+```
+srb rbi gems
+srb rbi sorbet-typed
+```
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
