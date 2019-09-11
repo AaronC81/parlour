@@ -224,6 +224,13 @@ and contributors are expected to adhere to the <a
 href="http://contributor-covenant.org">Contributor Covenant</a> code of
 conduct.</p>
 
+<p>After making changes, you may wish to regenerate the RBI definitions in the
+<code>sorbet</code> folder by running these <code>srb rbi</code> commands:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_srb'>srb</span> <span class='id identifier rubyid_rbi'>rbi</span> <span class='id identifier rubyid_gems'>gems</span>
+<span class='id identifier rubyid_srb'>srb</span> <span class='id identifier rubyid_rbi'>rbi</span> <span class='id identifier rubyid_sorbet'>sorbet</span><span class='op'>-</span><span class='id identifier rubyid_typed'>typed</span>
+</code></pre>
+
 <h2 id="label-License">License</h2>
 
 <p>The gem is available as open source under the terms of the <a
@@ -238,7 +245,7 @@ of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Aug 16 20:07:41 2019 by
+  Generated on Wed Sep 11 08:06:47 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
