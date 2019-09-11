@@ -3,6 +3,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.7.0] - 2019-09-11
+### Added
+- The strictness level can now be specified when generating an RBI, using an
+optional positional argument to `RBIGenerator#generate`. The default strictness
+is `strong`.
+- Plugins can specify a strictness level they would prefer by setting
+`Plugin#strictness` for themselves. If multiple plugins set conflicting 
+strictnesses, the least strict will be used.
+- Attributes can now specified as class attributes by setting
+`Attribute#class_attribute` to `true`. This will wrap them in a `class << self`
+block.
+
+### Changed
+- The `sorbet` directory is no longer included in the built gem.
+- Generated files now end with a new line (`\n`).
+
+### Fixed
+- An instance method and a class method with the same name are no longer
+considered conflicting.
+- The signature for the constructor of `Attribute` previously typed the optional
+initializer block as taking a `Method`. This has been corrected to taking an
+`Attribute`.
+
 ## [0.6.1] - 2019-07-29
 ### Changed
 - Various areas of the codebase have been made compatible with older Ruby
