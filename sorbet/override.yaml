@@ -1,0 +1,3 @@
+ignore:
+  - ./sorbet/rbi/sorbet-typed/lib/bundler/all/bundler.rbi
+  - ./sorbet/rbi/sorbet-typed/lib/ruby/all/gem.rbi
