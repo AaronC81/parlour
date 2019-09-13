@@ -213,10 +213,10 @@ module Parlour
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
       # @param returns [String, nil] Same as return_type.
       # @param abstract [Boolean] Whether this method is abstract.
-      # @param implementation [Boolean] Whether this method is an implementation of a
-      #   parent abstract method.
+      # @param implementation [Boolean] DEPRECATED: Whether this method is an 
+      #   implementation of a parent abstract method.
       # @param override [Boolean] Whether this method is overriding a parent overridable
-      #   method.
+      #   method, or implementing a parent abstract method.
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
