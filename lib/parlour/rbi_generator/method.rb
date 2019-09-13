@@ -155,7 +155,7 @@ module Parlour
 
           : [options.indented(
               indent_level,
-              "sig { #{qualifiers}#{
+              "sig { #{parameters.empty? ? qualifiers[0...-1] : qualifiers}#{
                 parameters.empty? ? '' : "params(#{sig_params.join(', ')})"
               }#{
                 qualifiers.empty? && parameters.empty? ? '' : '.'
