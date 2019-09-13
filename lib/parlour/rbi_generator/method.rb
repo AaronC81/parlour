@@ -31,10 +31,10 @@ module Parlour
       # @param return_type [String, nil] A Sorbet string of what this method returns, such as
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
       # @param abstract [Boolean] Whether this method is abstract.
-      # @param implementation [Boolean] Whether this method is an implementation of a
-      #   parent abstract method.
+      # @param implementation [Boolean] DEPRECATED: Whether this method is an 
+      #   implementation of a parent abstract method.
       # @param override [Boolean] Whether this method is overriding a parent overridable
-      #   method.
+      #   method, or implementing a parent abstract method.
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
@@ -91,11 +91,15 @@ module Parlour
 
       sig { returns(T::Boolean) }
       # Whether this method is an implementation of a parent abstract method.
+      # @deprecated Removed from Sorbet, as {#override} is used for both
+      #   abstract class implementations and superclass overrides. In Parlour,
+      #   this will now generate +override+.
       # @return [Boolean]
       attr_reader :implementation
 
       sig { returns(T::Boolean) }
-      # Whether this method is overriding a parent overridable method.
+      # Whether this method is overriding a parent overridable method, or
+      #   implementing a parent abstract method.
       # @return [Boolean]
       attr_reader :override
 
@@ -237,8 +241,7 @@ module Parlour
       def qualifiers
         result = ''
         result += 'abstract.' if abstract
-        result += 'implementation.' if implementation
-        result += 'override.' if override
+        result += 'override.' if override || implementation
         result += 'overridable.' if overridable
         result += "type_parameters(#{
           type_parameters.map { |t| ":#{t}" }.join(', ')

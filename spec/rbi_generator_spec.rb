@@ -249,11 +249,21 @@ RSpec.describe Parlour::RbiGenerator do
     it 'can be created with qualifiers' do
       meth = subject.root.create_method('foo', parameters: [
         pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String', implementation: true, overridable: true)
+      ], return_type: 'String', override: true, overridable: true)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
-        sig { implementation.overridable.params(a: Integer).returns(String) }
+        sig { override.overridable.params(a: Integer).returns(String) }
         def foo(a = 4); end
+      RUBY
+    end
+
+    it 'translates implementation to override (backwards compatibility)' do
+      meth = subject.root.create_method('foo', parameters: [],
+        return_type: 'String', implementation: true)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { override.returns(String) }
+        def foo; end
       RUBY
     end
 
