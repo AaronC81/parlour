@@ -187,7 +187,7 @@
 </li>
 
     
-      <li class="public ">
+      <li class="public deprecated">
   <span class="summary_signature">
     
       <a href="#implementation-instance_method" title="#implementation (instance method)">#<strong>implementation</strong>  &#x21d2; Boolean </a>
@@ -205,12 +205,14 @@
   
   
   
-  
+  <span class="deprecated note title">deprecated</span>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Whether this method is an implementation of a parent abstract method.</p>
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'>
+<p>Removed from Sorbet, as <span class='object_link'><a href="#override-instance_method" title="Parlour::RbiGenerator::Method#override (method)">#override</a></span> is used for both abstract class
+implementations and superclass overrides. In Parlour, this will now
+generate <code>override</code>.</p>
 </div></span>
   
 </li>
@@ -268,7 +270,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Whether this method is overriding a parent overridable method.</p>
+<p>Whether this method is overriding a parent overridable method, or  
+implementing a parent abstract method.</p>
 </div></span>
   
 </li>
@@ -673,7 +676,8 @@ parameters.</p>
       
         &mdash;
         <div class='inline'>
-<p>Whether this method is an implementation of a parent abstract method.</p>
+<p>DEPRECATED: Whether this method is an  implementation of a parent abstract
+method.</p>
 </div>
       
     </li>
@@ -689,7 +693,8 @@ parameters.</p>
       
         &mdash;
         <div class='inline'>
-<p>Whether this method is overriding a parent overridable method.</p>
+<p>Whether this method is overriding a parent overridable method, or
+implementing a parent abstract method.</p>
 </div>
       
     </li>
@@ -904,12 +909,12 @@ parameters.</p>
       <pre class="lines">
 
 
-111
-112
-113</pre>
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 111</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_class_method'>class_method</span>
   <span class='ivar'>@class_method</span>
@@ -932,7 +937,12 @@ parameters.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'>
+<p>Removed from Sorbet, as <span class='object_link'><a href="#override-instance_method" title="Parlour::RbiGenerator::Method#override (method)">#override</a></span> is used for both abstract class
+implementations and superclass overrides. In Parlour, this will now
+generate <code>override</code>.</p>
+</div></div>
+
 <p>Whether this method is an implementation of a parent abstract method.</p>
 
 
@@ -960,12 +970,12 @@ parameters.</p>
       <pre class="lines">
 
 
-95
-96
-97</pre>
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_implementation'>implementation</span>
   <span class='ivar'>@implementation</span>
@@ -1016,12 +1026,12 @@ parameters.</p>
       <pre class="lines">
 
 
-105
-106
-107</pre>
+109
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_overridable'>overridable</span>
   <span class='ivar'>@overridable</span>
@@ -1045,7 +1055,9 @@ parameters.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Whether this method is overriding a parent overridable method.</p>
+<p>Whether this method is overriding a parent overridable method, or</p>
+
+<pre class="code ruby"><code class="ruby">implementing a parent abstract method.</code></pre>
 
 
   </div>
@@ -1072,12 +1084,12 @@ parameters.</p>
       <pre class="lines">
 
 
-100
-101
-102</pre>
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_override'>override</span>
   <span class='ivar'>@override</span>
@@ -1242,12 +1254,12 @@ parameters.</p>
       <pre class="lines">
 
 
-116
-117
-118</pre>
+120
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type_parameters'>type_parameters</span>
   <span class='ivar'>@type_parameters</span>
@@ -1396,14 +1408,14 @@ will always return false.</p>
       <pre class="lines">
 
 
-201
-202
-203
-204
-205</pre>
+205
+206
+207
+208
+209</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 201</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 205</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
   <span class='comment'># TODO: more info
@@ -1495,10 +1507,6 @@ will always return false.</p>
       <pre class="lines">
 
 
-129
-130
-131
-132
 133
 134
 135
@@ -1529,10 +1537,14 @@ will always return false.</p>
 160
 161
 162
-163</pre>
+163
+164
+165
+166
+167</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_return_call'>return_call</span> <span class='op'>=</span> <span class='id identifier rubyid_return_type'>return_type</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>returns(</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_return_type'>return_type</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>void</span><span class='tstring_end'>&#39;</span></span>
@@ -1559,7 +1571,7 @@ will always return false.</p>
 
     <span class='op'>:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span>
         <span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span>
-        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sig { </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sig { </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span>
           <span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>params(</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_sig_params'>sig_params</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
         <span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span>
           <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span>
@@ -1623,12 +1635,12 @@ You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_m
       <pre class="lines">
 
 
-193
-194
-195</pre>
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 193</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 197</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='comment'># We don&#39;t need to change anything! We only merge identical methods
@@ -1704,12 +1716,12 @@ their signatures and definitions must be identical.</p>
       <pre class="lines">
 
 
-176
-177
-178</pre>
+180
+181
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 180</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_other'>other</span><span class='op'>|</span> <span class='kw'>self</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span> <span class='rbrace'>}</span>
@@ -1724,7 +1736,7 @@ their signatures and definitions must be identical.</p>
 </div>
 
       <div id="footer">
-  Generated on Fri Sep 13 19:30:42 2019 by
+  Generated on Fri Sep 13 21:00:17 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
