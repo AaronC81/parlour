@@ -199,6 +199,7 @@ module Parlour
           override: T::Boolean,
           overridable: T::Boolean,
           class_method: T::Boolean,
+          type_parameters: T.nilable(T::Array[Symbol]),
           block: T.nilable(T.proc.params(x: Method).void)
         ).returns(Method)
       end
@@ -219,9 +220,10 @@ module Parlour
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
+      # @param class_method [Array<Symbol>, nil] This method's type parameters.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
-      def create_method(name, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
+      def create_method(name, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, type_parameters: nil, &block)
         parameters = parameters || []
         raise 'cannot specify both return_type: and returns:' if return_type && returns
         return_type ||= returns
@@ -235,6 +237,7 @@ module Parlour
           override: override,
           overridable: overridable,
           class_method: class_method,
+          type_parameters: type_parameters,
           &block
         )
         move_next_comments(new_method)

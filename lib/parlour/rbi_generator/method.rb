@@ -16,6 +16,7 @@ module Parlour
           override: T::Boolean,
           overridable: T::Boolean,
           class_method: T::Boolean,
+          type_parameters: T.nilable(T::Array[Symbol]),
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
@@ -37,9 +38,10 @@ module Parlour
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
+      # @param class_method [Array<Symbol>, nil] This method's type parameters.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, &block)
+      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, type_parameters: nil, &block)
         super(generator, name)
         @parameters = parameters
         @return_type = return_type
@@ -48,6 +50,7 @@ module Parlour
         @override = override
         @overridable = overridable
         @class_method = class_method
+        @type_parameters = type_parameters || []
         yield_self(&block) if block
       end
 
@@ -59,14 +62,15 @@ module Parlour
       # @return [Boolean]
       def ==(other)
         Method === other &&
-          name           == other.name && 
-          parameters     == other.parameters &&
-          return_type    == other.return_type &&
-          abstract       == other.abstract &&
-          implementation == other.implementation &&
-          override       == other.override &&
-          overridable    == other.overridable &&
-          class_method   == other.class_method
+          name            == other.name && 
+          parameters      == other.parameters &&
+          return_type     == other.return_type &&
+          abstract        == other.abstract &&
+          implementation  == other.implementation &&
+          override        == other.override &&
+          overridable     == other.overridable &&
+          class_method    == other.class_method &&
+          type_parameters == other.type_parameters
       end
 
       sig { returns(T::Array[Parameter]) }
@@ -105,6 +109,11 @@ module Parlour
       # +self.+.
       # @return [Boolean]
       attr_reader :class_method
+
+      sig { returns(T::Array[Symbol]) }
+      # This method's type parameters.
+      # @return [Array<Symbol>]
+      attr_reader :type_parameters
 
       sig do
         implementation.params(
@@ -231,6 +240,9 @@ module Parlour
         result += 'implementation.' if implementation
         result += 'override.' if override
         result += 'overridable.' if overridable
+        result += "type_parameters(#{
+          type_parameters.map { |t| ":#{t}" }.join(', ')
+        })." if type_parameters.any?
         result
       end
     end
