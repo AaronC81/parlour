@@ -7,7 +7,7 @@ module Parlour
       extend T::Sig
 
       sig do
-        implementation.overridable.params(
+        override.overridable.params(
           indent_level: Integer,
           options: Options
         ).returns(T::Array[String])
@@ -479,7 +479,7 @@ module Parlour
       end
 
       sig do
-        implementation.overridable.params(
+        override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
@@ -496,7 +496,7 @@ module Parlour
       end
 
       sig do 
-        implementation.overridable.params(
+        override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end
@@ -514,7 +514,7 @@ module Parlour
         end
       end
 
-      sig { implementation.overridable.returns(String) }
+      sig { override.overridable.returns(String) }
       # Returns a human-readable brief string description of this namespace.
       #
       # @return [String]
