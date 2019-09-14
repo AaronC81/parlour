@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.8.0] - 2019-09-14
+### Added
+- Methods can now have type parameters specified.
+
+### Changed
+- **Breaking change: The `implementation` qualifier is no longer genereated.**
+Following Sorbet merging `implementation` and `override` into just `override`,
+the `Method#implementation` and `Method#override` flags will now both generate 
+the `override` qualifier.
+- The Parlour codebase now uses `override` for both abstract implementation and
+superclass overriding to conform to this change.
+
 ## [0.7.0] - 2019-09-11
 ### Added
 - The strictness level can now be specified when generating an RBI, using an
