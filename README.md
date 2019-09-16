@@ -152,7 +152,7 @@ _Have you written an awesome Parlour plugin? Please submit a PR to add it to thi
 
   - [Sord](https://github.com/AaronC81/sord) - Generate RBIs from YARD documentation
   - [parlour-datamapper](https://github.com/AaronC81/parlour-datamapper) - Simple plugin for generating DataMapper model types
-
+  - [sorbet-rails](https://github.com/chanzuckerberg/sorbet-rails) - Generate RBIs for Rails models, routes, mailers, etc.
 
 ## Contributing
 
