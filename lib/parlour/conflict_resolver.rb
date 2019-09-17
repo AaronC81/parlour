@@ -39,13 +39,13 @@ module Parlour
     #   will be kept, or nil to keep none of them.
     # @return [void]
     def resolve_conflicts(namespace, &resolver)
-      Debugging.debug_puts(self, Debugging::Tree.begin("Resolving #{namespace.name}..."))
+      Debugging.debug_puts(self, Debugging::Tree.begin("Resolving conflicts for #{namespace.name}..."))
 
       # Check for multiple definitions with the same name
       grouped_by_name_children = namespace.children.group_by(&:name)
 
       grouped_by_name_children.each do |name, children|
-        Debugging.debug_puts(self, Debugging::Tree.begin("Checking #{name}..."))
+        Debugging.debug_puts(self, Debugging::Tree.begin("Checking children named #{name}..."))
 
         if children.length > 1
           Debugging.debug_puts(self, Debugging::Tree.here("Possible conflict between #{children.length} objects"))
@@ -119,7 +119,7 @@ module Parlour
         end
       end
 
-      Debugging.debug_puts(self, Debugging::Tree.here("Recursing to children..."))
+      Debugging.debug_puts(self, Debugging::Tree.here("Resolving children..."))
 
       # Recurse to child namespaces
       namespace.children.each do |child|
