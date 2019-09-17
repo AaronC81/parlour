@@ -56,6 +56,16 @@ module Parlour
             children.all? { |c| c.is_a?(RbiGenerator::Attribute) } &&
             children.count { |c| T.cast(c, RbiGenerator::Attribute).class_attribute } == 1
 
+          # Special case: are they all clearly equal? If so, remove all but one
+          if all_eql?(children)
+            # All of the children are the same, so this deletes all of them
+            namespace.children.delete(T.must(children.first))
+          
+            # Re-add one child
+            namespace.children << T.must(children.first)
+            next
+          end
+
           # We found a conflict!
           # Start by removing all the conflicting items
           children.each do |c|
