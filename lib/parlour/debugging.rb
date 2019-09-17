@@ -6,7 +6,7 @@ module Parlour
   module Debugging
     extend T::Sig
 
-    @debug_mode = true # TODO: temporary
+    @debug_mode = !ENV["PARLOUR_DEBUG"].nil?
 
     sig { params(value: T::Boolean).returns(T::Boolean) }
     def self.debug_mode=(value)
