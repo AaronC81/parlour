@@ -3,6 +3,8 @@ require 'sorbet-runtime'
 
 require 'parlour/version'
 
+require 'parlour/debugging'
+
 require 'parlour/kernel_hack'
 
 require 'parlour/plugin'
