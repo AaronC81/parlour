@@ -33,9 +33,10 @@ module Parlour
         "conflict resolver"
       when RbiGenerator
         "RBI generator"
-      when Plugin
-        "plugin #{object.class.name}"
       else
+        if ((object < Plugin) rescue false)
+          return "plugin #{object.name}"
+        end
         object.class.name
       end
     end
