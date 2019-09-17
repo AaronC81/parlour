@@ -39,5 +39,40 @@ module Parlour
         object.class.name
       end
     end
+
+    module Tree
+      INDENT_SPACES = 2
+
+      @indent_level = 0
+
+      def self.begin(message)
+        result = ''
+        @indent_level.times do
+          result += '│' + ' ' * INDENT_SPACES
+        end
+        result += '├' + '─' * (INDENT_SPACES - 1) + " " + Rainbow(message).green.bright.bold
+        @indent_level += 1
+        result
+      end
+
+      def self.here(message)
+        result = ''
+        @indent_level.times do
+          result += '│' + ' ' * INDENT_SPACES
+        end
+        result += '├' + '─' * (INDENT_SPACES - 1) + " " + message
+        result
+      end
+
+      def self.end(message)
+        result = ''
+        @indent_level.times do
+          result += '│' + ' ' * INDENT_SPACES
+        end
+        result += '└' + '─' * (INDENT_SPACES - 1) + " " + message
+        @indent_level = [0, @indent_level - 1].max
+        result
+      end
+    end
   end
 end
