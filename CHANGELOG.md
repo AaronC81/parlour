@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.8.1] - 2019-09-27
+### Added
+- Running with the PARLOUR_DEBUG environment variable set will now print debug
+output to the console during conflict resolution.
+
+### Fixed
+- Performance is now much faster when the conflict resolver needs to resolve a
+conflict between many identical objects.
+
 ## [0.8.0] - 2019-09-14
 ### Added
 - Methods can now have type parameters specified.
