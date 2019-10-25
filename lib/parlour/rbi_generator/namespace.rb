@@ -478,6 +478,20 @@ module Parlour
         new_constant
       end
 
+      sig { params(name: String, type: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      # Adds a new type alias, in the form of a constant, to this namespace.
+      #
+      # @example Add a +MyType+ type alias, to +Integer+, to the class.
+      #   class.create_type_alias('MyType', type: 'Integer') #=> MyType = T.type_alias { Integer }
+      #
+      # @param name [String] The name of the type alias.
+      # @param value [String] The type to alias, as a Ruby code string.
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Constant]
+      def create_type_alias(name, type:, &block)
+        create_constant(name, value: "T.type_alias { #{type} }", &block)
+      end
+
       sig do
         override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
