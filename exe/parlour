@@ -36,7 +36,9 @@ command :run do |c|
 
     configuration[:requires].each { |source| require(source) }
     configuration[:relative_requires].each do |source|
-      require_relative(File.join(Dir.pwd, source))
+      Dir[File.join(Dir.pwd, source)].each do |file|
+        require_relative(file)
+      end
     end
 
     # Collect the instances of each plugin into an array
