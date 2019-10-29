@@ -164,7 +164,8 @@ the RBI into <code>output.rbi</code>:</p>
 
 relative_requires:
   - plugin.rb
-  
+  - app/models/*.rb
+
 plugins:
   MyPlugin: {}</code></pre>
 
@@ -184,7 +185,7 @@ called <code>parlour-gem</code>:</p>
 
 requires:
   - parlour-gem
-  
+
 plugins:
   MyPlugin: {}</code></pre>
 
@@ -196,7 +197,7 @@ requires:
   - gem1
   - gem2
   - gem3
-  
+
 plugins:
   Gem1::Plugin: {}
   Gem2::Plugin: {}
@@ -248,7 +249,7 @@ of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Sep 27 09:26:39 2019 by
+  Generated on Tue Oct 29 13:51:56 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
