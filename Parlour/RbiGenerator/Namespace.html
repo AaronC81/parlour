@@ -541,6 +541,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#create_type_alias-instance_method" title="#create_type_alias (instance method)">#<strong>create_type_alias</strong>(name, type:, &amp;block)  &#x21d2; RbiGenerator::Constant </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Adds a new type alias, in the form of a constant, to this namespace.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#describe-instance_method" title="#describe (instance method)">#<strong>describe</strong>  &#x21d2; String </a>
     
 
@@ -2875,6 +2899,125 @@ implementing a parent abstract method.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="create_type_alias-instance_method">
+  
+    #<strong>create_type_alias</strong>(name, type:, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="Constant.html" title="Parlour::RbiGenerator::Constant (class)">RbiGenerator::Constant</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Adds a new type alias, in the form of a constant, to this namespace.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Add a <code>MyType</code> type alias, to <code>Integer</code>, to the
+class.</p>
+</div></p>
+      
+      <pre class="example code"><code>class.create_type_alias(&#39;MyType&#39;, type: &#39;Integer&#39;) #=&gt; MyType = T.type_alias { Integer }</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The name of the type alias.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The type to alias, as a Ruby code string.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>block</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A block which the new instance yields itself to.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Constant.html" title="Parlour::RbiGenerator::Constant (class)">RbiGenerator::Constant</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+491
+492
+493</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 491</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_type_alias'>create_type_alias</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>type:</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_create_constant'>create_constant</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>value:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>T.type_alias { </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_type'>type</span><span class='embexpr_end'>}</span><span class='tstring_content'> }</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="describe-instance_method">
   
     #<strong>describe</strong>  &#x21d2; <tt>String</tt> 
@@ -2913,13 +3056,13 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-521
-522
-523
-524</pre>
+535
+536
+537
+538</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 521</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 535</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Namespace </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> children, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_includes'>includes</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
@@ -3194,16 +3337,16 @@ children, constants, extends and includes are copied into this  instance.</p>
       <pre class="lines">
 
 
-509
-510
-511
-512
-513
-514
-515</pre>
+523
+524
+525
+526
+527
+528
+529</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 509</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 523</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_other'>other</span><span class='op'>|</span>
@@ -3285,12 +3428,12 @@ is nothing to conflict. (This isn&#39;t the case for subclasses such as
       <pre class="lines">
 
 
-494
-495
-496</pre>
+508
+509
+510</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 494</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 508</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='kw'>true</span>
@@ -3415,7 +3558,7 @@ This should only be executed on the root namespace.</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Oct 29 13:52:01 2019 by
+  Generated on Tue Oct 29 13:55:11 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
