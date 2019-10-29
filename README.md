@@ -9,7 +9,7 @@ Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
     an intuitive DSL.
 
   - The plugin/build system, which allows multiple Parlour plugins to generate
-    RBIs for the same codebase. These are combined automatically as much as 
+    RBIs for the same codebase. These are combined automatically as much as
     possible, but any other conflicts can be resolved manually through prompts.
 
 ## Why should I use this?
@@ -64,7 +64,7 @@ end
 ```
 
 ### Writing a plugin
-Plugins are better than using the generator alone, as your plugin can be 
+Plugins are better than using the generator alone, as your plugin can be
 combined with others to produce larger RBIs without conflicts.
 
 We could write the above example as a plugin like this:
@@ -102,7 +102,8 @@ output_file: output.rbi
 
 relative_requires:
   - plugin.rb
-  
+  - app/models/*.rb
+
 plugins:
   MyPlugin: {}
 ```
@@ -125,7 +126,7 @@ output_file: output.rbi
 
 requires:
   - parlour-gem
-  
+
 plugins:
   MyPlugin: {}
 ```
@@ -139,7 +140,7 @@ requires:
   - gem1
   - gem2
   - gem3
-  
+
 plugins:
   Gem1::Plugin: {}
   Gem2::Plugin: {}
