@@ -119,7 +119,7 @@ RSpec.describe Parlour::RbiGenerator do
           bar.create_extend( 'Y')
           bar.create_include( 'Z')
           bar.create_constant('PI', value: '3.14')
-          bar.create_constant('Text', value: 'T.type_alias(T.any(String, Symbol))')
+          bar.create_type_alias('Text', type: 'T.any(String, Symbol)')
           bar.create_class('A')
           bar.create_class('B')
           bar.create_class('C')
@@ -135,7 +135,7 @@ RSpec.describe Parlour::RbiGenerator do
             extend X
             extend Y
             PI = 3.14
-            Text = T.type_alias(T.any(String, Symbol))
+            Text = T.type_alias { T.any(String, Symbol) }
 
             class A
             end
@@ -249,11 +249,21 @@ RSpec.describe Parlour::RbiGenerator do
     it 'can be created with qualifiers' do
       meth = subject.root.create_method('foo', parameters: [
         pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String', implementation: true, overridable: true)
+      ], return_type: 'String', override: true, overridable: true)
 
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
-        sig { implementation.overridable.params(a: Integer).returns(String) }
+        sig { override.overridable.params(a: Integer).returns(String) }
         def foo(a = 4); end
+      RUBY
+    end
+
+    it 'translates implementation to override (backwards compatibility)' do
+      meth = subject.root.create_method('foo', parameters: [],
+        return_type: 'String', implementation: true)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { override.returns(String) }
+        def foo; end
       RUBY
     end
 
@@ -276,6 +286,17 @@ RSpec.describe Parlour::RbiGenerator do
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig(:final) { params(a: Integer).returns(String) }
         def foo(a = 4); end
+      RUBY
+    end
+    
+    it 'supports type parameters' do
+      meth = subject.root.create_method('box', type_parameters: [:A], parameters: [
+        pa('a', type: 'T.type_parameter(:A)')
+      ], return_type: 'T::Array[T.type_parameter(:A)]')
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig { type_parameters(:A).params(a: T.type_parameter(:A)).returns(T::Array[T.type_parameter(:A)]) }
+        def box(a); end
       RUBY
     end
   end
@@ -342,6 +363,32 @@ RSpec.describe Parlour::RbiGenerator do
 
           sig { returns(Integer) }
           attr_accessor :b
+        end
+      RUBY
+    end
+  end
+
+  context 'enums' do
+    it 'can be created' do
+      mod = subject.root.create_module('M') do |m|
+        m.create_enum_class('Directions', enums: ['North', 'South', 'West', ['East', '"Some custom serialization"']]) do |c|
+          c.create_method('mnemonic', returns: 'String', class_method: true)
+        end
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module M
+          class Directions < T::Enum
+            enums do
+              North = new
+              South = new
+              West = new
+              East = new("Some custom serialization")
+            end
+
+            sig { returns(String) }
+            def self.mnemonic; end
+          end
         end
       RUBY
     end

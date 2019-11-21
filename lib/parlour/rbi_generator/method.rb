@@ -17,6 +17,7 @@ module Parlour
           overridable: T::Boolean,
           class_method: T::Boolean,
           final: T::Boolean,
+          type_parameters: T.nilable(T::Array[Symbol]),
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
       end
@@ -31,17 +32,17 @@ module Parlour
       # @param return_type [String, nil] A Sorbet string of what this method returns, such as
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
       # @param abstract [Boolean] Whether this method is abstract.
-      # @param implementation [Boolean] Whether this method is an implementation of a
-      #   parent abstract method.
+      # @param implementation [Boolean] DEPRECATED: Whether this method is an 
+      #   implementation of a parent abstract method.
       # @param override [Boolean] Whether this method is overriding a parent overridable
-      #   method.
+      #   method, or implementing a parent abstract method.
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
       # @param final [Boolean] Whether this method is final.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, &block)
+      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, type_parameters: nil, &block)
         super(generator, name)
         @parameters = parameters
         @return_type = return_type
@@ -51,10 +52,11 @@ module Parlour
         @overridable = overridable
         @class_method = class_method
         @final = final
+        @type_parameters = type_parameters || []
         yield_self(&block) if block
       end
 
-      sig { overridable.params(other: Object).returns(T::Boolean) }
+      sig { overridable.params(other: Object).returns(T::Boolean).checked(:never) }
       # Returns true if this instance is equal to another method.
       #
       # @param other [Object] The other instance. If this is not a {Method} (or a
@@ -62,15 +64,16 @@ module Parlour
       # @return [Boolean]
       def ==(other)
         Method === other &&
-          name           == other.name && 
-          parameters     == other.parameters &&
-          return_type    == other.return_type &&
-          abstract       == other.abstract &&
-          implementation == other.implementation &&
-          override       == other.override &&
-          overridable    == other.overridable &&
-          class_method   == other.class_method &&
-          final          == other.final
+          name            == other.name && 
+          parameters      == other.parameters &&
+          return_type     == other.return_type &&
+          abstract        == other.abstract &&
+          implementation  == other.implementation &&
+          override        == other.override &&
+          overridable     == other.overridable &&
+          class_method    == other.class_method &&
+          final           == other.final &&
+          type_parameters == other.type_parameters
       end
 
       sig { returns(T::Array[Parameter]) }
@@ -91,11 +94,15 @@ module Parlour
 
       sig { returns(T::Boolean) }
       # Whether this method is an implementation of a parent abstract method.
+      # @deprecated Removed from Sorbet, as {#override} is used for both
+      #   abstract class implementations and superclass overrides. In Parlour,
+      #   this will now generate +override+.
       # @return [Boolean]
       attr_reader :implementation
 
       sig { returns(T::Boolean) }
-      # Whether this method is overriding a parent overridable method.
+      # Whether this method is overriding a parent overridable method, or
+      #   implementing a parent abstract method.
       # @return [Boolean]
       attr_reader :override
 
@@ -115,8 +122,13 @@ module Parlour
       # @return [Boolean]
       attr_reader :final
 
+      sig { returns(T::Array[Symbol]) }
+      # This method's type parameters.
+      # @return [Array<Symbol>]
+      attr_reader :type_parameters
+
       sig do
-        implementation.params(
+        override.params(
           indent_level: Integer,
           options: Options
         ).returns(T::Array[String])
@@ -152,7 +164,7 @@ module Parlour
 
           : [options.indented(
               indent_level,
-              "sig#{sig_args} { #{qualifiers}#{
+              "sig#{sig_args} { #{parameters.empty? ? qualifiers[0...-1] : qualifiers}#{
                 parameters.empty? ? '' : "params(#{sig_params.join(', ')})"
               }#{
                 qualifiers.empty? && parameters.empty? ? '' : '.'
@@ -164,7 +176,7 @@ module Parlour
       end
 
       sig do
-        implementation.params(
+        override.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
@@ -179,7 +191,7 @@ module Parlour
       end
 
       sig do 
-        implementation.params(
+        override.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end
@@ -195,7 +207,7 @@ module Parlour
         # We don't need to change anything! We only merge identical methods
       end
 
-      sig { implementation.returns(String) }
+      sig { override.returns(String) }
       # Returns a human-readable brief string description of this method.
       #
       # @return [String]
@@ -238,9 +250,11 @@ module Parlour
       def qualifiers
         result = ''
         result += 'abstract.' if abstract
-        result += 'implementation.' if implementation
-        result += 'override.' if override
+        result += 'override.' if override || implementation
         result += 'overridable.' if overridable
+        result += "type_parameters(#{
+          type_parameters.map { |t| ":#{t}" }.join(', ')
+        })." if type_parameters.any?
         result
       end
     end

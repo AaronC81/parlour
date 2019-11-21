@@ -25,6 +25,7 @@ module Parlour
     # @param new_plugin [Plugin] The new plugin.
     # @return [void]
     def self.inherited(new_plugin)
+      Debugging.debug_puts(self, 'Registered')
       registered_plugins[T.must(new_plugin.name)] = new_plugin
     end
 

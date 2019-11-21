@@ -36,7 +36,9 @@ command :run do |c|
 
     configuration[:requires].each { |source| require(source) }
     configuration[:relative_requires].each do |source|
-      require_relative(File.join(Dir.pwd, source))
+      Dir[File.join(Dir.pwd, source)].each do |file|
+        require_relative(file)
+      end
     end
 
     # Collect the instances of each plugin into an array
@@ -82,7 +84,7 @@ command :run do |c|
     unique_strictness_levels = requested_strictness_levels.uniq
     if unique_strictness_levels.empty?
       # If no requests were made, just use the default
-      strictness = 'strong' 
+      strictness = 'strong'
     else
       # Sort the strictnesses into "strictness order" and pick the weakest
       strictness = unique_strictness_levels.min_by do |level|
@@ -94,7 +96,7 @@ command :run do |c|
         puts Rainbow('Note: ').yellow.bold + "Plugins specified multiple strictness levels, chose the weakest (#{strictness})"
       end
     end
- 
+
     # Write the final RBI
     File.write(configuration[:output_file], gen.rbi(strictness))
   end

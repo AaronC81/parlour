@@ -168,6 +168,37 @@ RSpec.describe Parlour::ConflictResolver do
     end
   end
 
+  context 'when resolving conflicts on enums' do
+    it 'merges enums with identical values' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+    end
+
+    it 'does not merge enums and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_class('Direction')
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+  end
+
   context 'when resolving conflicts on modules' do
     it 'merges identical empty modules' do
       m = gen.root.create_module('M') do |m|

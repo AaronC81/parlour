@@ -35,7 +35,7 @@ module Parlour
       end
 
       sig do
-        implementation.params(
+        override.params(
           indent_level: Integer,
           options: Options
         ).returns(T::Array[String])
@@ -50,7 +50,7 @@ module Parlour
       end
 
       sig do
-        implementation.params(
+        override.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
@@ -65,7 +65,7 @@ module Parlour
       end
 
       sig do 
-        implementation.params(
+        override.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end

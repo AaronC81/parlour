@@ -1,2 +1,4 @@
 --dir
 .
+--typed-override
+sorbet/override.yaml

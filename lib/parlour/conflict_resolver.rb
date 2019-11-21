@@ -39,22 +39,48 @@ module Parlour
     #   will be kept, or nil to keep none of them.
     # @return [void]
     def resolve_conflicts(namespace, &resolver)
+      Debugging.debug_puts(self, Debugging::Tree.begin("Resolving conflicts for #{namespace.name}..."))
+
       # Check for multiple definitions with the same name
       grouped_by_name_children = namespace.children.group_by(&:name)
 
       grouped_by_name_children.each do |name, children|
+        Debugging.debug_puts(self, Debugging::Tree.begin("Checking children named #{name}..."))
+
         if children.length > 1
+          Debugging.debug_puts(self, Debugging::Tree.here("Possible conflict between #{children.length} objects"))
+
           # Special case: do we have two methods, one of which is a class method 
           # and the other isn't? If so, do nothing - this is fine
-          next if children.length == 2 &&
+          if children.length == 2 &&
             children.all? { |c| c.is_a?(RbiGenerator::Method) } &&
             children.count { |c| T.cast(c, RbiGenerator::Method).class_method } == 1
 
+            Debugging.debug_puts(self, Debugging::Tree.end("One is an instance method and one is a class method; no resolution required"))
+            next
+          end
+
           # Special case: do we have two attributes, one of which is a class 
           # attribute and the other isn't? If so, do nothing - this is fine
-          next if children.length == 2 &&
+          if children.length == 2 &&
             children.all? { |c| c.is_a?(RbiGenerator::Attribute) } &&
             children.count { |c| T.cast(c, RbiGenerator::Attribute).class_attribute } == 1
+
+            Debugging.debug_puts(self, Debugging::Tree.end("One is an instance attribute and one is a class attribute; no resolution required"))
+            next
+          end
+
+          # Special case: are they all clearly equal? If so, remove all but one
+          if all_eql?(children)
+            Debugging.debug_puts(self, Debugging::Tree.end("All children are identical"))
+
+            # All of the children are the same, so this deletes all of them
+            namespace.children.delete(T.must(children.first))
+          
+            # Re-add one child
+            namespace.children << T.must(children.first)
+            next
+          end
 
           # We found a conflict!
           # Start by removing all the conflicting items
@@ -66,7 +92,8 @@ module Parlour
           # type of object, so check that first
           children_type = single_type_of_array(children)
           unless children_type
-            # The types aren't the same, so ask the resovler what to do, and
+            Debugging.debug_puts(self, Debugging::Tree.end("Children are different types; requesting manual resolution"))
+            # The types aren't the same, so ask the resolver what to do, and
             # insert that (if not nil)
             choice = resolver.call("Different kinds of definition for the same name", children)
             namespace.children << choice if choice
@@ -77,21 +104,29 @@ module Parlour
           first, *rest = children
           first, rest = T.must(first), T.must(rest)
           if T.must(first).mergeable?(T.must(rest))
+            Debugging.debug_puts(self, Debugging::Tree.end("Children are all mergeable; resolving automatically"))
             first.merge_into_self(rest)
             namespace.children << first
             next
           end
 
           # I give up! Let it be resolved manually somehow
+          Debugging.debug_puts(self, Debugging::Tree.end("Unable to resolve automatically; requesting manual resolution"))
           choice = resolver.call("Can't automatically resolve", children)
           namespace.children << choice if choice
+        else
+          Debugging.debug_puts(self, Debugging::Tree.end("No conflicts"))
         end
       end
+
+      Debugging.debug_puts(self, Debugging::Tree.here("Resolving children..."))
 
       # Recurse to child namespaces
       namespace.children.each do |child|
         resolve_conflicts(child, &resolver) if RbiGenerator::Namespace === child
       end
+
+      Debugging.debug_puts(self, Debugging::Tree.end("All children done"))
     end
 
     private

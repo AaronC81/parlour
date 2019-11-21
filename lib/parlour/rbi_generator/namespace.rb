@@ -7,7 +7,7 @@ module Parlour
       extend T::Sig
 
       sig do
-        implementation.overridable.params(
+        override.overridable.params(
           indent_level: Integer,
           options: Options
         ).returns(T::Array[String])
@@ -162,6 +162,31 @@ module Parlour
       sig do
         params(
           name: String,
+          enums: T.nilable(T::Array[T.any([String, String], String)]),
+          abstract: T::Boolean,
+          block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
+        ).returns(EnumClassNamespace)
+      end
+      # Creates a new enum class definition as a child of this namespace.
+      #
+      # @example Create a compass direction enum.
+      #   namespace.create_class('Direction', enums: ['North', 'South', 'East', 'West'])
+      #
+      # @param name [String] The name of this class.
+      # @param enums [Array<(String, String), String>] The values of the enumeration.
+      # @param abstract [Boolean] A boolean indicating whether this class is abstract.
+      # @param block A block which the new instance yields itself to.
+      # @return [EnumClassNamespace]
+      def create_enum_class(name, enums: nil, abstract: false, &block)
+        new_enum_class = EnumClassNamespace.new(generator, name, enums || [], abstract, &block)
+        move_next_comments(new_enum_class)
+        children << new_enum_class
+        new_enum_class
+      end
+
+      sig do
+        params(
+          name: String,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
@@ -200,6 +225,7 @@ module Parlour
           overridable: T::Boolean,
           class_method: T::Boolean,
           final: T::Boolean,
+          type_parameters: T.nilable(T::Array[Symbol]),
           block: T.nilable(T.proc.params(x: Method).void)
         ).returns(Method)
       end
@@ -213,17 +239,17 @@ module Parlour
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
       # @param returns [String, nil] Same as return_type.
       # @param abstract [Boolean] Whether this method is abstract.
-      # @param implementation [Boolean] Whether this method is an implementation of a
-      #   parent abstract method.
+      # @param implementation [Boolean] DEPRECATED: Whether this method is an 
+      #   implementation of a parent abstract method.
       # @param override [Boolean] Whether this method is overriding a parent overridable
-      #   method.
+      #   method, or implementing a parent abstract method.
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
       # @param final [Boolean] Whether this method is final.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
-      def create_method(name, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, &block)
+      def create_method(name, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, type_parameters: nil, &block)
         parameters = parameters || []
         raise 'cannot specify both return_type: and returns:' if return_type && returns
         return_type ||= returns
@@ -238,6 +264,7 @@ module Parlour
           overridable: overridable,
           class_method: class_method,
           final: final,
+          type_parameters: type_parameters,
           &block
         )
         move_next_comments(new_method)
@@ -478,8 +505,22 @@ module Parlour
         new_constant
       end
 
+      sig { params(name: String, type: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      # Adds a new type alias, in the form of a constant, to this namespace.
+      #
+      # @example Add a +MyType+ type alias, to +Integer+, to the class.
+      #   class.create_type_alias('MyType', type: 'Integer') #=> MyType = T.type_alias { Integer }
+      #
+      # @param name [String] The name of the type alias.
+      # @param value [String] The type to alias, as a Ruby code string.
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::Constant]
+      def create_type_alias(name, type:, &block)
+        create_constant(name, value: "T.type_alias { #{type} }", &block)
+      end
+
       sig do
-        implementation.overridable.params(
+        override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
@@ -496,7 +537,7 @@ module Parlour
       end
 
       sig do 
-        implementation.overridable.params(
+        override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end
@@ -514,7 +555,7 @@ module Parlour
         end
       end
 
-      sig { implementation.overridable.returns(String) }
+      sig { override.overridable.returns(String) }
       # Returns a human-readable brief string description of this namespace.
       #
       # @return [String]
@@ -526,7 +567,7 @@ module Parlour
       private
 
       sig do
-        params(
+        overridable.params(
           indent_level: Integer,
           options: Options
         ).returns(T::Array[String])
