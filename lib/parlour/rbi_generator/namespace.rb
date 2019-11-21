@@ -247,6 +247,7 @@ module Parlour
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
       # @param final [Boolean] Whether this method is final.
+      # @param type_parameters [Array<Symbol>, nil] This method's type parameters.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
       def create_method(name, parameters: nil, return_type: nil, returns: nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, type_parameters: nil, &block)
