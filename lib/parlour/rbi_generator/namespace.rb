@@ -26,6 +26,7 @@ module Parlour
         params(
           generator: RbiGenerator,
           name: T.nilable(String),
+          final: T::Boolean,
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
@@ -35,14 +36,21 @@ module Parlour
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String, nil] The name of this module.
+      # @param final [Boolean] Whether this namespace is final.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name = nil, &block)
+      def initialize(generator, name = nil, final = false, &block)
         super(generator, name || '<anonymous namespace>')
         @children = []
         @next_comments = []
+        @final = final
         yield_self(&block) if block
       end
+
+      sig { returns(T::Boolean) }
+      # Whether this namespace is final.
+      # @return [Boolean]
+      attr_reader :final
 
       sig { returns(T::Array[RbiObject]) }
       # The child {RbiObject} instances inside this namespace.
@@ -131,6 +139,7 @@ module Parlour
       sig do
         params(
           name: String,
+          final: T::Boolean,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
@@ -147,13 +156,14 @@ module Parlour
       #   namespace.create_class('Bar', superclass: 'Foo') #=> class Bar < Foo
       #
       # @param name [String] The name of this class.
+      # @param final [Boolean] Whether this namespace is final.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [ClassNamespace]
-      def create_class(name, superclass: nil, abstract: false, &block)
-        new_class = ClassNamespace.new(generator, name, superclass, abstract, &block)
+      def create_class(name, final: false, superclass: nil, abstract: false, &block)
+        new_class = ClassNamespace.new(generator, name, final, superclass, abstract, &block)
         move_next_comments(new_class)
         children << new_class
         new_class
@@ -162,6 +172,7 @@ module Parlour
       sig do
         params(
           name: String,
+          final: T::Boolean,
           enums: T.nilable(T::Array[T.any([String, String], String)]),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
@@ -173,12 +184,13 @@ module Parlour
       #   namespace.create_class('Direction', enums: ['North', 'South', 'East', 'West'])
       #
       # @param name [String] The name of this class.
+      # @param final [Boolean] Whether this namespace is final.
       # @param enums [Array<(String, String), String>] The values of the enumeration.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [EnumClassNamespace]
-      def create_enum_class(name, enums: nil, abstract: false, &block)
-        new_enum_class = EnumClassNamespace.new(generator, name, enums || [], abstract, &block)
+      def create_enum_class(name, final: false, enums: nil, abstract: false, &block)
+        new_enum_class = EnumClassNamespace.new(generator, name, final, enums || [], abstract, &block)
         move_next_comments(new_enum_class)
         children << new_enum_class
         new_enum_class
@@ -187,6 +199,7 @@ module Parlour
       sig do
         params(
           name: String,
+          final: T::Boolean,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
@@ -202,12 +215,13 @@ module Parlour
       #   end
       #
       # @param name [String] The name of this module.
+      # @param final [Boolean] Whether this namespace is final.
       # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
-      def create_module(name, interface: false, &block)
-        new_module = ModuleNamespace.new(generator, name, interface, &block)
+      def create_module(name, final: false, interface: false, &block)
+        new_module = ModuleNamespace.new(generator, name, final, interface, &block)
         move_next_comments(new_module)
         children << new_module
         new_module
@@ -581,6 +595,8 @@ module Parlour
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
       def generate_body(indent_level, options)
         result = []
+
+        result += [options.indented(indent_level, 'final!'), ''] if final
 
         if includes.any? || extends.any? || constants.any?
           result += includes

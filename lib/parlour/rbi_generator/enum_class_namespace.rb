@@ -9,6 +9,7 @@ module Parlour
         params(
           generator: RbiGenerator,
           name: String,
+          final: T::Boolean,
           enums: T::Array[T.any([String, String], String)],
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
@@ -19,12 +20,13 @@ module Parlour
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this class.
+      # @param final [Boolean] Whether this namespace is final.
       # @param enums [Array<(String, String), String>] The values of the enumeration.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, enums, abstract, &block)
-        super(generator, name, 'T::Enum', abstract, &block)
+      def initialize(generator, name, final, enums, abstract, &block)
+        super(generator, name, final, 'T::Enum', abstract, &block)
         @enums = enums
       end
 
