@@ -162,6 +162,31 @@ module Parlour
       sig do
         params(
           name: String,
+          enums: T.nilable(T::Array[T.any([String, String], String)]),
+          abstract: T::Boolean,
+          block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
+        ).returns(EnumClassNamespace)
+      end
+      # Creates a new enum class definition as a child of this namespace.
+      #
+      # @example Create a compass direction enum.
+      #   namespace.create_class('Direction', enums: ['North', 'South', 'East', 'West'])
+      #
+      # @param name [String] The name of this class.
+      # @param enums [Array<(String, String), String>] The values of the enumeration.
+      # @param abstract [Boolean] A boolean indicating whether this class is abstract.
+      # @param block A block which the new instance yields itself to.
+      # @return [EnumClassNamespace]
+      def create_enum_class(name, enums: nil, abstract: false, &block)
+        new_enum_class = EnumClassNamespace.new(generator, name, enums || [], abstract, &block)
+        move_next_comments(new_enum_class)
+        children << new_enum_class
+        new_enum_class
+      end
+
+      sig do
+        params(
+          name: String,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
@@ -540,7 +565,7 @@ module Parlour
       private
 
       sig do
-        params(
+        overridable.params(
           indent_level: Integer,
           options: Options
         ).returns(T::Array[String])

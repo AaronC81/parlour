@@ -357,6 +357,32 @@ RSpec.describe Parlour::RbiGenerator do
     end
   end
 
+  context 'enums' do
+    it 'can be created' do
+      mod = subject.root.create_module('M') do |m|
+        m.create_enum_class('Directions', enums: ['North', 'South', 'West', ['East', '"Some custom serialization"']]) do |c|
+          c.create_method('mnemonic', returns: 'String', class_method: true)
+        end
+      end
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module M
+          class Directions < T::Enum
+            enums do
+              North = new
+              South = new
+              West = new
+              East = new("Some custom serialization")
+            end
+
+            sig { returns(String) }
+            def self.mnemonic; end
+          end
+        end
+      RUBY
+    end
+  end
+
   context 'arbitrary code' do
     it 'is generated correctly for single lines' do
       mod = subject.root.create_module('M') do |m|
