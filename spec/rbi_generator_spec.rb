@@ -32,6 +32,16 @@ RSpec.describe Parlour::RbiGenerator do
         end
       RUBY
     end
+
+    it 'can be final' do
+      mod = subject.root.create_module('Foo', final: true)
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module Foo
+          final!
+        end
+      RUBY
+    end
   end
 
   context 'class namespace' do
@@ -44,6 +54,16 @@ RSpec.describe Parlour::RbiGenerator do
       RUBY
     end
 
+    it 'can be final' do
+      klass = subject.root.create_class('Foo', final: true)
+
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Foo
+          final!
+        end
+      RUBY
+    end
+
     it 'nests classes correctly' do
       klass = subject.root.create_class('Foo') do |foo|
         foo.create_class('Bar') do |bar|
@@ -51,7 +71,7 @@ RSpec.describe Parlour::RbiGenerator do
           bar.create_class('B')
           bar.create_class('C')
         end
-        foo.create_class('Baz') do |baz|
+        foo.create_class('Baz', final: true) do |baz|
           baz.create_class('A')
           baz.create_class('B')
           baz.create_class('C')
@@ -72,6 +92,8 @@ RSpec.describe Parlour::RbiGenerator do
           end
 
           class Baz
+            final!
+
             class A
             end
 
@@ -275,6 +297,17 @@ RSpec.describe Parlour::RbiGenerator do
       expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         sig { params(a: Integer).returns(String) }
         def self.foo(a = 4); end
+      RUBY
+    end
+
+    it 'can be final' do
+      meth = subject.root.create_method('foo', parameters: [
+        pa('a', type: 'Integer', default: '4')
+      ], return_type: 'String', final: true)
+
+      expect(meth.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        sig(:final) { params(a: Integer).returns(String) }
+        def foo(a = 4); end
       RUBY
     end
 

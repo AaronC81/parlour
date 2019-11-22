@@ -9,6 +9,7 @@ module Parlour
         params(
           generator: RbiGenerator,
           name: String,
+          final: T::Boolean,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
@@ -19,13 +20,14 @@ module Parlour
       #
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this class.
+      # @param final [Boolean] Whether this namespace is final.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, superclass, abstract, &block)
-        super(generator, name, &block)
+      def initialize(generator, name, final, superclass, abstract, &block)
+        super(generator, name, final, &block)
         @superclass = superclass
         @abstract = abstract
       end

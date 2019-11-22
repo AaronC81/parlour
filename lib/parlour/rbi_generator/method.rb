@@ -16,6 +16,7 @@ module Parlour
           override: T::Boolean,
           overridable: T::Boolean,
           class_method: T::Boolean,
+          final: T::Boolean,
           type_parameters: T.nilable(T::Array[Symbol]),
           block: T.nilable(T.proc.params(x: Method).void)
         ).void
@@ -38,10 +39,11 @@ module Parlour
       # @param overridable [Boolean] Whether this method is overridable by subclasses.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
-      # @param class_method [Array<Symbol>, nil] This method's type parameters.
+      # @param final [Boolean] Whether this method is final.
+      # @param type_parameters [Array<Symbol>, nil] This method's type parameters.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, type_parameters: nil, &block)
+      def initialize(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, type_parameters: nil, &block)
         super(generator, name)
         @parameters = parameters
         @return_type = return_type
@@ -50,6 +52,7 @@ module Parlour
         @override = override
         @overridable = overridable
         @class_method = class_method
+        @final = final
         @type_parameters = type_parameters || []
         yield_self(&block) if block
       end
@@ -70,6 +73,7 @@ module Parlour
           override        == other.override &&
           overridable     == other.overridable &&
           class_method    == other.class_method &&
+          final           == other.final &&
           type_parameters == other.type_parameters
       end
 
@@ -114,6 +118,11 @@ module Parlour
       # @return [Boolean]
       attr_reader :class_method
 
+      sig { returns(T::Boolean) }
+      # Whether this method is final.
+      # @return [Boolean]
+      attr_reader :final
+
       sig { returns(T::Array[Symbol]) }
       # This method's type parameters.
       # @return [Array<Symbol>]
@@ -132,11 +141,12 @@ module Parlour
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         return_call = return_type ? "returns(#{return_type})" : 'void'
+        sig_args = final ? '(:final)' : ''
 
         sig_params = parameters.map(&:to_sig_param)
         sig_lines = parameters.length >= options.break_params \
           ? [
-              options.indented(indent_level, 'sig do'),
+              options.indented(indent_level, "sig#{sig_args} do"),
               options.indented(indent_level + 1, "#{qualifiers}params("),
             ] +
             (
@@ -155,7 +165,7 @@ module Parlour
 
           : [options.indented(
               indent_level,
-              "sig { #{parameters.empty? ? qualifiers[0...-1] : qualifiers}#{
+              "sig#{sig_args} { #{parameters.empty? ? qualifiers[0...-1] : qualifiers}#{
                 parameters.empty? ? '' : "params(#{sig_params.join(', ')})"
               }#{
                 qualifiers.empty? && parameters.empty? ? '' : '.'
