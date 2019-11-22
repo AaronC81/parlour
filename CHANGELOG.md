@@ -3,6 +3,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.0.0] - 2019-11-22
+### Added
+- `T::Enum` classes have been implemented, and can be generated using
+`#create_enum_class`.
+- Methods and namespaces can now be made final using the `final:` keyword
+argument.
+- Type aliases can be created on namespaces using `#create_type_alias`.
+- The `.parlour` file can now have globs in `relative_requires` to load many
+files matching a pattern at once.
+
+### Fixed
+- Commander is now a gemspec dependency.
+
 ## [0.8.1] - 2019-09-27
 ### Added
 - Running with the PARLOUR_DEBUG environment variable set will now print debug
