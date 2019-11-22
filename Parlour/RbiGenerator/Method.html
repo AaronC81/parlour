@@ -187,6 +187,35 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#final-instance_method" title="#final (instance method)">#<strong>final</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether this method is final.</p>
+</div></span>
+  
+</li>
+
+    
       <li class="public deprecated">
   <span class="summary_signature">
     
@@ -459,7 +488,7 @@ parameters.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, type_parameters: nil, &amp;block)  &#x21d2; void </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, type_parameters: nil, &amp;block)  &#x21d2; void </a>
     
 
     
@@ -554,7 +583,7 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, type_parameters: nil, &amp;block)  &#x21d2; <tt>void</tt> 
+    #<strong>initialize</strong>(generator, name, parameters, return_type = nil, abstract: false, implementation: false, override: false, overridable: false, class_method: false, final: false, type_parameters: nil, &amp;block)  &#x21d2; <tt>void</tt> 
   
 
   
@@ -734,7 +763,23 @@ implementing a parent abstract method.</p>
   
     <li>
       
-        <span class='name'>class_method</span>
+        <span class='name'>final</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this method is final.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>type_parameters</span>
       
       
         <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>, <tt>nil</tt>)</span>
@@ -773,8 +818,6 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-44
-45
 46
 47
 48
@@ -784,12 +827,15 @@ implementing a parent abstract method.</p>
 52
 53
 54
-55</pre>
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 46</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_parameters'>parameters</span><span class='comma'>,</span> <span class='id identifier rubyid_return_type'>return_type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>implementation:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>override:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>overridable:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>class_method:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>type_parameters:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_parameters'>parameters</span><span class='comma'>,</span> <span class='id identifier rubyid_return_type'>return_type</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>implementation:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>override:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>overridable:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>class_method:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>type_parameters:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='ivar'>@parameters</span> <span class='op'>=</span> <span class='id identifier rubyid_parameters'>parameters</span>
   <span class='ivar'>@return_type</span> <span class='op'>=</span> <span class='id identifier rubyid_return_type'>return_type</span>
@@ -798,6 +844,7 @@ implementing a parent abstract method.</p>
   <span class='ivar'>@override</span> <span class='op'>=</span> <span class='id identifier rubyid_override'>override</span>
   <span class='ivar'>@overridable</span> <span class='op'>=</span> <span class='id identifier rubyid_overridable'>overridable</span>
   <span class='ivar'>@class_method</span> <span class='op'>=</span> <span class='id identifier rubyid_class_method'>class_method</span>
+  <span class='ivar'>@final</span> <span class='op'>=</span> <span class='id identifier rubyid_final'>final</span>
   <span class='ivar'>@type_parameters</span> <span class='op'>=</span> <span class='id identifier rubyid_type_parameters'>type_parameters</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_yield_self'>yield_self</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_block'>block</span>
 <span class='kw'>end</span></pre>
@@ -852,12 +899,12 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-90
-91
-92</pre>
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_abstract'>abstract</span>
   <span class='ivar'>@abstract</span>
@@ -909,15 +956,71 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-115
-116
-117</pre>
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 119</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_class_method'>class_method</span>
   <span class='ivar'>@class_method</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="final-instance_method">
+  
+    #<strong>final</strong>  &#x21d2; <tt>Boolean</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Whether this method is final.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+124
+125
+126</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 124</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_final'>final</span>
+  <span class='ivar'>@final</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -970,12 +1073,12 @@ generate <code>override</code>.</p>
       <pre class="lines">
 
 
-98
-99
-100</pre>
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_implementation'>implementation</span>
   <span class='ivar'>@implementation</span>
@@ -1026,12 +1129,12 @@ generate <code>override</code>.</p>
       <pre class="lines">
 
 
-109
-110
-111</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 113</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_overridable'>overridable</span>
   <span class='ivar'>@overridable</span>
@@ -1084,12 +1187,12 @@ generate <code>override</code>.</p>
       <pre class="lines">
 
 
-104
-105
-106</pre>
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_override'>override</span>
   <span class='ivar'>@override</span>
@@ -1141,12 +1244,12 @@ parameters.</p>
       <pre class="lines">
 
 
-79
-80
-81</pre>
+83
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 79</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parameters'>parameters</span>
   <span class='ivar'>@parameters</span>
@@ -1198,12 +1301,12 @@ parameters.</p>
       <pre class="lines">
 
 
-85
-86
-87</pre>
+89
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_return_type'>return_type</span>
   <span class='ivar'>@return_type</span>
@@ -1254,12 +1357,12 @@ parameters.</p>
       <pre class="lines">
 
 
-120
-121
-122</pre>
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 120</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type_parameters'>type_parameters</span>
   <span class='ivar'>@type_parameters</span>
@@ -1336,9 +1439,6 @@ will always return false.</p>
       <pre class="lines">
 
 
-63
-64
-65
 66
 67
 68
@@ -1347,10 +1447,14 @@ will always return false.</p>
 71
 72
 73
-74</pre>
+74
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
   <span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Method (class)">Method</a></span></span> <span class='op'>===</span> <span class='id identifier rubyid_other'>other</span> <span class='op'>&amp;&amp;</span>
@@ -1362,6 +1466,7 @@ will always return false.</p>
     <span class='id identifier rubyid_override'>override</span>        <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_override'>override</span> <span class='op'>&amp;&amp;</span>
     <span class='id identifier rubyid_overridable'>overridable</span>     <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_overridable'>overridable</span> <span class='op'>&amp;&amp;</span>
     <span class='id identifier rubyid_class_method'>class_method</span>    <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_class_method'>class_method</span> <span class='op'>&amp;&amp;</span>
+    <span class='id identifier rubyid_final'>final</span>           <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_final'>final</span> <span class='op'>&amp;&amp;</span>
     <span class='id identifier rubyid_type_parameters'>type_parameters</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_type_parameters'>type_parameters</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1408,14 +1513,14 @@ will always return false.</p>
       <pre class="lines">
 
 
-205
-206
-207
-208
-209</pre>
+215
+216
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 205</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 215</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
   <span class='comment'># TODO: more info
@@ -1507,15 +1612,6 @@ will always return false.</p>
       <pre class="lines">
 
 
-133
-134
-135
-136
-137
-138
-139
-140
-141
 142
 143
 144
@@ -1541,18 +1637,29 @@ will always return false.</p>
 164
 165
 166
-167</pre>
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_return_call'>return_call</span> <span class='op'>=</span> <span class='id identifier rubyid_return_type'>return_type</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>returns(</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_return_type'>return_type</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>void</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_sig_args'>sig_args</span> <span class='op'>=</span> <span class='id identifier rubyid_final'>final</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(:final)</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
 
   <span class='id identifier rubyid_sig_params'>sig_params</span> <span class='op'>=</span> <span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_sig_param</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sig_lines'>sig_lines</span> <span class='op'>=</span> <span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_break_params'>break_params</span> \
     <span class='op'>?</span> <span class='lbracket'>[</span>
-        <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>sig do</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+        <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sig</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_sig_args'>sig_args</span><span class='embexpr_end'>}</span><span class='tstring_content'> do</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
         <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span> <span class='op'>+</span> <span class='int'>1</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='embexpr_end'>}</span><span class='tstring_content'>params(</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
       <span class='rbracket'>]</span> <span class='op'>+</span>
       <span class='lparen'>(</span>
@@ -1571,7 +1678,7 @@ will always return false.</p>
 
     <span class='op'>:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span>
         <span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span>
-        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sig { </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sig</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_sig_args'>sig_args</span><span class='embexpr_end'>}</span><span class='tstring_content'> { </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span>
           <span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>params(</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_sig_params'>sig_params</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
         <span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span>
           <span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_parameters'>parameters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span>
@@ -1635,12 +1742,12 @@ You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_m
       <pre class="lines">
 
 
-197
-198
-199</pre>
+207
+208
+209</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 197</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 207</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='comment'># We don&#39;t need to change anything! We only merge identical methods
@@ -1716,12 +1823,12 @@ their signatures and definitions must be identical.</p>
       <pre class="lines">
 
 
-180
-181
-182</pre>
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/method.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_other'>other</span><span class='op'>|</span> <span class='kw'>self</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span> <span class='rbrace'>}</span>
@@ -1736,7 +1843,7 @@ their signatures and definitions must be identical.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Nov 21 20:45:51 2019 by
+  Generated on Fri Nov 22 01:36:55 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.3.8).
 </div>
