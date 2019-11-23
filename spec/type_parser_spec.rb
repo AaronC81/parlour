@@ -8,8 +8,8 @@ end
 
 RSpec.describe Parlour::TypeParser do
   context Parlour::TypeParser::NodePath do
-    let(:subject) { described_class.new(indeces: [1, 2, 3, 4]) }
-    let(:empty) { described_class.new(indeces: []) }
+    let(:subject) { described_class.new([1, 2, 3, 4]) }
+    let(:empty) { described_class.new([]) }
 
     it 'can be instantiated' do
       expect(subject.indeces).to eq [1, 2, 3, 4]

@@ -5,27 +5,47 @@
 require 'parser/current'
 
 module Parlour
+  # Parses Ruby source to find Sorbet type signatures.
   class TypeParser
-    class NodePath < T::Struct
+    # Represents a path of indeces which can be traversed to reach a specific
+    # node in an AST.
+    class NodePath
       extend T::Sig
 
-      prop :indeces, T::Array[Integer]
+      sig { returns(T::Array[Integer]) }
+      # @return [Array<Integer>] The path of indeces.
+      attr_reader :indeces
+
+      sig { params(indeces: T::Array[Integer]).void }
+      # Creates a new {NodePath}.
+      #
+      # @param [Array<Integer>] indeces The path of indeces.
+      def initialize(indeces)
+        @indeces = indeces
+      end
 
       sig { returns(NodePath) }
+      # @return [NodePath] The parent path for the node at this path.
       def parent
         if indeces.empty?
           raise IndexError, 'cannot get parent of an empty path'
         else
-          NodePath.new(indeces: indeces[0...-1])
+          NodePath.new(indeces[0...-1])
         end
       end
 
       sig { params(index: Integer).returns(NodePath) }
+      # @param [Integer] index The index of the child whose path to return.
+      # @return [NodePath] The path to the child at the given index.
       def child(index)
-        NodePath.new(indeces: indeces + [index])
+        NodePath.new(indeces + [index])
       end
 
       sig { params(start: Parser::AST::Node).returns(Parser::AST::Node) }
+      # Follows this path of indeces from an AST node.
+      #
+      # @param [Parser::AST::Node] start The AST node to start from.
+      # @return [Parser::AST::Node] The resulting AST node.
       def traverse(start)
         current = start
         indeces.each do |index|
@@ -38,11 +58,20 @@ module Parlour
     extend T::Sig
 
     sig { params(ast: Parser::AST::Node).void }
+    # Creates a new {TypeParser} from whitequark/parser AST.
+    #
+    # @param [Parser::AST::Node] The AST.
     def initialize(ast)
       @ast = ast
     end
 
     sig { params(filename: String, source: String).returns(TypeParser) }
+    # Creates a new {TypeParser} from a source file and its filename.
+    #
+    # @param [String] filename A filename. This does not need to be an actual
+    #   file; it merely identifies this source.
+    # @param [String] source The Ruby source code.
+    # @return [TypeParser]
     def self.from_source(filename, source)
       buffer = Parser::Source::Buffer.new(filename)
       buffer.source = source
@@ -50,16 +79,23 @@ module Parlour
       TypeParser.new(Parser::CurrentRuby.new.parse(buffer))
     end
 
-    sig { returns(Parser::Source::Buffer) }
-    attr_accessor :buffer
-
     sig { returns(Parser::AST::Node) }
+    # @return [Parser::AST::Node] The AST which this type parser should use.
     attr_accessor :ast
 
     sig { returns(T::Array[NodePath]) }
+    # Finds ALL uses of sig in the AST, including those which are not 
+    # semantically valid as Sorbet signatures.
+    #
+    # Specifically, this searches the entire AST for any calls of a
+    # method called "sig" which pass a block.
+    #
+    # @return [Array<NodePath>] The node paths to the signatures.
     def find_sigs
-      find_sigs_at(ast, NodePath.new(indeces: []))
+      find_sigs_at(ast, NodePath.new([]))
     end
+
+    protected
 
     sig { params(node: Parser::AST::Node, path: NodePath).returns(T::Array[NodePath]) }
     def find_sigs_at(node, path)
