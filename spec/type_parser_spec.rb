@@ -35,6 +35,20 @@ RSpec.describe Parlour::TypeParser do
         expect(empty.child(1).indeces).to eq [1]
       end
     end
+
+    context '#sibling' do
+      it 'works for non-empty paths' do
+        expect(subject.sibling(0).indeces).to eq [1, 2, 3, 4]
+        expect(subject.sibling(2).indeces).to eq [1, 2, 3, 6]
+        expect(subject.sibling(-3).indeces).to eq [1, 2, 3, 1]
+
+        expect { subject.sibling(-6).indeces }.to raise_error ArgumentError
+      end
+
+      it 'works for empty paths' do
+        expect { empty.sibling(2).indeces }.to raise_error IndexError
+      end
+    end
   end
 
   context '#find_sigs' do

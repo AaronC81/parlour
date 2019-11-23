@@ -41,6 +41,22 @@ module Parlour
         NodePath.new(indeces + [index])
       end
 
+      sig { params(offset: Integer).returns(NodePath) }
+      # @param [Integer] offset The sibling offset to use. 0 is the current
+      #   node, -1 is the previous node, or 3 is is the node three nodes after
+      #   this one.
+      # @return [NodePath] The path to the sibling with the given context.
+      def sibling(offset)
+        if indeces.empty?
+          raise IndexError, 'cannot get sibling of an empty path'
+        else
+          *xs, x = indeces
+          raise ArgumentError, "sibling offset of #{offset} results in " \
+            "negative index of #{x + offset}" if x + offset < 0
+          NodePath.new(xs + [x + offset])
+        end
+      end
+
       sig { params(start: Parser::AST::Node).returns(Parser::AST::Node) }
       # Follows this path of indeces from an AST node.
       #
