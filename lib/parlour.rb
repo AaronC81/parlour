@@ -25,3 +25,6 @@ require 'parlour/rbi_generator/enum_class_namespace'
 require 'parlour/rbi_generator'
 
 require 'parlour/conflict_resolver'
+
+require 'parlour/type_parser'
+require 'parlour/type_loader'
