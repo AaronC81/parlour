@@ -149,7 +149,9 @@ module Parlour
       overridable = !!sig_chain.find { |(n, a)| n == :overridable && a.empty? }
       abstract =    !!sig_chain.find { |(n, a)| n == :abstract    && a.empty? }
 
-      # TODO: final
+      # Determine whether this method is final (i.e. sig(:final))
+      _, _, *sig_arguments = *sig_block_node.to_a[0]
+      final = sig_arguments.any? { |a| a.type == :sym && a.to_a[0] == :final }
 
       return_type = sig_chain
         .find { |(n, _)| n == :returns }
@@ -208,6 +210,7 @@ module Parlour
         override: override,
         overridable: overridable,
         abstract: abstract,
+        final: final,
       )
     end
 

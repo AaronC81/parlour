@@ -132,6 +132,7 @@ RSpec.describe Parlour::TypeParser do
       expect(meth.return_type).to eq 'Integer'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
+      expect(meth.final).to eq false
 
       expect(meth.parameters.length).to eq 2
       expect(meth.parameters[0].name).to eq 'x'
@@ -168,6 +169,7 @@ RSpec.describe Parlour::TypeParser do
       expect(meth.return_type).to eq 'T.nilable(Object)'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
+      expect(meth.final).to eq false
 
       expect(meth.parameters.length).to eq 4
       expect(meth.parameters[0].name).to eq 'x'
@@ -219,5 +221,25 @@ RSpec.describe Parlour::TypeParser do
       expect(meth.parameters[1].kind).to eq :double_splat
       expect(meth.parameters[1].type).to eq 'T::Hash[Object, Object]'
     end
+
+    it 'supports final methods' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+        sig(:final) { returns(Integer) }
+        def foo
+          3
+        end
+      end
+      RUBY
+
+      sigs = instance.find_sigs
+      expect(sigs.length).to be 1
+
+      meth = instance.parse_sig(sigs[0])
+      expect(meth.return_type).to eq 'Integer'
+      expect(meth.name).to eq 'foo'
+      expect(meth.override).to eq false
+      expect(meth.final).to eq true
+    end 
   end
 end
