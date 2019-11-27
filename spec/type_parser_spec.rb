@@ -94,4 +94,130 @@ RSpec.describe Parlour::TypeParser do
       expect(sigs[1].indeces).to eq [1, 1, 2]
     end
   end
+
+  context '#parse_sig' do
+    it 'works for a return-only sig' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+          sig { returns(Integer) }
+          def foo
+            3
+          end
+        end
+      RUBY
+
+      sigs = instance.find_sigs
+      expect(sigs.length).to be 1
+
+      meth = instance.parse_sig(sigs[0])
+      expect(meth.return_type).to eq 'Integer'
+      expect(meth.name).to eq 'foo'
+      expect(meth.override).to eq false
+    end
+
+    it 'works for methods with simple parameters' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+          sig { params(x: String, y: T::Boolean).returns(Integer) }
+          def foo(x, y = true)
+            y ? x.length : 0
+          end
+        end
+      RUBY
+
+      sigs = instance.find_sigs
+      expect(sigs.length).to be 1
+
+      meth = instance.parse_sig(sigs[0])
+      expect(meth.return_type).to eq 'Integer'
+      expect(meth.name).to eq 'foo'
+      expect(meth.override).to eq false
+
+      expect(meth.parameters.length).to eq 2
+      expect(meth.parameters[0].name).to eq 'x'
+      expect(meth.parameters[0].kind).to eq :normal
+      expect(meth.parameters[0].type).to eq 'String'
+      expect(meth.parameters[0].default).to eq nil
+      expect(meth.parameters[1].name).to eq 'y'
+      expect(meth.parameters[1].kind).to eq :normal
+      expect(meth.parameters[1].type).to eq 'T::Boolean'
+      expect(meth.parameters[1].default).to eq 'true'
+    end
+
+    it 'works for methods with complex parameters' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+          sig do
+            params(
+              x: String, 
+              y: T.nilable(T.any(Integer, T::Boolean)),
+              z: Numeric,
+              blk: T.proc.returns(T::Boolean)
+            ).returns(T.nilable(Object))
+          end
+          def foo(x, y:, z: 3, &blk)
+            nil
+          end
+        end
+      RUBY
+
+      sigs = instance.find_sigs
+      expect(sigs.length).to be 1
+
+      meth = instance.parse_sig(sigs[0])
+      expect(meth.return_type).to eq 'T.nilable(Object)'
+      expect(meth.name).to eq 'foo'
+      expect(meth.override).to eq false
+
+      expect(meth.parameters.length).to eq 4
+      expect(meth.parameters[0].name).to eq 'x'
+      expect(meth.parameters[0].kind).to eq :normal
+      expect(meth.parameters[0].type).to eq 'String'
+      expect(meth.parameters[0].default).to eq nil
+      expect(meth.parameters[1].name).to eq 'y:'
+      expect(meth.parameters[1].kind).to eq :keyword
+      expect(meth.parameters[1].type).to eq 'T.nilable(T.any(Integer, T::Boolean))'
+      expect(meth.parameters[1].default).to eq nil
+      expect(meth.parameters[2].name).to eq 'z:'
+      expect(meth.parameters[2].kind).to eq :keyword
+      expect(meth.parameters[2].type).to eq 'Numeric'
+      expect(meth.parameters[2].default).to eq '3'
+      expect(meth.parameters[3].name).to eq '&blk'
+      expect(meth.parameters[3].kind).to eq :block
+      expect(meth.parameters[3].type).to eq 'T.proc.returns(T::Boolean)'
+      expect(meth.parameters[3].default).to eq nil
+    end
+
+    it 'works with splat-arguments' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+        sig do
+          params(
+            args: Integer,
+            kwargs: T::Hash[Object, Object]
+          ).returns(T.nilable(Object))
+        end
+        def foo(*args, **kwargs)
+          nil
+        end
+      end
+      RUBY
+
+      sigs = instance.find_sigs
+      expect(sigs.length).to be 1
+
+      meth = instance.parse_sig(sigs[0])
+      expect(meth.return_type).to eq 'T.nilable(Object)'
+      expect(meth.name).to eq 'foo'
+      expect(meth.override).to eq false
+
+      expect(meth.parameters.length).to eq 2
+      expect(meth.parameters[0].name).to eq '*args'
+      expect(meth.parameters[0].kind).to eq :splat
+      expect(meth.parameters[0].type).to eq 'Integer'
+      expect(meth.parameters[1].name).to eq '**kwargs'
+      expect(meth.parameters[1].kind).to eq :double_splat
+      expect(meth.parameters[1].type).to eq 'T::Hash[Object, Object]'
+    end
+  end
 end
