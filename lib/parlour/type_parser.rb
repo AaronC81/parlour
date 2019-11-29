@@ -65,6 +65,7 @@ module Parlour
       def traverse(start)
         current = start
         indeces.each do |index|
+          raise IndexError, 'path does not exist' if index >= current.to_a.length
           current = current.to_a[index]
         end
         current
