@@ -228,8 +228,9 @@ module Parlour
       end.compact
       
       types_in_children = node.to_a
-        .select { |child| child.is_a?(Parser::AST::Node) }
-        .map.with_index { |child, i| find_sigs_at(child, path.child(i)) }
+        .map.with_index
+        .select { |child, i| child.is_a?(Parser::AST::Node) }
+        .map { |child, i| find_sigs_at(child, path.child(i)) }
         .flatten
 
       types_in_this_node + types_in_children
