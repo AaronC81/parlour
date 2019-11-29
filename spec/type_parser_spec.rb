@@ -225,11 +225,11 @@ RSpec.describe Parlour::TypeParser do
     it 'supports final methods' do
       instance = described_class.from_source('(test)', <<-RUBY)
         module A
-        sig(:final) { returns(Integer) }
-        def foo
-          3
+          sig(:final) { returns(Integer) }
+          def foo
+            3
+          end
         end
-      end
       RUBY
 
       sigs = instance.find_sigs
