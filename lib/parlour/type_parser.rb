@@ -215,7 +215,59 @@ module Parlour
       )
     end
 
+    class NamespaceKind < T::Enum
+      enums do
+        Class = new
+        Module = new
+        Eigen = new
+      end
+    end
+    
+    sig { params(path: NodePath).returns(T::Array[[NamespaceKind, T.nilable(String)]]) }
+    # Given a path to a node, gets the nesting structure of the namespaces it
+    # resides in. These namespaces include class definitions, module 
+    # definitions, and eigenclass (class << self) blocks.
+    #
+    # @param [NodePath] path The path to the node.
+    # @return [Array<(NamespaceKind, String)>] An array of namespaces, with the
+    #   the highest-level namespace first. Each namespace is a tuple of 
+    #   [kind, name]; note that eigenclass blocks have no name.
+    def namespaces(path)
+      result = []
+
+      while path
+        node = path.traverse(ast)
+        case node.type
+        when :class
+          result = constant_names(node.to_a[0])
+            .map { |x| [NamespaceKind::Class, x.to_s] } + result
+        when :module
+          result = constant_names(node.to_a[0])
+            .map { |x| [NamespaceKind::Module, x.to_s] } + result
+        when :sclass
+          raise 'unsupported eigenclass usage' unless node.to_a[0].type == :self
+          result = [[NamespaceKind::Eigen, nil]] + result
+        end
+
+        path = path.parent rescue nil
+      end
+
+      result
+    end
+
     protected
+
+    sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
+    # Given a node representing a simple chain of constants (such as A or
+    # A::B::C), converts that node into an array of the constant names which
+    # are accessed. For example, A::B::C would become [:A, :B, :C].
+    #
+    # @param [Parser::AST::Node, nil] node The node to convert. This must 
+    #   consist only of nested (:const) nodes.
+    # @return [Array<Symbol>] The chain of constant names.
+    def constant_names(node)
+      node ? constant_names(node.to_a[0]) + [node.to_a[1]] : []
+    end
 
     sig { params(node: Parser::AST::Node, path: NodePath).returns(T::Array[NodePath]) }
     def find_sigs_at(node, path)

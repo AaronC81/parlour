@@ -242,4 +242,74 @@ RSpec.describe Parlour::TypeParser do
       expect(meth.final).to eq true
     end 
   end
+
+  context '#namespaces' do
+    it 'works with a typical namespace structure' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+          module B
+            class C
+              module D
+                class E
+                  sig { void }
+                  def foo; end
+                end
+              end
+            end
+          end
+        end
+      RUBY
+
+      expect(instance.namespaces(instance.find_sigs[0])).to eq [
+        [Parlour::TypeParser::NamespaceKind::Module, 'A'],
+        [Parlour::TypeParser::NamespaceKind::Module, 'B'],
+        [Parlour::TypeParser::NamespaceKind::Class, 'C'],
+        [Parlour::TypeParser::NamespaceKind::Module, 'D'],
+        [Parlour::TypeParser::NamespaceKind::Class, 'E'],
+      ]
+    end
+
+    it 'works with A::B style namespace names' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A::B
+          class C
+            class D::E
+              module F
+                sig { void }
+                def foo; end
+              end
+            end
+          end
+        end
+      RUBY
+
+      expect(instance.namespaces(instance.find_sigs[0])).to eq [
+        [Parlour::TypeParser::NamespaceKind::Module, 'A'],
+        [Parlour::TypeParser::NamespaceKind::Module, 'B'],
+        [Parlour::TypeParser::NamespaceKind::Class, 'C'],
+        [Parlour::TypeParser::NamespaceKind::Class, 'D'],
+        [Parlour::TypeParser::NamespaceKind::Class, 'E'],
+        [Parlour::TypeParser::NamespaceKind::Module, 'F'],
+      ]
+    end
+
+    it 'supports eigenclasses' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+          class B
+            class << self
+              sig { void }
+              def foo; end
+            end
+          end
+        end
+      RUBY
+
+      expect(instance.namespaces(instance.find_sigs[0])).to eq [
+        [Parlour::TypeParser::NamespaceKind::Module, 'A'],
+        [Parlour::TypeParser::NamespaceKind::Class, 'B'],
+        [Parlour::TypeParser::NamespaceKind::Eigen, nil],
+      ]
+    end
+  end
 end
