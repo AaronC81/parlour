@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: true
 
 # TODO: support sig without runtime
 
@@ -30,7 +30,7 @@ module Parlour
         if indeces.empty?
           raise IndexError, 'cannot get parent of an empty path'
         else
-          NodePath.new(indeces[0...-1])
+          NodePath.new(T.must(indeces[0...-1]))
         end
       end
 
@@ -51,9 +51,10 @@ module Parlour
           raise IndexError, 'cannot get sibling of an empty path'
         else
           *xs, x = indeces
+          x = T.must(x)
           raise ArgumentError, "sibling offset of #{offset} results in " \
             "negative index of #{x + offset}" if x + offset < 0
-          NodePath.new(xs + [x + offset])
+          NodePath.new(T.must(xs) + [x + offset])
         end
       end
 
@@ -63,7 +64,7 @@ module Parlour
       # @param [Parser::AST::Node] start The AST node to start from.
       # @return [Parser::AST::Node] The resulting AST node.
       def traverse(start)
-        current = start
+        current = T.unsafe(start)
         indeces.each do |index|
           raise IndexError, 'path does not exist' if index >= current.to_a.length
           current = current.to_a[index]
@@ -140,7 +141,9 @@ module Parlour
       sig_chain = []
       current_sig_chain_node = sig_block_node.to_a[2]
       while current_sig_chain_node
-        _, name, *arguments = *current_sig_chain_node
+        name = current_sig_chain_node.to_a[1]
+        arguments = current_sig_chain_node.to_a[2..-1]
+
         sig_chain << [name, arguments]
         current_sig_chain_node = current_sig_chain_node.to_a[0]
       end
@@ -234,6 +237,7 @@ module Parlour
     #   [kind, name]; note that eigenclass blocks have no name.
     def namespaces(path)
       result = []
+      path = T.let(path, T.nilable(NodePath))
 
       while path
         node = path.traverse(ast)
