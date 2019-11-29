@@ -312,4 +312,38 @@ RSpec.describe Parlour::TypeParser do
       ]
     end
   end
+
+  context '#full_definition_for_sig' do
+    it 'returns correct object structures' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A::B
+          class C
+            sig { params(x: Integer).returns(Integer) }
+            def inc(x)
+              x + 1
+            end
+          end
+        end
+      RUBY
+
+      root = instance.full_definition_for_sig(instance.find_sigs[0])
+
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
+
+      b = a.children.first
+      expect(b).to be_a Parlour::RbiGenerator::ModuleNamespace
+
+      c = b.children.first
+      expect(c).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(c.children.length).to eq 1
+
+      inc = c.children.first
+      expect(inc).to be_a Parlour::RbiGenerator::Method
+      expect(inc.return_type).to eq 'Integer'
+      expect(inc.parameters.length).to eq 1
+      expect(inc.parameters.first.name).to eq 'x'
+      expect(inc.parameters.first.type).to eq 'Integer'
+    end
+  end
 end

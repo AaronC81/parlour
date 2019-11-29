@@ -1,6 +1,7 @@
 # typed: true
 
 # TODO: support sig without runtime
+# TODO: proper support for self. and class << self syntax
 
 require 'parser/current'
 
@@ -100,6 +101,36 @@ module Parlour
     sig { returns(Parser::AST::Node) }
     # @return [Parser::AST::Node] The AST which this type parser should use.
     attr_accessor :ast
+
+    sig { params(path: NodePath).returns(RbiGenerator::Namespace) }
+    # Creates a namespace object representing the definition for exactly one
+    # method, including its outer namespaces.
+    #
+    # @param [NodePath] path The path to the sig, as returned by {#find_sigs}.
+    # @return [RbiGenerator::Namespace] A namespace which can be used to define
+    #   this method.
+    def full_definition_for_sig(path)
+      sig_namespaces = namespaces(path)
+      root = RbiGenerator::Namespace.new(DetachedRbiGenerator.new)
+      current_ns = root
+      sig_namespaces.each do |ns_spec|
+        type, name = *ns_spec
+        case type
+        when NamespaceKind::Class
+          current_ns = current_ns.create_class(T.must(name))
+        when NamespaceKind::Module
+          current_ns = current_ns.create_module(T.must(name))
+        when NamespaceKind::Eigen
+          raise 'eigenclass syntax is currently unsupported'
+        end
+      end
+
+      # TODO: comments aren't used yet, but if they are we'll need
+      # to call #move_next_comments
+      current_ns.children << parse_sig(path)
+
+      root
+    end
 
     sig { returns(T::Array[NodePath]) }
     # Finds ALL uses of sig in the AST, including those which are not 
