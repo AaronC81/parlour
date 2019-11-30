@@ -118,37 +118,6 @@ module Parlour
     # @return [Parser::AST::Node] The AST which this type parser should use.
     attr_accessor :ast
 
-    sig { params(path: NodePath).returns(RbiGenerator::Namespace) }
-    # Creates a namespace object representing the definition for exactly one
-    # method, including its outer namespaces.
-    #
-    # @deprecated 
-    # @param [NodePath] path The path to the sig, as returned by {#find_sigs}.
-    # @return [RbiGenerator::Namespace] A namespace which can be used to define
-    #   this method.
-    def full_definition_for_sig(path)
-      sig_namespaces = namespaces(path)
-      root = RbiGenerator::Namespace.new(DetachedRbiGenerator.new)
-      current_ns = root
-      sig_namespaces.each do |ns_spec|
-        type, name = *ns_spec
-        case type
-        when NamespaceKind::Class
-          current_ns = current_ns.create_class(T.must(name))
-        when NamespaceKind::Module
-          current_ns = current_ns.create_module(T.must(name))
-        when NamespaceKind::Eigen
-          raise 'eigenclass syntax is currently unsupported'
-        end
-      end
-
-      # TODO: comments aren't used yet, but if they are we'll need
-      # to call #move_next_comments
-      current_ns.children << parse_sig(path)
-
-      root
-    end
-
     # Parses the entire source file and returns the resulting root namespace.
     #
     # @return [RbiGenerator::Namespace] The root namespace of the parsed source.
@@ -234,19 +203,6 @@ module Parlour
       else
         raise "don't understand node type #{node.type}"
       end
-    end
-
-    sig { returns(T::Array[NodePath]) }
-    # Finds ALL uses of sig in the AST, including those which are not 
-    # semantically valid as Sorbet signatures.
-    #
-    # Specifically, this searches the entire AST for any calls of a
-    # method called "sig" which pass a block.
-    #
-    # @deprecated
-    # @return [Array<NodePath>] The node paths to the signatures.
-    def find_sigs
-      find_sigs_at(ast, NodePath.new([]))
     end
 
     #!!!!
@@ -353,61 +309,8 @@ module Parlour
         final: final,
       )
     end
-
-    class NamespaceKind < T::Enum
-      enums do
-        Class = new
-        Module = new
-        Eigen = new
-      end
-    end
     
-    sig { params(path: NodePath).returns(T::Array[[NamespaceKind, T.nilable(String)]]) }
-    # Given a path to a node, gets the nesting structure of the namespaces it
-    # resides in. These namespaces include class definitions, module 
-    # definitions, and eigenclass (class << self) blocks.
-    #
-    # @param [NodePath] path The path to the node.
-    # @return [Array<(NamespaceKind, String)>] An array of namespaces, with the
-    #   the highest-level namespace first. Each namespace is a tuple of 
-    #   [kind, name]; note that eigenclass blocks have no name.
-    def namespaces(path)
-      result = []
-      path = T.let(path, T.nilable(NodePath))
-
-      while path
-        node = path.traverse(ast)
-        case node.type
-        when :class
-          result = constant_names(node.to_a[0])
-            .map { |x| [NamespaceKind::Class, x.to_s] } + result
-        when :module
-          result = constant_names(node.to_a[0])
-            .map { |x| [NamespaceKind::Module, x.to_s] } + result
-        when :sclass
-          raise 'unsupported eigenclass usage' unless node.to_a[0].type == :self
-          result = [[NamespaceKind::Eigen, nil]] + result
-        end
-
-        path = path.parent rescue nil
-      end
-
-      result
-    end
-
     protected
-
-    sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
-    # Given a node representing a simple chain of constants (such as A or
-    # A::B::C), converts that node into an array of the constant names which
-    # are accessed. For example, A::B::C would become [:A, :B, :C].
-    #
-    # @param [Parser::AST::Node, nil] node The node to convert. This must 
-    #   consist only of nested (:const) nodes.
-    # @return [Array<Symbol>] The chain of constant names.
-    def constant_names(node)
-      node ? constant_names(node.to_a[0]) + [node.to_a[1]] : []
-    end
 
     sig { params(node: Parser::AST::Node).returns(T::Boolean) }
     # Given a node, returns a boolean indicating whether that node represents a
@@ -479,22 +382,6 @@ module Parlour
       end
 
       result
-    end
-
-    sig { params(node: Parser::AST::Node, path: NodePath).returns(T::Array[NodePath]) }
-    def find_sigs_at(node, path)
-      types_in_this_node = node.to_a.map.with_index do |child, i|
-        child.is_a?(Parser::AST::Node) && sig_node?(child) \
-          ? path.child(i) : nil
-      end.compact
-      
-      types_in_children = node.to_a
-        .map.with_index
-        .select { |child, i| child.is_a?(Parser::AST::Node) }
-        .map { |child, i| find_sigs_at(child, path.child(i)) }
-        .flatten
-
-      types_in_this_node + types_in_children
     end
   end
 end

@@ -51,65 +51,16 @@ RSpec.describe Parlour::TypeParser do
     end
   end
 
-  context '#find_sigs' do
-    it 'works in basic cases' do
-      instance = described_class.new(
-        n(:module,
-          n(:const, nil, :A),
-          n(:begin,
-            n(:block,
-              n(:send, nil, :sig),
-              n(:args),
-              n(:send, nil, :returns, n(:const, nil, :Integer))),
-            n(:def, :x, n(:args), n(:int, 3))))
-      )
-
-      sigs = instance.find_sigs
-      expect(sigs.length).to eq 1
-      expect(sigs[0]).to be_a Parlour::TypeParser::NodePath
-      expect(sigs[0].indeces).to eq [1, 0]
-    end
-
-    it 'finds every sig, including ones in invalid locations, to be pruned later' do
-      instance = described_class.new(
-        n(:module,
-          n(:const, nil, :B),
-          n(:begin,
-            n(:block,
-              n(:send, nil, :sig),
-              n(:args),
-              n(:send, nil, :returns, n(:const, nil, :String))),
-            n(:def,
-              :x,
-              n(:args),
-              n(:block,
-                n(:send, nil, :sig),
-                n(:args),
-                n(:send, nil, :returns, n(:const, nil, :Integer))))))
-      )
-
-      sigs = instance.find_sigs
-      expect(sigs.length).to eq 2
-      expect(sigs[0].indeces).to eq [1, 0]
-      expect(sigs[1].indeces).to eq [1, 1, 2]
-    end
-  end
-
   context '#parse_sig' do
     it 'works for a return-only sig' do
       instance = described_class.from_source('(test)', <<-RUBY)
-        module A
-          sig { returns(Integer) }
-          def foo
-            3
-          end
+        sig { returns(Integer) }
+        def foo
+          3
         end
       RUBY
 
-      sigs = instance.find_sigs
-      expect(sigs.length).to be 1
-
-      meth = instance.parse_sig(sigs[0])
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
       expect(meth.return_type).to eq 'Integer'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
@@ -117,18 +68,13 @@ RSpec.describe Parlour::TypeParser do
 
     it 'works for methods with simple parameters' do
       instance = described_class.from_source('(test)', <<-RUBY)
-        module A
-          sig { params(x: String, y: T::Boolean).returns(Integer) }
-          def foo(x, y = true)
-            y ? x.length : 0
-          end
+        sig { params(x: String, y: T::Boolean).returns(Integer) }
+        def foo(x, y = true)
+          y ? x.length : 0
         end
       RUBY
 
-      sigs = instance.find_sigs
-      expect(sigs.length).to be 1
-
-      meth = instance.parse_sig(sigs[0])
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
       expect(meth.return_type).to eq 'Integer'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
@@ -147,25 +93,20 @@ RSpec.describe Parlour::TypeParser do
 
     it 'works for methods with complex parameters' do
       instance = described_class.from_source('(test)', <<-RUBY)
-        module A
-          sig do
-            params(
-              x: String, 
-              y: T.nilable(T.any(Integer, T::Boolean)),
-              z: Numeric,
-              blk: T.proc.returns(T::Boolean)
-            ).returns(T.nilable(Object))
-          end
-          def foo(x, y:, z: 3, &blk)
-            nil
-          end
+        sig do
+          params(
+            x: String, 
+            y: T.nilable(T.any(Integer, T::Boolean)),
+            z: Numeric,
+            blk: T.proc.returns(T::Boolean)
+          ).returns(T.nilable(Object))
+        end
+        def foo(x, y:, z: 3, &blk)
+          nil
         end
       RUBY
 
-      sigs = instance.find_sigs
-      expect(sigs.length).to be 1
-
-      meth = instance.parse_sig(sigs[0])
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
       expect(meth.return_type).to eq 'T.nilable(Object)'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
@@ -192,7 +133,6 @@ RSpec.describe Parlour::TypeParser do
 
     it 'works with splat-arguments' do
       instance = described_class.from_source('(test)', <<-RUBY)
-        module A
         sig do
           params(
             args: Integer,
@@ -202,13 +142,9 @@ RSpec.describe Parlour::TypeParser do
         def foo(*args, **kwargs)
           nil
         end
-      end
       RUBY
 
-      sigs = instance.find_sigs
-      expect(sigs.length).to be 1
-
-      meth = instance.parse_sig(sigs[0])
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
       expect(meth.return_type).to eq 'T.nilable(Object)'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
@@ -224,127 +160,18 @@ RSpec.describe Parlour::TypeParser do
 
     it 'supports final methods' do
       instance = described_class.from_source('(test)', <<-RUBY)
-        module A
-          sig(:final) { returns(Integer) }
-          def foo
-            3
-          end
+        sig(:final) { returns(Integer) }
+        def foo
+          3
         end
       RUBY
 
-      sigs = instance.find_sigs
-      expect(sigs.length).to be 1
-
-      meth = instance.parse_sig(sigs[0])
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
       expect(meth.return_type).to eq 'Integer'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
       expect(meth.final).to eq true
     end 
-  end
-
-  context '#namespaces' do
-    it 'works with a typical namespace structure' do
-      instance = described_class.from_source('(test)', <<-RUBY)
-        module A
-          module B
-            class C
-              module D
-                class E
-                  sig { void }
-                  def foo; end
-                end
-              end
-            end
-          end
-        end
-      RUBY
-
-      expect(instance.namespaces(instance.find_sigs[0])).to eq [
-        [Parlour::TypeParser::NamespaceKind::Module, 'A'],
-        [Parlour::TypeParser::NamespaceKind::Module, 'B'],
-        [Parlour::TypeParser::NamespaceKind::Class, 'C'],
-        [Parlour::TypeParser::NamespaceKind::Module, 'D'],
-        [Parlour::TypeParser::NamespaceKind::Class, 'E'],
-      ]
-    end
-
-    it 'works with A::B style namespace names' do
-      instance = described_class.from_source('(test)', <<-RUBY)
-        module A::B
-          class C
-            class D::E
-              module F
-                sig { void }
-                def foo; end
-              end
-            end
-          end
-        end
-      RUBY
-
-      expect(instance.namespaces(instance.find_sigs[0])).to eq [
-        [Parlour::TypeParser::NamespaceKind::Module, 'A'],
-        [Parlour::TypeParser::NamespaceKind::Module, 'B'],
-        [Parlour::TypeParser::NamespaceKind::Class, 'C'],
-        [Parlour::TypeParser::NamespaceKind::Class, 'D'],
-        [Parlour::TypeParser::NamespaceKind::Class, 'E'],
-        [Parlour::TypeParser::NamespaceKind::Module, 'F'],
-      ]
-    end
-
-    it 'supports eigenclasses' do
-      instance = described_class.from_source('(test)', <<-RUBY)
-        module A
-          class B
-            class << self
-              sig { void }
-              def foo; end
-            end
-          end
-        end
-      RUBY
-
-      expect(instance.namespaces(instance.find_sigs[0])).to eq [
-        [Parlour::TypeParser::NamespaceKind::Module, 'A'],
-        [Parlour::TypeParser::NamespaceKind::Class, 'B'],
-        [Parlour::TypeParser::NamespaceKind::Eigen, nil],
-      ]
-    end
-  end
-
-  context '#full_definition_for_sig' do
-    it 'returns correct object structures' do
-      instance = described_class.from_source('(test)', <<-RUBY)
-        module A::B
-          class C
-            sig { params(x: Integer).returns(Integer) }
-            def inc(x)
-              x + 1
-            end
-          end
-        end
-      RUBY
-
-      root = instance.full_definition_for_sig(instance.find_sigs[0])
-
-      a = root.children.first
-      expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
-
-      b = a.children.first
-      expect(b).to be_a Parlour::RbiGenerator::ModuleNamespace
-
-      c = b.children.first
-      expect(c).to be_a Parlour::RbiGenerator::ClassNamespace
-      expect(c.children.length).to eq 1
-
-      inc = c.children.first
-      expect(inc).to be_a Parlour::RbiGenerator::Method
-      expect(inc.return_type).to eq 'Integer'
-      expect(inc.parameters.length).to eq 1
-      expect(inc.parameters.first.name).to eq 'x'
-      expect(inc.parameters.first.type).to eq 'Integer'
-    end
   end
 
   context '#parse_all' do
