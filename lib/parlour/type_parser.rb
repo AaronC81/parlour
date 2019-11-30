@@ -1,23 +1,6 @@
 # typed: true
 
-
-
-
-# !!!!!!!!!
-# This external interface to this isn't very good and I don't like it.
-# There should be a method which properly traverses an entire tree of classes
-# and modules and properly generates nodes for them.
-# !!!!!!!!!
-
-
-
-
-
 # TODO: support sig without runtime
-# TODO: proper support for self. and class << self syntax
-# TODO: have a method which returns module/class skeletons with abstract! or
-#       other modifiers - this will also ensure that modules or classes without
-#       any methods are accepted
 
 require 'parser/current'
 
@@ -189,6 +172,7 @@ module Parlour
           []
         end
       when :def
+        # TODO:
         # Do we want to include defs if they don't have a sig?
         #   If so, we need some kind of state machine to determine whether
         #   they've already been dealt with by the "when :send" clause and 
@@ -202,15 +186,6 @@ module Parlour
         raise "don't understand node type #{node.type}"
       end
     end
-
-    #!!!!
-    # TODO: Do we consider method definitions with sigs inside methods valid?
-    #       How would this fit into the tree?
-    # Also, class << self will be fun...
-    # How do we handle methods WITHOUT sigs? I'm thinking default ignore, but
-    # optionally generate arity-only sigs with T.untyped. Currently, this won't
-    # find them at all.
-    #!!!!
 
     sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(RbiGenerator::Method) }
     # Given a path to a sig in the AST, parses that sig into a method.
