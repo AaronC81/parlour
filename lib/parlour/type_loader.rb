@@ -12,27 +12,7 @@ module Parlour
     #   This may be used in error messages, but is optional.
     # @return [RbiGenerator::Namespace] The root of the object tree.
     def self.load_source(source, filename = nil)
-      parser = TypeParser.from_source(filename || '(source)', source)
-      
-      # Find all full definitions
-      all_sigs = parser.find_sigs
-      root_namespaces = all_sigs.map do |this_sig|
-        parser.full_definition_for_sig(this_sig)
-      end
-
-      # Create a new root namespace which contains all of them
-      final_root_namespace = RbiGenerator::Namespace.new(DetachedRbiGenerator.new)
-      root_namespaces.each do |ns|
-        final_root_namespace.children.concat(ns.children)
-      end
-
-      # Resolve conflicts
-      ConflictResolver.new.resolve_conflicts(final_root_namespace) do |*args|
-        raise "the conflict resolver encountered errors when trying to merge " \
-          "parsed types, which should never happen (does srb tc pass?): #{args}"
-      end
-
-      final_root_namespace
+      TypeParser.from_source(filename || '(source)', source).parse_all
     end
 
     def self.load_file; end

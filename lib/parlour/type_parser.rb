@@ -1,7 +1,23 @@
 # typed: true
 
+
+
+
+# !!!!!!!!!
+# This external interface to this isn't very good and I don't like it.
+# There should be a method which properly traverses an entire tree of classes
+# and modules and properly generates nodes for them.
+# !!!!!!!!!
+
+
+
+
+
 # TODO: support sig without runtime
 # TODO: proper support for self. and class << self syntax
+# TODO: have a method which returns module/class skeletons with abstract! or
+#       other modifiers - this will also ensure that modules or classes without
+#       any methods are accepted
 
 require 'parser/current'
 
@@ -106,6 +122,7 @@ module Parlour
     # Creates a namespace object representing the definition for exactly one
     # method, including its outer namespaces.
     #
+    # @deprecated 
     # @param [NodePath] path The path to the sig, as returned by {#find_sigs}.
     # @return [RbiGenerator::Namespace] A namespace which can be used to define
     #   this method.
@@ -132,6 +149,93 @@ module Parlour
       root
     end
 
+    # Parses the entire source file and returns the resulting root namespace.
+    #
+    # @return [RbiGenerator::Namespace] The root namespace of the parsed source.
+    sig { returns(RbiGenerator::Namespace) }
+    def parse_all
+      root = RbiGenerator::Namespace.new(DetachedRbiGenerator.new)
+      root.children.concat(parse_path_to_object(NodePath.new([])))
+      root
+    end
+
+    # Given a path to a node in the AST, parses the object definitions it
+    # represents and returns it, recursing to any child namespaces and parsing
+    # any methods within.
+    #
+    # If the node directly represents several nodes, such as being a 
+    # (begin ...) node, they are all returned.
+    #
+    # @param [NodePath] path The path to the namespace definition.
+    # @return [Array<RbiGenerator::RbiObject>] The objects the node at the path
+    #    represents, parsed into an RBI generator object.
+    sig { params(path: NodePath).returns(T::Array[RbiGenerator::RbiObject]) }
+    def parse_path_to_object(path)
+      node = path.traverse(ast)
+
+      # TODO: elegantly handle namespace names like A::B::C
+      # Probably create the upper ones iteratively, then proceed to operate on
+      # the final one
+
+      # TODO: eigens
+      
+      case node.type
+      when :class
+        name, superclass, body = *node
+        final = body_has_modifier?(body, :final!)
+        abstract = body_has_modifier?(body, :abstract!)
+        includes, extends = body ? body_includes_and_extends(body) : [[], []]
+
+        [RbiGenerator::ClassNamespace.new(
+          DetachedRbiGenerator.new,
+          T.must(node_to_s(name)),
+          final,
+          node_to_s(superclass),
+          abstract,
+        ) do |c|
+          c.children.concat(parse_path_to_object(path.child(2))) if body
+          c.create_includes(includes)
+          c.create_extends(extends)
+        end]
+      when :module
+        name, body = *node
+        final = body_has_modifier?(body, :final!)
+        interface = body_has_modifier?(body, :interface!)
+        includes, extends = body ? body_includes_and_extends(body) : [[], []]
+
+        [RbiGenerator::ModuleNamespace.new(
+          DetachedRbiGenerator.new,
+          T.must(node_to_s(name)),
+          final,
+          interface,
+        ) do |m|
+          m.children.concat(parse_path_to_object(path.child(1))) if body
+          m.create_includes(includes)
+          m.create_extends(extends)
+        end]
+      when :send, :block
+        if sig_node?(node)
+          [parse_sig(path)]
+        else
+          # TODO: handle attr_accessor, or if we don't recognise it we can 
+          # probably just ignore it
+          []
+        end
+      when :def
+        # Do we want to include defs if they don't have a sig?
+        #   If so, we need some kind of state machine to determine whether
+        #   they've already been dealt with by the "when :send" clause and 
+        #   #parse_sig.
+        #   If not, just ignore this.
+        []
+      when :begin
+        # Just map over all the things
+        node.to_a.length.times.map { |c| parse_path_to_object(path.child(c)) }.flatten
+      else
+        raise "don't understand node type #{node.type}"
+      end
+    end
+
     sig { returns(T::Array[NodePath]) }
     # Finds ALL uses of sig in the AST, including those which are not 
     # semantically valid as Sorbet signatures.
@@ -139,6 +243,7 @@ module Parlour
     # Specifically, this searches the entire AST for any calls of a
     # method called "sig" which pass a block.
     #
+    # @deprecated
     # @return [Array<NodePath>] The node paths to the signatures.
     def find_sigs
       find_sigs_at(ast, NodePath.new([]))
@@ -304,13 +409,82 @@ module Parlour
       node ? constant_names(node.to_a[0]) + [node.to_a[1]] : []
     end
 
+    sig { params(node: Parser::AST::Node).returns(T::Boolean) }
+    # Given a node, returns a boolean indicating whether that node represents a
+    # a call to "sig" with a block. No further semantic checking, such as
+    # whether it preceeds a method call, is done.
+    #
+    # @param [Parser::AST::Node] node The node to check.
+    # @return [Boolean] True if that node represents a "sig" call, false
+    #   otherwise.
+    def sig_node?(node)
+      node.type == :block &&
+        node.to_a[0].type == :send &&
+        node.to_a[0].to_a[1] == :sig
+    end
+
+    sig { params(node: T.nilable(Parser::AST::Node)).returns(T.nilable(String)) }
+    # Given an AST node, returns the source code from which it was constructed.
+    # If the given AST node is nil, this returns nil.
+    #
+    # @param [Parser::AST::Node, nil] node The AST node, or nil.
+    # @return [String] The source code string it represents, or nil.
+    def node_to_s(node)
+      return nil unless node
+
+      exp = T.unsafe(node).loc.expression
+      exp.source_buffer.source[exp.begin_pos...exp.end_pos]
+    end
+
+    sig { params(node: T.nilable(Parser::AST::Node), modifier: Symbol).returns(T::Boolean) }
+    # Given an AST node and a symbol, determines if that node is a call (or a
+    # body containing a call at the top level) to the method represented by the
+    # symbol, without any arguments or a block.
+    #
+    # This is designed to be used to determine if a namespace body uses a Sorbet
+    # modifier such as "abstract!".
+    #
+    # @param [Parser::AST::Node, nil] node The AST node to search in.
+    # @param [Symbol] modifier The method name to search for.
+    # @return [T::Boolean] True if the call is found, or false otherwise.
+    def body_has_modifier?(node, modifier)
+      return false unless node
+
+      (node.type == :send && node.to_a == [nil, modifier]) || 
+        (node.type == :begin &&
+          node.to_a.any? { |c| c.type == :send && c.to_a == [nil, modifier] })
+    end
+
+    sig { params(node: Parser::AST::Node).returns([T::Array[String], T::Array[String]]) }
+    # Given an AST node representing the body of a class or module, returns two 
+    # arrays of the includes and extends contained within the body.
+    #
+    # @param [Parser::AST::Node] node The body of the namespace.
+    # @return [(Array<String>, Array<String>)] An array of the includes and an
+    #   array of the extends.
+    def body_includes_and_extends(node)
+      result = [[], []]
+
+      nodes_to_search = node.type == :begin ? node.to_a : [node]
+      nodes_to_search.each do |this_node|
+        next unless this_node.type == :send
+        target, name, *args = *this_node
+        next unless target.nil? && args.length == 1
+
+        if name == :include
+          result[0] << node_to_s(args.first)
+        elsif name == :extend
+          result[1] << node_to_s(args.first)
+        end
+      end
+
+      result
+    end
+
     sig { params(node: Parser::AST::Node, path: NodePath).returns(T::Array[NodePath]) }
     def find_sigs_at(node, path)
       types_in_this_node = node.to_a.map.with_index do |child, i|
-        child.is_a?(Parser::AST::Node) &&
-          child.type == :block &&
-          child.to_a[0].type == :send &&
-          child.to_a[0].to_a[1] == :sig \
+        child.is_a?(Parser::AST::Node) && sig_node?(child) \
           ? path.child(i) : nil
       end.compact
       

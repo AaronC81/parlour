@@ -346,4 +346,122 @@ RSpec.describe Parlour::TypeParser do
       expect(inc.parameters.first.type).to eq 'Integer'
     end
   end
+
+  context '#parse_all' do
+    it 'parses class structures' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          class B
+            class C
+              final!
+              abstract!
+            end
+
+            class D
+              abstract!
+            end
+
+            class E < B::D
+            end
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+      
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
+
+      b = a.children.first
+      expect(b).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(b).to have_attributes(name: 'B', superclass: nil, final: false, abstract: false)
+
+      c, d, e = *b.children
+      expect(c).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(d).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(e).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(c).to have_attributes(name: 'C', superclass: nil, final: true, abstract: true)
+      expect(d).to have_attributes(name: 'D', superclass: nil, final: false, abstract: true)
+      expect(e).to have_attributes(name: 'E', superclass: 'B::D', final: false, abstract: false)
+    end
+
+    it 'parses module structures containing methods' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        module A
+          module B
+            module C
+              final!
+              interface!
+            end
+
+            module D
+              interface!
+
+              sig { abstract.returns(String) }
+              def foo; end
+
+              sig { abstract.params(x: Integer).returns(Integer) }
+              def bar(x); end
+            end
+
+            module E
+              include D
+
+              sig { override.returns(String) }
+              def foo
+                "hello"
+              end
+
+              sig { override.params(x: Integer).returns(Integer) }
+              def bar(x)
+                x + 1
+              end
+            end
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+      
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(a).to have_attributes(name: 'A', final: false, interface: false)
+
+      b = a.children.first
+      expect(b).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(b).to have_attributes(name: 'B', final: false, interface: false)
+
+      c, d, e = *b.children
+      expect(c).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(d).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(e).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(c).to have_attributes(name: 'C', final: true, interface: true)
+      expect(d).to have_attributes(name: 'D', final: false, interface: true)
+      expect(e).to have_attributes(name: 'E', final: false, interface: false)
+      expect(e.includes.map(&:name)).to eq ['D']
+
+      abs_foo, abs_bar = *d.children
+      expect(abs_foo).to be_a Parlour::RbiGenerator::Method
+      expect(abs_bar).to be_a Parlour::RbiGenerator::Method
+      expect(abs_foo).to have_attributes(name: 'foo', abstract: true, return_type: 'String')
+      expect(abs_bar).to have_attributes(name: 'bar', abstract: true, return_type: 'Integer')
+      expect(abs_bar.parameters.length).to eq 1
+      expect(abs_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
+      
+      impl_foo, impl_bar = *e.children
+      expect(impl_foo).to be_a Parlour::RbiGenerator::Method
+      expect(impl_bar).to be_a Parlour::RbiGenerator::Method
+      expect(impl_foo).to have_attributes(name: 'foo', abstract: false, override: true, return_type: 'String')
+      expect(impl_bar).to have_attributes(name: 'bar', abstract: false, override: true, return_type: 'Integer')
+      expect(impl_bar.parameters.length).to eq 1
+      expect(impl_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
+    end
+
+    it 'parses mixed namespace structures' do
+
+    end
+  end
 end
