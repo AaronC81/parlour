@@ -299,16 +299,15 @@ module Parlour
       _, _, *sig_arguments = *sig_block_node.to_a[0]
       final = sig_arguments.any? { |a| a.type == :sym && a.to_a[0] == :final }
 
+      # Find the return type by looking for a "returns" call
       return_type = sig_chain
         .find { |(n, _)| n == :returns }
         &.then do |(_, a)|
           raise 'wrong number of arguments in "returns" for sig' if a.length != 1
-          arg = a[0]
-          exp = arg.loc.expression
-
-          exp.source_buffer.source[exp.begin_pos...exp.end_pos]
+          node_to_s(a[0])
         end
 
+      # Find the arguments specified in the "params" call in the sig
       sig_args = sig_chain
         .find { |(n, _)| n == :params }
         &.then do |(_, a)|
@@ -321,31 +320,28 @@ module Parlour
       raise 'mismatching number of arguments in sig and def' \
         if sig_args && def_args.length != sig_args.length
 
-      # TODO: this is absolutely awful
-      parameters = sig_args ? (def_args + sig_args)
-        .group_by { |x| x.type == :pair ? x.to_a[0].to_a[0] : x.to_a[0] }
-        .map do |name, value|
-          raise "argument #{name} specified wrong number of times in sig or def" \
-            unless value.length == 2
-          sig_arg, def_arg = *(value.partition { |x| x.type == :pair }.flatten)
+      # sig_args will look like:
+      #   [(pair (sym :x) <type>), (pair (sym :y) <type>), ...]
+      # def_args will look like:
+      #   [(arg :x), (arg :y), ...]
+      parameters = sig_args \
+        ? zip_by(sig_args, ->x{ x.to_a[0].to_a[0] }, def_args, ->x{ x.to_a[0] })
+          .map do |sig_arg, def_arg|
+            arg_name = def_arg.to_a[0]
 
-          # TODO: anonymous restarg
-          full_name = name.to_s
-          full_name = "*#{name}"  if def_arg.type == :restarg
-          full_name = "**#{name}" if def_arg.type == :kwrestarg
-          full_name = "#{name}:"  if def_arg.type == :kwarg || def_arg.type == :kwoptarg
-          full_name = "&#{name}"  if def_arg.type == :blockarg
+            # TODO: anonymous restarg
+            full_name = arg_name.to_s
+            full_name = "*#{arg_name}"  if def_arg.type == :restarg
+            full_name = "**#{arg_name}" if def_arg.type == :kwrestarg
+            full_name = "#{arg_name}:"  if def_arg.type == :kwarg || def_arg.type == :kwoptarg
+            full_name = "&#{arg_name}"  if def_arg.type == :blockarg
 
-          default_exp = def_arg.to_a[1]&.loc&.expression
-          default = default_exp \
-            ? default_exp.source_buffer.source[default_exp.begin_pos...default_exp.end_pos]
-            : nil
+            default = def_arg.to_a[1] ? node_to_s(def_arg.to_a[1]) : nil
+            type = node_to_s(sig_arg.to_a[1])
 
-          type_exp = sig_arg.to_a[1].loc.expression
-          type = type_exp.source_buffer.source[type_exp.begin_pos...type_exp.end_pos]
-
-          RbiGenerator::Parameter.new(full_name, type: type, default: default)
-        end : []
+            RbiGenerator::Parameter.new(full_name, type: type, default: default)
+          end
+        : []
 
       RbiGenerator::Method.new(
         DetachedRbiGenerator.new,
@@ -444,6 +440,44 @@ module Parlour
       end
 
       result
+    end
+
+    sig do 
+      type_parameters(:A, :B)
+        .params(
+          a: T::Array[T.type_parameter(:A)],
+          fa: T.proc.params(item: T.type_parameter(:A)).returns(T.untyped),
+          b: T::Array[T.type_parameter(:B)],
+          fb: T.proc.params(item: T.type_parameter(:B)).returns(T.untyped)
+        )
+        .returns(T::Array[[T.type_parameter(:A), T.type_parameter(:B)]])
+    end
+    # Given two arrays and functions to get a key for each item in the two
+    # arrays, joins the two arrays into one array of pairs by that key.
+    # 
+    # The arrays should both be the same length, and the key functions should
+    # never return duplicate keys for two different items.
+    #
+    # @param [Array<A>] a The first array.
+    # @param [A -> Any] fa A function to obtain a key for any element in the
+    #   first array.
+    # @param [Array<B>] b The second array.
+    # @param [B -> Any] fb A function to obtain a key for any element in the 
+    #   second array.
+    # @return [Array<(A, B)>] An array of pairs, where the left of the pair is
+    #   an element from A and the right is the element from B with the
+    #   corresponding key.
+    def zip_by(a, fa, b, fb)
+      raise ArgumentError, "arrays are not the same length" if a.length != b.length
+
+      a.map do |a_item|
+        a_key = fa.(a_item)
+        b_items = b.select { |b_item| fb.(b_item) == a_key }
+        raise "multiple items for key #{a_key}" if b_items.length > 1
+        raise "no item in second list corresponding to key #{a_key}" if b_items.length == 0
+
+        [a_item, T.must(b_items[0])]
+      end
     end
   end
 end
