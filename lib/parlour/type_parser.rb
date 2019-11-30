@@ -125,10 +125,6 @@ module Parlour
     sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(T::Array[RbiGenerator::RbiObject]) }
     def parse_path_to_object(path, is_within_eigen: false)
       node = path.traverse(ast)
-
-      # TODO: elegantly handle namespace names like A::B::C
-      # Probably create the upper ones iteratively, then proceed to operate on
-      # the final one
       
       case node.type
       when :class
@@ -139,9 +135,26 @@ module Parlour
         abstract = body_has_modifier?(body, :abstract!)
         includes, extends = body ? body_includes_and_extends(body) : [[], []]
 
-        [RbiGenerator::ClassNamespace.new(
+        # Create all classes, if we're given a definition like "class A::B"
+        *parent_names, this_name = constant_names(name)
+        target = T.let(nil, T.nilable(RbiGenerator::ClassNamespace))
+        top_level = T.let(nil, T.nilable(RbiGenerator::ClassNamespace))
+        parent_names.each do |n| 
+          new_obj = RbiGenerator::ClassNamespace.new(
+            DetachedRbiGenerator.new,
+            n.to_s,
+            false,
+            nil,
+            false
+          )
+          target.children << new_obj if target
+          target = new_obj
+          top_level ||= new_obj
+        end if parent_names
+
+        final_obj = RbiGenerator::ClassNamespace.new(
           DetachedRbiGenerator.new,
-          T.must(node_to_s(name)),
+          this_name.to_s,
           final,
           node_to_s(superclass),
           abstract,
@@ -149,7 +162,14 @@ module Parlour
           c.children.concat(parse_path_to_object(path.child(2))) if body
           c.create_includes(includes)
           c.create_extends(extends)
-        end]
+        end
+
+        if target
+          target.children << final_obj
+          [top_level]
+        else
+          [final_obj]
+        end
       when :module
         raise 'cannot declare modules in an eigenclass' if is_within_eigen
 
@@ -158,16 +178,39 @@ module Parlour
         interface = body_has_modifier?(body, :interface!)
         includes, extends = body ? body_includes_and_extends(body) : [[], []]
 
-        [RbiGenerator::ModuleNamespace.new(
+        # Create all modules, if we're given a definition like "module A::B"
+        *parent_names, this_name = constant_names(name)
+        target = T.let(nil, T.nilable(RbiGenerator::ModuleNamespace))
+        top_level = T.let(nil, T.nilable(RbiGenerator::ModuleNamespace))
+        parent_names.each do |n| 
+          new_obj = RbiGenerator::ModuleNamespace.new(
+            DetachedRbiGenerator.new,
+            n.to_s,
+            false,
+            false
+          )
+          target.children << new_obj if target
+          target = new_obj
+          top_level ||= new_obj
+        end if parent_names
+
+        final_obj = RbiGenerator::ModuleNamespace.new(
           DetachedRbiGenerator.new,
-          T.must(node_to_s(name)),
+          this_name.to_s,
           final,
           interface,
         ) do |m|
           m.children.concat(parse_path_to_object(path.child(1))) if body
           m.create_includes(includes)
           m.create_extends(extends)
-        end]
+        end
+
+        if target
+          target.children << final_obj
+          [top_level]
+        else
+          [final_obj]
+        end
       when :send, :block
         if sig_node?(node)
           [parse_sig(path, is_within_eigen: is_within_eigen)]
@@ -318,6 +361,18 @@ module Parlour
     end
     
     protected
+
+    sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
+    # Given a node representing a simple chain of constants (such as A or
+    # A::B::C), converts that node into an array of the constant names which
+    # are accessed. For example, A::B::C would become [:A, :B, :C].
+    #
+    # @param [Parser::AST::Node, nil] node The node to convert. This must 
+    #   consist only of nested (:const) nodes.
+    # @return [Array<Symbol>] The chain of constant names.
+    def constant_names(node)
+      node ? constant_names(node.to_a[0]) + [node.to_a[1]] : []
+    end
 
     sig { params(node: Parser::AST::Node).returns(T::Boolean) }
     # Given a node, returns a boolean indicating whether that node represents a
