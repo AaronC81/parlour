@@ -61,9 +61,8 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
-      expect(meth.return_type).to eq 'Integer'
-      expect(meth.name).to eq 'foo'
-      expect(meth.override).to eq false
+      expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
+        override: false, class_method: false)
     end
 
     it 'works for methods with simple parameters' do
@@ -151,7 +150,52 @@ RSpec.describe Parlour::TypeParser do
       meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: true)
-    end 
+    end
+    
+    it 'supports class methods using self.x' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        sig { params(x: String).returns(Integer) }
+        def self.foo(x)
+          3
+        end
+      RUBY
+
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
+      expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
+        override: false, final: false, class_method: true)
+      expect(meth.parameters.length).to eq 1
+      expect(meth.parameters.first).to have_attributes(name: 'x',
+        type: 'String')
+    end
+
+    it 'supports class methods within an eigenclass' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        sig { params(x: String).returns(Integer) }
+        def foo(x)
+          3
+        end
+      RUBY
+
+      meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true)
+      expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
+        override: false, final: false, class_method: true)
+      expect(meth.parameters.length).to eq 1
+      expect(meth.parameters.first).to have_attributes(name: 'x',
+        type: 'String')
+    end
+
+    it 'errors on a self.x method within an eigenclass' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        sig { params(x: String).returns(Integer) }
+        def self.foo(x)
+          3
+        end
+      RUBY
+
+      expect do
+        instance.parse_sig(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true)
+      end.to raise_error RuntimeError
+    end
   end
 
   context '#parse_all' do

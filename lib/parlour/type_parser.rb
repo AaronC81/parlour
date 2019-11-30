@@ -145,8 +145,6 @@ module Parlour
       # TODO: elegantly handle namespace names like A::B::C
       # Probably create the upper ones iteratively, then proceed to operate on
       # the final one
-
-      # TODO: eigens
       
       case node.type
       when :class
@@ -214,19 +212,43 @@ module Parlour
     # find them at all.
     #!!!!
 
-    sig { params(path: NodePath).returns(RbiGenerator::Method) }
+    sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(RbiGenerator::Method) }
     # Given a path to a sig in the AST, parses that sig into a method.
     # This will raise an exception if the sig is invalid.
     #
     # @param [NodePath] path The sig to parse.
+    # @param [Boolean] is_within_eigen Whether the method definition this sig is
+    #   associated with appears inside an eigenclass definition. If true, the
+    #   returned method is made a class method. If the method definition
+    #   is already a class method, an exception is thrown as the method will be
+    #   a class method of the eigenclass, which Parlour can't represent.
     # @return [RbiGenerator::Method] The parsed method.
-    def parse_sig(path)
+    def parse_sig(path, is_within_eigen: false)
       # TODO: error locs
       sig_block_node = path.traverse(ast)
 
+      # A :def node represents a definition like "def x; end"
+      # A :defs node represents a definition like "def self.x; end"
       def_node = path.sibling(1).traverse(ast)
-      raise 'node after a sig must be a method definition' unless def_node.type == :def
-      def_name = def_node.to_a[0].to_s
+      case def_node.type
+      when :def
+        class_method = false
+        def_name = def_node.to_a[0].to_s
+        def_args = def_node.to_a[1].to_a
+      when :defs
+        raise 'targeted definitions on a non-self target are not supported' \
+          unless def_node.to_a[0].type == :self
+        class_method = true
+        def_name = def_node.to_a[1].to_s
+        def_args = def_node.to_a[2].to_a
+      else
+        raise 'node after a sig must be a method definition'
+      end
+
+      if is_within_eigen
+        raise 'cannot represent multiple levels of eigenclassing' if class_method
+        class_method = true
+      end
 
       # A sig's AST uses lots of nested nodes due to a deep call chain, so let's
       # flatten it out to make it easier to work with
@@ -259,7 +281,6 @@ module Parlour
           exp.source_buffer.source[exp.begin_pos...exp.end_pos]
         end
 
-      def_args = def_node.to_a[1].to_a
       sig_args = sig_chain
         .find { |(n, _)| n == :params }
         &.then do |(_, a)|
@@ -307,6 +328,7 @@ module Parlour
         overridable: overridable,
         abstract: abstract,
         final: final,
+        class_method: class_method
       )
     end
     
