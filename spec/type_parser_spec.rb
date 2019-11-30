@@ -81,14 +81,10 @@ RSpec.describe Parlour::TypeParser do
       expect(meth.final).to eq false
 
       expect(meth.parameters.length).to eq 2
-      expect(meth.parameters[0].name).to eq 'x'
-      expect(meth.parameters[0].kind).to eq :normal
-      expect(meth.parameters[0].type).to eq 'String'
-      expect(meth.parameters[0].default).to eq nil
-      expect(meth.parameters[1].name).to eq 'y'
-      expect(meth.parameters[1].kind).to eq :normal
-      expect(meth.parameters[1].type).to eq 'T::Boolean'
-      expect(meth.parameters[1].default).to eq 'true'
+      expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
+        type: 'String', default: nil)
+      expect(meth.parameters[1]).to have_attributes(name: 'y', kind: :normal,
+        type: 'T::Boolean', default: 'true')
     end
 
     it 'works for methods with complex parameters' do
@@ -107,28 +103,18 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
-      expect(meth.return_type).to eq 'T.nilable(Object)'
-      expect(meth.name).to eq 'foo'
-      expect(meth.override).to eq false
-      expect(meth.final).to eq false
+      expect(meth).to have_attributes(name: 'foo',
+        return_type: 'T.nilable(Object)', override: false, final: false)
 
       expect(meth.parameters.length).to eq 4
-      expect(meth.parameters[0].name).to eq 'x'
-      expect(meth.parameters[0].kind).to eq :normal
-      expect(meth.parameters[0].type).to eq 'String'
-      expect(meth.parameters[0].default).to eq nil
-      expect(meth.parameters[1].name).to eq 'y:'
-      expect(meth.parameters[1].kind).to eq :keyword
-      expect(meth.parameters[1].type).to eq 'T.nilable(T.any(Integer, T::Boolean))'
-      expect(meth.parameters[1].default).to eq nil
-      expect(meth.parameters[2].name).to eq 'z:'
-      expect(meth.parameters[2].kind).to eq :keyword
-      expect(meth.parameters[2].type).to eq 'Numeric'
-      expect(meth.parameters[2].default).to eq '3'
-      expect(meth.parameters[3].name).to eq '&blk'
-      expect(meth.parameters[3].kind).to eq :block
-      expect(meth.parameters[3].type).to eq 'T.proc.returns(T::Boolean)'
-      expect(meth.parameters[3].default).to eq nil
+      expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
+        type: 'String', default: nil)
+      expect(meth.parameters[1]).to have_attributes(name: 'y:', kind: :keyword,
+        type: 'T.nilable(T.any(Integer, T::Boolean))', default: nil)
+      expect(meth.parameters[2]).to have_attributes(name: 'z:', kind: :keyword,
+        type: 'Numeric', default: '3')
+      expect(meth.parameters[3]).to have_attributes(name: '&blk', kind: :block,
+        type: 'T.proc.returns(T::Boolean)', default: nil)
     end
 
     it 'works with splat-arguments' do
@@ -145,17 +131,13 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
-      expect(meth.return_type).to eq 'T.nilable(Object)'
-      expect(meth.name).to eq 'foo'
-      expect(meth.override).to eq false
+      expect(meth).to have_attributes(name: 'foo',
+        return_type: 'T.nilable(Object)', override: false)
 
-      expect(meth.parameters.length).to eq 2
-      expect(meth.parameters[0].name).to eq '*args'
-      expect(meth.parameters[0].kind).to eq :splat
-      expect(meth.parameters[0].type).to eq 'Integer'
-      expect(meth.parameters[1].name).to eq '**kwargs'
-      expect(meth.parameters[1].kind).to eq :double_splat
-      expect(meth.parameters[1].type).to eq 'T::Hash[Object, Object]'
+      expect(meth.parameters[0]).to have_attributes(name: '*args', type: :splat,
+        type: 'Integer')
+      expect(meth.parameters[1]).to have_attributes(name: '**kwargs',
+        type: :double_splat, type: 'T::Hash[Object, Object]')
     end
 
     it 'supports final methods' do
@@ -167,10 +149,8 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
-      expect(meth.return_type).to eq 'Integer'
-      expect(meth.name).to eq 'foo'
-      expect(meth.override).to eq false
-      expect(meth.final).to eq true
+      expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
+        override: false, final: true)
     end 
   end
 
@@ -285,10 +265,6 @@ RSpec.describe Parlour::TypeParser do
       expect(impl_bar).to have_attributes(name: 'bar', abstract: false, override: true, return_type: 'Integer')
       expect(impl_bar.parameters.length).to eq 1
       expect(impl_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
-    end
-
-    it 'parses mixed namespace structures' do
-
     end
   end
 end
