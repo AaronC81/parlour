@@ -310,5 +310,46 @@ RSpec.describe Parlour::TypeParser do
       expect(impl_bar.parameters.length).to eq 1
       expect(impl_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
     end
+
+    it 'supports eigenclasses and class methods' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          class << self
+            sig { returns(Integer) }
+            def foo
+              3
+            end
+          end
+
+          sig { returns(String) }
+          def self.bar
+            "hello"
+          end
+
+          sig { returns(T::Boolean) }
+          def baz
+            true
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+      
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(a).to have_attributes(name: 'A', final: false)
+
+      foo, bar, baz = *a.children
+      expect(foo).to be_a Parlour::RbiGenerator::Method
+      expect(bar).to be_a Parlour::RbiGenerator::Method
+      expect(baz).to be_a Parlour::RbiGenerator::Method
+      expect(foo).to have_attributes(name: 'foo', return_type: 'Integer',
+        class_method: true)
+      expect(bar).to have_attributes(name: 'bar', return_type: 'String',
+        class_method: true)
+      expect(baz).to have_attributes(name: 'baz', return_type: 'T::Boolean',
+        class_method: false)
+    end
   end
 end

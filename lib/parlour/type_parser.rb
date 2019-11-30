@@ -118,11 +118,12 @@ module Parlour
     # If the node directly represents several nodes, such as being a 
     # (begin ...) node, they are all returned.
     #
-    # @param [NodePath] path The path to the namespace definition.
+    # @param [NodePath] path The path to the namespace definition. Do not pass
+    #   any of the other parameters to this method in an external call.
     # @return [Array<RbiGenerator::RbiObject>] The objects the node at the path
     #    represents, parsed into an RBI generator object.
-    sig { params(path: NodePath).returns(T::Array[RbiGenerator::RbiObject]) }
-    def parse_path_to_object(path)
+    sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(T::Array[RbiGenerator::RbiObject]) }
+    def parse_path_to_object(path, is_within_eigen: false)
       node = path.traverse(ast)
 
       # TODO: elegantly handle namespace names like A::B::C
@@ -131,6 +132,8 @@ module Parlour
       
       case node.type
       when :class
+        raise 'cannot declare classes in an eigenclass' if is_within_eigen
+
         name, superclass, body = *node
         final = body_has_modifier?(body, :final!)
         abstract = body_has_modifier?(body, :abstract!)
@@ -148,6 +151,8 @@ module Parlour
           c.create_extends(extends)
         end]
       when :module
+        raise 'cannot declare modules in an eigenclass' if is_within_eigen
+
         name, body = *node
         final = body_has_modifier?(body, :final!)
         interface = body_has_modifier?(body, :interface!)
@@ -165,13 +170,13 @@ module Parlour
         end]
       when :send, :block
         if sig_node?(node)
-          [parse_sig(path)]
+          [parse_sig(path, is_within_eigen: is_within_eigen)]
         else
           # TODO: handle attr_accessor, or if we don't recognise it we can 
           # probably just ignore it
           []
         end
-      when :def
+      when :def, :defs
         # TODO:
         # Do we want to include defs if they don't have a sig?
         #   If so, we need some kind of state machine to determine whether
@@ -179,9 +184,14 @@ module Parlour
         #   #parse_sig.
         #   If not, just ignore this.
         []
+      when :sclass
+        raise "cannot access eigen of non-self object" unless node.to_a[0].type == :self
+        parse_path_to_object(path.child(1), is_within_eigen: true)
       when :begin
         # Just map over all the things
-        node.to_a.length.times.map { |c| parse_path_to_object(path.child(c)) }.flatten
+        node.to_a.length.times.map do |c|
+          parse_path_to_object(path.child(c), is_within_eigen: is_within_eigen) 
+        end.flatten
       else
         raise "don't understand node type #{node.type}"
       end
