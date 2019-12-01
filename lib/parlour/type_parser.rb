@@ -215,8 +215,6 @@ module Parlour
         if sig_node?(node)
           [parse_sig(path, is_within_eigen: is_within_eigen)]
         else
-          # TODO: handle attr_accessor, or if we don't recognise it we can 
-          # probably just ignore it
           []
         end
       when :def, :defs
@@ -263,12 +261,27 @@ module Parlour
         class_method = false
         def_name = def_node.to_a[0].to_s
         def_args = def_node.to_a[1].to_a
+        kind = :def
       when :defs
         raise 'targeted definitions on a non-self target are not supported' \
           unless def_node.to_a[0].type == :self
         class_method = true
         def_name = def_node.to_a[1].to_s
         def_args = def_node.to_a[2].to_a
+        kind = :def
+      when :send
+        target, method_name, *parameters = *def_node
+
+        raise 'node after a sig must be a method definition' \
+          unless [:attr_reader, :attr_writer, :attr_accessor].include?(method_name) \
+            || target != nil
+
+        raise 'typed attribute should only have one name' unless parameters&.length == 1
+        
+        kind = :attr
+        attr_direction = method_name.to_s.gsub('attr_', '').to_sym
+        def_name = parameters.to_a[0].to_a[0].to_s
+        class_method = false
       else
         raise 'node after a sig must be a method definition'
       end
@@ -317,45 +330,78 @@ module Parlour
           arg.to_a
         end
 
-      raise 'mismatching number of arguments in sig and def' \
-        if sig_args && def_args.length != sig_args.length
+      if kind == :def
+        raise 'mismatching number of arguments in sig and def' \
+          if sig_args && def_args.length != sig_args.length
 
-      # sig_args will look like:
-      #   [(pair (sym :x) <type>), (pair (sym :y) <type>), ...]
-      # def_args will look like:
-      #   [(arg :x), (arg :y), ...]
-      parameters = sig_args \
-        ? zip_by(sig_args, ->x{ x.to_a[0].to_a[0] }, def_args, ->x{ x.to_a[0] })
-          .map do |sig_arg, def_arg|
-            arg_name = def_arg.to_a[0]
+        # sig_args will look like:
+        #   [(pair (sym :x) <type>), (pair (sym :y) <type>), ...]
+        # def_args will look like:
+        #   [(arg :x), (arg :y), ...]
+        parameters = sig_args \
+          ? zip_by(sig_args, ->x{ x.to_a[0].to_a[0] }, def_args, ->x{ x.to_a[0] })
+            .map do |sig_arg, def_arg|
+              arg_name = def_arg.to_a[0]
 
-            # TODO: anonymous restarg
-            full_name = arg_name.to_s
-            full_name = "*#{arg_name}"  if def_arg.type == :restarg
-            full_name = "**#{arg_name}" if def_arg.type == :kwrestarg
-            full_name = "#{arg_name}:"  if def_arg.type == :kwarg || def_arg.type == :kwoptarg
-            full_name = "&#{arg_name}"  if def_arg.type == :blockarg
+              # TODO: anonymous restarg
+              full_name = arg_name.to_s
+              full_name = "*#{arg_name}"  if def_arg.type == :restarg
+              full_name = "**#{arg_name}" if def_arg.type == :kwrestarg
+              full_name = "#{arg_name}:"  if def_arg.type == :kwarg || def_arg.type == :kwoptarg
+              full_name = "&#{arg_name}"  if def_arg.type == :blockarg
 
-            default = def_arg.to_a[1] ? node_to_s(def_arg.to_a[1]) : nil
-            type = node_to_s(sig_arg.to_a[1])
+              default = def_arg.to_a[1] ? node_to_s(def_arg.to_a[1]) : nil
+              type = node_to_s(sig_arg.to_a[1])
 
-            RbiGenerator::Parameter.new(full_name, type: type, default: default)
-          end
-        : []
+              RbiGenerator::Parameter.new(full_name, type: type, default: default)
+            end
+          : []
 
-      RbiGenerator::Method.new(
-        DetachedRbiGenerator.new,
-        def_name,
-        parameters,
-        return_type,
-        override: override,
-        overridable: overridable,
-        abstract: abstract,
-        final: final,
-        class_method: class_method
-      )
+        RbiGenerator::Method.new(
+          DetachedRbiGenerator.new,
+          def_name,
+          parameters,
+          return_type,
+          override: override,
+          overridable: overridable,
+          abstract: abstract,
+          final: final,
+          class_method: class_method
+        )
+      elsif kind == :attr
+        case attr_direction
+        when :reader, :accessor
+          raise "attr_#{attr_direction} sig should have no parameters" \
+            if sig_args && sig_args.length > 0
+
+          raise "attr_#{attr_direction} sig should have non-void return" \
+            if return_type.nil?
+            
+          attr_type = return_type
+        when :writer
+          raise "attr_writer sig should take one argument with the property's name" \
+            if sig_args.length != 1 || sig_args[0].to_a[0].to_a[0].to_s != def_name
+
+          raise "attr_writer sig should have non-void return" \
+            if return_type.nil?
+
+          attr_type = T.must(node_to_s(sig_args[0].to_a[1]))
+        else
+          raise "unknown attribute direction #{attr_direction}"
+        end
+
+        RbiGenerator::Attribute.new(
+          DetachedRbiGenerator.new,
+          def_name,
+          attr_direction,
+          attr_type,
+          class_attribute: class_method
+        )
+      else
+        raise "unknown definition kind #{kind}"
+      end
     end
-    
+
     protected
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }

@@ -196,6 +196,44 @@ RSpec.describe Parlour::TypeParser do
         instance.parse_sig(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true)
       end.to raise_error RuntimeError
     end
+
+    context 'attributes' do
+      it 'supports attr_accessor' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          sig { returns(String) }
+          attr_accessor :foo
+        RUBY
+
+        meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
+        expect(meth).to have_attributes(name: 'foo', return_type: 'String',
+          kind: :accessor)
+      end
+
+      it 'supports attr_reader' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          sig { returns(String) }
+          attr_reader :foo
+        RUBY
+
+        meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
+        expect(meth).to have_attributes(name: 'foo', return_type: 'String',
+          kind: :reader)
+      end
+
+      it 'supports attr_writer' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          sig { params(foo: String).returns(String) }
+          attr_writer :foo
+        RUBY
+
+        meth = instance.parse_sig(Parlour::TypeParser::NodePath.new([0]))
+        expect(meth).to have_attributes(name: 'foo', return_type: 'String',
+          kind: :writer)
+        expect(meth.parameters.length).to eq 1
+        expect(meth.parameters[0]).to have_attributes(name: 'foo',
+          type: 'String')
+      end
+    end
   end
 
   context '#parse_all' do
