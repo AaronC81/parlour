@@ -194,7 +194,7 @@ RSpec.describe Parlour::TypeParser do
 
       expect do
         instance.parse_sig(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true)
-      end.to raise_error RuntimeError
+      end.to raise_error Parlour::ParseError
     end
 
     context 'attributes' do

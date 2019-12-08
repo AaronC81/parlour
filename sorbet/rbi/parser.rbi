@@ -8,6 +8,9 @@ module Parser
 
       sig { returns(Symbol) }
       def type; end
+
+      sig { returns(Source::Map) }
+      def loc; end
     end
   end
 
@@ -17,6 +20,22 @@ module Parser
   end
 
   module Source
+    class Range
+      sig { returns(Integer) }
+      def begin_pos; end
+
+      sig { returns(Integer) }
+      def end_pos; end
+
+      sig { returns(Buffer) }
+      def source_buffer; end
+    end
+
+    class Map
+      sig { returns(Source::Range) }
+      def expression; end
+    end
+
     class Buffer
       sig { params(filename: String).void }
       def initialize(filename); end

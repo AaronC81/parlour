@@ -128,7 +128,7 @@ module Parlour
       
       case node.type
       when :class
-        raise 'cannot declare classes in an eigenclass' if is_within_eigen
+        parse_err 'cannot declare classes in an eigenclass', node if is_within_eigen
 
         name, superclass, body = *node
         final = body_has_modifier?(body, :final!)
@@ -171,7 +171,7 @@ module Parlour
           [final_obj]
         end
       when :module
-        raise 'cannot declare modules in an eigenclass' if is_within_eigen
+        parse_err 'cannot declare modules in an eigenclass', node if is_within_eigen
 
         name, body = *node
         final = body_has_modifier?(body, :final!)
@@ -218,15 +218,14 @@ module Parlour
           []
         end
       when :def, :defs
-        # TODO:
-        # Do we want to include defs if they don't have a sig?
+        # TODO: Support for defs without sigs
         #   If so, we need some kind of state machine to determine whether
         #   they've already been dealt with by the "when :send" clause and 
         #   #parse_sig.
         #   If not, just ignore this.
         []
       when :sclass
-        raise "cannot access eigen of non-self object" unless node.to_a[0].type == :self
+        parse_err 'cannot access eigen of non-self object', node unless node.to_a[0].type == :self
         parse_path_to_object(path.child(1), is_within_eigen: true)
       when :begin
         # Just map over all the things
@@ -234,7 +233,7 @@ module Parlour
           parse_path_to_object(path.child(c), is_within_eigen: is_within_eigen) 
         end.flatten
       else
-        raise "don't understand node type #{node.type}"
+        parse_err "don't understand node type #{node.type}", node
       end
     end
 
@@ -250,7 +249,6 @@ module Parlour
     #   a class method of the eigenclass, which Parlour can't represent.
     # @return [RbiGenerator::Method] The parsed method.
     def parse_sig(path, is_within_eigen: false)
-      # TODO: error locs
       sig_block_node = path.traverse(ast)
 
       # A :def node represents a definition like "def x; end"
@@ -263,7 +261,7 @@ module Parlour
         def_args = def_node.to_a[1].to_a
         kind = :def
       when :defs
-        raise 'targeted definitions on a non-self target are not supported' \
+        parse_err 'targeted definitions on a non-self target are not supported', def_node \
           unless def_node.to_a[0].type == :self
         class_method = true
         def_name = def_node.to_a[1].to_s
@@ -272,22 +270,22 @@ module Parlour
       when :send
         target, method_name, *parameters = *def_node
 
-        raise 'node after a sig must be a method definition' \
+        parse_err 'node after a sig must be a method definition', def_node \
           unless [:attr_reader, :attr_writer, :attr_accessor].include?(method_name) \
             || target != nil
 
-        raise 'typed attribute should only have one name' unless parameters&.length == 1
+        parse_err 'typed attribute should only have one name', def_node unless parameters&.length == 1
         
         kind = :attr
         attr_direction = method_name.to_s.gsub('attr_', '').to_sym
         def_name = parameters.to_a[0].to_a[0].to_s
         class_method = false
       else
-        raise 'node after a sig must be a method definition'
+        parse_err 'node after a sig must be a method definition', def_node
       end
 
       if is_within_eigen
-        raise 'cannot represent multiple levels of eigenclassing' if class_method
+        parse_err 'cannot represent multiple levels of eigenclassing', def_node if class_method
         class_method = true
       end
 
@@ -316,7 +314,7 @@ module Parlour
       return_type = sig_chain
         .find { |(n, _)| n == :returns }
         &.then do |(_, a)|
-          raise 'wrong number of arguments in "returns" for sig' if a.length != 1
+          parse_err 'wrong number of arguments in "returns" for sig', sig_block_node if a.length != 1
           node_to_s(a[0])
         end
 
@@ -324,14 +322,14 @@ module Parlour
       sig_args = sig_chain
         .find { |(n, _)| n == :params }
         &.then do |(_, a)|
-          raise 'wrong number of arguments in "params" for sig' if a.length != 1
+          parse_err 'wrong number of arguments in "params" for sig', sig_block_node if a.length != 1
           arg = a[0]
-          raise 'argument to "params" should be a hash' unless arg.type == :hash
+          parse_err 'argument to "params" should be a hash', arg unless arg.type == :hash
           arg.to_a
         end
 
       if kind == :def
-        raise 'mismatching number of arguments in sig and def' \
+        parse_err 'mismatching number of arguments in sig and def', sig_block_node \
           if sig_args && def_args.length != sig_args.length
 
         # sig_args will look like:
@@ -371,18 +369,18 @@ module Parlour
       elsif kind == :attr
         case attr_direction
         when :reader, :accessor
-          raise "attr_#{attr_direction} sig should have no parameters" \
+          parse_err "attr_#{attr_direction} sig should have no parameters", sig_block_node \
             if sig_args && sig_args.length > 0
 
-          raise "attr_#{attr_direction} sig should have non-void return" \
+          parse_err "attr_#{attr_direction} sig should have non-void return", sig_block_node \
             if return_type.nil?
             
           attr_type = return_type
         when :writer
-          raise "attr_writer sig should take one argument with the property's name" \
+          parse_err "attr_writer sig should take one argument with the property's name", sig_block_node \
             if sig_args.length != 1 || sig_args[0].to_a[0].to_a[0].to_s != def_name
 
-          raise "attr_writer sig should have non-void return" \
+          parse_err "attr_writer sig should have non-void return", sig_block_node \
             if return_type.nil?
 
           attr_type = T.must(node_to_s(sig_args[0].to_a[1]))
@@ -486,6 +484,19 @@ module Parlour
       end
 
       result
+    end
+
+    sig { params(desc: String, node: T.any(Parser::AST::Node, NodePath)).returns(T.noreturn) }
+    # Raises a parse error on a node.
+    # @param [String] desc A description of the error.
+    # @param [Parser::AST::Node, NodePath] A node, passed as either a path or a
+    #   raw parser node.
+    def parse_err(desc, node)
+      node = node.traverse(ast) if node.is_a?(NodePath)
+      range = node.loc.expression
+      buffer = range.source_buffer
+
+      raise ParseError.new(buffer, range), desc
     end
 
     sig do 

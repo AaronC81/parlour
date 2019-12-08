@@ -27,5 +27,6 @@ require 'parlour/detached_rbi_generator'
 
 require 'parlour/conflict_resolver'
 
+require 'parlour/parse_error'
 require 'parlour/type_parser'
 require 'parlour/type_loader'
