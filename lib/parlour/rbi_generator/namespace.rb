@@ -559,11 +559,15 @@ module Parlour
       # Given an array of {Namespace} instances, merges them into this one.
       # All children, constants, extends and includes are copied into this 
       # instance.
+      #
+      # There may also be {RbiGenerator::Method} instances in the stream, which
+      # are ignored.
       # 
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
       # @return [void]
       def merge_into_self(others)
         others.each do |other|
+          next if other.is_a?(RbiGenerator::Method)
           other = T.cast(other, Namespace)
 
           other.children.each { |c| children << c }

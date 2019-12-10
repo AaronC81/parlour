@@ -78,11 +78,13 @@ module Parlour
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {ClassNamespace} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
-        others = T.cast(others, T::Array[ClassNamespace]) rescue (return false)
+        others = T.cast(others, T::Array[Namespace]) rescue (return false)
         all = others + [self]
 
-        all.map(&:abstract).uniq.length == 1 &&
-          all.map(&:superclass).compact.uniq.length <= 1
+        all_classes = T.cast(all.select { |x| ClassNamespace === x }, T::Array[ClassNamespace])
+
+        all_classes.map(&:abstract).uniq.length == 1 &&
+          all_classes.map(&:superclass).compact.uniq.length <= 1
       end
 
       sig do 
@@ -99,6 +101,7 @@ module Parlour
         super
 
         others.each do |other|
+          next unless ClassNamespace === other
           other = T.cast(other, ClassNamespace)
 
           @superclass = other.superclass unless superclass

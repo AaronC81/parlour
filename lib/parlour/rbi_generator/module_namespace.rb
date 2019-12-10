@@ -59,18 +59,20 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
-      # Given an array of {ModuleNamespace} instances, returns true if they may
+      # Given an array of {Namespace} instances, returns true if they may
       # be merged into this instance using {merge_into_self}. For instances to
       # be mergeable, they must either all be interfaces or all not be 
       # interfaces.
       #
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other {ModuleNamespace} instances.
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
-        others = T.cast(others, T::Array[RbiGenerator::ModuleNamespace]) rescue (return false)
+        others = T.cast(others, T::Array[Namespace]) rescue (return false)
         all = others + [self]
 
-        all.map(&:interface).uniq.length == 1
+        all_modules = T.cast(all.select { |x| ModuleNamespace === x }, T::Array[ModuleNamespace])
+
+        all_modules.map(&:interface).uniq.length == 1
       end
 
       sig do 

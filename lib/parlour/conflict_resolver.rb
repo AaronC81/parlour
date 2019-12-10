@@ -88,11 +88,11 @@ module Parlour
             namespace.children.delete(c)
           end
 
-          # We can only try to resolve automatically if they're all the same 
-          # type of object, so check that first
-          children_type = single_type_of_array(children)
-          unless children_type
-            Debugging.debug_puts(self, Debugging::Tree.end("Children are different types; requesting manual resolution"))
+          # Check that the types of the given objects allow them to be merged,
+          # and get the strategy to use
+          strategy = merge_strategy(children)
+          unless strategy
+            Debugging.debug_puts(self, Debugging::Tree.end("Children are unmergeable types; requesting manual resolution"))
             # The types aren't the same, so ask the resolver what to do, and
             # insert that (if not nil)
             choice = resolver.call("Different kinds of definition for the same name", children)
@@ -100,8 +100,36 @@ module Parlour
             next
           end
 
+          case strategy
+          when :normal
+            first, *rest = children
+          when :differing_namespaces
+            # Let the namespaces be merged normally, but handle the method here
+            namespaces, non_namespaces = children.partition { |x| RbiGenerator::Namespace === x }
+
+            # If there is any non-namespace item in this conflict, it should be
+            # a single method
+            if non_namespaces.length != 0
+              unless non_namespaces.length == 1 && RbiGenerator::Method === non_namespaces.first
+                Debugging.debug_puts(self, Debugging::Tree.end("Non-namespace item in a differing namespace conflict is not a single method; requesting manual resolution"))
+                # The types aren't the same, so ask the resolver what to do, and
+                # insert that (if not nil)
+                choice = resolver.call("Non-namespace item in a differing namespace conflict is not a single method", non_namespaces)
+                non_namespaces = []
+                non_namespaces << choice if choice
+              end 
+            end
+
+            non_namespaces.each do |x|
+              namespace.children << x
+            end
+
+            first, *rest = namespaces
+          else
+            raise 'unknown merge strategy; this is a Parlour bug'
+          end
+
           # Can the children merge themselves automatically? If so, let them
-          first, *rest = children
           first, rest = T.must(first), T.must(rest)
           if T.must(first).mergeable?(T.must(rest))
             Debugging.debug_puts(self, Debugging::Tree.end("Children are all mergeable; resolving automatically"))
@@ -131,15 +159,49 @@ module Parlour
 
     private
 
-    sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Class)) }
+    sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Symbol)) }
     # Given an array, if all elements in the array are instances of the exact
-    # same class, returns that class. If they are not, returns nil.
+    # same class or are otherwise mergeable (for example Namespace and 
+    # ClassNamespace), returns the kind of merge which needs to be made. A
+    # return value of nil indicates that the values cannot be merged.
+    #
+    # The following kinds are available:
+    #   - They are all the same. (:normal)
+    #   - There are exactly two types, one of which is Namespace and other is a 
+    #     subclass of it. (:differing_namespaces)
+    #   - One of them is Namespace or a subclass (or both, as described above),
+    #     and the only other is Method. (also :differing_namespaces) 
     #
     # @param arr [Array] The array.
-    # @return [Class, nil] Either a class, or nil.
-    def single_type_of_array(arr)
+    # @return [Symbol] The merge strategy to use, or nil if they can't be
+    #   merged.
+    def merge_strategy(arr)
+      # If they're all the same type, they can be merged easily
       array_types = arr.map { |c| c.class }.uniq
-      array_types.length == 1 ? array_types.first : nil
+      return :normal if array_types.length == 1
+
+      # Find all the namespaces and non-namespaces
+      namespace_types, non_namespace_types = array_types.partition { |x| x <= RbiGenerator::Namespace }
+
+      # If there are two namespace types, one should be Namespace and the other
+      # should be a subclass of it
+      if namespace_types.length == 2
+        exactly_namespace, exactly_one_subclass = namespace_types.partition { |x| x == RbiGenerator::Namespace }
+
+        return nil unless exactly_namespace.length == 1 \
+          && exactly_one_subclass.length == 1 \
+          && exactly_one_subclass.first < RbiGenerator::Namespace
+      elsif namespace_types.length != 1
+        # The only other valid number of namespaces is 1, where we don't need to
+        # check anything
+        return nil
+      end
+      
+      # It's OK, albeit cursed, for there to be a method with the same name as
+      # a namespace (Rainbow does this)
+      return nil if non_namespace_types.length != 0 && non_namespace_types != [RbiGenerator::Method]
+
+      :differing_namespaces
     end
 
     sig { params(arr: T::Array[T.untyped]).returns(T::Boolean) }
