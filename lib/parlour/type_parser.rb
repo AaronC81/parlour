@@ -2,7 +2,15 @@
 
 # TODO: support sig without runtime
 
-require 'parser/current'
+# Suppress versioning warnings - the majority of users will not actually be
+# using this, so we don't want to pollute their console
+old_verbose = $VERBOSE
+begin
+  $VERBOSE = nil
+  require 'parser/current'
+ensure
+  $VERBOSE = old_verbose
+end
 
 module Parlour
   # Parses Ruby source to find Sorbet type signatures.
