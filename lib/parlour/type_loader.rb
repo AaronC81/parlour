@@ -75,9 +75,6 @@ module Parlour
       first_namespace.merge_into_self(other_namespaces)
 
       ConflictResolver.new.resolve_conflicts(first_namespace) do |n, o|
-        require 'pp'
-        pp o.map(&:describe)
-        pp T.unsafe(o).flat_map(&:children).map(&:describe)
         raise "conflict of #{o.length} objects: #{n}"
       end
 
