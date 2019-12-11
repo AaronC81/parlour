@@ -401,11 +401,11 @@ RSpec.describe Parlour::TypeParser do
       expect(root.children.length).to eq 1
 
       a = root.children.first
-      expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(a).to be_a Parlour::RbiGenerator::Namespace
       expect(a).to have_attributes(name: 'A', final: false)
 
       b = a.children.first
-      expect(b).to be_a Parlour::RbiGenerator::ModuleNamespace
+      expect(b).to be_a Parlour::RbiGenerator::Namespace
       expect(b).to have_attributes(name: 'B', final: false)
 
       c = b.children.first
@@ -413,12 +413,12 @@ RSpec.describe Parlour::TypeParser do
       expect(c).to have_attributes(name: 'C', final: false)
 
       d = c.children.first
-      expect(d).to be_a Parlour::RbiGenerator::ClassNamespace
-      expect(d).to have_attributes(name: 'D', final: false, superclass: nil)
+      expect(d).to be_a Parlour::RbiGenerator::Namespace
+      expect(d).to have_attributes(name: 'D', final: false)
       
       e = d.children.first
-      expect(e).to be_a Parlour::RbiGenerator::ClassNamespace
-      expect(e).to have_attributes(name: 'E', final: false, superclass: nil)
+      expect(e).to be_a Parlour::RbiGenerator::Namespace
+      expect(e).to have_attributes(name: 'E', final: false)
 
       f = e.children.first
       expect(f).to be_a Parlour::RbiGenerator::ClassNamespace
