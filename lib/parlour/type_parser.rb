@@ -75,12 +75,18 @@ module Parlour
 
     extend T::Sig
 
-    sig { params(ast: Parser::AST::Node).void }
+    sig { params(ast: Parser::AST::Node, unknown_node_errors: T::Boolean).void }
     # Creates a new {TypeParser} from whitequark/parser AST.
     #
     # @param [Parser::AST::Node] The AST.
-    def initialize(ast)
+    # @param [Boolean] unknown_node_errors Whether to raise an error if a node
+    #   of an unknown kind is encountered. If false, the node is simply ignored;
+    #   if true, a parse error is raised. Setting this to true is likely to
+    #   raise errors for lots of non-RBI Ruby code, but setting it to false
+    #   could miss genuine typed objects if Parlour or your code contains a bug.
+    def initialize(ast, unknown_node_errors: false)
       @ast = ast
+      @unknown_node_errors = unknown_node_errors
     end
 
     sig { params(filename: String, source: String).returns(TypeParser) }
@@ -100,6 +106,11 @@ module Parlour
     sig { returns(Parser::AST::Node) }
     # @return [Parser::AST::Node] The AST which this type parser should use.
     attr_accessor :ast
+
+    sig { returns(T::Boolean) }
+    # @return [Boolean] Whether to raise an error if a node of an unknown kind
+    #   is encountered. 
+    attr_reader :unknown_node_errors
 
     # Parses the entire source file and returns the resulting root namespace.
     #
@@ -137,15 +148,13 @@ module Parlour
 
         # Create all classes, if we're given a definition like "class A::B"
         *parent_names, this_name = constant_names(name)
-        target = T.let(nil, T.nilable(RbiGenerator::ClassNamespace))
-        top_level = T.let(nil, T.nilable(RbiGenerator::ClassNamespace))
+        target = T.let(nil, T.nilable(RbiGenerator::Namespace))
+        top_level = T.let(nil, T.nilable(RbiGenerator::Namespace))
         parent_names.each do |n| 
-          new_obj = RbiGenerator::ClassNamespace.new(
+          new_obj = RbiGenerator::Namespace.new(
             DetachedRbiGenerator.new,
             n.to_s,
             false,
-            nil,
-            false
           )
           target.children << new_obj if target
           target = new_obj
@@ -180,14 +189,13 @@ module Parlour
 
         # Create all modules, if we're given a definition like "module A::B"
         *parent_names, this_name = constant_names(name)
-        target = T.let(nil, T.nilable(RbiGenerator::ModuleNamespace))
-        top_level = T.let(nil, T.nilable(RbiGenerator::ModuleNamespace))
+        target = T.let(nil, T.nilable(RbiGenerator::Namespace))
+        top_level = T.let(nil, T.nilable(RbiGenerator::Namespace))
         parent_names.each do |n| 
-          new_obj = RbiGenerator::ModuleNamespace.new(
+          new_obj = RbiGenerator::Namespace.new(
             DetachedRbiGenerator.new,
             n.to_s,
             false,
-            false
           )
           target.children << new_obj if target
           target = new_obj
@@ -233,7 +241,11 @@ module Parlour
           parse_path_to_object(path.child(c), is_within_eigen: is_within_eigen) 
         end.flatten
       else
-        parse_err "don't understand node type #{node.type}", node
+        if unknown_node_errors
+          parse_err "don't understand node type #{node.type}", node
+        else
+          []
+        end
       end
     end
 
@@ -274,6 +286,8 @@ module Parlour
           unless [:attr_reader, :attr_writer, :attr_accessor].include?(method_name) \
             || target != nil
 
+        # TODO: this is incorrect, Sorbet handles this fine; so this method 
+        # needs to be refactored so that it can return multiple methods!!
         parse_err 'typed attribute should only have one name', def_node unless parameters&.length == 1
         
         kind = :attr
