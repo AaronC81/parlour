@@ -37,7 +37,6 @@
 # wrong constant name <RESERVED_122>
 # wrong constant name <RESERVED_123>
 # wrong constant name <RESERVED_124>
-# wrong constant name <RESERVED_125>
 # wrong constant name <RESERVED_12>
 # wrong constant name <RESERVED_13>
 # wrong constant name <RESERVED_14>
@@ -143,21 +142,68 @@
 # wrong constant name <Class:<root>>
 # wrong constant name <todo sym>
 # wrong constant name <todo sym>
+# wrong constant name <Class:Node>
+# wrong constant name <Class:Processor>
+# wrong constant name <Class:Sexp>
+# undefined method `initialize<defaultArg>1' for class `AST::Node'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `AST::Node'
+# Did you mean?  initialize_dup
+# undefined method `inspect<defaultArg>1' for class `AST::Node'
+# undefined method `to_s<defaultArg>1' for class `AST::Node'
+# undefined method `to_sexp<defaultArg>1' for class `AST::Node'
+# undefined method `updated<defaultArg>1' for class `AST::Node'
+# undefined method `updated<defaultArg>2' for class `AST::Node'
+# undefined method `updated<defaultArg>3' for class `AST::Node'
+# wrong constant name +
+# wrong constant name <<
+# wrong constant name ==
+# wrong constant name append
+# wrong constant name assign_properties
+# wrong constant name children
+# wrong constant name clone
+# wrong constant name concat
+# wrong constant name eql?
+# wrong constant name fancy_type
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize
+# wrong constant name inspect<defaultArg>1
+# wrong constant name inspect
+# wrong constant name to_a
+# wrong constant name to_ast
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name to_sexp<defaultArg>1
+# wrong constant name to_sexp
+# wrong constant name to_sexp_array
+# wrong constant name type
+# wrong constant name updated<defaultArg>1
+# wrong constant name updated<defaultArg>2
+# wrong constant name updated<defaultArg>3
+# wrong constant name updated
+# wrong constant name <static-init>
+# wrong constant name <Class:Mixin>
+# wrong constant name handler_missing
+# wrong constant name process
+# wrong constant name process_all
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name s
+# wrong constant name <static-init>
+# wrong constant name <static-init>
 # uninitialized constant Abbrev
 # uninitialized constant Abbrev
 # wrong constant name bsearch
 # wrong constant name bsearch_index
 # wrong constant name collect!
 # wrong constant name dig
-# wrong constant name filter!
 # wrong constant name flatten!
 # wrong constant name pack
 # wrong constant name replace
 # wrong constant name shelljoin
 # wrong constant name to_h
 # wrong constant name try_convert
-# uninitialized constant Base64
-# uninitialized constant Base64
 # wrong constant name <Class:BasicObject>
 # undefined method `read_nonblock<defaultArg>1' for class `BasicSocket'
 # undefined method `read_nonblock<defaultArg>2' for class `BasicSocket'
@@ -1185,7 +1231,6 @@
 # wrong constant name select_best_platform_match
 # wrong constant name status_code
 # wrong constant name <static-init>
-# uninitialized constant Bundler::GemRemoteFetcher::BASE64_URI_TRANSLATE
 # wrong constant name <static-init>
 # wrong constant name initialize
 # wrong constant name orig_exception
@@ -2849,7 +2894,6 @@
 # wrong constant name chunk
 # wrong constant name chunk_while
 # wrong constant name each_entry
-# wrong constant name filter
 # wrong constant name grep_v
 # wrong constant name slice_after
 # wrong constant name slice_before
@@ -2892,19 +2936,13 @@
 # wrong constant name each
 # wrong constant name members
 # wrong constant name <Class:Group>
-# wrong constant name dir
 # wrong constant name dir=
 # wrong constant name gecos
 # wrong constant name gecos=
-# wrong constant name gid
 # wrong constant name gid=
-# wrong constant name name
 # wrong constant name name=
-# wrong constant name passwd
 # wrong constant name passwd=
-# wrong constant name shell
 # wrong constant name shell=
-# wrong constant name uid
 # wrong constant name uid=
 # wrong constant name []
 # wrong constant name each
@@ -2956,7 +2994,6 @@
 # wrong constant name _valid_method?
 # wrong constant name debug
 # wrong constant name debug=
-# wrong constant name <static-init>
 # wrong constant name garbage_collect
 # wrong constant name latest_gc_info
 # wrong constant name stress=
@@ -2981,6 +3018,7 @@
 # wrong constant name <Class:RequestSet>
 # wrong constant name <Class:Resolver>
 # wrong constant name <Class:RuntimeRequirementNotMetError>
+# wrong constant name <Class:S3URISigner>
 # wrong constant name <Class:Security>
 # wrong constant name <Class:SilentUI>
 # wrong constant name <Class:Source>
@@ -3574,6 +3612,7 @@
 # wrong constant name version
 # wrong constant name <static-init>
 # wrong constant name from
+# wrong constant name oct_or_256based
 # wrong constant name strict_oct
 # wrong constant name <static-init>
 # uninitialized constant Gem::Package::TarReader::Elem
@@ -3697,12 +3736,10 @@
 # undefined method `initialize<defaultArg>3' for class `Gem::RemoteFetcher'
 # Did you mean?  initialize_dup
 # undefined method `request<defaultArg>1' for class `Gem::RemoteFetcher'
-# undefined method `sign_s3_url<defaultArg>1' for class `Gem::RemoteFetcher'
 # wrong constant name cache_update_path<defaultArg>1
 # wrong constant name cache_update_path<defaultArg>2
 # wrong constant name cache_update_path
 # wrong constant name close_all
-# wrong constant name correct_for_windows_path
 # wrong constant name download<defaultArg>1
 # wrong constant name download
 # wrong constant name download_to_cache
@@ -3731,9 +3768,7 @@
 # wrong constant name initialize
 # wrong constant name request<defaultArg>1
 # wrong constant name request
-# wrong constant name s3_expiration
-# wrong constant name sign_s3_url<defaultArg>1
-# wrong constant name sign_s3_url
+# wrong constant name s3_uri_signer
 # wrong constant name <static-init>
 # wrong constant name fetcher
 # wrong constant name <Class:ConnectionPools>
@@ -4422,6 +4457,32 @@
 # wrong constant name suggestion
 # wrong constant name suggestion=
 # wrong constant name <static-init>
+# undefined method `sign<defaultArg>1' for class `Gem::S3URISigner'
+# wrong constant name <Class:ConfigurationError>
+# wrong constant name <Class:InstanceProfileError>
+# wrong constant name <Class:S3Config>
+# wrong constant name initialize
+# wrong constant name sign<defaultArg>1
+# wrong constant name sign
+# wrong constant name uri
+# wrong constant name uri=
+# wrong constant name initialize
+# wrong constant name <static-init>
+# wrong constant name initialize
+# wrong constant name <static-init>
+# uninitialized constant Gem::S3URISigner::S3Config::Elem
+# wrong constant name access_key_id
+# wrong constant name access_key_id=
+# wrong constant name region
+# wrong constant name region=
+# wrong constant name secret_access_key
+# wrong constant name secret_access_key=
+# wrong constant name security_token
+# wrong constant name security_token=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
 # wrong constant name <Class:DIGEST_ALGORITHM>
 # wrong constant name <Class:Exception>
 # wrong constant name <Class:KEY_ALGORITHM>
@@ -5076,6 +5137,7 @@
 # wrong constant name verbose
 # wrong constant name <static-init>
 # wrong constant name <static-init>
+# wrong constant name correct_for_windows_path
 # wrong constant name glob_files_in_dir
 # wrong constant name gunzip
 # wrong constant name gzip
@@ -5227,10 +5289,8 @@
 # wrong constant name default_proc
 # wrong constant name default_proc=
 # wrong constant name fetch_values
-# wrong constant name filter!
 # wrong constant name flatten
 # wrong constant name index
-# wrong constant name merge!
 # wrong constant name replace
 # wrong constant name slice
 # wrong constant name to_h
@@ -5327,7 +5387,6 @@
 # wrong constant name object_id
 # wrong constant name pretty_inspect
 # wrong constant name respond_to?
-# wrong constant name then
 # wrong constant name at_exit
 # wrong constant name key
 # wrong constant name receiver
@@ -5450,6 +5509,1408 @@
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
 # uninitialized constant Opus
 # uninitialized constant Opus
+# wrong constant name inherited
+# wrong constant name <Class:Base>
+# wrong constant name <Class:Builders>
+# wrong constant name <Class:ClobberingError>
+# wrong constant name <Class:Context>
+# wrong constant name <Class:Deprecation>
+# wrong constant name <Class:Diagnostic>
+# wrong constant name <Class:Lexer>
+# wrong constant name <Class:Meta>
+# wrong constant name <Class:Rewriter>
+# wrong constant name <Class:Ruby26>
+# wrong constant name <Class:StaticEnvironment>
+# wrong constant name <Class:SyntaxError>
+# wrong constant name <Class:TreeRewriter>
+# wrong constant name location
+# wrong constant name on_alias
+# wrong constant name on_and
+# wrong constant name on_and_asgn
+# wrong constant name on_arg
+# wrong constant name on_arg_expr
+# wrong constant name on_args
+# wrong constant name on_argument
+# wrong constant name on_array
+# wrong constant name on_back_ref
+# wrong constant name on_begin
+# wrong constant name on_block
+# wrong constant name on_block_pass
+# wrong constant name on_blockarg
+# wrong constant name on_blockarg_expr
+# wrong constant name on_break
+# wrong constant name on_case
+# wrong constant name on_casgn
+# wrong constant name on_class
+# wrong constant name on_const
+# wrong constant name on_csend
+# wrong constant name on_cvar
+# wrong constant name on_cvasgn
+# wrong constant name on_def
+# wrong constant name on_defined?
+# wrong constant name on_defs
+# wrong constant name on_dstr
+# wrong constant name on_dsym
+# wrong constant name on_eflipflop
+# wrong constant name on_ensure
+# wrong constant name on_erange
+# wrong constant name on_for
+# wrong constant name on_gvar
+# wrong constant name on_gvasgn
+# wrong constant name on_hash
+# wrong constant name on_if
+# wrong constant name on_iflipflop
+# wrong constant name on_index
+# wrong constant name on_indexasgn
+# wrong constant name on_irange
+# wrong constant name on_ivar
+# wrong constant name on_ivasgn
+# wrong constant name on_kwarg
+# wrong constant name on_kwbegin
+# wrong constant name on_kwoptarg
+# wrong constant name on_kwrestarg
+# wrong constant name on_kwsplat
+# wrong constant name on_lambda
+# wrong constant name on_lvar
+# wrong constant name on_lvasgn
+# wrong constant name on_masgn
+# wrong constant name on_match_current_line
+# wrong constant name on_match_with_lvasgn
+# wrong constant name on_mlhs
+# wrong constant name on_module
+# wrong constant name on_next
+# wrong constant name on_not
+# wrong constant name on_nth_ref
+# wrong constant name on_numblock
+# wrong constant name on_op_asgn
+# wrong constant name on_optarg
+# wrong constant name on_or
+# wrong constant name on_or_asgn
+# wrong constant name on_pair
+# wrong constant name on_postexe
+# wrong constant name on_preexe
+# wrong constant name on_procarg0
+# wrong constant name on_redo
+# wrong constant name on_regexp
+# wrong constant name on_resbody
+# wrong constant name on_rescue
+# wrong constant name on_restarg
+# wrong constant name on_restarg_expr
+# wrong constant name on_retry
+# wrong constant name on_return
+# wrong constant name on_sclass
+# wrong constant name on_send
+# wrong constant name on_shadowarg
+# wrong constant name on_splat
+# wrong constant name on_super
+# wrong constant name on_undef
+# wrong constant name on_until
+# wrong constant name on_until_post
+# wrong constant name on_var
+# wrong constant name on_vasgn
+# wrong constant name on_when
+# wrong constant name on_while
+# wrong constant name on_while_post
+# wrong constant name on_xstr
+# wrong constant name on_yield
+# wrong constant name process_argument_node
+# wrong constant name process_regular_node
+# wrong constant name process_var_asgn_node
+# wrong constant name process_variable_node
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `Parser::Base'
+# Did you mean?  initialize_dup
+# undefined method `tokenize<defaultArg>1' for class `Parser::Base'
+# uninitialized constant Parser::Base::Racc_Main_Parsing_Routine
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Id_C
+# Did you mean?  Parser::Base::Racc_Runtime_Core_Version_C
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Revision
+# Did you mean?  Parser::Base::Racc_Runtime_Core_Revision_C
+#                Parser::Base::Racc_Runtime_Core_Revision_R
+#                Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Version
+#                Parser::Base::Racc_Runtime_Core_Version_C
+#                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Version
+#                Parser::Base::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Revision_C
+# Did you mean?  Parser::Base::Racc_Runtime_Core_Revision_R
+#                Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Version_C
+#                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Version
+#                Parser::Base::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Revision_R
+# Did you mean?  Parser::Base::Racc_Runtime_Core_Revision_C
+#                Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Version_C
+#                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Version
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Version
+# Did you mean?  Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Revision
+#                Parser::Base::Racc_Runtime_Core_Version_C
+#                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Revision_C
+#                Parser::Base::Racc_Runtime_Core_Revision_R
+#                Parser::Base::Racc_Runtime_Version
+#                Parser::Base::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Version_C
+# Did you mean?  Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Revision_C
+#                Parser::Base::Racc_Runtime_Core_Revision_R
+#                Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Revision
+#                Parser::Base::Racc_Runtime_Version
+#                Parser::Base::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Base::Racc_Runtime_Core_Version_R
+# Did you mean?  Parser::Base::Racc_Runtime_Core_Version_C
+#                Parser::Base::Racc_Runtime_Core_Revision_C
+#                Parser::Base::Racc_Runtime_Core_Revision_R
+#                Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Revision
+#                Parser::Base::Racc_Runtime_Version
+#                Parser::Base::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Base::Racc_Runtime_Revision
+# Did you mean?  Parser::Base::Racc_Runtime_Version
+#                Parser::Base::Racc_Runtime_Core_Version
+#                Parser::Base::Racc_Runtime_Core_Revision
+# uninitialized constant Parser::Base::Racc_Runtime_Type
+# uninitialized constant Parser::Base::Racc_Runtime_Version
+# Did you mean?  Parser::Base::Racc_Runtime_Revision
+#                Parser::Base::Racc_Runtime_Core_Version
+# uninitialized constant Parser::Base::Racc_YY_Parse_Method
+# wrong constant name builder
+# wrong constant name context
+# wrong constant name diagnostics
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name parse
+# wrong constant name parse_with_comments
+# wrong constant name reset
+# wrong constant name source_buffer
+# wrong constant name static_env
+# wrong constant name tokenize<defaultArg>1
+# wrong constant name tokenize
+# undefined singleton method `parse<defaultArg>1' for `Parser::Base'
+# undefined singleton method `parse<defaultArg>2' for `Parser::Base'
+# undefined singleton method `parse_with_comments<defaultArg>1' for `Parser::Base'
+# undefined singleton method `parse_with_comments<defaultArg>2' for `Parser::Base'
+# wrong constant name <static-init>
+# wrong constant name default_parser
+# wrong constant name parse<defaultArg>1
+# wrong constant name parse<defaultArg>2
+# wrong constant name parse
+# wrong constant name parse_file
+# wrong constant name parse_file_with_comments
+# wrong constant name parse_with_comments<defaultArg>1
+# wrong constant name parse_with_comments<defaultArg>2
+# wrong constant name parse_with_comments
+# wrong constant name <Class:Default>
+# undefined method `args<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `begin_body<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `begin_body<defaultArg>2' for class `Parser::Builders::Default'
+# undefined method `begin_body<defaultArg>3' for class `Parser::Builders::Default'
+# undefined method `begin_body<defaultArg>4' for class `Parser::Builders::Default'
+# undefined method `begin_body<defaultArg>5' for class `Parser::Builders::Default'
+# undefined method `call_method<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `call_method<defaultArg>2' for class `Parser::Builders::Default'
+# undefined method `call_method<defaultArg>3' for class `Parser::Builders::Default'
+# undefined method `keyword_cmd<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `keyword_cmd<defaultArg>2' for class `Parser::Builders::Default'
+# undefined method `keyword_cmd<defaultArg>3' for class `Parser::Builders::Default'
+# undefined method `kwrestarg<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `not_op<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `not_op<defaultArg>2' for class `Parser::Builders::Default'
+# undefined method `not_op<defaultArg>3' for class `Parser::Builders::Default'
+# undefined method `objc_restarg<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `restarg<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `restarg_expr<defaultArg>1' for class `Parser::Builders::Default'
+# undefined method `splat<defaultArg>1' for class `Parser::Builders::Default'
+# wrong constant name __ENCODING__
+# wrong constant name __FILE__
+# wrong constant name __LINE__
+# wrong constant name accessible
+# wrong constant name alias
+# wrong constant name arg
+# wrong constant name arg_expr
+# wrong constant name args<defaultArg>1
+# wrong constant name args
+# wrong constant name array
+# wrong constant name assign
+# wrong constant name assignable
+# wrong constant name associate
+# wrong constant name attr_asgn
+# wrong constant name back_ref
+# wrong constant name begin
+# wrong constant name begin_body<defaultArg>1
+# wrong constant name begin_body<defaultArg>2
+# wrong constant name begin_body<defaultArg>3
+# wrong constant name begin_body<defaultArg>4
+# wrong constant name begin_body<defaultArg>5
+# wrong constant name begin_body
+# wrong constant name begin_keyword
+# wrong constant name binary_op
+# wrong constant name block
+# wrong constant name block_pass
+# wrong constant name blockarg
+# wrong constant name blockarg_expr
+# wrong constant name call_lambda
+# wrong constant name call_method<defaultArg>1
+# wrong constant name call_method<defaultArg>2
+# wrong constant name call_method<defaultArg>3
+# wrong constant name call_method
+# wrong constant name call_type_for_dot
+# wrong constant name case
+# wrong constant name character
+# wrong constant name complex
+# wrong constant name compstmt
+# wrong constant name condition
+# wrong constant name condition_mod
+# wrong constant name const
+# wrong constant name const_fetch
+# wrong constant name const_global
+# wrong constant name const_op_assignable
+# wrong constant name cvar
+# wrong constant name dedent_string
+# wrong constant name def_class
+# wrong constant name def_method
+# wrong constant name def_module
+# wrong constant name def_sclass
+# wrong constant name def_singleton
+# wrong constant name emit_file_line_as_literals
+# wrong constant name emit_file_line_as_literals=
+# wrong constant name false
+# wrong constant name float
+# wrong constant name for
+# wrong constant name gvar
+# wrong constant name ident
+# wrong constant name index
+# wrong constant name index_asgn
+# wrong constant name integer
+# wrong constant name ivar
+# wrong constant name keyword_cmd<defaultArg>1
+# wrong constant name keyword_cmd<defaultArg>2
+# wrong constant name keyword_cmd<defaultArg>3
+# wrong constant name keyword_cmd
+# wrong constant name kwarg
+# wrong constant name kwnilarg
+# wrong constant name kwoptarg
+# wrong constant name kwrestarg<defaultArg>1
+# wrong constant name kwrestarg
+# wrong constant name kwsplat
+# wrong constant name logical_op
+# wrong constant name loop
+# wrong constant name loop_mod
+# wrong constant name match_op
+# wrong constant name method_ref
+# wrong constant name multi_assign
+# wrong constant name multi_lhs
+# wrong constant name nil
+# wrong constant name not_op<defaultArg>1
+# wrong constant name not_op<defaultArg>2
+# wrong constant name not_op<defaultArg>3
+# wrong constant name not_op
+# wrong constant name nth_ref
+# wrong constant name numargs
+# wrong constant name numparam
+# wrong constant name objc_kwarg
+# wrong constant name objc_restarg<defaultArg>1
+# wrong constant name objc_restarg
+# wrong constant name objc_varargs
+# wrong constant name op_assign
+# wrong constant name optarg
+# wrong constant name pair
+# wrong constant name pair_keyword
+# wrong constant name pair_list_18
+# wrong constant name pair_quoted
+# wrong constant name parser
+# wrong constant name parser=
+# wrong constant name postexe
+# wrong constant name preexe
+# wrong constant name procarg0
+# wrong constant name range_exclusive
+# wrong constant name range_inclusive
+# wrong constant name rational
+# wrong constant name regexp_compose
+# wrong constant name regexp_options
+# wrong constant name rescue_body
+# wrong constant name restarg<defaultArg>1
+# wrong constant name restarg
+# wrong constant name restarg_expr<defaultArg>1
+# wrong constant name restarg_expr
+# wrong constant name self
+# wrong constant name shadowarg
+# wrong constant name splat<defaultArg>1
+# wrong constant name splat
+# wrong constant name string
+# wrong constant name string_compose
+# wrong constant name string_internal
+# wrong constant name symbol
+# wrong constant name symbol_compose
+# wrong constant name symbol_internal
+# wrong constant name symbols_compose
+# wrong constant name ternary
+# wrong constant name true
+# wrong constant name unary_num
+# wrong constant name unary_op
+# wrong constant name undef_method
+# wrong constant name when
+# wrong constant name word
+# wrong constant name words_compose
+# wrong constant name xstring_compose
+# wrong constant name <static-init>
+# wrong constant name emit_arg_inside_procarg0
+# wrong constant name emit_arg_inside_procarg0=
+# wrong constant name emit_encoding
+# wrong constant name emit_encoding=
+# wrong constant name emit_index
+# wrong constant name emit_index=
+# wrong constant name emit_lambda
+# wrong constant name emit_lambda=
+# wrong constant name emit_procarg0
+# wrong constant name emit_procarg0=
+# wrong constant name modernize
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name class_definition_allowed?
+# wrong constant name dynamic_const_definition_allowed?
+# wrong constant name in_block?
+# wrong constant name in_class?
+# wrong constant name in_lambda?
+# wrong constant name indirectly_in_def?
+# wrong constant name module_definition_allowed?
+# wrong constant name pop
+# wrong constant name push
+# wrong constant name reset
+# wrong constant name stack
+# wrong constant name <static-init>
+# wrong constant name warn_of_deprecation
+# wrong constant name warned_of_deprecation=
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `Parser::Diagnostic'
+# Did you mean?  initialize_dup
+# wrong constant name <Class:Engine>
+# wrong constant name arguments
+# wrong constant name highlights
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name level
+# wrong constant name location
+# wrong constant name message
+# wrong constant name reason
+# wrong constant name render
+# undefined method `initialize<defaultArg>1' for class `Parser::Diagnostic::Engine'
+# Did you mean?  initialize_dup
+# wrong constant name all_errors_are_fatal
+# wrong constant name all_errors_are_fatal=
+# wrong constant name consumer
+# wrong constant name consumer=
+# wrong constant name ignore?
+# wrong constant name ignore_warnings
+# wrong constant name ignore_warnings=
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name process
+# wrong constant name raise?
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# undefined method `diagnostic<defaultArg>1' for class `Parser::Lexer'
+# undefined method `diagnostic<defaultArg>2' for class `Parser::Lexer'
+# undefined method `diagnostic<defaultArg>3' for class `Parser::Lexer'
+# undefined method `emit<defaultArg>1' for class `Parser::Lexer'
+# undefined method `emit<defaultArg>2' for class `Parser::Lexer'
+# undefined method `emit<defaultArg>3' for class `Parser::Lexer'
+# undefined method `emit_comment<defaultArg>1' for class `Parser::Lexer'
+# undefined method `emit_comment<defaultArg>2' for class `Parser::Lexer'
+# undefined method `emit_do<defaultArg>1' for class `Parser::Lexer'
+# undefined method `emit_table<defaultArg>1' for class `Parser::Lexer'
+# undefined method `emit_table<defaultArg>2' for class `Parser::Lexer'
+# undefined method `range<defaultArg>1' for class `Parser::Lexer'
+# undefined method `range<defaultArg>2' for class `Parser::Lexer'
+# undefined method `reset<defaultArg>1' for class `Parser::Lexer'
+# undefined method `tok<defaultArg>1' for class `Parser::Lexer'
+# undefined method `tok<defaultArg>2' for class `Parser::Lexer'
+# wrong constant name <Class:Dedenter>
+# wrong constant name <Class:Literal>
+# wrong constant name <Class:MaxNumparamStack>
+# wrong constant name <Class:StackState>
+# wrong constant name advance
+# wrong constant name arg_or_cmdarg
+# wrong constant name cmdarg
+# wrong constant name cmdarg=
+# wrong constant name comments
+# wrong constant name comments=
+# wrong constant name cond
+# wrong constant name cond=
+# wrong constant name context
+# wrong constant name context=
+# wrong constant name dedent_level
+# wrong constant name diagnostic<defaultArg>1
+# wrong constant name diagnostic<defaultArg>2
+# wrong constant name diagnostic<defaultArg>3
+# wrong constant name diagnostic
+# wrong constant name diagnostics
+# wrong constant name diagnostics=
+# wrong constant name emit<defaultArg>1
+# wrong constant name emit<defaultArg>2
+# wrong constant name emit<defaultArg>3
+# wrong constant name emit
+# wrong constant name emit_comment<defaultArg>1
+# wrong constant name emit_comment<defaultArg>2
+# wrong constant name emit_comment
+# wrong constant name emit_do<defaultArg>1
+# wrong constant name emit_do
+# wrong constant name emit_table<defaultArg>1
+# wrong constant name emit_table<defaultArg>2
+# wrong constant name emit_table
+# wrong constant name encode_escape
+# wrong constant name encoding
+# wrong constant name eof_codepoint?
+# wrong constant name force_utf32
+# wrong constant name force_utf32=
+# wrong constant name in_kwarg
+# wrong constant name in_kwarg=
+# wrong constant name initialize
+# wrong constant name literal
+# wrong constant name max_numparam
+# wrong constant name max_numparam_stack
+# wrong constant name next_state_for_literal
+# wrong constant name pop_cmdarg
+# wrong constant name pop_cond
+# wrong constant name pop_literal
+# wrong constant name push_cmdarg
+# wrong constant name push_cond
+# wrong constant name push_literal
+# wrong constant name range<defaultArg>1
+# wrong constant name range<defaultArg>2
+# wrong constant name range
+# wrong constant name reset<defaultArg>1
+# wrong constant name reset
+# wrong constant name source_buffer
+# wrong constant name source_buffer=
+# wrong constant name stack_pop
+# wrong constant name state
+# wrong constant name state=
+# wrong constant name static_env
+# wrong constant name static_env=
+# wrong constant name tok<defaultArg>1
+# wrong constant name tok<defaultArg>2
+# wrong constant name tok
+# wrong constant name tokens
+# wrong constant name tokens=
+# wrong constant name version?
+# wrong constant name dedent
+# wrong constant name initialize
+# wrong constant name interrupt
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `Parser::Lexer::Literal'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `Parser::Lexer::Literal'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>3' for class `Parser::Lexer::Literal'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>4' for class `Parser::Lexer::Literal'
+# Did you mean?  initialize_dup
+# undefined method `nest_and_try_closing<defaultArg>1' for class `Parser::Lexer::Literal'
+# wrong constant name backslash_delimited?
+# wrong constant name clear_buffer
+# wrong constant name coerce_encoding
+# wrong constant name dedent_level
+# wrong constant name delimiter?
+# wrong constant name emit
+# wrong constant name emit_start_tok
+# wrong constant name end_interp_brace_and_try_closing
+# wrong constant name extend_content
+# wrong constant name extend_space
+# wrong constant name extend_string
+# wrong constant name flush_string
+# wrong constant name heredoc?
+# wrong constant name heredoc_e
+# wrong constant name infer_indent_level
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize<defaultArg>3
+# wrong constant name initialize<defaultArg>4
+# wrong constant name initialize
+# wrong constant name interpolate?
+# wrong constant name munge_escape?
+# wrong constant name nest_and_try_closing<defaultArg>1
+# wrong constant name nest_and_try_closing
+# wrong constant name plain_heredoc?
+# wrong constant name regexp?
+# wrong constant name saved_herebody_s
+# wrong constant name saved_herebody_s=
+# wrong constant name squiggly_heredoc?
+# wrong constant name start_interp_brace
+# wrong constant name str_s
+# wrong constant name supports_line_continuation_via_slash?
+# wrong constant name type
+# wrong constant name words?
+# wrong constant name <static-init>
+# wrong constant name can_have_numparams?
+# wrong constant name cant_have_numparams!
+# wrong constant name pop
+# wrong constant name push
+# wrong constant name register
+# wrong constant name top
+# wrong constant name <static-init>
+# wrong constant name active?
+# wrong constant name clear
+# wrong constant name empty?
+# wrong constant name initialize
+# wrong constant name lexpop
+# wrong constant name pop
+# wrong constant name push
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name lex_en_expr_arg
+# wrong constant name lex_en_expr_arg=
+# wrong constant name lex_en_expr_beg
+# wrong constant name lex_en_expr_beg=
+# wrong constant name lex_en_expr_cmdarg
+# wrong constant name lex_en_expr_cmdarg=
+# wrong constant name lex_en_expr_dot
+# wrong constant name lex_en_expr_dot=
+# wrong constant name lex_en_expr_end
+# wrong constant name lex_en_expr_end=
+# wrong constant name lex_en_expr_endarg
+# wrong constant name lex_en_expr_endarg=
+# wrong constant name lex_en_expr_endfn
+# wrong constant name lex_en_expr_endfn=
+# wrong constant name lex_en_expr_fname
+# wrong constant name lex_en_expr_fname=
+# wrong constant name lex_en_expr_labelarg
+# wrong constant name lex_en_expr_labelarg=
+# wrong constant name lex_en_expr_mid
+# wrong constant name lex_en_expr_mid=
+# wrong constant name lex_en_expr_value
+# wrong constant name lex_en_expr_value=
+# wrong constant name lex_en_expr_variable
+# wrong constant name lex_en_expr_variable=
+# wrong constant name lex_en_interp_backslash_delimited
+# wrong constant name lex_en_interp_backslash_delimited=
+# wrong constant name lex_en_interp_backslash_delimited_words
+# wrong constant name lex_en_interp_backslash_delimited_words=
+# wrong constant name lex_en_interp_string
+# wrong constant name lex_en_interp_string=
+# wrong constant name lex_en_interp_words
+# wrong constant name lex_en_interp_words=
+# wrong constant name lex_en_leading_dot
+# wrong constant name lex_en_leading_dot=
+# wrong constant name lex_en_line_begin
+# wrong constant name lex_en_line_begin=
+# wrong constant name lex_en_line_comment
+# wrong constant name lex_en_line_comment=
+# wrong constant name lex_en_plain_backslash_delimited
+# wrong constant name lex_en_plain_backslash_delimited=
+# wrong constant name lex_en_plain_backslash_delimited_words
+# wrong constant name lex_en_plain_backslash_delimited_words=
+# wrong constant name lex_en_plain_string
+# wrong constant name lex_en_plain_string=
+# wrong constant name lex_en_plain_words
+# wrong constant name lex_en_plain_words=
+# wrong constant name lex_en_regexp_modifiers
+# wrong constant name lex_en_regexp_modifiers=
+# wrong constant name lex_error
+# wrong constant name lex_error=
+# wrong constant name lex_start
+# wrong constant name lex_start=
+# wrong constant name <static-init>
+# wrong constant name assignment?
+# wrong constant name initialize
+# wrong constant name insert_after
+# wrong constant name insert_before
+# wrong constant name remove
+# wrong constant name replace
+# wrong constant name rewrite
+# wrong constant name wrap
+# wrong constant name <static-init>
+# uninitialized constant Parser::Ruby26::Racc_Main_Parsing_Routine
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Id_C
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Core_Version_C
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Revision
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Core_Revision_C
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_R
+#                Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Version_C
+#                Parser::Ruby26::Racc_Runtime_Core_Version_R
+#                Parser::Ruby26::Racc_Runtime_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Revision_C
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Core_Revision_R
+#                Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Version_C
+#                Parser::Ruby26::Racc_Runtime_Core_Version_R
+#                Parser::Ruby26::Racc_Runtime_Core_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Revision_R
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Core_Revision_C
+#                Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Version_C
+#                Parser::Ruby26::Racc_Runtime_Core_Version_R
+#                Parser::Ruby26::Racc_Runtime_Core_Version
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Version
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Version_C
+#                Parser::Ruby26::Racc_Runtime_Core_Version_R
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_C
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_R
+#                Parser::Ruby26::Racc_Runtime_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Version_C
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Core_Version_R
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_C
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_R
+#                Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Revision
+#                Parser::Ruby26::Racc_Runtime_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Core_Version_R
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Core_Version_C
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_C
+#                Parser::Ruby26::Racc_Runtime_Core_Revision_R
+#                Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Revision
+#                Parser::Ruby26::Racc_Runtime_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Id_C
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Revision
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Version
+#                Parser::Ruby26::Racc_Runtime_Core_Revision
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Type
+# uninitialized constant Parser::Ruby26::Racc_Runtime_Version
+# Did you mean?  Parser::Ruby26::Racc_Runtime_Revision
+#                Parser::Ruby26::Racc_Runtime_Core_Version
+# uninitialized constant Parser::Ruby26::Racc_YY_Parse_Method
+# wrong constant name _reduce_10
+# wrong constant name _reduce_100
+# wrong constant name _reduce_101
+# wrong constant name _reduce_102
+# wrong constant name _reduce_103
+# wrong constant name _reduce_104
+# wrong constant name _reduce_105
+# wrong constant name _reduce_106
+# wrong constant name _reduce_107
+# wrong constant name _reduce_108
+# wrong constant name _reduce_109
+# wrong constant name _reduce_11
+# wrong constant name _reduce_110
+# wrong constant name _reduce_111
+# wrong constant name _reduce_113
+# wrong constant name _reduce_114
+# wrong constant name _reduce_115
+# wrong constant name _reduce_12
+# wrong constant name _reduce_121
+# wrong constant name _reduce_125
+# wrong constant name _reduce_126
+# wrong constant name _reduce_127
+# wrong constant name _reduce_13
+# wrong constant name _reduce_14
+# wrong constant name _reduce_15
+# wrong constant name _reduce_17
+# wrong constant name _reduce_18
+# wrong constant name _reduce_19
+# wrong constant name _reduce_199
+# wrong constant name _reduce_2
+# wrong constant name _reduce_20
+# wrong constant name _reduce_200
+# wrong constant name _reduce_201
+# wrong constant name _reduce_202
+# wrong constant name _reduce_203
+# wrong constant name _reduce_204
+# wrong constant name _reduce_205
+# wrong constant name _reduce_206
+# wrong constant name _reduce_207
+# wrong constant name _reduce_208
+# wrong constant name _reduce_209
+# wrong constant name _reduce_21
+# wrong constant name _reduce_210
+# wrong constant name _reduce_211
+# wrong constant name _reduce_212
+# wrong constant name _reduce_213
+# wrong constant name _reduce_214
+# wrong constant name _reduce_215
+# wrong constant name _reduce_216
+# wrong constant name _reduce_217
+# wrong constant name _reduce_218
+# wrong constant name _reduce_219
+# wrong constant name _reduce_22
+# wrong constant name _reduce_220
+# wrong constant name _reduce_221
+# wrong constant name _reduce_222
+# wrong constant name _reduce_223
+# wrong constant name _reduce_224
+# wrong constant name _reduce_226
+# wrong constant name _reduce_227
+# wrong constant name _reduce_228
+# wrong constant name _reduce_229
+# wrong constant name _reduce_23
+# wrong constant name _reduce_230
+# wrong constant name _reduce_231
+# wrong constant name _reduce_232
+# wrong constant name _reduce_233
+# wrong constant name _reduce_234
+# wrong constant name _reduce_235
+# wrong constant name _reduce_236
+# wrong constant name _reduce_237
+# wrong constant name _reduce_238
+# wrong constant name _reduce_24
+# wrong constant name _reduce_244
+# wrong constant name _reduce_245
+# wrong constant name _reduce_249
+# wrong constant name _reduce_25
+# wrong constant name _reduce_250
+# wrong constant name _reduce_252
+# wrong constant name _reduce_253
+# wrong constant name _reduce_254
+# wrong constant name _reduce_256
+# wrong constant name _reduce_259
+# wrong constant name _reduce_26
+# wrong constant name _reduce_260
+# wrong constant name _reduce_261
+# wrong constant name _reduce_262
+# wrong constant name _reduce_263
+# wrong constant name _reduce_264
+# wrong constant name _reduce_265
+# wrong constant name _reduce_266
+# wrong constant name _reduce_267
+# wrong constant name _reduce_268
+# wrong constant name _reduce_269
+# wrong constant name _reduce_27
+# wrong constant name _reduce_270
+# wrong constant name _reduce_271
+# wrong constant name _reduce_272
+# wrong constant name _reduce_273
+# wrong constant name _reduce_274
+# wrong constant name _reduce_275
+# wrong constant name _reduce_277
+# wrong constant name _reduce_278
+# wrong constant name _reduce_279
+# wrong constant name _reduce_28
+# wrong constant name _reduce_29
+# wrong constant name _reduce_290
+# wrong constant name _reduce_291
+# wrong constant name _reduce_292
+# wrong constant name _reduce_293
+# wrong constant name _reduce_294
+# wrong constant name _reduce_295
+# wrong constant name _reduce_296
+# wrong constant name _reduce_297
+# wrong constant name _reduce_298
+# wrong constant name _reduce_299
+# wrong constant name _reduce_3
+# wrong constant name _reduce_300
+# wrong constant name _reduce_301
+# wrong constant name _reduce_302
+# wrong constant name _reduce_303
+# wrong constant name _reduce_304
+# wrong constant name _reduce_305
+# wrong constant name _reduce_306
+# wrong constant name _reduce_307
+# wrong constant name _reduce_308
+# wrong constant name _reduce_309
+# wrong constant name _reduce_31
+# wrong constant name _reduce_311
+# wrong constant name _reduce_312
+# wrong constant name _reduce_313
+# wrong constant name _reduce_314
+# wrong constant name _reduce_315
+# wrong constant name _reduce_316
+# wrong constant name _reduce_317
+# wrong constant name _reduce_318
+# wrong constant name _reduce_319
+# wrong constant name _reduce_32
+# wrong constant name _reduce_320
+# wrong constant name _reduce_321
+# wrong constant name _reduce_322
+# wrong constant name _reduce_323
+# wrong constant name _reduce_324
+# wrong constant name _reduce_325
+# wrong constant name _reduce_326
+# wrong constant name _reduce_327
+# wrong constant name _reduce_328
+# wrong constant name _reduce_329
+# wrong constant name _reduce_33
+# wrong constant name _reduce_330
+# wrong constant name _reduce_331
+# wrong constant name _reduce_332
+# wrong constant name _reduce_333
+# wrong constant name _reduce_334
+# wrong constant name _reduce_336
+# wrong constant name _reduce_339
+# wrong constant name _reduce_343
+# wrong constant name _reduce_345
+# wrong constant name _reduce_348
+# wrong constant name _reduce_349
+# wrong constant name _reduce_35
+# wrong constant name _reduce_350
+# wrong constant name _reduce_351
+# wrong constant name _reduce_353
+# wrong constant name _reduce_354
+# wrong constant name _reduce_355
+# wrong constant name _reduce_356
+# wrong constant name _reduce_357
+# wrong constant name _reduce_358
+# wrong constant name _reduce_359
+# wrong constant name _reduce_36
+# wrong constant name _reduce_360
+# wrong constant name _reduce_361
+# wrong constant name _reduce_362
+# wrong constant name _reduce_363
+# wrong constant name _reduce_364
+# wrong constant name _reduce_365
+# wrong constant name _reduce_366
+# wrong constant name _reduce_367
+# wrong constant name _reduce_368
+# wrong constant name _reduce_369
+# wrong constant name _reduce_37
+# wrong constant name _reduce_370
+# wrong constant name _reduce_371
+# wrong constant name _reduce_373
+# wrong constant name _reduce_374
+# wrong constant name _reduce_375
+# wrong constant name _reduce_376
+# wrong constant name _reduce_377
+# wrong constant name _reduce_378
+# wrong constant name _reduce_379
+# wrong constant name _reduce_38
+# wrong constant name _reduce_380
+# wrong constant name _reduce_382
+# wrong constant name _reduce_383
+# wrong constant name _reduce_384
+# wrong constant name _reduce_385
+# wrong constant name _reduce_386
+# wrong constant name _reduce_387
+# wrong constant name _reduce_388
+# wrong constant name _reduce_389
+# wrong constant name _reduce_39
+# wrong constant name _reduce_390
+# wrong constant name _reduce_391
+# wrong constant name _reduce_393
+# wrong constant name _reduce_394
+# wrong constant name _reduce_395
+# wrong constant name _reduce_396
+# wrong constant name _reduce_397
+# wrong constant name _reduce_398
+# wrong constant name _reduce_399
+# wrong constant name _reduce_4
+# wrong constant name _reduce_40
+# wrong constant name _reduce_400
+# wrong constant name _reduce_401
+# wrong constant name _reduce_402
+# wrong constant name _reduce_403
+# wrong constant name _reduce_404
+# wrong constant name _reduce_405
+# wrong constant name _reduce_406
+# wrong constant name _reduce_407
+# wrong constant name _reduce_408
+# wrong constant name _reduce_409
+# wrong constant name _reduce_41
+# wrong constant name _reduce_410
+# wrong constant name _reduce_411
+# wrong constant name _reduce_412
+# wrong constant name _reduce_413
+# wrong constant name _reduce_414
+# wrong constant name _reduce_415
+# wrong constant name _reduce_416
+# wrong constant name _reduce_417
+# wrong constant name _reduce_418
+# wrong constant name _reduce_419
+# wrong constant name _reduce_42
+# wrong constant name _reduce_420
+# wrong constant name _reduce_421
+# wrong constant name _reduce_422
+# wrong constant name _reduce_423
+# wrong constant name _reduce_424
+# wrong constant name _reduce_425
+# wrong constant name _reduce_426
+# wrong constant name _reduce_427
+# wrong constant name _reduce_429
+# wrong constant name _reduce_430
+# wrong constant name _reduce_431
+# wrong constant name _reduce_434
+# wrong constant name _reduce_436
+# wrong constant name _reduce_44
+# wrong constant name _reduce_441
+# wrong constant name _reduce_442
+# wrong constant name _reduce_443
+# wrong constant name _reduce_444
+# wrong constant name _reduce_445
+# wrong constant name _reduce_446
+# wrong constant name _reduce_447
+# wrong constant name _reduce_448
+# wrong constant name _reduce_449
+# wrong constant name _reduce_450
+# wrong constant name _reduce_451
+# wrong constant name _reduce_452
+# wrong constant name _reduce_453
+# wrong constant name _reduce_454
+# wrong constant name _reduce_455
+# wrong constant name _reduce_456
+# wrong constant name _reduce_457
+# wrong constant name _reduce_458
+# wrong constant name _reduce_459
+# wrong constant name _reduce_460
+# wrong constant name _reduce_461
+# wrong constant name _reduce_462
+# wrong constant name _reduce_463
+# wrong constant name _reduce_464
+# wrong constant name _reduce_465
+# wrong constant name _reduce_466
+# wrong constant name _reduce_467
+# wrong constant name _reduce_468
+# wrong constant name _reduce_469
+# wrong constant name _reduce_47
+# wrong constant name _reduce_470
+# wrong constant name _reduce_471
+# wrong constant name _reduce_472
+# wrong constant name _reduce_473
+# wrong constant name _reduce_474
+# wrong constant name _reduce_475
+# wrong constant name _reduce_477
+# wrong constant name _reduce_478
+# wrong constant name _reduce_479
+# wrong constant name _reduce_48
+# wrong constant name _reduce_480
+# wrong constant name _reduce_481
+# wrong constant name _reduce_482
+# wrong constant name _reduce_483
+# wrong constant name _reduce_484
+# wrong constant name _reduce_485
+# wrong constant name _reduce_486
+# wrong constant name _reduce_487
+# wrong constant name _reduce_488
+# wrong constant name _reduce_489
+# wrong constant name _reduce_49
+# wrong constant name _reduce_490
+# wrong constant name _reduce_491
+# wrong constant name _reduce_492
+# wrong constant name _reduce_493
+# wrong constant name _reduce_494
+# wrong constant name _reduce_495
+# wrong constant name _reduce_496
+# wrong constant name _reduce_497
+# wrong constant name _reduce_498
+# wrong constant name _reduce_499
+# wrong constant name _reduce_5
+# wrong constant name _reduce_50
+# wrong constant name _reduce_500
+# wrong constant name _reduce_501
+# wrong constant name _reduce_502
+# wrong constant name _reduce_503
+# wrong constant name _reduce_504
+# wrong constant name _reduce_505
+# wrong constant name _reduce_506
+# wrong constant name _reduce_507
+# wrong constant name _reduce_508
+# wrong constant name _reduce_509
+# wrong constant name _reduce_510
+# wrong constant name _reduce_511
+# wrong constant name _reduce_512
+# wrong constant name _reduce_513
+# wrong constant name _reduce_514
+# wrong constant name _reduce_515
+# wrong constant name _reduce_516
+# wrong constant name _reduce_517
+# wrong constant name _reduce_518
+# wrong constant name _reduce_519
+# wrong constant name _reduce_520
+# wrong constant name _reduce_521
+# wrong constant name _reduce_522
+# wrong constant name _reduce_523
+# wrong constant name _reduce_524
+# wrong constant name _reduce_525
+# wrong constant name _reduce_526
+# wrong constant name _reduce_527
+# wrong constant name _reduce_528
+# wrong constant name _reduce_529
+# wrong constant name _reduce_53
+# wrong constant name _reduce_530
+# wrong constant name _reduce_531
+# wrong constant name _reduce_532
+# wrong constant name _reduce_533
+# wrong constant name _reduce_535
+# wrong constant name _reduce_536
+# wrong constant name _reduce_537
+# wrong constant name _reduce_538
+# wrong constant name _reduce_539
+# wrong constant name _reduce_54
+# wrong constant name _reduce_540
+# wrong constant name _reduce_541
+# wrong constant name _reduce_542
+# wrong constant name _reduce_543
+# wrong constant name _reduce_544
+# wrong constant name _reduce_545
+# wrong constant name _reduce_546
+# wrong constant name _reduce_547
+# wrong constant name _reduce_548
+# wrong constant name _reduce_549
+# wrong constant name _reduce_552
+# wrong constant name _reduce_553
+# wrong constant name _reduce_554
+# wrong constant name _reduce_555
+# wrong constant name _reduce_556
+# wrong constant name _reduce_557
+# wrong constant name _reduce_558
+# wrong constant name _reduce_559
+# wrong constant name _reduce_562
+# wrong constant name _reduce_563
+# wrong constant name _reduce_566
+# wrong constant name _reduce_567
+# wrong constant name _reduce_568
+# wrong constant name _reduce_570
+# wrong constant name _reduce_571
+# wrong constant name _reduce_573
+# wrong constant name _reduce_574
+# wrong constant name _reduce_575
+# wrong constant name _reduce_576
+# wrong constant name _reduce_577
+# wrong constant name _reduce_578
+# wrong constant name _reduce_58
+# wrong constant name _reduce_59
+# wrong constant name _reduce_591
+# wrong constant name _reduce_592
+# wrong constant name _reduce_597
+# wrong constant name _reduce_598
+# wrong constant name _reduce_6
+# wrong constant name _reduce_60
+# wrong constant name _reduce_602
+# wrong constant name _reduce_606
+# wrong constant name _reduce_62
+# wrong constant name _reduce_63
+# wrong constant name _reduce_64
+# wrong constant name _reduce_65
+# wrong constant name _reduce_66
+# wrong constant name _reduce_67
+# wrong constant name _reduce_68
+# wrong constant name _reduce_69
+# wrong constant name _reduce_70
+# wrong constant name _reduce_71
+# wrong constant name _reduce_72
+# wrong constant name _reduce_73
+# wrong constant name _reduce_74
+# wrong constant name _reduce_75
+# wrong constant name _reduce_76
+# wrong constant name _reduce_78
+# wrong constant name _reduce_79
+# wrong constant name _reduce_8
+# wrong constant name _reduce_80
+# wrong constant name _reduce_81
+# wrong constant name _reduce_82
+# wrong constant name _reduce_83
+# wrong constant name _reduce_84
+# wrong constant name _reduce_85
+# wrong constant name _reduce_86
+# wrong constant name _reduce_88
+# wrong constant name _reduce_89
+# wrong constant name _reduce_9
+# wrong constant name _reduce_90
+# wrong constant name _reduce_91
+# wrong constant name _reduce_92
+# wrong constant name _reduce_93
+# wrong constant name _reduce_94
+# wrong constant name _reduce_95
+# wrong constant name _reduce_96
+# wrong constant name _reduce_97
+# wrong constant name _reduce_98
+# wrong constant name _reduce_99
+# wrong constant name _reduce_none
+# wrong constant name default_encoding
+# wrong constant name version
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `Parser::Source::Buffer'
+# Did you mean?  initialize_dup
+# wrong constant name column_for_position
+# wrong constant name decompose_position
+# wrong constant name first_line
+# wrong constant name initialize<defaultArg>1
+# wrong constant name last_line
+# wrong constant name line_for_position
+# wrong constant name line_range
+# wrong constant name name
+# wrong constant name raw_source=
+# wrong constant name read
+# wrong constant name slice
+# wrong constant name source_line
+# wrong constant name source_lines
+# wrong constant name source_range
+# wrong constant name recognize_encoding
+# wrong constant name reencode_string
+# wrong constant name ==
+# wrong constant name <Class:Associator>
+# wrong constant name document?
+# wrong constant name initialize
+# wrong constant name inline?
+# wrong constant name loc
+# wrong constant name location
+# wrong constant name text
+# wrong constant name type
+# wrong constant name associate
+# wrong constant name associate_locations
+# wrong constant name initialize
+# wrong constant name skip_directives
+# wrong constant name skip_directives=
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name associate
+# wrong constant name associate_locations
+# wrong constant name ==
+# wrong constant name <Class:Collection>
+# wrong constant name <Class:Condition>
+# wrong constant name <Class:Constant>
+# wrong constant name <Class:Definition>
+# wrong constant name <Class:For>
+# wrong constant name <Class:Heredoc>
+# wrong constant name <Class:Index>
+# wrong constant name <Class:Keyword>
+# wrong constant name <Class:ObjcKwarg>
+# wrong constant name <Class:Operator>
+# wrong constant name <Class:RescueBody>
+# wrong constant name <Class:Send>
+# wrong constant name <Class:Ternary>
+# wrong constant name <Class:Variable>
+# wrong constant name column
+# wrong constant name first_line
+# wrong constant name initialize
+# wrong constant name last_column
+# wrong constant name last_line
+# wrong constant name line
+# wrong constant name node
+# wrong constant name node=
+# wrong constant name to_hash
+# wrong constant name update_expression
+# wrong constant name with
+# wrong constant name with_expression
+# wrong constant name begin
+# wrong constant name end
+# wrong constant name initialize
+# wrong constant name <static-init>
+# wrong constant name begin
+# wrong constant name else
+# wrong constant name end
+# wrong constant name initialize
+# wrong constant name keyword
+# wrong constant name <static-init>
+# wrong constant name double_colon
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name operator
+# wrong constant name update_operator
+# wrong constant name with_operator
+# wrong constant name <static-init>
+# wrong constant name end
+# wrong constant name initialize
+# wrong constant name keyword
+# wrong constant name name
+# wrong constant name operator
+# wrong constant name <static-init>
+# wrong constant name begin
+# wrong constant name end
+# wrong constant name in
+# wrong constant name initialize
+# wrong constant name keyword
+# wrong constant name <static-init>
+# wrong constant name heredoc_body
+# wrong constant name heredoc_end
+# wrong constant name initialize
+# wrong constant name <static-init>
+# wrong constant name begin
+# wrong constant name end
+# wrong constant name initialize
+# wrong constant name operator
+# wrong constant name update_operator
+# wrong constant name with_operator
+# wrong constant name <static-init>
+# wrong constant name begin
+# wrong constant name end
+# wrong constant name initialize
+# wrong constant name keyword
+# wrong constant name <static-init>
+# wrong constant name argument
+# wrong constant name initialize
+# wrong constant name keyword
+# wrong constant name operator
+# wrong constant name <static-init>
+# wrong constant name initialize
+# wrong constant name operator
+# wrong constant name <static-init>
+# wrong constant name assoc
+# wrong constant name begin
+# wrong constant name initialize
+# wrong constant name keyword
+# wrong constant name <static-init>
+# wrong constant name begin
+# wrong constant name dot
+# wrong constant name end
+# wrong constant name initialize
+# wrong constant name operator
+# wrong constant name selector
+# wrong constant name update_operator
+# wrong constant name with_operator
+# wrong constant name <static-init>
+# wrong constant name colon
+# wrong constant name initialize
+# wrong constant name question
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `Parser::Source::Map::Variable'
+# Did you mean?  initialize_dup
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name operator
+# wrong constant name update_operator
+# wrong constant name with_operator
+# wrong constant name <static-init>
+# undefined method `adjust<defaultArg>1' for class `Parser::Source::Range'
+# undefined method `adjust<defaultArg>2' for class `Parser::Source::Range'
+# undefined method `with<defaultArg>1' for class `Parser::Source::Range'
+# undefined method `with<defaultArg>2' for class `Parser::Source::Range'
+# wrong constant name <=>
+# wrong constant name adjust<defaultArg>1
+# wrong constant name adjust<defaultArg>2
+# wrong constant name adjust
+# wrong constant name begin
+# wrong constant name column
+# wrong constant name column_range
+# wrong constant name contained?
+# wrong constant name contains?
+# wrong constant name crossing?
+# wrong constant name disjoint?
+# wrong constant name empty?
+# wrong constant name end
+# wrong constant name first_line
+# wrong constant name initialize
+# wrong constant name intersect
+# wrong constant name is?
+# wrong constant name join
+# wrong constant name last_column
+# wrong constant name last_line
+# wrong constant name length
+# wrong constant name line
+# wrong constant name overlaps?
+# wrong constant name resize
+# wrong constant name size
+# wrong constant name source
+# wrong constant name source_line
+# wrong constant name to_a
+# wrong constant name with<defaultArg>1
+# wrong constant name with<defaultArg>2
+# wrong constant name with
+# wrong constant name <Class:Action>
+# wrong constant name diagnostics
+# wrong constant name initialize
+# wrong constant name insert_after
+# wrong constant name insert_after_multi
+# wrong constant name insert_before
+# wrong constant name insert_before_multi
+# wrong constant name process
+# wrong constant name remove
+# wrong constant name replace
+# wrong constant name source_buffer
+# wrong constant name transaction
+# wrong constant name wrap
+# undefined method `initialize<defaultArg>1' for class `Parser::Source::Rewriter::Action'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `Parser::Source::Rewriter::Action'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>3' for class `Parser::Source::Rewriter::Action'
+# Did you mean?  initialize_dup
+# wrong constant name <=>
+# wrong constant name allow_multiple_insertions
+# wrong constant name allow_multiple_insertions?
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize<defaultArg>3
+# wrong constant name initialize
+# wrong constant name order
+# wrong constant name range
+# wrong constant name replacement
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `Parser::Source::TreeRewriter'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `Parser::Source::TreeRewriter'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>3' for class `Parser::Source::TreeRewriter'
+# Did you mean?  initialize_dup
+# wrong constant name <Class:Action>
+# wrong constant name diagnostics
+# wrong constant name in_transaction?
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize<defaultArg>3
+# wrong constant name initialize
+# wrong constant name insert_after
+# wrong constant name insert_after_multi
+# wrong constant name insert_before
+# wrong constant name insert_before_multi
+# wrong constant name process
+# wrong constant name remove
+# wrong constant name replace
+# wrong constant name source_buffer
+# wrong constant name transaction
+# wrong constant name wrap
+# undefined method `initialize<defaultArg>1' for class `Parser::Source::TreeRewriter::Action'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `Parser::Source::TreeRewriter::Action'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>3' for class `Parser::Source::TreeRewriter::Action'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>4' for class `Parser::Source::TreeRewriter::Action'
+# Did you mean?  initialize_dup
+# undefined method `with<defaultArg>1' for class `Parser::Source::TreeRewriter::Action'
+# undefined method `with<defaultArg>2' for class `Parser::Source::TreeRewriter::Action'
+# undefined method `with<defaultArg>3' for class `Parser::Source::TreeRewriter::Action'
+# undefined method `with<defaultArg>4' for class `Parser::Source::TreeRewriter::Action'
+# undefined method `with<defaultArg>5' for class `Parser::Source::TreeRewriter::Action'
+# wrong constant name call_enforcer_for_merge
+# wrong constant name combine
+# wrong constant name do_combine
+# wrong constant name fuse_deletions
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize<defaultArg>3
+# wrong constant name initialize<defaultArg>4
+# wrong constant name initialize
+# wrong constant name insert_after
+# wrong constant name insert_before
+# wrong constant name insertion?
+# wrong constant name merge
+# wrong constant name ordered_replacements
+# wrong constant name place_in_hierachy
+# wrong constant name range
+# wrong constant name relationship_with
+# wrong constant name replacement
+# wrong constant name swallow
+# wrong constant name with<defaultArg>1
+# wrong constant name with<defaultArg>2
+# wrong constant name with<defaultArg>3
+# wrong constant name with<defaultArg>4
+# wrong constant name with<defaultArg>5
+# wrong constant name with
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name declare
+# wrong constant name declared?
+# wrong constant name extend_dynamic
+# wrong constant name extend_static
+# wrong constant name reset
+# wrong constant name unextend
+# wrong constant name <static-init>
+# wrong constant name diagnostic
+# wrong constant name initialize
+# wrong constant name <static-init>
+# wrong constant name assignment?
+# wrong constant name insert_after
+# wrong constant name insert_before
+# wrong constant name remove
+# wrong constant name replace
+# wrong constant name rewrite
+# wrong constant name wrap
+# wrong constant name <static-init>
 # undefined method `children<defaultArg>1' for class `Pathname'
 # undefined method `each_child<defaultArg>1' for class `Pathname'
 # undefined method `find<defaultArg>1' for class `Pathname'
@@ -5624,8 +7085,8 @@
 # wrong constant name matcher_definitions
 # wrong constant name register_matcher_definition
 # wrong constant name rspec_description_for_object
-# uninitialized constant Racc
-# uninitialized constant Racc
+# wrong constant name <Class:CparseParams>
+# wrong constant name <static-init>
 # wrong constant name to_ansi_domain
 # wrong constant name method_missing
 # wrong constant name method_missing
@@ -5676,7 +7137,6 @@
 # wrong constant name fire_update!
 # wrong constant name ruby
 # wrong constant name match?
-# wrong constant name union
 # uninitialized constant Ripper
 # uninitialized constant Ripper
 # wrong constant name <Class:Node>
@@ -5731,7 +7191,6 @@
 # wrong constant name compare_by_identity?
 # wrong constant name divide
 # wrong constant name eql?
-# wrong constant name filter!
 # wrong constant name flatten_merge<defaultArg>1
 # wrong constant name flatten_merge
 # wrong constant name initialize<defaultArg>1
@@ -6111,7 +7570,6 @@
 # wrong constant name check_userinfo
 # wrong constant name set_userinfo
 # wrong constant name <static-init>
-# wrong constant name request_uri
 # wrong constant name attributes
 # wrong constant name attributes=
 # wrong constant name dn
@@ -6163,23 +7621,8 @@
 # wrong constant name regexp
 # wrong constant name split
 # wrong constant name make_components_hash
-# undefined singleton method `decode_www_form<defaultArg>1' for `URI'
-# undefined singleton method `decode_www_form<defaultArg>2' for `URI'
-# undefined singleton method `decode_www_form<defaultArg>3' for `URI'
-# undefined singleton method `decode_www_form<defaultArg>4' for `URI'
-# undefined singleton method `encode_www_form<defaultArg>1' for `URI'
-# undefined singleton method `encode_www_form_component<defaultArg>1' for `URI'
 # undefined singleton method `extract<defaultArg>1' for `URI'
 # undefined singleton method `regexp<defaultArg>1' for `URI'
-# wrong constant name decode_www_form<defaultArg>1
-# wrong constant name decode_www_form<defaultArg>2
-# wrong constant name decode_www_form<defaultArg>3
-# wrong constant name decode_www_form<defaultArg>4
-# wrong constant name decode_www_form
-# wrong constant name encode_www_form<defaultArg>1
-# wrong constant name encode_www_form
-# wrong constant name encode_www_form_component<defaultArg>1
-# wrong constant name encode_www_form_component
 # wrong constant name extract<defaultArg>1
 # wrong constant name get_encoding
 # wrong constant name regexp<defaultArg>1
