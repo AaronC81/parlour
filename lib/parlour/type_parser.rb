@@ -257,59 +257,27 @@ module Parlour
       end
     end
 
-    sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(RbiGenerator::Method) }
-    # Given a path to a sig in the AST, parses that sig into a method.
+    # A parsed sig, not associated with a method.
+    class IntermediateSig < T::Struct
+      prop :overridable, T::Boolean
+      prop :override, T::Boolean
+      prop :abstract, T::Boolean
+      prop :final, T::Boolean
+      prop :return_type, T.nilable(String)
+      prop :params, T.nilable(T::Array[Parser::AST::Node])
+    end
+
+    sig { params(path: NodePath).returns(IntermediateSig) }
+    # Given a path to a sig in the AST, parses that sig into an intermediate
+    # sig object.
     # This will raise an exception if the sig is invalid.
+    # This is intended to be called by {#parse_sig_into_method}, and shouldn't
+    # be called manually unless you're doing something hacky.
     #
     # @param [NodePath] path The sig to parse.
-    # @param [Boolean] is_within_eigen Whether the method definition this sig is
-    #   associated with appears inside an eigenclass definition. If true, the
-    #   returned method is made a class method. If the method definition
-    #   is already a class method, an exception is thrown as the method will be
-    #   a class method of the eigenclass, which Parlour can't represent.
-    # @return [RbiGenerator::Method] The parsed method.
-    def parse_sig_into_method(path, is_within_eigen: false)
+    # @return [IntermediateSig] The parsed sig.
+    def parse_sig_into_sig(path)
       sig_block_node = path.traverse(ast)
-
-      # A :def node represents a definition like "def x; end"
-      # A :defs node represents a definition like "def self.x; end"
-      def_node = path.sibling(1).traverse(ast)
-      case def_node.type
-      when :def
-        class_method = false
-        def_name = def_node.to_a[0].to_s
-        def_args = def_node.to_a[1].to_a
-        kind = :def
-      when :defs
-        parse_err 'targeted definitions on a non-self target are not supported', def_node \
-          unless def_node.to_a[0].type == :self
-        class_method = true
-        def_name = def_node.to_a[1].to_s
-        def_args = def_node.to_a[2].to_a
-        kind = :def
-      when :send
-        target, method_name, *parameters = *def_node
-
-        parse_err 'node after a sig must be a method definition', def_node \
-          unless [:attr_reader, :attr_writer, :attr_accessor].include?(method_name) \
-            || target != nil
-
-        # TODO: this is incorrect, Sorbet handles this fine; so this method 
-        # needs to be refactored so that it can return multiple methods!!
-        parse_err 'typed attribute should only have one name', def_node unless parameters&.length == 1
-        
-        kind = :attr
-        attr_direction = method_name.to_s.gsub('attr_', '').to_sym
-        def_name = parameters.to_a[0].to_a[0].to_s
-        class_method = false
-      else
-        parse_err 'node after a sig must be a method definition', def_node
-      end
-
-      if is_within_eigen
-        parse_err 'cannot represent multiple levels of eigenclassing', def_node if class_method
-        class_method = true
-      end
 
       # A sig's AST uses lots of nested nodes due to a deep call chain, so let's
       # flatten it out to make it easier to work with
@@ -350,27 +318,95 @@ module Parlour
           arg.to_a
         end
 
+      IntermediateSig.new(
+        overridable: overridable,
+        override: override,
+        abstract: abstract,
+        final: final,
+        params: sig_args,
+        return_type: return_type
+      )
+    end
+
+    sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(RbiGenerator::Method) }
+    # Given a path to a sig in the AST, parses that sig into a method.
+    # This will raise an exception if the sig is invalid.
+    #
+    # @param [NodePath] path The sig to parse.
+    # @param [Boolean] is_within_eigen Whether the method definition this sig is
+    #   associated with appears inside an eigenclass definition. If true, the
+    #   returned method is made a class method. If the method definition
+    #   is already a class method, an exception is thrown as the method will be
+    #   a class method of the eigenclass, which Parlour can't represent.
+    # @return [RbiGenerator::Method] The parsed method.
+    def parse_sig_into_method(path, is_within_eigen: false)
+      sig_block_node = path.traverse(ast)
+
+      # A :def node represents a definition like "def x; end"
+      # A :defs node represents a definition like "def self.x; end"
+      def_node = path.sibling(1).traverse(ast)
+      case def_node.type
+      when :def
+        class_method = false
+        def_name = def_node.to_a[0].to_s
+        def_params = def_node.to_a[1].to_a
+        kind = :def
+      when :defs
+        parse_err 'targeted definitions on a non-self target are not supported', def_node \
+          unless def_node.to_a[0].type == :self
+        class_method = true
+        def_name = def_node.to_a[1].to_s
+        def_params = def_node.to_a[2].to_a
+        kind = :def
+      when :send
+        target, method_name, *parameters = *def_node
+
+        parse_err 'node after a sig must be a method definition', def_node \
+          unless [:attr_reader, :attr_writer, :attr_accessor].include?(method_name) \
+            || target != nil
+
+        # TODO: this is incorrect, Sorbet handles this fine; so this method 
+        # needs to be refactored so that it can return multiple methods!!
+        parse_err 'typed attribute should only have one name', def_node unless parameters&.length == 1
+        
+        kind = :attr
+        attr_direction = method_name.to_s.gsub('attr_', '').to_sym
+        def_name = parameters.to_a[0].to_a[0].to_s
+        class_method = false
+      else
+        parse_err 'node after a sig must be a method definition', def_node
+      end
+
+      if is_within_eigen
+        parse_err 'cannot represent multiple levels of eigenclassing', def_node if class_method
+        class_method = true
+      end
+
+      this_sig = parse_sig_into_sig(path)
+      params = this_sig.params
+      return_type = this_sig.return_type
+
       if kind == :def
         parse_err 'mismatching number of arguments in sig and def', sig_block_node \
-          if sig_args && def_args.length != sig_args.length
+          if params && def_params.length != params.length
 
         # sig_args will look like:
         #   [(pair (sym :x) <type>), (pair (sym :y) <type>), ...]
-        # def_args will look like:
+        # def_params will look like:
         #   [(arg :x), (arg :y), ...]
-        parameters = sig_args \
-          ? zip_by(sig_args, ->x{ x.to_a[0].to_a[0] }, def_args, ->x{ x.to_a[0] })
-            .map do |sig_arg, def_arg|
-              arg_name = def_arg.to_a[0]
+        parameters = params \
+          ? zip_by(params, ->x{ x.to_a[0].to_a[0] }, def_params, ->x{ x.to_a[0] })
+            .map do |sig_arg, def_param|
+              arg_name = def_param.to_a[0]
 
               # TODO: anonymous restarg
               full_name = arg_name.to_s
-              full_name = "*#{arg_name}"  if def_arg.type == :restarg
-              full_name = "**#{arg_name}" if def_arg.type == :kwrestarg
-              full_name = "#{arg_name}:"  if def_arg.type == :kwarg || def_arg.type == :kwoptarg
-              full_name = "&#{arg_name}"  if def_arg.type == :blockarg
+              full_name = "*#{arg_name}"  if def_param.type == :restarg
+              full_name = "**#{arg_name}" if def_param.type == :kwrestarg
+              full_name = "#{arg_name}:"  if def_param.type == :kwarg || def_param.type == :kwoptarg
+              full_name = "&#{arg_name}"  if def_param.type == :blockarg
 
-              default = def_arg.to_a[1] ? node_to_s(def_arg.to_a[1]) : nil
+              default = def_param.to_a[1] ? node_to_s(def_param.to_a[1]) : nil
               type = node_to_s(sig_arg.to_a[1])
 
               RbiGenerator::Parameter.new(full_name, type: type, default: default)
@@ -382,30 +418,30 @@ module Parlour
           def_name,
           parameters,
           return_type,
-          override: override,
-          overridable: overridable,
-          abstract: abstract,
-          final: final,
+          override: this_sig.override,
+          overridable: this_sig.overridable,
+          abstract: this_sig.abstract,
+          final: this_sig.final,
           class_method: class_method
         )
       elsif kind == :attr
         case attr_direction
         when :reader, :accessor
           parse_err "attr_#{attr_direction} sig should have no parameters", sig_block_node \
-            if sig_args && sig_args.length > 0
+            if params && params.length > 0
 
           parse_err "attr_#{attr_direction} sig should have non-void return", sig_block_node \
-            if return_type.nil?
+            unless return_type
             
           attr_type = return_type
         when :writer
           parse_err "attr_writer sig should take one argument with the property's name", sig_block_node \
-            if sig_args.length != 1 || sig_args[0].to_a[0].to_a[0].to_s != def_name
+            if !params || params.length != 1 || params[0].to_a[0].to_a[0].to_s != def_name
 
           parse_err "attr_writer sig should have non-void return", sig_block_node \
             if return_type.nil?
 
-          attr_type = T.must(node_to_s(sig_args[0].to_a[1]))
+          attr_type = T.must(node_to_s(params[0].to_a[1]))
         else
           raise "unknown attribute direction #{attr_direction}"
         end
