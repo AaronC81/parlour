@@ -45,13 +45,7 @@ module Rainbow
 
     class RGB < Indexed
       sig { returns(Integer) }
-      attr_accessor :r
-
-      sig { returns(Integer) }
-      attr_accessor :g
-
-      sig { returns(Integer) }
-      attr_accessor :b
+      attr_accessor :r, :g, :b
 
       sig { params(value: Numeric).returns(Integer) }
       def to_ansi_domain(value); end
