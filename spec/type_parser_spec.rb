@@ -51,7 +51,7 @@ RSpec.describe Parlour::TypeParser do
     end
   end
 
-  context '#parse_sig_into_method' do
+  context '#parse_sig_into_methods' do
     it 'works for a return-only sig' do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig { returns(Integer) }
@@ -60,7 +60,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, class_method: false)
     end
@@ -73,7 +73,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
       expect(meth.return_type).to eq 'Integer'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
@@ -101,7 +101,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
       expect(meth).to have_attributes(name: 'foo',
         return_type: 'T.nilable(Object)', override: false, final: false)
 
@@ -129,7 +129,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
       expect(meth).to have_attributes(name: 'foo',
         return_type: 'T.nilable(Object)', override: false)
 
@@ -147,7 +147,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: true)
     end
@@ -160,7 +160,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
@@ -176,7 +176,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true)
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true).only
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
@@ -193,7 +193,7 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       expect do
-        instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true)
+        instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true).only
       end.to raise_error Parlour::ParseError
     end
 
@@ -204,7 +204,7 @@ RSpec.describe Parlour::TypeParser do
           attr_accessor :foo
         RUBY
 
-        meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+        meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
         expect(meth).to have_attributes(name: 'foo', return_type: 'String',
           kind: :accessor)
       end
@@ -215,7 +215,7 @@ RSpec.describe Parlour::TypeParser do
           attr_reader :foo
         RUBY
 
-        meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+        meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
         expect(meth).to have_attributes(name: 'foo', return_type: 'String',
           kind: :reader)
       end
@@ -226,12 +226,29 @@ RSpec.describe Parlour::TypeParser do
           attr_writer :foo
         RUBY
 
-        meth = instance.parse_sig_into_method(Parlour::TypeParser::NodePath.new([0]))
+        meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
         expect(meth).to have_attributes(name: 'foo', return_type: 'String',
           kind: :writer)
         expect(meth.parameters.length).to eq 1
         expect(meth.parameters[0]).to have_attributes(name: 'foo',
           type: 'String')
+      end
+
+      it 'supports attribute with multiple names' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          sig { returns(String) }
+          attr_accessor :foo, :bar, :baz
+        RUBY
+
+        meths = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]))
+        foo, bar, baz = meths
+
+        expect(foo).to have_attributes(name: 'foo', return_type: 'String',
+          kind: :accessor)
+        expect(bar).to have_attributes(name: 'bar', return_type: 'String',
+          kind: :accessor)
+        expect(baz).to have_attributes(name: 'baz', return_type: 'String',
+          kind: :accessor)
       end
     end
   end
