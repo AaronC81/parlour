@@ -229,7 +229,7 @@ module Parlour
         end
       when :send, :block
         if sig_node?(node)
-          [parse_sig(path, is_within_eigen: is_within_eigen)]
+          [parse_sig_into_method(path, is_within_eigen: is_within_eigen)]
         else
           []
         end
@@ -237,7 +237,7 @@ module Parlour
         # TODO: Support for defs without sigs
         #   If so, we need some kind of state machine to determine whether
         #   they've already been dealt with by the "when :send" clause and 
-        #   #parse_sig.
+        #   #parse_sig_into_method.
         #   If not, just ignore this.
         []
       when :sclass
@@ -268,7 +268,7 @@ module Parlour
     #   is already a class method, an exception is thrown as the method will be
     #   a class method of the eigenclass, which Parlour can't represent.
     # @return [RbiGenerator::Method] The parsed method.
-    def parse_sig(path, is_within_eigen: false)
+    def parse_sig_into_method(path, is_within_eigen: false)
       sig_block_node = path.traverse(ast)
 
       # A :def node represents a definition like "def x; end"
