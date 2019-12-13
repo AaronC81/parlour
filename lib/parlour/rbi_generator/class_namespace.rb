@@ -70,12 +70,12 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
-      # Given an array of {ClassNamespace} instances, returns true if they may
+      # Given an array of {Namespace} instances, returns true if they may
       # be merged into this instance using {merge_into_self}. For instances to
       # be mergeable, they must either all be abstract or all not be abstract,
       # and they must define the same superclass (or none at all).
       #
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other {ClassNamespace} instances.
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
         others = T.cast(others, T::Array[Namespace]) rescue (return false)
