@@ -141,13 +141,13 @@ module Parlour
     #   any of the other parameters to this method in an external call.
     # @return [Array<RbiGenerator::RbiObject>] The objects the node at the path
     #    represents, parsed into an RBI generator object.
-    sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(T::Array[RbiGenerator::RbiObject]) }
-    def parse_path_to_object(path, is_within_eigen: false)
+    sig { params(path: NodePath, is_within_eigenclass: T::Boolean).returns(T::Array[RbiGenerator::RbiObject]) }
+    def parse_path_to_object(path, is_within_eigenclass: false)
       node = path.traverse(ast)
       
       case node.type
       when :class
-        parse_err 'cannot declare classes in an eigenclass', node if is_within_eigen
+        parse_err 'cannot declare classes in an eigenclass', node if is_within_eigenclass
 
         name, superclass, body = *node
         final = body_has_modifier?(body, :final!)
@@ -188,7 +188,7 @@ module Parlour
           [final_obj]
         end
       when :module
-        parse_err 'cannot declare modules in an eigenclass', node if is_within_eigen
+        parse_err 'cannot declare modules in an eigenclass', node if is_within_eigenclass
 
         name, body = *node
         final = body_has_modifier?(body, :final!)
@@ -229,7 +229,7 @@ module Parlour
         end
       when :send, :block
         if sig_node?(node)
-          parse_sig_into_methods(path, is_within_eigen: is_within_eigen)
+          parse_sig_into_methods(path, is_within_eigenclass: is_within_eigenclass)
         else
           []
         end
@@ -242,11 +242,11 @@ module Parlour
         []
       when :sclass
         parse_err 'cannot access eigen of non-self object', node unless node.to_a[0].type == :self
-        parse_path_to_object(path.child(1), is_within_eigen: true)
+        parse_path_to_object(path.child(1), is_within_eigenclass: true)
       when :begin
         # Just map over all the things
         node.to_a.length.times.map do |c|
-          parse_path_to_object(path.child(c), is_within_eigen: is_within_eigen) 
+          parse_path_to_object(path.child(c), is_within_eigenclass: is_within_eigenclass) 
         end.flatten
       else
         if unknown_node_errors
@@ -328,7 +328,7 @@ module Parlour
       )
     end
 
-    sig { params(path: NodePath, is_within_eigen: T::Boolean).returns(T::Array[RbiGenerator::Method]) }
+    sig { params(path: NodePath, is_within_eigenclass: T::Boolean).returns(T::Array[RbiGenerator::Method]) }
     # Given a path to a sig in the AST, finds the associated definition and
     # parses them into methods.
     # This will raise an exception if the sig is invalid.
@@ -337,13 +337,13 @@ module Parlour
     # +attr_reader :x, :y, :z+.
     #
     # @param [NodePath] path The sig to parse.
-    # @param [Boolean] is_within_eigen Whether the method definition this sig is
+    # @param [Boolean] is_within_eigenclass Whether the method definition this sig is
     #   associated with appears inside an eigenclass definition. If true, the
     #   returned method is made a class method. If the method definition
     #   is already a class method, an exception is thrown as the method will be
     #   a class method of the eigenclass, which Parlour can't represent.
     # @return [<RbiGenerator::Method>] The parsed methods.
-    def parse_sig_into_methods(path, is_within_eigen: false)
+    def parse_sig_into_methods(path, is_within_eigenclass: false)
       sig_block_node = path.traverse(ast)
 
       # A :def node represents a definition like "def x; end"
@@ -379,7 +379,7 @@ module Parlour
         parse_err 'node after a sig must be a method definition', def_node
       end
 
-      if is_within_eigen
+      if is_within_eigenclass
         parse_err 'cannot represent multiple levels of eigenclassing', def_node if class_method
         class_method = true
       end

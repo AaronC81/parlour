@@ -176,7 +176,7 @@ RSpec.describe Parlour::TypeParser do
         end
       RUBY
 
-      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true).only
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]), is_within_eigenclass: true).only
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
@@ -193,7 +193,7 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       expect do
-        instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]), is_within_eigen: true).only
+        instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]), is_within_eigenclass: true).only
       end.to raise_error Parlour::ParseError
     end
 
