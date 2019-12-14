@@ -8,6 +8,7 @@
 /tmp/
 Gemfile.lock
 /.vscode
+/sorbte/rbi/hidden-definitions/errors.txt
 
 # rspec failure tracking
 .rspec_status
