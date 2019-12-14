@@ -506,7 +506,7 @@ module Parlour
     def node_to_s(node)
       return nil unless node
 
-      exp = T.unsafe(node).loc.expression
+      exp = node.loc.expression
       exp.source_buffer.source[exp.begin_pos...exp.end_pos]
     end
 
