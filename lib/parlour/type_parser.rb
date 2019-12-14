@@ -15,30 +15,30 @@ end
 module Parlour
   # Parses Ruby source to find Sorbet type signatures.
   class TypeParser
-    # Represents a path of indeces which can be traversed to reach a specific
+    # Represents a path of indices which can be traversed to reach a specific
     # node in an AST.
     class NodePath
       extend T::Sig
 
       sig { returns(T::Array[Integer]) }
-      # @return [Array<Integer>] The path of indeces.
-      attr_reader :indeces
+      # @return [Array<Integer>] The path of indices.
+      attr_reader :indices
 
-      sig { params(indeces: T::Array[Integer]).void }
+      sig { params(indices: T::Array[Integer]).void }
       # Creates a new {NodePath}.
       #
-      # @param [Array<Integer>] indeces The path of indeces.
-      def initialize(indeces)
-        @indeces = indeces
+      # @param [Array<Integer>] indices The path of indices.
+      def initialize(indices)
+        @indices = indices
       end
 
       sig { returns(NodePath) }
       # @return [NodePath] The parent path for the node at this path.
       def parent
-        if indeces.empty?
+        if indices.empty?
           raise IndexError, 'cannot get parent of an empty path'
         else
-          NodePath.new(T.must(indeces[0...-1]))
+          NodePath.new(T.must(indices[0...-1]))
         end
       end
 
@@ -46,7 +46,7 @@ module Parlour
       # @param [Integer] index The index of the child whose path to return.
       # @return [NodePath] The path to the child at the given index.
       def child(index)
-        NodePath.new(indeces + [index])
+        NodePath.new(indices + [index])
       end
 
       sig { params(offset: Integer).returns(NodePath) }
@@ -55,10 +55,10 @@ module Parlour
       #   this one.
       # @return [NodePath] The path to the sibling with the given context.
       def sibling(offset)
-        if indeces.empty?
+        if indices.empty?
           raise IndexError, 'cannot get sibling of an empty path'
         else
-          *xs, x = indeces
+          *xs, x = indices
           x = T.must(x)
           raise ArgumentError, "sibling offset of #{offset} results in " \
             "negative index of #{x + offset}" if x + offset < 0
@@ -67,13 +67,13 @@ module Parlour
       end
 
       sig { params(start: Parser::AST::Node).returns(Parser::AST::Node) }
-      # Follows this path of indeces from an AST node.
+      # Follows this path of indices from an AST node.
       #
       # @param [Parser::AST::Node] start The AST node to start from.
       # @return [Parser::AST::Node] The resulting AST node.
       def traverse(start)
         current = T.unsafe(start)
-        indeces.each do |index|
+        indices.each do |index|
           raise IndexError, 'path does not exist' if index >= current.to_a.length
           current = current.to_a[index]
         end

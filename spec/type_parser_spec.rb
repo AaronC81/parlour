@@ -12,41 +12,41 @@ RSpec.describe Parlour::TypeParser do
     let(:empty) { described_class.new([]) }
 
     it 'can be instantiated' do
-      expect(subject.indeces).to eq [1, 2, 3, 4]
-      expect(empty.indeces).to eq []
+      expect(subject.indices).to eq [1, 2, 3, 4]
+      expect(empty.indices).to eq []
     end
 
     context '#parent' do
       it 'works for non-empty paths' do
-        expect(subject.parent.indeces).to eq [1, 2, 3]
+        expect(subject.parent.indices).to eq [1, 2, 3]
       end
 
       it 'works for empty paths' do
-        expect { empty.parent.indeces }.to raise_error IndexError
+        expect { empty.parent.indices }.to raise_error IndexError
       end
     end
 
     context '#child' do
       it 'works for non-empty paths' do
-        expect(subject.child(5).indeces).to eq [1, 2, 3, 4, 5]
+        expect(subject.child(5).indices).to eq [1, 2, 3, 4, 5]
       end
 
       it 'works for empty paths' do
-        expect(empty.child(1).indeces).to eq [1]
+        expect(empty.child(1).indices).to eq [1]
       end
     end
 
     context '#sibling' do
       it 'works for non-empty paths' do
-        expect(subject.sibling(0).indeces).to eq [1, 2, 3, 4]
-        expect(subject.sibling(2).indeces).to eq [1, 2, 3, 6]
-        expect(subject.sibling(-3).indeces).to eq [1, 2, 3, 1]
+        expect(subject.sibling(0).indices).to eq [1, 2, 3, 4]
+        expect(subject.sibling(2).indices).to eq [1, 2, 3, 6]
+        expect(subject.sibling(-3).indices).to eq [1, 2, 3, 1]
 
-        expect { subject.sibling(-6).indeces }.to raise_error ArgumentError
+        expect { subject.sibling(-6).indices }.to raise_error ArgumentError
       end
 
       it 'works for empty paths' do
-        expect { empty.sibling(2).indeces }.to raise_error IndexError
+        expect { empty.sibling(2).indices }.to raise_error IndexError
       end
     end
   end
