@@ -13,8 +13,6 @@ class Array
 
   def dig(*_); end
 
-  def filter!(); end
-
   def flatten!(*_); end
 
   def pack(*_); end
@@ -4175,8 +4173,6 @@ module Enumerable
 
   def each_entry(*_); end
 
-  def filter(); end
-
   def grep_v(_); end
 
   def slice_after(*_); end
@@ -4322,31 +4318,19 @@ class Etc::Group
 end
 
 class Etc::Passwd
-  def dir(); end
-
   def dir=(_); end
 
   def gecos(); end
 
   def gecos=(_); end
 
-  def gid(); end
-
   def gid=(_); end
-
-  def name(); end
 
   def name=(_); end
 
-  def passwd(); end
-
   def passwd=(_); end
 
-  def shell(); end
-
   def shell=(_); end
-
-  def uid(); end
 
   def uid=(_); end
 end
@@ -4484,12 +4468,6 @@ module Forwardable
   def self.debug(); end
 
   def self.debug=(debug); end
-end
-
-class FrozenError
-end
-
-class FrozenError
 end
 
 module GC
@@ -8494,13 +8472,9 @@ class Hash
 
   def fetch_values(*_); end
 
-  def filter!(); end
-
   def flatten(*_); end
 
   def index(_); end
-
-  def merge!(*_); end
 
   def replace(_); end
 
@@ -9520,10 +9494,6 @@ class Regexp
   def match?(*_); end
 end
 
-class Regexp
-  def self.union(*_); end
-end
-
 module RubyVM::AbstractSyntaxTree
 end
 
@@ -9631,8 +9601,6 @@ class Set
   def divide(&func); end
 
   def eql?(o); end
-
-  def filter!(&block); end
 
   def flatten_merge(set, seen=T.unsafe(nil)); end
 
@@ -10375,10 +10343,6 @@ end
 class URI::File
 end
 
-class URI::HTTP
-  def request_uri(); end
-end
-
 class URI::LDAP
   def attributes(); end
 
@@ -10476,12 +10440,6 @@ end
 
 module URI
   extend ::URI::Escape
-  def self.decode_www_form(str, enc=T.unsafe(nil), separator: T.unsafe(nil), use__charset_: T.unsafe(nil), isindex: T.unsafe(nil)); end
-
-  def self.encode_www_form(enum, enc=T.unsafe(nil)); end
-
-  def self.encode_www_form_component(str, enc=T.unsafe(nil)); end
-
   def self.get_encoding(label); end
 
 end
