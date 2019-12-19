@@ -561,7 +561,11 @@ RSpec.describe Parlour::RbiGenerator do
     m.create_include('Y')
     m.create_module('B')
     m.create_method('c', parameters: [], return_type: nil)
-    m.create_class('A')
+    m.create_class('A') do |a|
+      a.create_method('c')
+      a.create_module('A')
+      a.create_class('B')
+    end
     m.create_arbitrary(code: '"some arbitrary code"')
     m.create_include('X')
     m.create_arbitrary(code: '"some more"')
@@ -580,6 +584,14 @@ RSpec.describe Parlour::RbiGenerator do
         "some more"
 
         class A
+          module A
+          end
+
+          class B
+          end
+
+          sig { void }
+          def c; end
         end
 
         module B
