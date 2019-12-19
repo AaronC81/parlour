@@ -115,14 +115,6 @@ module Parlour
         block.call(current_part)
       end
 
-      sig { void }
-      # Sorts the children of this namespace alphabetically.
-      # If {Options#sort_namespaces} is true on the RBI generator when 
-      # {#generate_body} is called, then this will be called automatically.
-      def sort_children
-        children.sort_by! { |x| x.name.downcase }
-      end
-
       sig { params(comment: T.any(String, T::Array[String])).void }
       # Adds one or more comments to the next child RBI object to be created.
       #
@@ -598,36 +590,32 @@ module Parlour
       # Generates the RBI lines for the body of this namespace. This consists of
       # {includes}, {extends} and {children}.
       #
-      # If {Options#sort_namespaces} is true, calling this method will sort
-      # this namespace's children.
-      #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
       def generate_body(indent_level, options)
-        sort_children if options.sort_namespaces
-
         result = []
 
         result += [options.indented(indent_level, 'final!'), ''] if final
 
         if includes.any? || extends.any? || constants.any?
-          result += includes
+          result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += extends
+          result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += constants
+          result += (options.sort_namespaces ? constants.sort_by(&:name) : constants)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result << ""
         end
 
         # Process singleton class attributes
-        class_attributes, remaining_children = children.partition do |child|
-          child.is_a?(Attribute) && child.class_attribute
-        end
+        class_attributes, remaining_children = \
+          (options.sort_namespaces ? children.sort_by(&:name) : children)
+          .partition { |child| child.is_a?(Attribute) && child.class_attribute }
+        
         if class_attributes.any?
           result << options.indented(indent_level, 'class << self')
 

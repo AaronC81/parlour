@@ -51,7 +51,8 @@ module Parlour
 
       sig { returns(T::Boolean) }
       # Whether to sort all items within a namespace alphabetically.
-      # TODO do like items stay together?
+      # Items which are typically grouped together, such as "include" or
+      # "extend" calls, will remain grouped together when sorted.
       # If true, items are sorted by their name when the RBI is generated.
       # If false, items are generated in the order they are added to the
       # namespace.
