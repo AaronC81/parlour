@@ -7,7 +7,7 @@ module Parlour
 
       sig do
         params(
-          name: T.nilable(String),
+          name: String,
           type: T.nilable(String),
           default: T.nilable(String)
         ).void
