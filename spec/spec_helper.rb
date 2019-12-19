@@ -21,6 +21,6 @@ def suppress_stdout
   prev_stdout = $stdout
   $stdout = StringIO.new
   yield
-rescue StandardError
+ensure
   $stdout = prev_stdout
 end
