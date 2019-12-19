@@ -6,7 +6,7 @@ module Parlour
     class Options
       extend T::Sig
 
-      sig { params(break_params: Integer, tab_size: Integer).void }
+      sig { params(break_params: Integer, tab_size: Integer, sort_namespaces: T::Boolean).void }
       # Creates a new set of formatting options.
       #
       # @example Create Options with +break_params+ of +4+ and +tab_size+ of +2+.
@@ -15,10 +15,13 @@ module Parlour
       # @param break_params [Integer] If there are at least this many parameters in a 
       #   Sorbet +sig+, then it is broken onto separate lines.
       # @param tab_size [Integer] The number of spaces to use per indent.
+      # @param sort_namespaces [Boolean] Whether to sort all items within a
+      #   namespace alphabetically.
       # @return [void]
-      def initialize(break_params:, tab_size:)
+      def initialize(break_params:, tab_size:, sort_namespaces:)
         @break_params = break_params
         @tab_size = tab_size
+        @sort_namespaces = sort_namespaces
       end
       
       sig { returns(Integer) }
@@ -45,6 +48,15 @@ module Parlour
       # The number of spaces to use per indent.
       # @return [Integer]
       attr_reader :tab_size
+
+      sig { returns(T::Boolean) }
+      # Whether to sort all items within a namespace alphabetically.
+      # TODO do like items stay together?
+      # If true, items are sorted by their name when the RBI is generated.
+      # If false, items are generated in the order they are added to the
+      # namespace.
+      # @return [Boolean]
+      attr_reader :sort_namespaces
 
       sig { params(level: Integer, str: String).returns(String) }
       # Returns a string indented to the given indent level, according to the
