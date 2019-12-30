@@ -16,7 +16,7 @@ RSpec.describe Parlour::RbiGenerator do
   end
 
   def opts
-    Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2)
+    Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
   end
 
   it 'has a root namespace' do
@@ -547,5 +547,59 @@ RSpec.describe Parlour::RbiGenerator do
   it 'allows a strictness level to be specified' do
     expect(subject.rbi).to match /^\# typed: strong/
     expect(subject.rbi('true')).to match /^\# typed: true/
+  end
+
+  it 'supports sorting output' do
+    custom_rbi_gen = Parlour::RbiGenerator.new(sort_namespaces: true)
+    custom_opts = Parlour::RbiGenerator::Options.new(
+      break_params: 4,
+      tab_size: 2,
+      sort_namespaces: true
+    )
+
+    m = custom_rbi_gen.root.create_module('M', interface: true)
+    m.create_include('Y')
+    m.create_module('B')
+    m.create_method('c', parameters: [], return_type: nil)
+    m.create_class('A') do |a|
+      a.create_method('c')
+      a.create_module('A')
+      a.create_class('B')
+    end
+    m.create_arbitrary(code: '"some arbitrary code"')
+    m.create_include('X')
+    m.create_arbitrary(code: '"some more"')
+    m.create_extend('Z')
+
+    expect(custom_rbi_gen.root.generate_rbi(0, custom_opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+      module M
+        interface!
+
+        include X
+        include Y
+        extend Z
+
+        "some arbitrary code"
+
+        "some more"
+
+        class A
+          module A
+          end
+
+          class B
+          end
+
+          sig { void }
+          def c; end
+        end
+
+        module B
+        end
+
+        sig { void }
+        def c; end
+      end
+    RUBY
   end
 end
