@@ -24,3 +24,11 @@ def suppress_stdout
 ensure
   $stdout = prev_stdout
 end
+
+class Array
+  def only
+    raise 'empty' if empty?
+    raise 'more than one item' if length != 1
+    first
+  end
+end

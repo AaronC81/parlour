@@ -28,23 +28,23 @@ module Parlour
       @root = Namespace.new(self)
     end
 
-    sig { returns(Options) }
+    sig { overridable.returns(Options) }
     # The formatting options for this generator.
     # @return [Options]
     attr_reader :options
 
-    sig { returns(Namespace) }
+    sig { overridable.returns(Namespace) }
     # The root {Namespace} of this generator.
     # @return [Namespace]
     attr_reader :root
 
-    sig { returns(T.nilable(Plugin)) }
+    sig { overridable.returns(T.nilable(Plugin)) }
     # The plugin which is currently generating new definitions.
     # {Plugin#run_plugins} controls this value.
     # @return [Plugin, nil]
     attr_accessor :current_plugin
 
-    sig { params(strictness: String).returns(String) }
+    sig { overridable.params(strictness: String).returns(String) }
     # Returns the complete contents of the generated RBI file as a string.
     #
     # @return [String] The generated RBI file

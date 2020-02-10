@@ -286,4 +286,17 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(a.children.length).to be 2
   end
+
+  it 'does not raise a conflict if a method and namespace share the same name' do
+    a = gen.root.create_class('A') do |a|
+      a.create_class('B')
+      a.create_method('B', class_method: true)
+    end
+
+    expect(a.children.length).to be 2
+
+    subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+
+    expect(a.children.length).to be 2
+  end
 end
