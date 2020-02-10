@@ -603,22 +603,23 @@ module Parlour
         result += [options.indented(indent_level, 'final!'), ''] if final
 
         if includes.any? || extends.any? || constants.any?
-          result += includes
+          result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += extends
+          result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += constants
+          result += (options.sort_namespaces ? constants.sort_by(&:name) : constants)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result << ""
         end
 
         # Process singleton class attributes
-        class_attributes, remaining_children = children.partition do |child|
-          child.is_a?(Attribute) && child.class_attribute
-        end
+        class_attributes, remaining_children = \
+          (options.sort_namespaces ? children.sort_by(&:name) : children)
+          .partition { |child| child.is_a?(Attribute) && child.class_attribute }
+        
         if class_attributes.any?
           result << options.indented(indent_level, 'class << self')
 
