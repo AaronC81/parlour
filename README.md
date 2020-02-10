@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/AaronC81/parlour.svg?branch=master)](https://travis-ci.org/AaronC81/parlour)
 ![Gem](https://img.shields.io/gem/v/parlour.svg)
 
-Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
+Parlour is an RBI generator, merger and parser for Sorbet. It consists of three
+key parts:
 
   - The generator, which outputs beautifully formatted RBI files, created using
     an intuitive DSL.
@@ -11,6 +12,9 @@ Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
   - The plugin/build system, which allows multiple Parlour plugins to generate
     RBIs for the same codebase. These are combined automatically as much as
     possible, but any other conflicts can be resolved manually through prompts.
+
+  - The parser, which can read an RBI and convert it back into a tree of 
+    generator objects.
 
 ## Why should I use this?
 
@@ -21,6 +25,8 @@ Parlour is an RBI generator and merger for Sorbet. It consists of two key parts:
     single command and consolidating all of their definitions into a single
     RBI output file.
 
+  - You can **effortlessly build tools which need to access types within an RBI**;
+    no need to write your own parser! 
 
 Please [**read the wiki**](https://github.com/AaronC81/parlour/wiki) to get
 started!
@@ -146,6 +152,27 @@ plugins:
   Gem2::Plugin: {}
   Gem3::Plugin: {}
 ```
+
+## Parsing RBIs
+
+You can either parse individual RBI files, or point Parlour to the root of a
+project and it will locate, parse and merge all RBI files.
+
+Note that Parlour isn't limited to just RBIs; it can parse inline `sigs` out
+of your Ruby source too!
+
+```ruby
+require 'parlour'
+
+# Return the object tree of a particular file
+Parlour::TypeLoader.load_file('path/to/your/file.rbis')
+
+# Return the object tree for an entire Sorbet project - slow but thorough!
+Parlour::TypeLoader.load_project('root/of/the/project')
+```
+
+The structure of the returned object trees is identical to those you would
+create when generating an RBI, built of instances of `RbiObject` subclasses.
 
 ## Parlour Plugins
 
