@@ -3,6 +3,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.0] - 2020-02-10
+### Added
+- Parlour can now load types back out of RBI files or Ruby source files by
+parsing them, using the `TypeLoader` module.
+- The `sort_namespaces` option has been added to `RbiGenerator` to
+alphabetically sort all namespace children.
+- Added `DetachedRbiGenerator`, which can be used to create instances of 
+`RbiObject` which are not bound to a particular set of options. This is
+used internally for `TypeLoader`.
+- Parlour will now create a polyfill for `then` on `Kernel`.
+- Added `NodePath#sibling`.
+
+### Changed
+- Version restrictions on _rainbow_ and _commander_ have been slightly relaxed.
+- The version of _sorbet-runtime_ is now restricted to `>= 0.5` after previously
+being unrestricted.
+- Instances of `Namespace` can now be merged with instances of `ClassNamespace`
+or `MethodNamespace`.
+- A method and a namespace can now have the same name without causing a merge
+conflict.
+
+### Fixed
+- Parameter names are no longer nilable.
+**Potentially breaking if you were doing something cursed with Parameter names.**
+
 ## [1.0.0] - 2019-11-22
 ### Added
 - `T::Enum` classes have been implemented, and can be generated using
