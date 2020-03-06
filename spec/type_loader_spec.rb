@@ -68,12 +68,29 @@ RSpec.describe Parlour::TypeLoader do
     project_root = described_class.load_project('.')
     parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
     expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
-    
+
     rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
     expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
 
     rbi_generator_init = rbi_generator.children.find { |x| x.name == 'initialize' }
     expect(rbi_generator_init).to have_attributes(class_method: false,
       return_type: nil)
+  end
+
+  context 'with undeclared block arg' do
+    let(:source) {
+      (<<-RUBY)
+        class A
+          sig { params(a: String).void }
+          def bar(a, &blk); end
+        end
+      RUBY
+    }
+
+    it 'can parse the source' do
+      # We just care that this doesn't error
+      namespace = described_class.load_source(source)
+      expect(namespace.children.map(&:name)).to match_array(['A'])
+    end
   end
 end

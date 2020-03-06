@@ -107,7 +107,7 @@ module Parlour
     def self.from_source(filename, source)
       buffer = Parser::Source::Buffer.new(filename)
       buffer.source = source
-      
+
       TypeParser.new(Parser::CurrentRuby.new.parse(buffer))
     end
 
@@ -117,7 +117,7 @@ module Parlour
 
     sig { returns(T::Boolean) }
     # @return [Boolean] Whether to raise an error if a node of an unknown kind
-    #   is encountered. 
+    #   is encountered.
     attr_reader :unknown_node_errors
 
     # Parses the entire source file and returns the resulting root namespace.
@@ -134,7 +134,7 @@ module Parlour
     # represents and returns it, recursing to any child namespaces and parsing
     # any methods within.
     #
-    # If the node directly represents several nodes, such as being a 
+    # If the node directly represents several nodes, such as being a
     # (begin ...) node, they are all returned.
     #
     # @param [NodePath] path The path to the namespace definition. Do not pass
@@ -144,7 +144,7 @@ module Parlour
     sig { params(path: NodePath, is_within_eigenclass: T::Boolean).returns(T::Array[RbiGenerator::RbiObject]) }
     def parse_path_to_object(path, is_within_eigenclass: false)
       node = path.traverse(ast)
-      
+
       case node.type
       when :class
         parse_err 'cannot declare classes in an eigenclass', node if is_within_eigenclass
@@ -158,7 +158,7 @@ module Parlour
         *parent_names, this_name = constant_names(name)
         target = T.let(nil, T.nilable(RbiGenerator::Namespace))
         top_level = T.let(nil, T.nilable(RbiGenerator::Namespace))
-        parent_names.each do |n| 
+        parent_names.each do |n|
           new_obj = RbiGenerator::Namespace.new(
             DetachedRbiGenerator.new,
             n.to_s,
@@ -199,7 +199,7 @@ module Parlour
         *parent_names, this_name = constant_names(name)
         target = T.let(nil, T.nilable(RbiGenerator::Namespace))
         top_level = T.let(nil, T.nilable(RbiGenerator::Namespace))
-        parent_names.each do |n| 
+        parent_names.each do |n|
           new_obj = RbiGenerator::Namespace.new(
             DetachedRbiGenerator.new,
             n.to_s,
@@ -236,7 +236,7 @@ module Parlour
       when :def, :defs
         # TODO: Support for defs without sigs
         #   If so, we need some kind of state machine to determine whether
-        #   they've already been dealt with by the "when :send" clause and 
+        #   they've already been dealt with by the "when :send" clause and
         #   #parse_sig_into_methods.
         #   If not, just ignore this.
         []
@@ -246,7 +246,7 @@ module Parlour
       when :begin
         # Just map over all the things
         node.to_a.length.times.map do |c|
-          parse_path_to_object(path.child(c), is_within_eigenclass: is_within_eigenclass) 
+          parse_path_to_object(path.child(c), is_within_eigenclass: is_within_eigenclass)
         end.flatten
       else
         if unknown_node_errors
@@ -370,7 +370,7 @@ module Parlour
             || target != nil
 
         parse_err 'typed attribute should have at least one name', def_node if parameters&.length == 0
-        
+
         kind = :attr
         attr_direction = method_name.to_s.gsub('attr_', '').to_sym
         def_names = T.must(parameters).map { |param| param.to_a[0].to_s }
@@ -389,6 +389,13 @@ module Parlour
       return_type = this_sig.return_type
 
       if kind == :def
+        # Sorbet allows a trailing blockarg that's not in the sig
+        if params &&
+           def_params.length == params.length + 1 &&
+           def_params[-1].type == :blockarg
+          def_params = def_params[0...-1]
+        end
+
         parse_err 'mismatching number of arguments in sig and def', sig_block_node \
           if params && def_params.length != params.length
 
@@ -399,6 +406,7 @@ module Parlour
         parameters = params \
           ? zip_by(params, ->x{ x.to_a[0].to_a[0] }, def_params, ->x{ x.to_a[0] })
             .map do |sig_arg, def_param|
+
               arg_name = def_param.to_a[0]
 
               # TODO: anonymous restarg
@@ -437,7 +445,7 @@ module Parlour
 
           parse_err "attr_#{attr_direction} sig should have non-void return", sig_block_node \
             unless return_type
-            
+
           attr_type = return_type
         when :writer
           # These are special and can only have one name
@@ -476,7 +484,7 @@ module Parlour
     # A::B::C), converts that node into an array of the constant names which
     # are accessed. For example, A::B::C would become [:A, :B, :C].
     #
-    # @param [Parser::AST::Node, nil] node The node to convert. This must 
+    # @param [Parser::AST::Node, nil] node The node to convert. This must
     #   consist only of nested (:const) nodes.
     # @return [Array<Symbol>] The chain of constant names.
     def constant_names(node)
@@ -524,13 +532,13 @@ module Parlour
     def body_has_modifier?(node, modifier)
       return false unless node
 
-      (node.type == :send && node.to_a == [nil, modifier]) || 
+      (node.type == :send && node.to_a == [nil, modifier]) ||
         (node.type == :begin &&
           node.to_a.any? { |c| c.type == :send && c.to_a == [nil, modifier] })
     end
 
     sig { params(node: Parser::AST::Node).returns([T::Array[String], T::Array[String]]) }
-    # Given an AST node representing the body of a class or module, returns two 
+    # Given an AST node representing the body of a class or module, returns two
     # arrays of the includes and extends contained within the body.
     #
     # @param [Parser::AST::Node] node The body of the namespace.
@@ -568,7 +576,7 @@ module Parlour
       raise ParseError.new(buffer, range), desc
     end
 
-    sig do 
+    sig do
       type_parameters(:A, :B)
         .params(
           a: T::Array[T.type_parameter(:A)],
@@ -580,7 +588,7 @@ module Parlour
     end
     # Given two arrays and functions to get a key for each item in the two
     # arrays, joins the two arrays into one array of pairs by that key.
-    # 
+    #
     # The arrays should both be the same length, and the key functions should
     # never return duplicate keys for two different items.
     #
@@ -588,7 +596,7 @@ module Parlour
     # @param [A -> Any] fa A function to obtain a key for any element in the
     #   first array.
     # @param [Array<B>] b The second array.
-    # @param [B -> Any] fb A function to obtain a key for any element in the 
+    # @param [B -> Any] fb A function to obtain a key for any element in the
     #   second array.
     # @return [Array<(A, B)>] An array of pairs, where the left of the pair is
     #   an element from A and the right is the element from B with the
