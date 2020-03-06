@@ -247,13 +247,13 @@ module Parlour
       #
       # @param name [String] The name of this method. You should not specify +self.+ in
       #   this - use the +class_method+ parameter instead.
-      # @param parameters [Array<Parameter>] An array of {Parameter} instances representing this 
+      # @param parameters [Array<Parameter>] An array of {Parameter} instances representing this
       #   method's parameters.
       # @param return_type [String, nil] A Sorbet string of what this method returns, such as
       #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
       # @param returns [String, nil] Same as return_type.
       # @param abstract [Boolean] Whether this method is abstract.
-      # @param implementation [Boolean] DEPRECATED: Whether this method is an 
+      # @param implementation [Boolean] DEPRECATED: Whether this method is an
       #   implementation of a parent abstract method.
       # @param override [Boolean] Whether this method is overriding a parent overridable
       #   method, or implementing a parent abstract method.
@@ -544,25 +544,25 @@ module Parlour
       # can be merged into each other, as they lack definitions for themselves,
       # so there is nothing to conflict. (This isn't the case for subclasses
       # such as {ClassNamespace}.)
-      # 
+      #
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
       # @return [true] Always true.
       def mergeable?(others)
         true
       end
 
-      sig do 
+      sig do
         override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end
       # Given an array of {Namespace} instances, merges them into this one.
-      # All children, constants, extends and includes are copied into this 
+      # All children, constants, extends and includes are copied into this
       # instance.
       #
       # There may also be {RbiGenerator::Method} instances in the stream, which
       # are ignored.
-      # 
+      #
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {Namespace} instances.
       # @return [void]
       def merge_into_self(others)
@@ -616,10 +616,19 @@ module Parlour
         end
 
         # Process singleton class attributes
-        class_attributes, remaining_children = \
-          (options.sort_namespaces ? children.sort_by(&:name) : children)
-          .partition { |child| child.is_a?(Attribute) && child.class_attribute }
-        
+        sorted_children = (
+          if options.sort_namespaces
+            # sort_by can be unstable (and is in current MRI).
+            # Use the this work around to preserve order for ties
+            children.sort_by.with_index { |child, i| [child.name, i] }
+          else
+            children
+          end
+        )
+        class_attributes, remaining_children = sorted_children.partition do |child|
+          child.is_a?(Attribute) && child.class_attribute
+        end
+
         if class_attributes.any?
           result << options.indented(indent_level, 'class << self')
 
