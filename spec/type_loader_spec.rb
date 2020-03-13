@@ -63,18 +63,39 @@ RSpec.describe Parlour::TypeLoader do
     expect(asdf.return_type).to eq 'Float'
   end
 
-  it 'can load this project' do
-    # Is this like a quine, in test form? :)
-    project_root = described_class.load_project('.')
-    parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
-    expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
+  context 'can load this project' do
+    it 'fully' do
+      # Is this like a quine, in test form? :)
+      project_root = described_class.load_project('.')
+      parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
+      expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 
-    rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
-    expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
+      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
+      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
 
-    rbi_generator_init = rbi_generator.children.find { |x| x.name == 'initialize' }
-    expect(rbi_generator_init).to have_attributes(class_method: false,
-      return_type: nil)
+      rbi_generator_init = rbi_generator.children.find { |x| x.name == 'initialize' }
+      expect(rbi_generator_init).to have_attributes(class_method: false,
+        return_type: nil)
+    end
+
+    it 'with exclusions' do
+      project_root = described_class.load_project('.',
+        exclusions: ['lib/parlour/rbi_generator/arbitrary.rb'])
+      parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
+      expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
+
+      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
+      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
+
+      rbi_generator_init = rbi_generator.children.find { |x| x.name == 'initialize' }
+      expect(rbi_generator_init).to have_attributes(class_method: false,
+        return_type: nil)
+
+      # This file was not excluded
+      expect(rbi_generator.children.find { |x| x.name == 'Attribute' }).not_to be nil
+      # This file was excluded
+      expect(rbi_generator.children.find { |x| x.name == 'Arbitrary' }).to be nil
+    end
   end
 
   context 'with undeclared block arg' do

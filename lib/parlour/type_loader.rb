@@ -30,7 +30,7 @@ module Parlour
       load_source(File.read(filename), filename)
     end
   
-    sig { params(root: String).returns(RbiGenerator::Namespace) }
+    sig { params(root: String, exclusions: T::Array[String]).returns(RbiGenerator::Namespace) }
     # Loads an entire Sorbet project using Sorbet's file table, obeying any
     # "typed: ignore" sigils, into a tree of objects.
     #
@@ -39,8 +39,12 @@ module Parlour
     #
     # @param [String] root The root of the project; where the "sorbet" directory
     #   and "Gemfile" are located.
+    # @param [Array<String>] exclusions A list of files to exclude when loading
+    #   the project, relative to the given root.
     # @return [RbiGenerator::Namespace] The root of the object tree.
-    def self.load_project(root)
+    def self.load_project(root, exclusions: [])
+      expanded_exclusions = exclusions.map { |e| File.expand_path(e, root) }
+      
       stdin, stdout, stderr, wait_thr = T.unsafe(Open3).popen3(
         'bundle exec srb tc -p file-table-json',
         chdir: root
@@ -57,6 +61,9 @@ module Parlour
         rel_path = file_table_entry['path']
         next if rel_path.start_with?('./sorbet/rbi/hidden-definitions/')
         path = File.expand_path(rel_path, root)
+
+        # Skip this file if it was excluded
+        next if expanded_exclusions.include?(path)
 
         # There are some entries which are URLs to stdlib
         next unless File.exist?(path)
