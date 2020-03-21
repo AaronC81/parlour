@@ -442,4 +442,19 @@ RSpec.describe Parlour::TypeParser do
       expect(f).to have_attributes(name: 'F', final: false, superclass: 'G')
     end
   end
+
+  it 'parses type parameters' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      sig { type_parameters(:A, :B).params(x: T.type_parameter(:A), y: T.type_parameter(:B)).returns(T.type_parameter(:A)) }
+      def id(x, y)
+        x
+      end
+    RUBY
+
+    id = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]))[0]
+
+    expect(id).to have_attributes(name: 'id',
+      return_type: 'T.type_parameter(:A)',
+      type_parameters: [:A, :B])
+  end
 end

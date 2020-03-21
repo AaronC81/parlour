@@ -259,6 +259,7 @@ module Parlour
 
     # A parsed sig, not associated with a method.
     class IntermediateSig < T::Struct
+      prop :type_parameters, T.nilable(T::Array[Symbol])
       prop :overridable, T::Boolean
       prop :override, T::Boolean
       prop :abstract, T::Boolean
@@ -318,7 +319,18 @@ module Parlour
           arg.to_a
         end
 
+      # Find type parameters if they were used
+      type_parameters = sig_chain
+        .find { |(n, _)| n == :type_parameters }
+        &.then do |(_, a)|
+          a.map do |arg|
+            parse_err 'type parameter must be a symbol', arg if arg.type != :sym
+            arg.to_a[0]
+          end
+        end
+
       IntermediateSig.new(
+        type_parameters: type_parameters,
         overridable: overridable,
         override: override,
         abstract: abstract,
@@ -430,6 +442,7 @@ module Parlour
             def_name,
             parameters,
             return_type,
+            type_parameters: this_sig.type_parameters,
             override: this_sig.override,
             overridable: this_sig.overridable,
             abstract: this_sig.abstract,
