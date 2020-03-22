@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.1.0] - 2020-03-22
+### Added
+- Files can now be excluded from the `TypeLoader`.
+
+### Changed
+- A block argument in the definition but not in the signature no longer causes
+an error in the `TypeParser`.
+- Sorting of namespace children is now a stable sort.
+
+### Fixed
+- Type parameters are now parsed by the `TypeParser`.
+
 ## [2.0.0] - 2020-02-10
 ### Added
 - Parlour can now load types back out of RBI files or Ruby source files by
