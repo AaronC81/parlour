@@ -22,6 +22,8 @@ require 'parlour/rbi_generator/namespace'
 require 'parlour/rbi_generator/module_namespace'
 require 'parlour/rbi_generator/class_namespace'
 require 'parlour/rbi_generator/enum_class_namespace'
+require 'parlour/rbi_generator/struct_prop'
+require 'parlour/rbi_generator/struct_class_namespace'
 require 'parlour/rbi_generator'
 require 'parlour/detached_rbi_generator'
 

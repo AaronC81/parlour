@@ -602,4 +602,29 @@ RSpec.describe Parlour::RbiGenerator do
       end
     RUBY
   end
+
+  it 'supports structs' do
+    mod = subject.root.create_module('M') do |m|
+      m.create_struct_class('Person', props: [
+        Parlour::RbiGenerator::StructProp.new('name', 'String'),
+        Parlour::RbiGenerator::StructProp.new('age', 'Integer', optional: true),
+        Parlour::RbiGenerator::StructProp.new('prefers_light_theme', 'T::Boolean', default: 'false'),
+      ]) do |person|
+        person.create_method('theme', returns: 'String')
+      end
+    end
+
+    expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+      module M
+        class Person < T::Struct
+          prop :name, String
+          prop :age, Integer, optional: true
+          prop :prefers_light_theme, T::Boolean, default: false
+
+          sig { returns(String) }
+          def theme; end
+        end
+      end
+    RUBY
+  end
 end

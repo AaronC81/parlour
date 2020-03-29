@@ -200,6 +200,35 @@ module Parlour
         params(
           name: String,
           final: T::Boolean,
+          props: T.nilable(T::Array[StructProp]),
+          abstract: T::Boolean,
+          block: T.nilable(T.proc.params(x: StructClassNamespace).void)
+        ).returns(StructClassNamespace)
+      end
+      # Creates a new struct class definition as a child of this namespace.
+      #
+      # @example Create a person struct.
+      #   namespace.create_class('Person', props: [
+      #     Parlour::RbiGenerator::StructProp.new('name', 'String')
+      #   ])
+      #
+      # @param name [String] The name of this class.
+      # @param final [Boolean] Whether this namespace is final.
+      # @param props [Array<StructProp>] The props of the struct.
+      # @param abstract [Boolean] A boolean indicating whether this class is abstract.
+      # @param block A block which the new instance yields itself to.
+      # @return [EnumClassNamespace]
+      def create_struct_class(name, final: false, props: nil, abstract: false, &block)
+        new_struct_class = StructClassNamespace.new(generator, name, final, props || [], abstract, &block)
+        move_next_comments(new_struct_class)
+        children << new_struct_class
+        new_struct_class
+      end
+
+      sig do
+        params(
+          name: String,
+          final: T::Boolean,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
