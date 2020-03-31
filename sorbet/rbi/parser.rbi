@@ -11,11 +11,14 @@ module Parser
 
       sig { returns(Source::Map) }
       def loc; end
+
+      sig { params(type: Symbol, children: Array, properties: Hash).void }
+      def initialize(type, children=[], properties={}); end
     end
   end
 
   class CurrentRuby
-    sig { params(buffer: Source::Buffer).returns(AST::Node) }
+    sig { params(buffer: Source::Buffer).returns(T.nilable(AST::Node)) }
     def parse(buffer); end
   end
 

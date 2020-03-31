@@ -457,4 +457,20 @@ RSpec.describe Parlour::TypeParser do
       return_type: 'T.type_parameter(:A)',
       type_parameters: [:A, :B])
   end
+
+  it 'handles empty and comment-only files' do
+    instance = described_class.from_source('(test)', '')
+
+    root = instance.parse_all
+    expect(root.children).to be_empty
+
+    instance = described_class.from_source('(test)', <<-RUBY)
+      # Something
+
+      # Something else
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children).to be_empty
+  end
 end

@@ -108,7 +108,9 @@ module Parlour
       buffer = Parser::Source::Buffer.new(filename)
       buffer.source = source
 
-      TypeParser.new(Parser::CurrentRuby.new.parse(buffer))
+      # || special case handles parser returning nil on an empty file
+      parsed = Parser::CurrentRuby.new.parse(buffer) || Parser::AST::Node.new(:body)
+      TypeParser.new(parsed)
     end
 
     sig { returns(Parser::AST::Node) }
