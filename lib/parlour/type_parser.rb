@@ -169,17 +169,71 @@ module Parlour
           top_level ||= new_obj
         end if parent_names
 
-        final_obj = RbiGenerator::ClassNamespace.new(
-          DetachedRbiGenerator.new,
-          this_name.to_s,
-          final,
-          node_to_s(superclass),
-          abstract,
-        ) do |c|
-          c.children.concat(parse_path_to_object(path.child(2))) if body
-          c.create_includes(includes)
-          c.create_extends(extends)
+        # Instantiate the correct kind of class
+        if ['T::Struct', '::T::Struct'].include?(node_to_s(superclass))
+          # Find all of this struct's props and consts
+          prop_nodes = body.nil? ? [] :
+            body.to_a.select { |x| x.type == :send && [:prop, :const].include?(x.to_a[1]) }
+
+          props = prop_nodes.map do |prop_node|
+            _, prop_type, name_node, type_node, extras_hash_node = *prop_node
+
+            # "const" is just "prop ..., immutable: true"
+            extras_hash = extras_hash_node.to_a.map do |pair_node|
+              key_node, value_node = *pair_node
+              parse_err 'prop/const key must be a symbol', prop_node unless key_node.type == :sym
+              key = key_node.to_a.first
+
+              value = case value_node.type
+              when :true
+                true
+              when :false
+                false
+              when :sym
+                value_node.to_a.first
+              else
+                T.must(node_to_s(value_node))
+              end
+
+              [key, value]
+            end.to_h
+
+            if prop_type == :const
+              parse_err 'const cannot use immutable key', prop_node unless extras_hash[:immutable].nil?
+              extras_hash[:immutable] = true
+            end
+
+            # Get prop/const name
+            parse_err 'prop/const name must be a symbol or string', prop_node unless [:sym, :str].include?(name_node.type)
+            name = name_node.to_a.first.to_s
+
+            RbiGenerator::StructProp.new(
+              name,
+              T.must(node_to_s(type_node)),
+              **T.unsafe(extras_hash)
+            )
+          end
+
+          final_obj = RbiGenerator::StructClassNamespace.new(
+            DetachedRbiGenerator.new,
+            this_name.to_s,
+            final,
+            props,
+            abstract,
+          )
+        else
+          final_obj = RbiGenerator::ClassNamespace.new(
+            DetachedRbiGenerator.new,
+            this_name.to_s,
+            final,
+            node_to_s(superclass),
+            abstract,
+          )
         end
+
+        final_obj.children.concat(parse_path_to_object(path.child(2))) if body
+        final_obj.create_includes(includes)
+        final_obj.create_extends(extends)
 
         if target
           target.children << final_obj
