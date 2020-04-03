@@ -108,7 +108,9 @@ module Parlour
       buffer = Parser::Source::Buffer.new(filename)
       buffer.source = source
 
-      TypeParser.new(Parser::CurrentRuby.new.parse(buffer))
+      # || special case handles parser returning nil on an empty file
+      parsed = Parser::CurrentRuby.new.parse(buffer) || Parser::AST::Node.new(:body)
+      TypeParser.new(parsed)
     end
 
     sig { returns(Parser::AST::Node) }
@@ -221,6 +223,29 @@ module Parlour
             props,
             abstract,
           )
+        elsif ['T::Enum', '::T::Enum'].include?(node_to_s(superclass))
+          # Look for (block (send nil :enums) ...) structure
+          enums_node = body.nil? ? nil :
+            body.to_a.find { |x| x.type == :block && x.to_a[0].type == :send && x.to_a[0].to_a[1] == :enums }
+
+          # Find the constant assigments within this block
+          constant_nodes = enums_node.to_a[2].to_a
+
+          # Convert this to an array to enums as EnumClassNamespace expects
+          enums = constant_nodes.map do |constant_node|
+            _, name, new_node = *constant_node
+            serialize_value = node_to_s(new_node.to_a[2])
+
+            serialize_value ? [name.to_s, serialize_value] : name.to_s
+          end
+
+          final_obj = RbiGenerator::EnumClassNamespace.new(
+            DetachedRbiGenerator.new,
+            this_name.to_s,
+            final,
+            enums,
+            abstract,
+          )
         else
           final_obj = RbiGenerator::ClassNamespace.new(
             DetachedRbiGenerator.new,
@@ -230,7 +255,7 @@ module Parlour
             abstract,
           )
         end
-
+        
         final_obj.children.concat(parse_path_to_object(path.child(2))) if body
         final_obj.create_includes(includes)
         final_obj.create_extends(extends)

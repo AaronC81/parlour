@@ -511,4 +511,46 @@ RSpec.describe Parlour::TypeParser do
       expect(person.props).to be_empty
     end
   end
+  
+  it 'handles empty and comment-only files' do
+    instance = described_class.from_source('(test)', '')
+
+    root = instance.parse_all
+    expect(root.children).to be_empty
+
+    instance = described_class.from_source('(test)', <<-RUBY)
+      # Something
+
+      # Something else
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children).to be_empty
+  end
+
+  it 'parses enums' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      class Directions < T::Enum
+        enums do
+          North = new
+          South = new
+          West = new
+          East = new("Some custom serialization")
+        end
+
+        sig { returns(String) }
+        def self.mnemonic; end
+      end
+    RUBY
+
+    root = instance.parse_all
+    directions = root.children.first
+
+    expect(directions).to be_a Parlour::RbiGenerator::EnumClassNamespace
+    expect(directions.enums.length).to eq 4
+    expect(directions.enums.first).to eq 'North'
+    expect(directions.enums.last).to eq ['East', '"Some custom serialization"']
+    
+    expect(directions.children.find { |x| x.name == 'mnemonic' }).to be_a Parlour::RbiGenerator::Method
+  end
 end
