@@ -1,0 +1,81 @@
+# typed: true
+module Parlour
+  class RbiGenerator
+    # Represents an struct definition; that is, a class which subclasses
+    # +T::Struct+ and declares `prop` members.
+    class StructClassNamespace < ClassNamespace
+      extend T::Sig
+
+      sig do
+        params(
+          generator: RbiGenerator,
+          name: String,
+          final: T::Boolean,
+          props: T::Array[StructProp],
+          abstract: T::Boolean,
+          block: T.nilable(T.proc.params(x: StructClassNamespace).void)
+        ).void
+      end
+      # Creates a new struct class definition.
+      # @note You should use {Namespace#create_struct_class} rather than this directly.
+      #
+      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param name [String] The name of this class.
+      # @param final [Boolean] Whether this namespace is final.
+      # @param props [Array<StructProp>] The props of the struct.
+      # @param abstract [Boolean] A boolean indicating whether this class is abstract.
+      # @param block A block which the new instance yields itself to.
+      # @return [void]
+      def initialize(generator, name, final, props, abstract, &block)
+        super(generator, name, final, 'T::Struct', abstract, &block)
+        @props = props
+      end
+
+      sig { returns(T::Array[StructProp]) }
+      # The props of the struct.
+      # @return [Array<StructProp>]
+      attr_reader :props
+
+      sig do
+        override.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBI lines for the body of this struct. This consists of
+      # {props}, {includes}, {extends} and {children}.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBI lines for the body, formatted as specified.
+      def generate_body(indent_level, options)
+        result = []
+        props.each do |prop|
+          result << options.indented(indent_level, prop.to_prop_call)
+        end
+        result << ''
+
+        result + super
+      end
+
+      sig do
+        override.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).returns(T::Boolean)
+      end
+      # Given an array of {StructClassNamespace} instances, returns true if they may
+      # be merged into this instance using {merge_into_self}. For instances to
+      # be mergeable, they must either all be abstract or all not be abstract,
+      # and they must define the same superclass (or none at all).
+      #
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {StructClassNamespace} instances.
+      # @return [Boolean] Whether this instance may be merged with them.
+      def mergeable?(others)
+        others = T.cast(others, T::Array[StructClassNamespace]) rescue (return false)
+        all = others + [self]
+
+        T.must(super && all.map(&:props).uniq.length <= 1)
+      end
+    end
+  end
+end

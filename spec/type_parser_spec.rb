@@ -458,6 +458,60 @@ RSpec.describe Parlour::TypeParser do
       type_parameters: [:A, :B])
   end
 
+  context 'structs' do
+    it 'can have props' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Person < T::Struct
+          prop :name, String
+          prop 'age', Integer, optional: true
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      person = root.children.first
+      expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
+
+      expect(person.props[0]).to have_attributes(name: 'name', type: 'String')
+      expect(person.props[1]).to have_attributes(name: 'age', type: 'Integer',
+        optional: true)
+    end
+
+    it 'can have props and consts' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Person < T::Struct
+          prop :name, String
+          const :dob, DateTime
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      person = root.children.first
+      expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
+
+      expect(person.props[0]).to have_attributes(name: 'name', type: 'String')
+      expect(person.props[1]).to have_attributes(name: 'dob', type: 'DateTime',
+        immutable: true)
+    end
+
+    it 'can be empty' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Empty < T::Struct; end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      person = root.children.first
+      expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
+
+      expect(person.props).to be_empty
+    end
+  end
+  
   it 'handles empty and comment-only files' do
     instance = described_class.from_source('(test)', '')
 
