@@ -10,10 +10,6 @@ rvm:
   - 2.6
   - 2.7
   - ruby-head
-matrix:
-  allow_failures:
-    - rvm: 2.3
-    - rvm: ruby-head
 
 jobs:
   include:
@@ -27,3 +23,6 @@ jobs:
         keep_history: true
         on:
           branch: master
+  allow_failures:
+    - rvm: 2.3
+    - rvm: ruby-head
