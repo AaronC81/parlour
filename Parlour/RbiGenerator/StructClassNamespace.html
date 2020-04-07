@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: Parlour::RbiGenerator::EnumClassNamespace
+  Class: Parlour::RbiGenerator::StructClassNamespace
   
     &mdash; Documentation by YARD 0.9.24
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "Parlour::RbiGenerator::EnumClassNamespace";
+  pathId = "Parlour::RbiGenerator::StructClassNamespace";
   relpath = '../../';
 </script>
 
@@ -36,10 +36,10 @@
       <div id="header">
         <div id="menu">
   
-    <a href="../../_index.html">Index (E)</a> &raquo;
+    <a href="../../_index.html">Index (S)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../Parlour.html" title="Parlour (module)">Parlour</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span>
      &raquo; 
-    <span class="title">EnumClassNamespace</span>
+    <span class="title">StructClassNamespace</span>
   
 </div>
 
@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Class: Parlour::RbiGenerator::EnumClassNamespace
+      <div id="content"><h1>Class: Parlour::RbiGenerator::StructClassNamespace
   
   
   
@@ -80,7 +80,7 @@
           
             <li class="next"><span class='object_link'><a href="ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span></li>
           
-            <li class="next">Parlour::RbiGenerator::EnumClassNamespace</li>
+            <li class="next">Parlour::RbiGenerator::StructClassNamespace</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -105,7 +105,7 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/rbi_generator/enum_class_namespace.rb</dd>
+    <dd>lib/parlour/rbi_generator/struct_class_namespace.rb</dd>
   </dl>
   
 </div>
@@ -113,8 +113,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Represents an enum definition; that is, a class with an <code>enum</code>
-call.</p>
+<p>Represents an struct definition; that is, a class which subclasses
+<code>T::Struct</code> and declares `prop` members.</p>
 
 
   </div>
@@ -132,7 +132,7 @@ call.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#enums-instance_method" title="#enums (instance method)">#<strong>enums</strong>  &#x21d2; Array&lt;(String, String), String&gt; </a>
+      <a href="#props-instance_method" title="#props (instance method)">#<strong>props</strong>  &#x21d2; Array&lt;StructProp&gt; </a>
     
 
     
@@ -152,7 +152,7 @@ call.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>The values of the enumeration.</p>
+<p>The props of the struct.</p>
 </div></span>
   
 </li>
@@ -204,7 +204,7 @@ call.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Generates the RBI lines for the body of this enum.</p>
+<p>Generates the RBI lines for the body of this struct.</p>
 </div></span>
   
 </li>
@@ -213,7 +213,7 @@ call.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, final, enums, abstract, &amp;block)  &#x21d2; void </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, final, props, abstract, &amp;block)  &#x21d2; void </a>
     
 
     
@@ -230,7 +230,7 @@ call.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates a new enum class definition.</p>
+<p>Creates a new struct class definition.</p>
 </div></span>
   
 </li>
@@ -254,8 +254,8 @@ call.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span> instances, returns true if they may
-be merged into this instance using <span class='object_link'><a href="ClassNamespace.html#merge_into_self-instance_method" title="Parlour::RbiGenerator::ClassNamespace#merge_into_self (method)">ClassNamespace#merge_into_self</a></span>.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::StructClassNamespace (class)">StructClassNamespace</a></span> instances, returns true if they
+may be merged into this instance using <span class='object_link'><a href="ClassNamespace.html#merge_into_self-instance_method" title="Parlour::RbiGenerator::ClassNamespace#merge_into_self (method)">ClassNamespace#merge_into_self</a></span>.</p>
 </div></span>
   
 </li>
@@ -308,7 +308,7 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(generator, name, final, enums, abstract, &amp;block)  &#x21d2; <tt>void</tt> 
+    #<strong>initialize</strong>(generator, name, final, props, abstract, &amp;block)  &#x21d2; <tt>void</tt> 
   
 
   
@@ -320,12 +320,12 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>You should use <span class='object_link'><a href="Namespace.html#create_class-instance_method" title="Parlour::RbiGenerator::Namespace#create_class (method)">Namespace#create_class</a></span> rather than this directly.</p>
+<p>You should use <span class='object_link'><a href="Namespace.html#create_struct_class-instance_method" title="Parlour::RbiGenerator::Namespace#create_struct_class (method)">Namespace#create_struct_class</a></span> rather than this directly.</p>
 </div>
   </div>
 
 
-<p>Creates a new enum class definition.</p>
+<p>Creates a new struct class definition.</p>
 
 
   </div>
@@ -384,16 +384,16 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
   
     <li>
       
-        <span class='name'>enums</span>
+        <span class='name'>props</span>
       
       
-        <span class='type'>(<tt>Array&lt;(String, String), String&gt;</tt>)</span>
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="StructProp.html" title="Parlour::RbiGenerator::StructProp (class)">StructProp</a></span>&gt;</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>The values of the enumeration.</p>
+<p>The props of the struct.</p>
 </div>
       
     </li>
@@ -439,17 +439,17 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
       <pre class="lines">
 
 
-28
 29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/struct_class_namespace.rb', line 29</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_enums'>enums</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T::Enum</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='ivar'>@enums</span> <span class='op'>=</span> <span class='id identifier rubyid_enums'>enums</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_props'>props</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T::Struct</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='ivar'>@props</span> <span class='op'>=</span> <span class='id identifier rubyid_props'>props</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -464,9 +464,9 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="enums-instance_method">
+  <h3 class="signature first" id="props-instance_method">
   
-    #<strong>enums</strong>  &#x21d2; <tt>Array&lt;(String, String), String&gt;</tt>  <span class="extras">(readonly)</span>
+    #<strong>props</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="StructProp.html" title="Parlour::RbiGenerator::StructProp (class)">StructProp</a></span>&gt;</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -475,7 +475,7 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>The values of the enumeration.</p>
+<p>The props of the struct.</p>
 
 
   </div>
@@ -488,7 +488,7 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
     <li>
       
       
-        <span class='type'>(<tt>Array&lt;(String, String), String&gt;</tt>)</span>
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="StructProp.html" title="Parlour::RbiGenerator::StructProp (class)">StructProp</a></span>&gt;</tt>)</span>
       
       
       
@@ -502,15 +502,15 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
       <pre class="lines">
 
 
-36
 37
-38</pre>
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/struct_class_namespace.rb', line 37</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_enums'>enums</span>
-  <span class='ivar'>@enums</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_props'>props</span>
+  <span class='ivar'>@props</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -536,8 +536,8 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Generates the RBI lines for the body of this enum. This consists of
-<span class='object_link'><a href="#enums-instance_method" title="Parlour::RbiGenerator::EnumClassNamespace#enums (method)">#enums</a></span>, <span class='object_link'><a href="Namespace.html#includes-instance_method" title="Parlour::RbiGenerator::Namespace#includes (method)">Namespace#includes</a></span>, <span class='object_link'><a href="Namespace.html#extends-instance_method" title="Parlour::RbiGenerator::Namespace#extends (method)">Namespace#extends</a></span> and <span class='object_link'><a href="Namespace.html#children-instance_method" title="Parlour::RbiGenerator::Namespace#children (method)">Namespace#children</a></span>.</p>
+<p>Generates the RBI lines for the body of this struct. This consists of
+<span class='object_link'><a href="#props-instance_method" title="Parlour::RbiGenerator::StructClassNamespace#props (method)">#props</a></span>, <span class='object_link'><a href="Namespace.html#includes-instance_method" title="Parlour::RbiGenerator::Namespace#includes (method)">Namespace#includes</a></span>, <span class='object_link'><a href="Namespace.html#extends-instance_method" title="Parlour::RbiGenerator::Namespace#extends (method)">Namespace#extends</a></span> and <span class='object_link'><a href="Namespace.html#children-instance_method" title="Parlour::RbiGenerator::Namespace#children (method)">Namespace#children</a></span>.</p>
 
 
   </div>
@@ -605,7 +605,6 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
       <pre class="lines">
 
 
-50
 51
 52
 53
@@ -614,35 +613,16 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
 56
 57
 58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/struct_class_namespace.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_body'>generate_body</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>enums do</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_enums'>enums</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_enum_value'>enum_value</span><span class='op'>|</span>
-    <span class='kw'>case</span> <span class='id identifier rubyid_enum_value'>enum_value</span>
-    <span class='kw'>when</span> <span class='const'>String</span>
-      <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_enum_value'>enum_value</span><span class='embexpr_end'>}</span><span class='tstring_content'> = new</span><span class='tstring_end'>&quot;</span></span>
-    <span class='kw'>when</span> <span class='const'>Array</span>
-      <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_enum_value'>enum_value</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'> = new(</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_enum_value'>enum_value</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
-    <span class='kw'>else</span>
-      <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_absurd'>absurd</span><span class='lparen'>(</span><span class='id identifier rubyid_enum_value'>enum_value</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
-
-    <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span> <span class='op'>+</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_line'>line</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_props'>props</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_prop'>prop</span><span class='op'>|</span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_prop'>prop</span><span class='period'>.</span><span class='id identifier rubyid_to_prop_call'>to_prop_call</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
-  <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>end</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
 
   <span class='id identifier rubyid_result'>result</span> <span class='op'>+</span> <span class='kw'>super</span>
@@ -664,9 +644,9 @@ be merged into this instance using <span class='object_link'><a href="ClassNames
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::EnumClassNamespace (class)">Parlour::RbiGenerator::EnumClassNamespace</a></span> instances, returns true if they may
-be merged into this instance using <span class='object_link'><a href="ClassNamespace.html#merge_into_self-instance_method" title="Parlour::RbiGenerator::ClassNamespace#merge_into_self (method)">ClassNamespace#merge_into_self</a></span>. For instances to be
-mergeable, they must either all be abstract or all not be abstract, and
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::StructClassNamespace (class)">Parlour::RbiGenerator::StructClassNamespace</a></span> instances, returns true if they
+may be merged into this instance using <span class='object_link'><a href="ClassNamespace.html#merge_into_self-instance_method" title="Parlour::RbiGenerator::ClassNamespace#merge_into_self (method)">ClassNamespace#merge_into_self</a></span>. For instances to
+be mergeable, they must either all be abstract or all not be abstract, and
 they must define the same superclass (or none at all).</p>
 
 
@@ -687,7 +667,7 @@ they must define the same superclass (or none at all).</p>
       
         &mdash;
         <div class='inline'>
-<p>An array of other <span class='object_link'><a href="" title="Parlour::RbiGenerator::EnumClassNamespace (class)">Parlour::RbiGenerator::EnumClassNamespace</a></span> instances.</p>
+<p>An array of other <span class='object_link'><a href="" title="Parlour::RbiGenerator::StructClassNamespace (class)">Parlour::RbiGenerator::StructClassNamespace</a></span> instances.</p>
 </div>
       
     </li>
@@ -719,21 +699,21 @@ they must define the same superclass (or none at all).</p>
       <pre class="lines">
 
 
-82
-83
-84
-85
-86
-87</pre>
+73
+74
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/struct_class_namespace.rb', line 73</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_others'>others</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='comma'>,</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='lparen'>(</span><span class='kw'>return</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_others'>others</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='comma'>,</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::StructClassNamespace (class)">StructClassNamespace</a></span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='lparen'>(</span><span class='kw'>return</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_all'>all</span> <span class='op'>=</span> <span class='id identifier rubyid_others'>others</span> <span class='op'>+</span> <span class='lbracket'>[</span><span class='kw'>self</span><span class='rbracket'>]</span>
 
-  <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_must'>must</span><span class='lparen'>(</span><span class='kw'>super</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:enums</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;=</span> <span class='int'>1</span><span class='rparen'>)</span>
+  <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_must'>must</span><span class='lparen'>(</span><span class='kw'>super</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:props</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;=</span> <span class='int'>1</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>

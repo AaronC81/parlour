@@ -6,15 +6,15 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "README";
   relpath = '';
 </script>
@@ -64,8 +64,8 @@
 src="https://travis-ci.org/AaronC81/parlour.svg?branch=master"></a> <img
 src="https://img.shields.io/gem/v/parlour.svg"></p>
 
-<p>Parlour is an RBI generator and merger for Sorbet. It consists of two key
-parts:</p>
+<p>Parlour is an RBI generator, merger and parser for Sorbet. It consists of
+three key parts:</p>
 <ul><li>
 <p>The generator, which outputs beautifully formatted RBI files, created using
 an intuitive DSL.</p>
@@ -73,6 +73,9 @@ an intuitive DSL.</p>
 <p>The plugin/build system, which allows multiple Parlour plugins to generate
 RBIs for the same codebase. These are combined automatically as much as
 possible, but any other conflicts can be resolved manually through prompts.</p>
+</li><li>
+<p>The parser, which can read an RBI and convert it back into a tree of
+generator objects.</p>
 </li></ul>
 
 <h2 id="label-Why+should+I+use+this-3F">Why should I use this?</h2>
@@ -84,6 +87,9 @@ CLI.</p>
 <p>You can <strong>use many plugins together seamlessly</strong>, running them
 all with a single command and consolidating all of their definitions into a
 single RBI output file.</p>
+</li><li>
+<p>You can <strong>effortlessly build tools which need to access types within
+an RBI</strong>; no need to write your own parser!</p>
 </li></ul>
 
 <p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a>
@@ -203,6 +209,27 @@ plugins:
   Gem2::Plugin: {}
   Gem3::Plugin: {}</code></pre>
 
+<h2 id="label-Parsing+RBIs">Parsing RBIs</h2>
+
+<p>You can either parse individual RBI files, or point Parlour to the root of
+a project and it will locate, parse and merge all RBI files.</p>
+
+<p>Note that Parlour isn&#39;t limited to just RBIs; it can parse inline
+<code>sigs</code> out of your Ruby source too!</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='comment'># Return the object tree of a particular file
+</span><span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/TypeLoader.html" title="Parlour::TypeLoader (module)">TypeLoader</a></span></span><span class='period'>.</span><span class='id identifier rubyid_load_file'><span class='object_link'><a href="Parlour/TypeLoader.html#load_file-class_method" title="Parlour::TypeLoader.load_file (method)">load_file</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>path/to/your/file.rbis</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+<span class='comment'># Return the object tree for an entire Sorbet project - slow but thorough!
+</span><span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/TypeLoader.html" title="Parlour::TypeLoader (module)">TypeLoader</a></span></span><span class='period'>.</span><span class='id identifier rubyid_load_project'><span class='object_link'><a href="Parlour/TypeLoader.html#load_project-class_method" title="Parlour::TypeLoader.load_project (method)">load_project</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>root/of/the/project</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<p>The structure of the returned object trees is identical to those you would
+create when generating an RBI, built of instances of <code>RbiObject</code>
+subclasses.</p>
+
 <h2 id="label-Parlour+Plugins">Parlour Plugins</h2>
 
 <p><em>Have you written an awesome Parlour plugin? Please submit a PR to add
@@ -249,9 +276,9 @@ of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Dec 30 20:55:14 2019 by
+  Generated on Tue Apr  7 11:58:24 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.3.8).
+  0.9.24 (ruby-2.3.8).
 </div>
 
     </div>
