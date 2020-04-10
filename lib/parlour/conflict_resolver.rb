@@ -60,6 +60,20 @@ module Parlour
             next
           end
 
+          # Special case: if we remove the namespaces, is everything either an
+          # include or an extend? If so, do nothing - this is fine
+          if children \
+            .reject { |c| c.is_a?(RbiGenerator::Namespace) }
+            .then do |x|
+              !x.empty? && x.all? do |c|
+                c.is_a?(RbiGenerator::Include) || c.is_a?(RbiGenerator::Extend)
+              end
+            end
+            
+            Debugging.debug_puts(self, Debugging::Tree.end("Includes/extends do not conflict with namespaces; no resolution required"))
+            next
+          end
+
           # Special case: do we have two attributes, one of which is a class 
           # attribute and the other isn't? If so, do nothing - this is fine
           if children.length == 2 &&

@@ -299,4 +299,17 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(a.children.length).to be 2
   end
+
+  it 'does not consider includes to conflict with sibling namespaces' do
+    x = gen.root.create_module('X') do |x|
+      x.create_module('A')
+      x.create_includes(['A'])
+    end
+
+    expect(x.children.length).to be 2
+
+    subject.resolve_conflicts(x) { |*| raise 'unable to resolve automatically' }
+
+    expect(x.children.length).to be 2
+  end
 end
