@@ -712,15 +712,14 @@ module Parlour
     # @return [Boolean] True if that node represents a "sig" call, false
     #   otherwise.
     def previous_sibling_sig_node?(path)
-      begin
-        previous_sibling = path.sibling(-1)
-        previous_node = previous_sibling.traverse(ast)
-        sig_node?(previous_node)
-      # `sibling` call could raise IndexError or ArgumentError
+      previous_sibling = path.sibling(-1)
+      previous_node = previous_sibling.traverse(ast)
+      sig_node?(previous_node)
+    rescue IndexError, ArgumentError, TypeError
+      # `sibling` call could raise IndexError or ArgumentError if reaching into negative indices
       # `traverse` call could raise TypeError if path doesn't return Parser::AST::Node
-      rescue IndexError, ArgumentError, TypeError
-        false
-      end
+
+      false
     end
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T.nilable(String)) }
