@@ -253,6 +253,172 @@ RSpec.describe Parlour::TypeParser do
     end
   end
 
+  context '#parse_method_into_methods' do
+    it 'works with no params' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def foo
+          3
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+      expect(meth).to have_attributes(name: 'foo', return_type: nil,
+        override: false, class_method: false)
+    end
+
+    it 'works for methods with simple parameters' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def foo(x, y = true)
+          y ? x.length : 0
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+      expect(meth.return_type).to eq nil
+      expect(meth.name).to eq 'foo'
+      expect(meth.override).to eq false
+      expect(meth.final).to eq false
+
+      expect(meth.parameters.length).to eq 2
+      expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
+        type: nil, default: nil)
+      expect(meth.parameters[1]).to have_attributes(name: 'y', kind: :normal,
+        type: nil, default: 'true')
+    end
+
+    it 'works for methods with complex parameters' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def foo(x, y:, z: 3, &blk)
+          nil
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+      expect(meth).to have_attributes(name: 'foo',
+        return_type: nil, override: false, final: false)
+
+      expect(meth.parameters.length).to eq 4
+      expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
+        type: nil, default: nil)
+      expect(meth.parameters[1]).to have_attributes(name: 'y:', kind: :keyword,
+        type: nil, default: nil)
+      expect(meth.parameters[2]).to have_attributes(name: 'z:', kind: :keyword,
+        type: nil, default: '3')
+      expect(meth.parameters[3]).to have_attributes(name: '&blk', kind: :block,
+        type: nil, default: nil)
+    end
+
+    it 'works with splat-arguments' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def foo(*args, **kwargs)
+          nil
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+      expect(meth).to have_attributes(name: 'foo',
+        return_type: nil, override: false)
+
+      expect(meth.parameters[0]).to have_attributes(name: '*args', type: :splat,
+        type: nil)
+      expect(meth.parameters[1]).to have_attributes(name: '**kwargs',
+        type: :double_splat, type: nil)
+    end
+
+    it 'supports class methods using self.x' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def self.foo(x)
+          3
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+      expect(meth).to have_attributes(name: 'foo', return_type: nil,
+        override: false, final: false, class_method: true)
+      expect(meth.parameters.length).to eq 1
+      expect(meth.parameters.first).to have_attributes(name: 'x',
+        type: nil)
+    end
+
+    it 'supports class methods within an eigenclass' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def foo(x)
+          3
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([]), is_within_eigenclass: true).only
+      expect(meth).to have_attributes(name: 'foo', return_type: nil,
+        override: false, final: false, class_method: true)
+      expect(meth.parameters.length).to eq 1
+      expect(meth.parameters.first).to have_attributes(name: 'x',
+        type: nil)
+    end
+
+    it 'errors on a self.x method within an eigenclass' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def self.foo(x)
+          3
+        end
+      RUBY
+
+      expect do
+        instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([]), is_within_eigenclass: true).only
+      end.to raise_error Parlour::ParseError
+    end
+
+    context 'attributes' do
+      it 'supports attr_accessor' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          attr_accessor :foo
+        RUBY
+
+        meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+        expect(meth).to have_attributes(name: 'foo', return_type: 'T.untyped',
+          kind: :accessor)
+      end
+
+      it 'supports attr_reader' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          attr_reader :foo
+        RUBY
+
+        meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+        expect(meth).to have_attributes(name: 'foo', return_type: 'T.untyped',
+          kind: :reader)
+      end
+
+      it 'supports attr_writer' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          attr_writer :foo
+        RUBY
+
+        meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+        expect(meth).to have_attributes(name: 'foo', return_type: 'T.untyped',
+          kind: :writer)
+        expect(meth.parameters.length).to eq 1
+        expect(meth.parameters[0]).to have_attributes(name: 'foo',
+          type: 'T.untyped')
+      end
+
+      it 'supports attribute with multiple names' do
+        instance = described_class.from_source('(test)', <<-RUBY)
+          attr_accessor :foo, :bar, :baz
+        RUBY
+
+        meths = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([]))
+        foo, bar, baz = meths
+
+        expect(foo).to have_attributes(name: 'foo', return_type: 'T.untyped',
+          kind: :accessor)
+        expect(bar).to have_attributes(name: 'bar', return_type: 'T.untyped',
+          kind: :accessor)
+        expect(baz).to have_attributes(name: 'baz', return_type: 'T.untyped',
+          kind: :accessor)
+      end
+    end
+  end
+
   context '#parse_all' do
     it 'parses class structures' do
       instance = described_class.from_source('(test)', <<-RUBY)
@@ -404,6 +570,70 @@ RSpec.describe Parlour::TypeParser do
       expect(bar).to have_attributes(name: 'bar', return_type: 'String',
         class_method: true)
       expect(baz).to have_attributes(name: 'baz', return_type: 'T::Boolean',
+        class_method: false)
+    end
+
+    it 'supports methods with or without signatures' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          sig { returns(String) }
+          def self.bar
+            "hello"
+          end
+
+          def baz
+            true
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(a).to have_attributes(name: 'A', final: false)
+
+      bar, baz = *a.children
+      expect(bar).to be_a Parlour::RbiGenerator::Method
+      expect(baz).to be_a Parlour::RbiGenerator::Method
+      expect(bar).to have_attributes(name: 'bar', return_type: 'String',
+        class_method: true)
+      expect(baz).to have_attributes(name: 'baz', return_type: nil,
+        class_method: false)
+    end
+
+    it 'supports methods entirely without signatures' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          attr_accessor :foo
+
+          def self.bar
+            "hello"
+          end
+
+          def baz
+            true
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(a).to have_attributes(name: 'A', final: false)
+
+      foo, bar, baz = *a.children
+      expect(foo).to be_a Parlour::RbiGenerator::Attribute
+      expect(bar).to be_a Parlour::RbiGenerator::Method
+      expect(baz).to be_a Parlour::RbiGenerator::Method
+      expect(foo).to have_attributes(name: 'foo', return_type: 'T.untyped',
+        kind: :accessor)
+      expect(bar).to have_attributes(name: 'bar', return_type: nil,
+        class_method: true)
+      expect(baz).to have_attributes(name: 'baz', return_type: nil,
         class_method: false)
     end
 
