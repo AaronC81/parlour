@@ -313,12 +313,20 @@ module Parlour
           []
         end
       when :def, :defs
-        # TODO: Support for defs without sigs
-        #   If so, we need some kind of state machine to determine whether
-        #   they've already been dealt with by the "when :send" clause and
-        #   #parse_sig_into_methods.
-        #   If not, just ignore this.
-        []
+        begin
+          previous_sibling = path.sibling(-1)
+          previous_node = previous_sibling.traverse(ast)
+        # `sibling` call could raise IndexError or ArgumentError
+        # `traverse` call could raise TypeError if path doesn't return Parser::AST::Node
+        rescue IndexError, ArgumentError, TypeError
+          previous_node = nil
+        end
+
+        if previous_node && sig_node?(previous_node)
+          []
+        else
+          parse_method_into_methods(path, is_within_eigenclass: is_within_eigenclass)
+        end
       when :sclass
         parse_err 'cannot access eigen of non-self object', node unless node.to_a[0].type == :self
         parse_path_to_object(path.child(1), is_within_eigenclass: true)

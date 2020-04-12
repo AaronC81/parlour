@@ -573,6 +573,65 @@ RSpec.describe Parlour::TypeParser do
         class_method: false)
     end
 
+    it 'supports methods with or without signatures' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          sig { returns(String) }
+          def self.bar
+            "hello"
+          end
+
+          def baz
+            true
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(a).to have_attributes(name: 'A', final: false)
+
+      bar, baz = *a.children
+      expect(bar).to be_a Parlour::RbiGenerator::Method
+      expect(baz).to be_a Parlour::RbiGenerator::Method
+      expect(bar).to have_attributes(name: 'bar', return_type: 'String',
+        class_method: true)
+      expect(baz).to have_attributes(name: 'baz', return_type: nil,
+        class_method: false)
+    end
+
+    it 'supports methods entirely without signatures' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          def self.bar
+            "hello"
+          end
+
+          def baz
+            true
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      a = root.children.first
+      expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+      expect(a).to have_attributes(name: 'A', final: false)
+
+      bar, baz = *a.children
+      expect(bar).to be_a Parlour::RbiGenerator::Method
+      expect(baz).to be_a Parlour::RbiGenerator::Method
+      expect(bar).to have_attributes(name: 'bar', return_type: nil,
+        class_method: true)
+      expect(baz).to have_attributes(name: 'baz', return_type: nil,
+        class_method: false)
+    end
+
     it 'supports expansion of names like A::B::C' do
       instance = described_class.from_source('(test)', <<-RUBY)
         module A::B::C
