@@ -569,6 +569,110 @@ module Parlour
       end
     end
 
+    sig { params(path: NodePath, is_within_eigenclass: T::Boolean).returns(T::Array[RbiGenerator::Method]) }
+    # Given a path to a method in the AST, finds the associated definition and
+    # parses them into methods.
+    # Usually this will return one method; the only exception currently is for
+    # attributes, where multiple can be declared in one call, e.g.
+    # +attr_reader :x, :y, :z+.
+    #
+    # @param [NodePath] path The sig to parse.
+    # @param [Boolean] is_within_eigenclass Whether the method definition this sig is
+    #   associated with appears inside an eigenclass definition. If true, the
+    #   returned method is made a class method. If the method definition
+    #   is already a class method, an exception is thrown as the method will be
+    #   a class method of the eigenclass, which Parlour can't represent.
+    # @return [<RbiGenerator::Method>] The parsed methods.
+    def parse_method_into_methods(path, is_within_eigenclass: false)
+      # A :def node represents a definition like "def x; end"
+      # A :defs node represents a definition like "def self.x; end"
+      def_node = path.traverse(ast)
+      case def_node.type
+      when :def
+        class_method = false
+        def_names = [def_node.to_a[0].to_s]
+        def_params = def_node.to_a[1].to_a
+        kind = :def
+      when :defs
+        parse_err 'targeted definitions on a non-self target are not supported', def_node \
+          unless def_node.to_a[0].type == :self
+        class_method = true
+        def_names = [def_node.to_a[1].to_s]
+        def_params = def_node.to_a[2].to_a
+        kind = :def
+      when :send
+        target, method_name, *parameters = *def_node
+
+        parse_err 'node after a sig must be a method definition', def_node \
+          unless [:attr_reader, :attr_writer, :attr_accessor].include?(method_name) \
+            || target != nil
+
+        parse_err 'typed attribute should have at least one name', def_node if parameters&.length == 0
+
+        kind = :attr
+        attr_direction = method_name.to_s.gsub('attr_', '').to_sym
+        def_names = T.must(parameters).map { |param| param.to_a[0].to_s }
+        class_method = false
+      else
+        parse_err 'node after a sig must be a method definition', def_node
+      end
+
+      if is_within_eigenclass
+        parse_err 'cannot represent multiple levels of eigenclassing', def_node if class_method
+        class_method = true
+      end
+
+      if kind == :def
+        return_type = nil
+        parameters = def_params.map do |def_param|
+          arg_name = def_param.to_a[0]
+
+          # TODO: anonymous restarg
+          full_name = arg_name.to_s
+          full_name = "*#{arg_name}"  if def_param.type == :restarg
+          full_name = "**#{arg_name}" if def_param.type == :kwrestarg
+          full_name = "#{arg_name}:"  if def_param.type == :kwarg || def_param.type == :kwoptarg
+          full_name = "&#{arg_name}"  if def_param.type == :blockarg
+
+          default = def_param.to_a[1] ? node_to_s(def_param.to_a[1]) : nil
+          type = nil
+
+          RbiGenerator::Parameter.new(full_name, type: type, default: default)
+        end
+
+        # There should only be one ever here, but future-proofing anyway
+        def_names.map do |def_name|
+          RbiGenerator::Method.new(
+            DetachedRbiGenerator.new,
+            def_name,
+            parameters,
+            return_type,
+            class_method: class_method
+          )
+        end
+      elsif kind == :attr
+        return_type = "T.untyped"
+        case attr_direction
+        when :reader, :accessor, :writer
+          attr_type = return_type
+        else
+          raise "unknown attribute direction #{attr_direction}"
+        end
+
+        def_names.map do |def_name|
+          RbiGenerator::Attribute.new(
+            DetachedRbiGenerator.new,
+            def_name,
+            attr_direction,
+            attr_type,
+            class_attribute: class_method
+          )
+        end
+      else
+        raise "unknown definition kind #{kind}"
+      end
+    end
+
     protected
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
