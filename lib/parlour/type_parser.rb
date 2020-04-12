@@ -309,20 +309,15 @@ module Parlour
       when :send, :block
         if sig_node?(node)
           parse_sig_into_methods(path, is_within_eigenclass: is_within_eigenclass)
+        elsif node.type == :send &&
+            [:attr_reader, :attr_writer, :attr_accessor].include?(node.to_a[1]) &&
+            !previous_sibling_sig_node?(path)
+          parse_method_into_methods(path, is_within_eigenclass: is_within_eigenclass)
         else
           []
         end
       when :def, :defs
-        begin
-          previous_sibling = path.sibling(-1)
-          previous_node = previous_sibling.traverse(ast)
-        # `sibling` call could raise IndexError or ArgumentError
-        # `traverse` call could raise TypeError if path doesn't return Parser::AST::Node
-        rescue IndexError, ArgumentError, TypeError
-          previous_node = nil
-        end
-
-        if previous_node && sig_node?(previous_node)
+        if previous_sibling_sig_node?(path)
           []
         else
           parse_method_into_methods(path, is_within_eigenclass: is_within_eigenclass)
@@ -707,6 +702,25 @@ module Parlour
       node.type == :block &&
         node.to_a[0].type == :send &&
         node.to_a[0].to_a[1] == :sig
+    end
+
+    sig { params(path: NodePath).returns(T::Boolean) }
+    # Given a path, returns a boolean indicating whether the previous sibling
+    # represents a call to "sig" with a block.
+    #
+    # @param [NodePath] path The path to the namespace definition.
+    # @return [Boolean] True if that node represents a "sig" call, false
+    #   otherwise.
+    def previous_sibling_sig_node?(path)
+      begin
+        previous_sibling = path.sibling(-1)
+        previous_node = previous_sibling.traverse(ast)
+        sig_node?(previous_node)
+      # `sibling` call could raise IndexError or ArgumentError
+      # `traverse` call could raise TypeError if path doesn't return Parser::AST::Node
+      rescue IndexError, ArgumentError, TypeError
+        false
+      end
     end
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T.nilable(String)) }

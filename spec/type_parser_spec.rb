@@ -606,6 +606,8 @@ RSpec.describe Parlour::TypeParser do
     it 'supports methods entirely without signatures' do
       instance = described_class.from_source('(test)', <<-RUBY)
         class A
+          attr_accessor :foo
+
           def self.bar
             "hello"
           end
@@ -623,9 +625,12 @@ RSpec.describe Parlour::TypeParser do
       expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(a).to have_attributes(name: 'A', final: false)
 
-      bar, baz = *a.children
+      foo, bar, baz = *a.children
+      expect(foo).to be_a Parlour::RbiGenerator::Attribute
       expect(bar).to be_a Parlour::RbiGenerator::Method
       expect(baz).to be_a Parlour::RbiGenerator::Method
+      expect(foo).to have_attributes(name: 'foo', return_type: 'T.untyped',
+        kind: :accessor)
       expect(bar).to have_attributes(name: 'bar', return_type: nil,
         class_method: true)
       expect(baz).to have_attributes(name: 'baz', return_type: nil,
