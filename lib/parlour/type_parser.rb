@@ -174,8 +174,11 @@ module Parlour
         # Instantiate the correct kind of class
         if ['T::Struct', '::T::Struct'].include?(node_to_s(superclass))
           # Find all of this struct's props and consts
+          # The body is typically a `begin` element but when there's only
+          # one node there's no wrapping block and instead it would directly
+          # be the node.
           prop_nodes = body.nil? ? [] :
-            body.to_a.select { |x| x.type == :send && [:prop, :const].include?(x.to_a[1]) }
+            (body.type == :begin ? body.to_a : [body]).select { |x| x.type == :send && [:prop, :const].include?(x.to_a[1]) }
 
           props = prop_nodes.map do |prop_node|
             _, prop_type, name_node, type_node, extras_hash_node = *prop_node

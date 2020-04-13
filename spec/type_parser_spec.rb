@@ -740,6 +740,37 @@ RSpec.describe Parlour::TypeParser do
 
       expect(person.props).to be_empty
     end
+
+    it 'can have a single prop with no other nodes' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Person < T::Struct
+          prop :name, String
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      person = root.children.first
+      expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
+
+      expect(person.props[0]).to have_attributes(name: 'name', type: 'String')
+    end
+
+    it 'can have a class with no other nodes' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Person < T::Struct
+          class Foo
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      person = root.children.first
+      expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
+    end
   end
   
   it 'handles empty and comment-only files' do
