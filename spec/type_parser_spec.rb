@@ -771,8 +771,28 @@ RSpec.describe Parlour::TypeParser do
       person = root.children.first
       expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
     end
+
+    it 'can have members with default and factory values of various types' do
+      # Ensures that default and factory parameters are passed into StructProp
+      # as strings of ruby code, not as actual values
+
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Auto < T::Struct
+          const :doors, Integer, default: (2 + 2)
+          const :wheels, Integer, default: 4
+          const :all_wheel_drive, T::Boolean, default: false
+          const :mpg, Float, factory: -> { 31.2 }
+        end
+      RUBY
+
+      root = instance.parse_all
+      expect(root.children.length).to eq 1
+
+      person = root.children.first
+      expect(person).to be_a Parlour::RbiGenerator::StructClassNamespace
+    end
   end
-  
+
   it 'handles empty and comment-only files' do
     instance = described_class.from_source('(test)', '')
 
