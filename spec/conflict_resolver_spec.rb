@@ -312,4 +312,20 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(x.children.length).to be 2
   end
+
+  it 'allows specialized classes (structs/enums) to have namespace children' do
+    x = Parlour::TypeLoader.load_source(<<-RUBY)
+      class A < T::Struct; end
+      class A::B; end
+
+      class C < T::Enum; end
+      class C::D; end
+    RUBY
+
+    expect(x.children.length).to be 4
+
+    subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+    expect(x.children.length).to be 2
+  end
 end
