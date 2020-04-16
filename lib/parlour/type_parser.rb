@@ -189,16 +189,21 @@ module Parlour
               parse_err 'prop/const key must be a symbol', prop_node unless key_node.type == :sym
               key = key_node.to_a.first
 
-              value = case value_node.type
-              when :true
-                true
-              when :false
-                false
-              when :sym
-                value_node.to_a.first
-              else
-                T.must(node_to_s(value_node))
-              end
+              value =
+                if key == :default
+                  T.must(node_to_s(value_node))
+                else
+                  case value_node.type
+                  when :true
+                    true
+                  when :false
+                    false
+                  when :sym
+                    value_node.to_a.first
+                  else
+                    T.must(node_to_s(value_node))
+                  end
+                end
 
               [key, value]
             end.to_h
@@ -258,7 +263,7 @@ module Parlour
             abstract,
           )
         end
-        
+
         final_obj.children.concat(parse_path_to_object(path.child(2))) if body
         final_obj.create_includes(includes)
         final_obj.create_extends(extends)
