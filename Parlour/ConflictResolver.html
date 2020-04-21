@@ -398,7 +398,21 @@ of them.</p>
 155
 156
 157
-158</pre>
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/parlour/conflict_resolver.rb', line 41</span>
@@ -422,6 +436,20 @@ of them.</p>
         <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_c'>c</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_class_method'>class_method</span> <span class='rbrace'>}</span> <span class='op'>==</span> <span class='int'>1</span>
 
         <span class='const'><span class='object_link'><a href="Debugging.html" title="Parlour::Debugging (module)">Debugging</a></span></span><span class='period'>.</span><span class='id identifier rubyid_debug_puts'><span class='object_link'><a href="Debugging.html#debug_puts-class_method" title="Parlour::Debugging.debug_puts (method)">debug_puts</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="Debugging.html" title="Parlour::Debugging (module)">Debugging</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Debugging/Tree.html" title="Parlour::Debugging::Tree (module)">Tree</a></span></span><span class='period'>.</span><span class='id identifier rubyid_end'><span class='object_link'><a href="Debugging/Tree.html#end-class_method" title="Parlour::Debugging::Tree.end (method)">end</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>One is an instance method and one is a class method; no resolution required</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+        <span class='kw'>next</span>
+      <span class='kw'>end</span>
+
+      <span class='comment'># Special case: if we remove the namespaces, is everything either an
+</span>      <span class='comment'># include or an extend? If so, do nothing - this is fine
+</span>      <span class='kw'>if</span> <span class='id identifier rubyid_children'>children</span> \
+        <span class='period'>.</span><span class='id identifier rubyid_reject'>reject</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+        <span class='period'>.</span><span class='id identifier rubyid_then'>then</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span>
+          <span class='op'>!</span><span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span>
+            <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Include.html" title="Parlour::RbiGenerator::Include (class)">Include</a></span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Extend.html" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span></span><span class='rparen'>)</span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+        
+        <span class='const'><span class='object_link'><a href="Debugging.html" title="Parlour::Debugging (module)">Debugging</a></span></span><span class='period'>.</span><span class='id identifier rubyid_debug_puts'><span class='object_link'><a href="Debugging.html#debug_puts-class_method" title="Parlour::Debugging.debug_puts (method)">debug_puts</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="Debugging.html" title="Parlour::Debugging (module)">Debugging</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Debugging/Tree.html" title="Parlour::Debugging::Tree (module)">Tree</a></span></span><span class='period'>.</span><span class='id identifier rubyid_end'><span class='object_link'><a href="Debugging/Tree.html#end-class_method" title="Parlour::Debugging::Tree.end (method)">end</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Includes/extends do not conflict with namespaces; no resolution required</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
         <span class='kw'>next</span>
       <span class='kw'>end</span>
 
@@ -531,7 +559,7 @@ of them.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Apr 16 22:02:09 2020 by
+  Generated on Tue Apr 21 20:25:21 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.24 (ruby-2.3.8).
 </div>
