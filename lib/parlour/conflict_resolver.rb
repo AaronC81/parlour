@@ -42,8 +42,15 @@ module Parlour
       Debugging.debug_puts(self, Debugging::Tree.begin("Resolving conflicts for #{namespace.name}..."))
 
       # Check for multiple definitions with the same name
-      grouped_by_name_children = namespace.children.group_by(&:name)
-
+      # (Special case here: writer attributes get an "=" appended to their name)
+      grouped_by_name_children = namespace.children.group_by do |child|
+        if RbiGenerator::Attribute === child && child.kind == :writer
+          "#{child.name}=" unless child.name.end_with?('=')
+        else
+          child.name
+        end
+      end
+      
       grouped_by_name_children.each do |name, children|
         Debugging.debug_puts(self, Debugging::Tree.begin("Checking children named #{name}..."))
 
