@@ -831,7 +831,30 @@ RSpec.describe Parlour::TypeParser do
     expect(directions.enums.length).to eq 4
     expect(directions.enums.first).to eq 'North'
     expect(directions.enums.last).to eq ['East', '"Some custom serialization"']
-    
+
     expect(directions.children.find { |x| x.name == 'mnemonic' }).to be_a Parlour::RbiGenerator::Method
+  end
+
+  it 'parses constants' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      class A
+        FOO = T.let(nil, T.nilable(String))
+        BAR = 'Hey'.freeze
+      end
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children.length).to eq 1
+
+    a = root.children.first
+    expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+    expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
+    expect(a.children.length).to eq 2
+
+    foo, bar = a.children
+    expect(foo).to be_a Parlour::RbiGenerator::Constant
+    expect(bar).to be_a Parlour::RbiGenerator::Constant
+    expect(foo).to have_attributes(name: "FOO", value: "T.let(nil, T.nilable(String))")
+    expect(bar).to have_attributes(name: "BAR", value: "'Hey'.freeze")
   end
 end
