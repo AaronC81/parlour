@@ -312,4 +312,19 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(x.children.length).to be 2
   end
+  
+  it 'does not conflict writers with non-=-suffixed methods' do
+    x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
+      class A
+        attr_writer :foo
+        def foo; end
+      end
+    RUBY
+
+    expect(x.children.length).to be 2
+
+    subject.resolve_conflicts(x) { |*| raise 'unable to resolve automatically' }
+
+    expect(x.children.length).to be 2
+  end
 end
