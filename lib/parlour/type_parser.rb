@@ -338,6 +338,13 @@ module Parlour
         node.to_a.length.times.map do |c|
           parse_path_to_object(path.child(c), is_within_eigenclass: is_within_eigenclass)
         end.flatten
+      when :casgn
+        _, name, body = *node
+        [Parlour::RbiGenerator::Constant.new(
+          DetachedRbiGenerator.new,
+          name: T.must(name).to_s,
+          value: T.must(node_to_s(body)),
+        )]
       else
         if unknown_node_errors
           parse_err "don't understand node type #{node.type}", node
