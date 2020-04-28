@@ -262,7 +262,7 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
-      expect(meth).to have_attributes(name: 'foo', return_type: nil,
+      expect(meth).to have_attributes(name: 'foo', return_type: "T.untyped",
         override: false, class_method: false)
     end
 
@@ -274,7 +274,7 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
-      expect(meth.return_type).to eq nil
+      expect(meth.return_type).to eq 'T.untyped'
       expect(meth.name).to eq 'foo'
       expect(meth.override).to eq false
       expect(meth.final).to eq false
@@ -295,7 +295,7 @@ RSpec.describe Parlour::TypeParser do
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
       expect(meth).to have_attributes(name: 'foo',
-        return_type: nil, override: false, final: false)
+        return_type: "T.untyped", override: false, final: false)
 
       expect(meth.parameters.length).to eq 4
       expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
@@ -317,7 +317,7 @@ RSpec.describe Parlour::TypeParser do
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
       expect(meth).to have_attributes(name: 'foo',
-        return_type: nil, override: false)
+        return_type: "T.untyped", override: false)
 
       expect(meth.parameters[0]).to have_attributes(name: '*args', type: :splat,
         type: nil)
@@ -333,7 +333,7 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
-      expect(meth).to have_attributes(name: 'foo', return_type: nil,
+      expect(meth).to have_attributes(name: 'foo', return_type: "T.untyped",
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
       expect(meth.parameters.first).to have_attributes(name: 'x',
@@ -348,7 +348,7 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([]), is_within_eigenclass: true).only
-      expect(meth).to have_attributes(name: 'foo', return_type: nil,
+      expect(meth).to have_attributes(name: 'foo', return_type: "T.untyped",
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
       expect(meth.parameters.first).to have_attributes(name: 'x',
@@ -599,7 +599,7 @@ RSpec.describe Parlour::TypeParser do
       expect(baz).to be_a Parlour::RbiGenerator::Method
       expect(bar).to have_attributes(name: 'bar', return_type: 'String',
         class_method: true)
-      expect(baz).to have_attributes(name: 'baz', return_type: nil,
+      expect(baz).to have_attributes(name: 'baz', return_type: "T.untyped",
         class_method: false)
     end
 
@@ -631,9 +631,9 @@ RSpec.describe Parlour::TypeParser do
       expect(baz).to be_a Parlour::RbiGenerator::Method
       expect(foo).to have_attributes(name: 'foo', return_type: 'T.untyped',
         kind: :accessor)
-      expect(bar).to have_attributes(name: 'bar', return_type: nil,
+      expect(bar).to have_attributes(name: 'bar', return_type: "T.untyped",
         class_method: true)
-      expect(baz).to have_attributes(name: 'baz', return_type: nil,
+      expect(baz).to have_attributes(name: 'baz', return_type: "T.untyped",
         class_method: false)
     end
 

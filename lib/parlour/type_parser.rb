@@ -640,8 +640,9 @@ module Parlour
         class_method = true
       end
 
+      return_type = "T.untyped"
+
       if kind == :def
-        return_type = nil
         parameters = def_params.map do |def_param|
           arg_name = def_param.to_a[0]
 
@@ -669,7 +670,6 @@ module Parlour
           )
         end
       elsif kind == :attr
-        return_type = "T.untyped"
         case attr_direction
         when :reader, :accessor, :writer
           attr_type = return_type
