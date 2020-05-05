@@ -1,4 +1,6 @@
 # typed: true
+require 'set'
+
 module Parlour
   # Responsible for resolving conflicts (that is, multiple definitions with the
   # same name) between objects defined in the same namespace.
@@ -206,8 +208,14 @@ module Parlour
 
       # If there are two namespace types, one should be Namespace and the other
       # should be a subclass of it
-      if namespace_types.length == 2
+      # If there are three, we have a class namespace specialization too
+      if namespace_types.length.between?(2, 3)
         exactly_namespace, exactly_one_subclass = namespace_types.partition { |x| x == RbiGenerator::Namespace }
+
+        # Special case: having "ClassNamespace" and a specialized class namespace is fine
+        exactly_one_subclass = [RbiGenerator::ClassNamespace] \
+          if exactly_one_subclass.to_set == Set[RbiGenerator::ClassNamespace, RbiGenerator::StructClassNamespace] \
+            || exactly_one_subclass.to_set == Set[RbiGenerator::ClassNamespace, RbiGenerator::EnumClassNamespace]
 
         return nil unless exactly_namespace.length == 1 \
           && exactly_one_subclass.length == 1 \

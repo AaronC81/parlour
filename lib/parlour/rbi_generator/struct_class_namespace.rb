@@ -75,7 +75,7 @@ module Parlour
         all = others + [self]
         all_structs = T.cast(all.select { |x| StructClassNamespace === x }, T::Array[StructClassNamespace])
 
-        T.must(super && all_structs.map(&:props).uniq.length <= 1)
+        T.must(super && all_structs.map(&:props).reject(&:empty?).uniq.length <= 1)
       end
     end
   end
