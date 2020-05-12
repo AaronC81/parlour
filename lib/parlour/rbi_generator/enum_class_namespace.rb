@@ -80,10 +80,11 @@ module Parlour
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {EnumClassNamespace} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
-        others = T.cast(others, T::Array[EnumClassNamespace]) rescue (return false)
+        others = T.cast(others, T::Array[Namespace]) rescue (return false)
         all = others + [self]
+        all_enums = T.cast(all.select { |x| EnumClassNamespace === x }, T::Array[EnumClassNamespace])
 
-        T.must(super && all.map(&:enums).uniq.length <= 1)
+        T.must(super && all_enums.map { |e| e.enums.sort }.reject(&:empty?).uniq.length <= 1)
       end
     end
   end

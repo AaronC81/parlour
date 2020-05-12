@@ -181,6 +181,52 @@ RSpec.describe Parlour::ConflictResolver do
       subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges enums with identical values in different order' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: ['East', 'West', 'North', 'South'])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges enums with some value and no value' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: [])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'does not merge enums with different values' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: ['Northeast', 'Southeast', 'Southwest', 'Northwest'])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
     end
 
     it 'does not merge enums and classes' do
