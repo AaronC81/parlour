@@ -86,6 +86,27 @@ module Parlour
 
         T.must(super && all_enums.map { |e| e.enums.sort }.reject(&:empty?).uniq.length <= 1)
       end
+
+      sig do
+        override.params(
+          others: T::Array[RbiGenerator::RbiObject]
+        ).void
+      end
+      # Given an array of {EnumClassNamespace} instances, merges them into this one.
+      # You MUST ensure that {mergeable?} is true for those instances.
+      #
+      # @param others [Array<RbiGenerator::RbiObject>] An array of other {EnumClassNamespace} instances.
+      # @return [void]
+      def merge_into_self(others)
+        super
+
+        others.each do |other|
+          next unless EnumClassNamespace === other
+          other = T.cast(other, EnumClassNamespace)
+
+          @enums = other.enums if enums.empty?
+        end
+      end
     end
   end
 end

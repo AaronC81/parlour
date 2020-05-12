@@ -201,8 +201,8 @@ RSpec.describe Parlour::ConflictResolver do
 
     it 'merges enums with some value and no value' do
       m = gen.root.create_module('M') do |m|
-        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
         m.create_enum_class('Direction', enums: [])
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
       end
 
       expect(m.children.length).to be 2
@@ -212,6 +212,8 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
+
+      expect(m.children.first.enums).to eq(['North', 'South', 'East', 'West'])
     end
 
     it 'does not merge enums with different values' do
@@ -282,8 +284,8 @@ RSpec.describe Parlour::ConflictResolver do
 
     it 'merges structs with some value and no value' do
       m = gen.root.create_module('M') do |m|
-        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
         m.create_struct_class('Person', props: [])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
       end
 
       expect(m.children.length).to be 2
@@ -293,6 +295,8 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
+
+      expect(m.children.first.props.map(&:name)).to eq(['name'])
     end
 
     it 'does not merge struct with different value' do
