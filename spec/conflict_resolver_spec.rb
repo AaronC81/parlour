@@ -233,8 +233,8 @@ RSpec.describe Parlour::ConflictResolver do
 
     it 'merges enums and classes' do
       m = gen.root.create_module('M') do |m|
-        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
         m.create_class('Direction')
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
       end
 
       expect(m.children.length).to be 2
@@ -244,6 +244,24 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
+
+      expect(m.children.first.enums).to eq(['North', 'South', 'East', 'West'])
+    end
+
+    it 'does not merge non-mergeable enums and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('Direction')
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: ['Northeast', 'Southeast', 'Southwest', 'Northwest'])
+      end
+
+      expect(m.children.length).to be 3
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
     end
   end
 
@@ -316,8 +334,8 @@ RSpec.describe Parlour::ConflictResolver do
 
     it 'merges enums and classes' do
       m = gen.root.create_module('M') do |m|
-        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
         m.create_class('Person')
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
       end
 
       expect(m.children.length).to be 2
@@ -327,6 +345,24 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
+
+      expect(m.children.first.props.map(&:name)).to eq(['name'])
+    end
+
+    it 'does not merge non-mergeable structs and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('Person')
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'Integer')])
+      end
+
+      expect(m.children.length).to be 3
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
     end
   end
 

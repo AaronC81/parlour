@@ -140,14 +140,24 @@ module Parlour
                 choice = resolver.call("Non-namespace item in a differing namespace conflict is not a single method", non_namespaces)
                 non_namespaces = []
                 non_namespaces << choice if choice
-              end 
+              end
             end
 
             non_namespaces.each do |x|
               namespace.children << x
             end
 
-            first, *rest = namespaces
+            # Enum and Struct namespaces are specialized class namespaces which implement custom
+            # logic for `mergeable?` and `merge_into_self` on top of ClassNamespace so we should
+            # put them first if they're there.
+            first, *rest = namespaces.sort_by do |x|
+              is_specialized_class_namespace = (
+                RbiGenerator::EnumClassNamespace === x ||
+                RbiGenerator::StructClassNamespace === x
+              )
+
+              is_specialized_class_namespace ? 0 : 1
+            end
           else
             raise 'unknown merge strategy; this is a Parlour bug'
           end
@@ -184,16 +194,16 @@ module Parlour
 
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Symbol)) }
     # Given an array, if all elements in the array are instances of the exact
-    # same class or are otherwise mergeable (for example Namespace and 
+    # same class or are otherwise mergeable (for example Namespace and
     # ClassNamespace), returns the kind of merge which needs to be made. A
     # return value of nil indicates that the values cannot be merged.
     #
     # The following kinds are available:
     #   - They are all the same. (:normal)
-    #   - There are exactly two types, one of which is Namespace and other is a 
+    #   - There are exactly two types, one of which is Namespace and other is a
     #     subclass of it. (:differing_namespaces)
     #   - One of them is Namespace or a subclass (or both, as described above),
-    #     and the only other is Method. (also :differing_namespaces) 
+    #     and the only other is Method. (also :differing_namespaces)
     #
     # @param arr [Array] The array.
     # @return [Symbol] The merge strategy to use, or nil if they can't be
