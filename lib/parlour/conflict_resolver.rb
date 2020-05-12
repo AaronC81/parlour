@@ -147,17 +147,18 @@ module Parlour
               namespace.children << x
             end
 
-            # Enum and Struct namespaces are specialized class namespaces which implement custom
-            # logic for `mergeable?` and `merge_into_self` on top of ClassNamespace so we should
-            # put them first if they're there.
-            first, *rest = namespaces.sort_by do |x|
-              is_specialized_class_namespace = (
-                RbiGenerator::EnumClassNamespace === x ||
-                RbiGenerator::StructClassNamespace === x
-              )
+            # For certain namespace types the order matters. For example, if there's
+            # both a `Namespace` and `ModuleNamespace` then merging the two would
+            # produce different results depending on which is first.
+            first_index = (
+              namespaces.find_index { |x| RbiGenerator::EnumClassNamespace === x || RbiGenerator::StructClassNamespace === x } ||
+              namespaces.find_index { |x| RbiGenerator::ClassNamespace === x } ||
+              namespaces.find_index { |x| RbiGenerator::ModuleNamespace === x } ||
+              0
+            )
 
-              is_specialized_class_namespace ? 0 : 1
-            end
+            first = namespaces.delete_at(first_index)
+            rest = namespaces
           else
             raise 'unknown merge strategy; this is a Parlour bug'
           end

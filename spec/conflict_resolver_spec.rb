@@ -422,7 +422,7 @@ RSpec.describe Parlour::ConflictResolver do
     end
   end
 
-  context 'with specialized classes' do
+  context 'when loading from source' do
     it 'allows specialized classes (structs/enums) to have namespace children' do
       x = Parlour::TypeLoader.load_source(<<-RUBY)
         class A < T::Struct
@@ -467,6 +467,56 @@ RSpec.describe Parlour::ConflictResolver do
       subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
 
       expect(x.children.length).to be 2
+    end
+
+    it 'resolves conflicts regardless of order' do
+      x = Parlour::TypeLoader.load_source(<<~RUBY)
+        module Outer
+          class A < T::Struct; end
+          class A; end
+
+          class B::C
+          end
+
+          module B
+            class D; end
+          end
+
+          class Z < T::Enum; end
+          class Z; end
+        end
+      RUBY
+
+      expected_rbi = <<~RUBY.strip
+        module Outer
+          class A < T::Struct
+
+          end
+
+          module B
+            class C
+            end
+
+            class D
+            end
+          end
+
+          class Z < T::Enum
+            enums do
+            end
+
+          end
+        end
+      RUBY
+
+      subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+      actual_rbi = x.generate_rbi(
+        0,
+        Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2, sort_namespaces: true)
+      ).join("\n")
+
+      expect(actual_rbi).to eq (expected_rbi)
     end
   end
 
