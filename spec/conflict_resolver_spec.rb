@@ -229,7 +229,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(invocations).to be 1
     end
 
-    it 'does not merge enums and classes' do
+    it 'merges enums and classes' do
       m = gen.root.create_module('M') do |m|
         m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
         m.create_class('Direction')
@@ -238,10 +238,10 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
 
-      expect(m.children.length).to be 0
-      expect(invocations).to be 1
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
     end
   end
 
@@ -310,7 +310,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(invocations).to be 1
     end
 
-    it 'does not merge enums and classes' do
+    it 'merges enums and classes' do
       m = gen.root.create_module('M') do |m|
         m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
         m.create_class('Person')
@@ -319,10 +319,10 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
 
-      expect(m.children.length).to be 0
-      expect(invocations).to be 1
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
     end
   end
 
@@ -379,6 +379,54 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.map(&:name)).to contain_exactly('foo', 'bar', 'I1', 'I2', 'E1', 'E2')
       expect(a.includes.map(&:name)).to contain_exactly('I1', 'I2')
       expect(a.extends.map(&:name)).to contain_exactly('E1', 'E2')
+    end
+  end
+
+  context 'with specialized classes' do
+    it 'allows specialized classes (structs/enums) to have namespace children' do
+      x = Parlour::TypeLoader.load_source(<<-RUBY)
+        class A < T::Struct
+          prop :x, String
+        end
+        class A::B; end
+        class A
+          class C; end
+        end
+        class A < T::Struct; end
+
+        class Z < T::Enum
+          enums do
+            North = new
+          end
+        end
+        class Z::Y; end
+        class Z
+          class X; end
+        end
+        class Z < T::Enum; end
+      RUBY
+
+      expect(x.children.length).to be 8
+
+      subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+      expect(x.children.length).to be 2
+    end
+
+    it 'allows specialized classes (structs/enums) to be class namespaces' do
+      x = Parlour::TypeLoader.load_source(<<-RUBY)
+        class A < T::Struct; end
+        class A; end
+
+        class Z < T::Enum; end
+        class Z; end
+      RUBY
+
+      expect(x.children.length).to be 4
+
+      subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+      expect(x.children.length).to be 2
     end
   end
 
