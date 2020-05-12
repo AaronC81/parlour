@@ -71,10 +71,11 @@ module Parlour
       # @param others [Array<RbiGenerator::RbiObject>] An array of other {StructClassNamespace} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
-        others = T.cast(others, T::Array[StructClassNamespace]) rescue (return false)
+        others = T.cast(others, T::Array[Namespace]) rescue (return false)
         all = others + [self]
+        all_structs = T.cast(all.select { |x| StructClassNamespace === x }, T::Array[StructClassNamespace])
 
-        T.must(super && all.map(&:props).uniq.length <= 1)
+        T.must(super && all_structs.map { |s| s.props.map(&:to_prop_call).sort }.reject(&:empty?).uniq.length <= 1)
       end
     end
   end

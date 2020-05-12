@@ -199,6 +199,87 @@ RSpec.describe Parlour::ConflictResolver do
     end
   end
 
+  context 'when resolving conflicts on structs' do
+    it 'merges structs with identical values' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges structs with identical values in different order' do
+      m = gen.root.create_module('M') do |m|
+        props = [
+          Parlour::RbiGenerator::StructProp.new('name', 'String'),
+          Parlour::RbiGenerator::StructProp.new('age', 'Integer'),
+        ]
+        m.create_struct_class('Person', props: props)
+        m.create_struct_class('Person', props: props.reverse)
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges structs with some value and no value' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'does not merge struct with different value' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'Integer')])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+
+    it 'does not merge enums and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_class('Person')
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+  end
+
   context 'when resolving conflicts on modules' do
     it 'merges identical empty modules' do
       m = gen.root.create_module('M') do |m|
