@@ -234,7 +234,7 @@ module Parlour
         elsif ['T::Enum', '::T::Enum'].include?(node_to_s(superclass))
           # Look for (block (send nil :enums) ...) structure
           enums_node = body.nil? ? nil :
-            body.to_a.find { |x| x.type == :block && x.to_a[0].type == :send && x.to_a[0].to_a[1] == :enums }
+            (body.type == :begin ? body.to_a : [body]).find { |x| x.type == :block && x.to_a[0].type == :send && x.to_a[0].to_a[1] == :enums }
 
           # Find the constant assigments within this block
           constant_nodes = enums_node.to_a[2].to_a

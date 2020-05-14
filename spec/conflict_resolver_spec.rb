@@ -181,15 +181,182 @@ RSpec.describe Parlour::ConflictResolver do
       subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
+      expect(invocations).to be 0
     end
 
-    it 'does not merge enums and classes' do
+    it 'merges enums with identical values in different order' do
       m = gen.root.create_module('M') do |m|
         m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
-        m.create_class('Direction')
+        m.create_enum_class('Direction', enums: ['East', 'West', 'North', 'South'])
       end
 
       expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges enums with some value and no value' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: [])
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+
+      expect(m.children.first.enums).to eq(['North', 'South', 'East', 'West'])
+    end
+
+    it 'does not merge enums with different values' do
+      m = gen.root.create_module('M') do |m|
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: ['Northeast', 'Southeast', 'Southwest', 'Northwest'])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+
+    it 'merges enums and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('Direction')
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+
+      expect(m.children.first.enums).to eq(['North', 'South', 'East', 'West'])
+    end
+
+    it 'does not merge non-mergeable enums and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('Direction')
+        m.create_enum_class('Direction', enums: ['North', 'South', 'East', 'West'])
+        m.create_enum_class('Direction', enums: ['Northeast', 'Southeast', 'Southwest', 'Northwest'])
+      end
+
+      expect(m.children.length).to be 3
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+  end
+
+  context 'when resolving conflicts on structs' do
+    it 'merges structs with identical values' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges structs with identical values in different order' do
+      m = gen.root.create_module('M') do |m|
+        props = [
+          Parlour::RbiGenerator::StructProp.new('name', 'String'),
+          Parlour::RbiGenerator::StructProp.new('age', 'Integer'),
+        ]
+        m.create_struct_class('Person', props: props)
+        m.create_struct_class('Person', props: props.reverse)
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+    end
+
+    it 'merges structs with some value and no value' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+
+      expect(m.children.first.props.map(&:name)).to eq(['name'])
+    end
+
+    it 'does not merge struct with different value' do
+      m = gen.root.create_module('M') do |m|
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'Integer')])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+
+      expect(m.children.length).to be 0
+      expect(invocations).to be 1
+    end
+
+    it 'merges enums and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('Person')
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+      end
+
+      expect(m.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+      expect(m.children.length).to be 1
+      expect(invocations).to be 0
+
+      expect(m.children.first.props.map(&:name)).to eq(['name'])
+    end
+
+    it 'does not merge non-mergeable structs and classes' do
+      m = gen.root.create_module('M') do |m|
+        m.create_class('Person')
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'String')])
+        m.create_struct_class('Person', props: [Parlour::RbiGenerator::StructProp.new('name', 'Integer')])
+      end
+
+      expect(m.children.length).to be 3
 
       invocations = 0
       subject.resolve_conflicts(m) { |*| invocations += 1; nil }
@@ -252,6 +419,104 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.map(&:name)).to contain_exactly('foo', 'bar', 'I1', 'I2', 'E1', 'E2')
       expect(a.includes.map(&:name)).to contain_exactly('I1', 'I2')
       expect(a.extends.map(&:name)).to contain_exactly('E1', 'E2')
+    end
+  end
+
+  context 'when loading from source' do
+    it 'allows specialized classes (structs/enums) to have namespace children' do
+      x = Parlour::TypeLoader.load_source(<<-RUBY)
+        class A < T::Struct
+          prop :x, String
+        end
+        class A::B; end
+        class A
+          class C; end
+        end
+        class A < T::Struct; end
+
+        class Z < T::Enum
+          enums do
+            North = new
+          end
+        end
+        class Z::Y; end
+        class Z
+          class X; end
+        end
+        class Z < T::Enum; end
+      RUBY
+
+      expect(x.children.length).to be 8
+
+      subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+      expect(x.children.length).to be 2
+    end
+
+    it 'allows specialized classes (structs/enums) to be class namespaces' do
+      x = Parlour::TypeLoader.load_source(<<-RUBY)
+        class A < T::Struct; end
+        class A; end
+
+        class Z < T::Enum; end
+        class Z; end
+      RUBY
+
+      expect(x.children.length).to be 4
+
+      subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+      expect(x.children.length).to be 2
+    end
+
+    it 'resolves conflicts regardless of order' do
+      x = Parlour::TypeLoader.load_source(<<~RUBY)
+        module Outer
+          class A < T::Struct; end
+          class A; end
+
+          class B::C
+          end
+
+          module B
+            class D; end
+          end
+
+          class Z < T::Enum; end
+          class Z; end
+        end
+      RUBY
+
+      expected_rbi = <<~RUBY.strip
+        module Outer
+          class A < T::Struct
+
+          end
+
+          module B
+            class C
+            end
+
+            class D
+            end
+          end
+
+          class Z < T::Enum
+            enums do
+            end
+
+          end
+        end
+      RUBY
+
+      subject.resolve_conflicts(x) { |*x| raise 'unable to resolve automatically' }
+
+      actual_rbi = x.generate_rbi(
+        0,
+        Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2, sort_namespaces: true)
+      ).join("\n")
+
+      expect(actual_rbi).to eq (expected_rbi)
     end
   end
 
