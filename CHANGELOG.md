@@ -3,6 +3,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.0.0] - 2020-05-15
+### Added
+- `T::Struct` classes can now be generated and parsed.
+- `T::Enum` classes can now be parsed.
+- Constants are now parsed.
+- `TypeParser` now detects and parses methods which do not have a `sig`.
+  **Potentially breaking if there is a strict set of methods you are expecting Parlour to detect.**
+
+### Fixed
+- "Specialized" classes, such as enums and now structs, have had many erroneous
+  conflicts with standard classes or namespaces fixed.
+- Attributes writers and methods with the same name no longer conflict incorrectly.
+
 ## [2.1.0] - 2020-03-22
 ### Added
 - Files can now be excluded from the `TypeLoader`.
