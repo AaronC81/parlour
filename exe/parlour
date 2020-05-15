@@ -16,9 +16,23 @@ command :run do |c|
   c.description = 'Generates an RBI file from your .parlour file'
 
   c.action do |args, options|
-    configuration = keys_to_symbols(YAML.load_file(File.join(Dir.pwd, '.parlour')))
+    working_dir = Dir.pwd
+    config_filename = File.join(working_dir, '.parlour')
 
-    raise 'you must specify output_file in your .parlour file' unless configuration[:output_file]
+    if File.exists?(config_filename)
+      configuration = keys_to_symbols(YAML.load_file(config_filename))
+    else
+      configuration = {}
+    end
+
+    # Input/Output defaults
+    configuration[:root] ||= '.'
+    configuration[:output_file] ||= "rbi/#{File.basename(working_dir)}.rbi"
+    configuration[:inclusions] ||= ['lib']
+    configuration[:exclusions] ||= ['sorbet', 'spec']
+
+    # Defaults can be overridden but we always want to exclude the output file
+    configuration[:exclusions] << configuration[:output_file]
 
     # Style defaults
     configuration[:style] ||= {}
@@ -52,6 +66,13 @@ command :run do |c|
     gen = Parlour::RbiGenerator.new(
       break_params: configuration[:style][:break_params],
       tab_size: configuration[:style][:tab_size]
+    )
+
+    Parlour::TypeLoader.load_project(
+      configuration[:root],
+      inclusions: configuration[:inclusions],
+      exclusions: configuration[:exclusions],
+      generator: gen,
     )
     Parlour::Plugin.run_plugins(plugin_instances, gen)
 
@@ -98,6 +119,7 @@ command :run do |c|
     end
 
     # Write the final RBI
+    FileUtils.mkdir_p(File.dirname(configuration[:output_file]))
     File.write(configuration[:output_file], gen.rbi(strictness))
   end
 end
