@@ -83,7 +83,7 @@ module Parlour
 
     extend T::Sig
 
-    sig { params(ast: Parser::AST::Node, unknown_node_errors: T::Boolean).void }
+    sig { params(ast: Parser::AST::Node, unknown_node_errors: T::Boolean, generator: T.nilable(RbiGenerator)).void }
     # Creates a new {TypeParser} from whitequark/parser AST.
     #
     # @param [Parser::AST::Node] The AST.
@@ -92,25 +92,26 @@ module Parlour
     #   if true, a parse error is raised. Setting this to true is likely to
     #   raise errors for lots of non-RBI Ruby code, but setting it to false
     #   could miss genuine typed objects if Parlour or your code contains a bug.
-    def initialize(ast, unknown_node_errors: false)
+    def initialize(ast, unknown_node_errors: false, generator: nil)
       @ast = ast
       @unknown_node_errors = unknown_node_errors
+      @generator = generator || DetachedRbiGenerator.new
     end
 
-    sig { params(filename: String, source: String).returns(TypeParser) }
+    sig { params(filename: String, source: String, generator: T.nilable(RbiGenerator)).returns(TypeParser) }
     # Creates a new {TypeParser} from a source file and its filename.
     #
     # @param [String] filename A filename. This does not need to be an actual
     #   file; it merely identifies this source.
     # @param [String] source The Ruby source code.
     # @return [TypeParser]
-    def self.from_source(filename, source)
+    def self.from_source(filename, source, generator: nil)
       buffer = Parser::Source::Buffer.new(filename)
       buffer.source = source
 
       # || special case handles parser returning nil on an empty file
       parsed = Parser::CurrentRuby.new.parse(buffer) || Parser::AST::Node.new(:body)
-      TypeParser.new(parsed)
+      TypeParser.new(parsed, generator: generator)
     end
 
     sig { returns(Parser::AST::Node) }
@@ -121,6 +122,10 @@ module Parlour
     # @return [Boolean] Whether to raise an error if a node of an unknown kind
     #   is encountered.
     attr_reader :unknown_node_errors
+
+    sig { returns(RbiGenerator) }
+    # @return [RbiGenerator] The {RbiGenerator} to load the source into.
+    attr_accessor :generator
 
     # Parses the entire source file and returns the resulting root namespace.
     #
@@ -162,7 +167,7 @@ module Parlour
         top_level = T.let(nil, T.nilable(RbiGenerator::Namespace))
         parent_names.each do |n|
           new_obj = RbiGenerator::Namespace.new(
-            DetachedRbiGenerator.new,
+            generator,
             n.to_s,
             false,
           )
@@ -225,7 +230,7 @@ module Parlour
           end
 
           final_obj = RbiGenerator::StructClassNamespace.new(
-            DetachedRbiGenerator.new,
+            generator,
             this_name.to_s,
             final,
             props,
@@ -248,7 +253,7 @@ module Parlour
           end
 
           final_obj = RbiGenerator::EnumClassNamespace.new(
-            DetachedRbiGenerator.new,
+            generator,
             this_name.to_s,
             final,
             enums,
@@ -256,7 +261,7 @@ module Parlour
           )
         else
           final_obj = RbiGenerator::ClassNamespace.new(
-            DetachedRbiGenerator.new,
+            generator,
             this_name.to_s,
             final,
             node_to_s(superclass),
@@ -288,7 +293,7 @@ module Parlour
         top_level = T.let(nil, T.nilable(RbiGenerator::Namespace))
         parent_names.each do |n|
           new_obj = RbiGenerator::Namespace.new(
-            DetachedRbiGenerator.new,
+            generator,
             n.to_s,
             false,
           )
@@ -298,7 +303,7 @@ module Parlour
         end if parent_names
 
         final_obj = RbiGenerator::ModuleNamespace.new(
-          DetachedRbiGenerator.new,
+          generator,
           this_name.to_s,
           final,
           interface,
@@ -341,7 +346,7 @@ module Parlour
       when :casgn
         _, name, body = *node
         [Parlour::RbiGenerator::Constant.new(
-          DetachedRbiGenerator.new,
+          generator,
           name: T.must(name).to_s,
           value: T.must(node_to_s(body)),
         )]
@@ -535,7 +540,7 @@ module Parlour
         # There should only be one ever here, but future-proofing anyway
         def_names.map do |def_name|
           RbiGenerator::Method.new(
-            DetachedRbiGenerator.new,
+            generator,
             def_name,
             parameters,
             return_type,
@@ -575,7 +580,7 @@ module Parlour
 
         def_names.map do |def_name|
           RbiGenerator::Attribute.new(
-            DetachedRbiGenerator.new,
+            generator,
             def_name,
             attr_direction,
             attr_type,
@@ -662,7 +667,7 @@ module Parlour
         # There should only be one ever here, but future-proofing anyway
         def_names.map do |def_name|
           RbiGenerator::Method.new(
-            DetachedRbiGenerator.new,
+            generator,
             def_name,
             parameters,
             return_type,
@@ -679,7 +684,7 @@ module Parlour
 
         def_names.map do |def_name|
           RbiGenerator::Attribute.new(
-            DetachedRbiGenerator.new,
+            generator,
             def_name,
             attr_direction,
             attr_type,
