@@ -132,7 +132,7 @@ module Parlour
     # @return [RbiGenerator::Namespace] The root namespace of the parsed source.
     sig { returns(RbiGenerator::Namespace) }
     def parse_all
-      root = RbiGenerator::Namespace.new(DetachedRbiGenerator.new)
+      root = generator.root
       root.children.concat(parse_path_to_object(NodePath.new([])))
       root
     end

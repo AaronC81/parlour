@@ -6,14 +6,9 @@ module Parlour
     def detached!
       raise "cannot call methods on a detached RBI generator"
     end
-  
+
     sig { override.returns(Options) }
     def options
-      detached!
-    end
-
-    sig { override.returns(Namespace) }
-    def root
       detached!
     end
 
