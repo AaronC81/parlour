@@ -1,0 +1,2 @@
+exclusions:
+  - lib/parlour/kernel_hack.rb
