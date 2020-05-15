@@ -1,2 +1,5 @@
-exclusions:
+excluded_paths:
   - lib/parlour/kernel_hack.rb
+
+excluded_modules:
+  - Parlour::DetachedRbiGenerator

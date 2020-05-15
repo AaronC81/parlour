@@ -28,11 +28,17 @@ command :run do |c|
     # Input/Output defaults
     configuration[:root] ||= '.'
     configuration[:output_file] ||= "rbi/#{File.basename(working_dir)}.rbi"
-    configuration[:inclusions] ||= ['lib']
-    configuration[:exclusions] ||= ['sorbet', 'spec']
+
+    # Included/Excluded path defaults
+    configuration[:included_paths] ||= ['lib']
+    configuration[:excluded_paths] ||= ['sorbet', 'spec']
 
     # Defaults can be overridden but we always want to exclude the output file
-    configuration[:exclusions] << configuration[:output_file]
+    configuration[:excluded_paths] << configuration[:output_file]
+
+    # Included/Excluded module defaults
+    configuration[:included_modules] ||= []
+    configuration[:excluded_modules] ||= []
 
     # Style defaults
     configuration[:style] ||= {}
@@ -70,8 +76,8 @@ command :run do |c|
 
     Parlour::TypeLoader.load_project(
       configuration[:root],
-      inclusions: configuration[:inclusions],
-      exclusions: configuration[:exclusions],
+      inclusions: configuration[:included_paths],
+      exclusions: configuration[:excluded_paths],
       generator: gen,
     )
     Parlour::Plugin.run_plugins(plugin_instances, gen)
@@ -93,6 +99,14 @@ command :run do |c|
       puts
       choice = ask("?  ", Integer) { |q| q.in = 0..candidates.length }
       choice == 0 ? nil : candidates[choice - 1]
+    end
+
+    if !configuration[:included_modules].empty? || !configuration[:excluded_modules].empty?
+      remove_unwanted_modules(
+        gen.root,
+        included_modules: configuration[:included_modules],
+        excluded_modules: configuration[:excluded_modules],
+      )
     end
 
     # Figure out strictness levels
@@ -143,4 +157,25 @@ def keys_to_symbols(hash)
       end
     ]
   end.to_h
+end
+
+def remove_unwanted_modules(root, included_modules:, excluded_modules:, prefix: nil)
+  root.children.select! do |child|
+    module_name = "#{prefix}#{child.name}"
+
+    if child.respond_to?(:children)
+      remove_unwanted_modules(
+        child,
+        included_modules: included_modules,
+        excluded_modules: excluded_modules,
+        prefix: "#{module_name}::",
+      )
+      has_included_children = !child.children.empty?
+    end
+
+    included = included_modules.empty? ? true : included_modules.any? { |m| module_name.start_with?(m) }
+    excluded = excluded_modules.empty? ? false : excluded_modules.any? { |m| module_name.start_with?(m) }
+
+    (included || has_included_children) && !excluded
+  end
 end

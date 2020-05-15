@@ -54,20 +54,6 @@ module Parlour
     end
   end
 
-  class DetachedRbiGenerator < RbiGenerator
-    sig { returns(T.untyped) }
-    def detached!; end
-
-    sig { override.returns(Options) }
-    def options; end
-
-    sig { override.returns(T.nilable(Plugin)) }
-    def current_plugin; end
-
-    sig { override.params(strictness: String).returns(String) }
-    def rbi(strictness = 'strong'); end
-  end
-
   class ParseError < StandardError
     extend T::Sig
 
