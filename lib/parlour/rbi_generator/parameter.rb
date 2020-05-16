@@ -42,7 +42,7 @@ module Parlour
 
         @kind = :keyword if kind == :normal && name.end_with?(':')
 
-        @type = type
+        @type = type || 'T.untyped'
         @default = default
       end
 
@@ -80,10 +80,10 @@ module Parlour
         T.must(name[prefix.length..-1])
       end
 
-      sig { returns(T.nilable(String)) }
+      sig { returns(String) }
       # A Sorbet string of this parameter's type, such as +"String"+ or
       # +"T.untyped"+.
-      # @return [String, nil]
+      # @return [String]
       attr_reader :type
 
       sig { returns(T.nilable(String)) }
@@ -118,7 +118,7 @@ module Parlour
       #
       # @return [String]
       def to_sig_param
-        "#{name_without_kind}: #{type || 'T.untyped'}"
+        "#{name_without_kind}: #{type}"
       end#
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.

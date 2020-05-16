@@ -725,7 +725,7 @@ module Parlour
       sig { returns(String) }
       def name_without_kind; end
 
-      sig { returns(T.nilable(String)) }
+      sig { returns(String) }
       attr_reader :type
 
       sig { returns(T.nilable(String)) }
