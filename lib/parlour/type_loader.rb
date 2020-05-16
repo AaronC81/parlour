@@ -46,7 +46,7 @@ module Parlour
     #
     # @param [String] root The root of the project; where the "sorbet" directory
     #   and "Gemfile" are located.
-    # @param [Array<String>] exclusions A list of files to include when loading
+    # @param [Array<String>] inclusions A list of files to include when loading
     #   the project, relative to the given root.
     # @param [Array<String>] exclusions A list of files to exclude when loading
     #   the project, relative to the given root.
