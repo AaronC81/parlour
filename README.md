@@ -29,7 +29,7 @@ key parts:
     no need to write your own parser!
 
   - You can **generate RBI to ship with your gem** for consuming projects to use
-    ([see "RBIs within gems" in sorbet the docs](https://sorbet.org/docs/rbi#rbis-within-gems)).
+    ([see "RBIs within gems" in Sorbet's docs](https://sorbet.org/docs/rbi#rbis-within-gems)).
 
 Please [**read the wiki**](https://github.com/AaronC81/parlour/wiki) to get
 started!

@@ -25,25 +25,32 @@ command :run do |c|
       configuration = {}
     end
 
-    # Input/Output defaults
-    configuration[:root] ||= '.'
+    # Output default
     configuration[:output_file] ||= "rbi/#{File.basename(working_dir)}.rbi"
-
-    # Included/Excluded path defaults
-    configuration[:included_paths] ||= ['lib']
-    configuration[:excluded_paths] ||= ['sorbet', 'spec']
-
-    # Defaults can be overridden but we always want to exclude the output file
-    configuration[:excluded_paths] << configuration[:output_file]
-
-    # Included/Excluded module defaults
-    configuration[:included_modules] ||= []
-    configuration[:excluded_modules] ||= []
 
     # Style defaults
     configuration[:style] ||= {}
     configuration[:style][:tab_size] ||= 2
     configuration[:style][:break_params] ||= 4
+
+    # Parser defaults, set explicitly to false to not run parser
+    if configuration[:parser] != false
+      configuration[:parser] ||= {}
+
+      # Input/Output defaults
+      configuration[:parser][:root] ||= '.'
+
+      # Included/Excluded path defaults
+      configuration[:parser][:included_paths] ||= ['lib']
+      configuration[:parser][:excluded_paths] ||= ['sorbet', 'spec']
+
+      # Defaults can be overridden but we always want to exclude the output file
+      configuration[:parser][:excluded_paths] << configuration[:output_file]
+    end
+
+    # Included/Excluded module defaults
+    configuration[:included_modules] ||= []
+    configuration[:excluded_modules] ||= []
 
     # Require defaults
     configuration[:requires] ||= []
@@ -74,12 +81,14 @@ command :run do |c|
       tab_size: configuration[:style][:tab_size]
     )
 
-    Parlour::TypeLoader.load_project(
-      configuration[:root],
-      inclusions: configuration[:included_paths],
-      exclusions: configuration[:excluded_paths],
-      generator: gen,
-    )
+    if configuration[:parser]
+      Parlour::TypeLoader.load_project(
+        configuration[:parser][:root],
+        inclusions: configuration[:parser][:included_paths],
+        exclusions: configuration[:parser][:excluded_paths],
+        generator: gen,
+      )
+    end
     Parlour::Plugin.run_plugins(plugin_instances, gen)
 
     # Run a pass of the conflict resolver
