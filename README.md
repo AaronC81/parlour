@@ -177,7 +177,7 @@ Parlour::TypeLoader.load_project('root/of/the/project')
 The structure of the returned object trees is identical to those you would
 create when generating an RBI, built of instances of `RbiObject` subclasses.
 
-## Generating RBI for a gem
+## Generating RBI for a Gem
 
 Include `parlour` as a development_dependency in your `.gemspec`:
 
@@ -192,10 +192,13 @@ bundle exec parlour
 ```
 
 Parlour is configured to use sane defaults assuming a standard gem structure
-to allow sorbet to automatically find your RBI when your gem is included as
-a dependency. If you require more advanced configuration you can add a
+to generate an RBI that Sorbet will automatically find when your gem is included
+as a dependency. If you require more advanced configuration you can add a
 `.parlour` YAML file in the root of your project (see this project's `.parlour`
 file as an example).
+
+To disable the parsing step entire and just run plugins you can set `parser: false`
+in your `.parlour` file.
 
 ## Parlour Plugins
 
