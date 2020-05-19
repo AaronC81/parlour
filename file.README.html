@@ -90,6 +90,10 @@ single RBI output file.</p>
 </li><li>
 <p>You can <strong>effortlessly build tools which need to access types within
 an RBI</strong>; no need to write your own parser!</p>
+</li><li>
+<p>You can <strong>generate RBI to ship with your gem</strong> for consuming
+projects to use (<a href="https://sorbet.org/docs/rbi#rbis-within-gems">see
+"RBIs within gems" in Sorbet's docs</a>).</p>
 </li></ul>
 
 <p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a>
@@ -230,6 +234,28 @@ a project and it will locate, parse and merge all RBI files.</p>
 create when generating an RBI, built of instances of <code>RbiObject</code>
 subclasses.</p>
 
+<h2 id="label-Generating+RBI+for+a+Gem">Generating RBI for a Gem</h2>
+
+<p>Include <code>parlour</code> as a development_dependency in your
+<code>.gemspec</code>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_spec'>spec</span><span class='period'>.</span><span class='id identifier rubyid_add_development_dependency'>add_development_dependency</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>Run Parlour from the command line:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_parlour'>parlour</span>
+</code></pre>
+
+<p>Parlour is configured to use sane defaults assuming a standard gem
+structure to generate an RBI that Sorbet will automatically find when your
+gem is included as a dependency. If you require more advanced configuration
+you can add a <code>.parlour</code> YAML file in the root of your project
+(see this project&#39;s <code>.parlour</code> file as an example).</p>
+
+<p>To disable the parsing step entire and just run plugins you can set
+<code>parser: false</code> in your <code>.parlour</code> file.</p>
+
 <h2 id="label-Parlour+Plugins">Parlour Plugins</h2>
 
 <p><em>Have you written an awesome Parlour plugin? Please submit a PR to add
@@ -276,7 +302,7 @@ of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri May 15 18:03:21 2020 by
+  Generated on Tue May 19 21:53:42 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>
