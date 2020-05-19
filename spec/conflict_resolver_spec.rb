@@ -36,6 +36,19 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.length).to be 1
     end
 
+    it 'merges methods with same parameters where one is T.untyped and the other is nil' do
+      a = gen.root.create_class('A') do |a|
+        a.create_method('foo', parameters: [pa('a', type: 'T.untyped')])
+        a.create_method('foo', parameters: [pa('a', type: nil)])
+      end
+
+      expect(a.children.length).to be 2
+
+      subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+
+      expect(a.children.length).to be 1
+    end
+
     it 'will not merge methods with different names' do
       a = gen.root.create_class('A') do |a|
         a.create_method('foo')
@@ -49,10 +62,25 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.length).to be 2
     end
 
-    it 'will not attempt to automatically merge conflicting methods' do
+    it 'does not merge methods with different parameter types' do
       a = gen.root.create_class('A') do |a|
         a.create_method('foo', parameters: [pa('a', type: 'String')])
         a.create_method('foo', parameters: [pa('a', type: 'Integer')])
+      end
+
+      expect(a.children.length).to be 2
+
+      invocations = 0
+      subject.resolve_conflicts(a) { |*| invocations += 1; nil }
+
+      expect(invocations).to be 1
+      expect(a.children.length).to be 0
+    end
+
+    it 'does not merge methods with different parameter types when one is nil' do
+      a = gen.root.create_class('A') do |a|
+        a.create_method('foo', parameters: [pa('a', type: 'String')])
+        a.create_method('foo', parameters: [pa('a', type: nil)])
       end
 
       expect(a.children.length).to be 2

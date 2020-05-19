@@ -66,7 +66,8 @@ RSpec.describe Parlour::TypeLoader do
   context 'can load this project' do
     it 'fully' do
       # Is this like a quine, in test form? :)
-      project_root = described_class.load_project('.')
+      project_root = described_class.load_project('.',
+        exclusions: ['rbi'])
       parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
       expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 
@@ -80,7 +81,7 @@ RSpec.describe Parlour::TypeLoader do
 
     it 'with exclusions' do
       project_root = described_class.load_project('.',
-        exclusions: ['lib/parlour/rbi_generator/arbitrary.rb'])
+        exclusions: ['rbi', 'lib/parlour/rbi_generator/arbitrary.rb'])
       parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
       expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 

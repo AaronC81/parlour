@@ -16,14 +16,41 @@ command :run do |c|
   c.description = 'Generates an RBI file from your .parlour file'
 
   c.action do |args, options|
-    configuration = keys_to_symbols(YAML.load_file(File.join(Dir.pwd, '.parlour')))
+    working_dir = Dir.pwd
+    config_filename = File.join(working_dir, '.parlour')
 
-    raise 'you must specify output_file in your .parlour file' unless configuration[:output_file]
+    if File.exists?(config_filename)
+      configuration = keys_to_symbols(YAML.load_file(config_filename))
+    else
+      configuration = {}
+    end
+
+    # Output default
+    configuration[:output_file] ||= "rbi/#{File.basename(working_dir)}.rbi"
 
     # Style defaults
     configuration[:style] ||= {}
     configuration[:style][:tab_size] ||= 2
     configuration[:style][:break_params] ||= 4
+
+    # Parser defaults, set explicitly to false to not run parser
+    if configuration[:parser] != false
+      configuration[:parser] ||= {}
+
+      # Input/Output defaults
+      configuration[:parser][:root] ||= '.'
+
+      # Included/Excluded path defaults
+      configuration[:parser][:included_paths] ||= ['lib']
+      configuration[:parser][:excluded_paths] ||= ['sorbet', 'spec']
+
+      # Defaults can be overridden but we always want to exclude the output file
+      configuration[:parser][:excluded_paths] << configuration[:output_file]
+    end
+
+    # Included/Excluded module defaults
+    configuration[:included_modules] ||= []
+    configuration[:excluded_modules] ||= []
 
     # Require defaults
     configuration[:requires] ||= []
@@ -53,6 +80,15 @@ command :run do |c|
       break_params: configuration[:style][:break_params],
       tab_size: configuration[:style][:tab_size]
     )
+
+    if configuration[:parser]
+      Parlour::TypeLoader.load_project(
+        configuration[:parser][:root],
+        inclusions: configuration[:parser][:included_paths],
+        exclusions: configuration[:parser][:excluded_paths],
+        generator: gen,
+      )
+    end
     Parlour::Plugin.run_plugins(plugin_instances, gen)
 
     # Run a pass of the conflict resolver
@@ -72,6 +108,14 @@ command :run do |c|
       puts
       choice = ask("?  ", Integer) { |q| q.in = 0..candidates.length }
       choice == 0 ? nil : candidates[choice - 1]
+    end
+
+    if !configuration[:included_modules].empty? || !configuration[:excluded_modules].empty?
+      remove_unwanted_modules(
+        gen.root,
+        included_modules: configuration[:included_modules],
+        excluded_modules: configuration[:excluded_modules],
+      )
     end
 
     # Figure out strictness levels
@@ -98,6 +142,7 @@ command :run do |c|
     end
 
     # Write the final RBI
+    FileUtils.mkdir_p(File.dirname(configuration[:output_file]))
     File.write(configuration[:output_file], gen.rbi(strictness))
   end
 end
@@ -121,4 +166,25 @@ def keys_to_symbols(hash)
       end
     ]
   end.to_h
+end
+
+def remove_unwanted_modules(root, included_modules:, excluded_modules:, prefix: nil)
+  root.children.select! do |child|
+    module_name = "#{prefix}#{child.name}"
+
+    if child.respond_to?(:children)
+      remove_unwanted_modules(
+        child,
+        included_modules: included_modules,
+        excluded_modules: excluded_modules,
+        prefix: "#{module_name}::",
+      )
+      has_included_children = !child.children.empty?
+    end
+
+    included = included_modules.empty? ? true : included_modules.any? { |m| module_name.start_with?(m) }
+    excluded = excluded_modules.empty? ? false : excluded_modules.any? { |m| module_name.start_with?(m) }
+
+    (included || has_included_children) && !excluded
+  end
 end

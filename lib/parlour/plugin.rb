@@ -50,7 +50,7 @@ module Parlour
       end
     end
 
-    sig { params(options: Hash).void }
+    sig { params(options: T::Hash[T.untyped, T.untyped]).void }
     def initialize(options); end
 
     sig { abstract.params(root: RbiGenerator::Namespace).void }

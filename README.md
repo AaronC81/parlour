@@ -13,7 +13,7 @@ key parts:
     RBIs for the same codebase. These are combined automatically as much as
     possible, but any other conflicts can be resolved manually through prompts.
 
-  - The parser, which can read an RBI and convert it back into a tree of 
+  - The parser, which can read an RBI and convert it back into a tree of
     generator objects.
 
 ## Why should I use this?
@@ -26,7 +26,10 @@ key parts:
     RBI output file.
 
   - You can **effortlessly build tools which need to access types within an RBI**;
-    no need to write your own parser! 
+    no need to write your own parser!
+
+  - You can **generate RBI to ship with your gem** for consuming projects to use
+    ([see "RBIs within gems" in Sorbet's docs](https://sorbet.org/docs/rbi#rbis-within-gems)).
 
 Please [**read the wiki**](https://github.com/AaronC81/parlour/wiki) to get
 started!
@@ -173,6 +176,29 @@ Parlour::TypeLoader.load_project('root/of/the/project')
 
 The structure of the returned object trees is identical to those you would
 create when generating an RBI, built of instances of `RbiObject` subclasses.
+
+## Generating RBI for a Gem
+
+Include `parlour` as a development_dependency in your `.gemspec`:
+
+```ruby
+spec.add_development_dependency 'parlour'
+```
+
+Run Parlour from the command line:
+
+```ruby
+bundle exec parlour
+```
+
+Parlour is configured to use sane defaults assuming a standard gem structure
+to generate an RBI that Sorbet will automatically find when your gem is included
+as a dependency. If you require more advanced configuration you can add a
+`.parlour` YAML file in the root of your project (see this project's `.parlour`
+file as an example).
+
+To disable the parsing step entire and just run plugins you can set `parser: false`
+in your `.parlour` file.
 
 ## Parlour Plugins
 

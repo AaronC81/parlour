@@ -10,27 +10,34 @@ module Parlour
     # TODO: make this into a class which stores configuration and passes it to
     # all typeparsers
 
-    sig { params(source: String, filename: T.nilable(String)).returns(RbiGenerator::Namespace) }
+    sig { params(source: String, filename: T.nilable(String), generator: T.nilable(RbiGenerator)).returns(RbiGenerator::Namespace) }
     # Converts Ruby source code into a tree of objects.
     #
     # @param [String] source The Ruby source code.
     # @param [String, nil] filename The filename to use when parsing this code.
     #   This may be used in error messages, but is optional.
     # @return [RbiGenerator::Namespace] The root of the object tree.
-    def self.load_source(source, filename = nil)
-      TypeParser.from_source(filename || '(source)', source).parse_all
+    def self.load_source(source, filename = nil, generator: nil)
+      TypeParser.from_source(filename || '(source)', source, generator: generator).parse_all
     end
 
-    sig { params(filename: String).returns(RbiGenerator::Namespace) }
+    sig { params(filename: String, generator: T.nilable(RbiGenerator)).returns(RbiGenerator::Namespace) }
     # Converts Ruby source code into a tree of objects from a file.
     #
     # @param [String] filename The name of the file to load code from.
     # @return [RbiGenerator::Namespace] The root of the object tree.
-    def self.load_file(filename)
-      load_source(File.read(filename), filename)
+    def self.load_file(filename, generator: nil)
+      load_source(File.read(filename), filename, generator: generator)
     end
-  
-    sig { params(root: String, exclusions: T::Array[String]).returns(RbiGenerator::Namespace) }
+
+    sig do
+      params(
+        root: String,
+        inclusions: T::Array[String],
+        exclusions: T::Array[String],
+        generator: T.nilable(RbiGenerator),
+      ).returns(RbiGenerator::Namespace)
+    end
     # Loads an entire Sorbet project using Sorbet's file table, obeying any
     # "typed: ignore" sigils, into a tree of objects.
     #
@@ -39,12 +46,15 @@ module Parlour
     #
     # @param [String] root The root of the project; where the "sorbet" directory
     #   and "Gemfile" are located.
+    # @param [Array<String>] inclusions A list of files to include when loading
+    #   the project, relative to the given root.
     # @param [Array<String>] exclusions A list of files to exclude when loading
     #   the project, relative to the given root.
     # @return [RbiGenerator::Namespace] The root of the object tree.
-    def self.load_project(root, exclusions: [])
+    def self.load_project(root, inclusions: ['.'], exclusions: [], generator: nil)
+      expanded_inclusions = inclusions.map { |i| File.expand_path(i, root) }
       expanded_exclusions = exclusions.map { |e| File.expand_path(e, root) }
-      
+
       stdin, stdout, stderr, wait_thr = T.unsafe(Open3).popen3(
         'bundle exec srb tc -p file-table-json',
         chdir: root
@@ -63,13 +73,16 @@ module Parlour
         path = File.expand_path(rel_path, root)
 
         # Skip this file if it was excluded
-        next if expanded_exclusions.include?(path)
+        next if !expanded_inclusions.any? { |i| path.start_with?(i) } \
+          || expanded_exclusions.any? { |e| path.start_with?(e) }
 
         # There are some entries which are URLs to stdlib
         next unless File.exist?(path)
 
-        namespaces << load_file(path)
+        namespaces << load_file(path, generator: generator)
       end
+
+      namespaces.uniq!
 
       raise 'project is empty' if namespaces.empty?
 
