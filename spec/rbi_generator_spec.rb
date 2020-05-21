@@ -627,4 +627,36 @@ RSpec.describe Parlour::RbiGenerator do
       end
     RUBY
   end
+
+  it 'supports eigenclass constants' do
+    mod = subject.root.create_module('M') do |m|
+      m.create_constant("X", value: "3", eigen_constant: true)
+    end
+
+    expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+      module M
+        class << self
+          X = 3
+        end
+      end
+    RUBY
+  end
+
+  it 'supports multiple "class << self" constructs' do
+    mod = subject.root.create_module('M') do |m|
+      m.create_attr_reader("foo", type: "String", class_attribute: true)
+      m.create_constant("X", value: "3", eigen_constant: true)
+    end
+
+    expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+      module M
+        class << self
+          X = 3
+
+          sig { returns(String) }
+          attr_reader :foo
+        end
+      end
+    RUBY
+  end
 end

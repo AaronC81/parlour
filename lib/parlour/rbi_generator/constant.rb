@@ -8,6 +8,7 @@ module Parlour
           generator: RbiGenerator,
           name: String,
           value: String,
+          eigen_constant: T::Boolean,
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
       end
@@ -15,15 +16,22 @@ module Parlour
       #
       # @param name [String] The name of the constant.
       # @param value [String] The value of the constant, as a Ruby code string.
-      def initialize(generator, name: '', value: '', &block)
+      # @param eigen_constant [Boolean] Whether this constant is defined on the
+      #   eigenclass of the current namespace.
+      def initialize(generator, name: '', value: '', eigen_constant: false, &block)
         super(generator, name)
         @value = value
+        @eigen_constant = eigen_constant
         yield_self(&block) if block
       end
 
       # @return [String] The value of the constant, as a Ruby code string.
       sig { returns(String) }
       attr_reader :value
+
+      # @return [Boolean] Whether this constant is defined on the eigenclass
+      #   of the current namespace.
+      attr_reader :eigen_constant
 
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another extend.
@@ -32,7 +40,8 @@ module Parlour
       #   subclass of it), this will always return false.
       # @return [Boolean]
       def ==(other)
-        Constant === other && name == other.name && value == other.value
+        Constant === other && name == other.name && value == other.value \
+          && eigen_constant == other.eigen_constant
       end
 
       sig do
