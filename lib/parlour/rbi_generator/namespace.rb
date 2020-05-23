@@ -527,7 +527,7 @@ module Parlour
         returned_includables
       end
 
-      sig { params(name: String, value: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      sig { params(name: String, value: String, eigen_constant: T::Boolean, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
       # Adds a new constant definition to this namespace.
       #
       # @example Add an +Elem+ constant to the class.
@@ -535,13 +535,16 @@ module Parlour
       #
       # @param name [String] The name of the constant.
       # @param value [String] The value of the constant, as a Ruby code string.
+      # @param eigen_constant [Boolean] Whether this constant is defined on the
+      #   eigenclass of the current namespace.
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Constant]
-      def create_constant(name, value:, &block)
+      def create_constant(name, value:, eigen_constant: false, &block)
         new_constant = RbiGenerator::Constant.new(
           generator,
           name: name,
           value: value,
+          eigen_constant: eigen_constant,
           &block
         )
         move_next_comments(new_constant)
@@ -631,14 +634,19 @@ module Parlour
 
         result += [options.indented(indent_level, 'final!'), ''] if final
 
-        if includes.any? || extends.any? || constants.any?
+        # Split away the eigen constants; these need to be put in a
+        # "class << self" block later
+        eigen_constants, non_eigen_constants = constants.partition(&:eigen_constant)
+        eigen_constants.sort_by!(&:name) if options.sort_namespaces
+
+        if includes.any? || extends.any? || non_eigen_constants.any?
           result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += (options.sort_namespaces ? constants.sort_by(&:name) : constants)
+          result += (options.sort_namespaces ? non_eigen_constants.sort_by(&:name) : non_eigen_constants)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result << ""
@@ -658,14 +666,29 @@ module Parlour
           child.is_a?(Attribute) && child.class_attribute
         end
 
-        if class_attributes.any?
-          result << options.indented(indent_level, 'class << self')
+        # Handle the "class << self block"
+        result << options.indented(indent_level, 'class << self') \
+          if class_attributes.any? || eigen_constants.any?
 
+        if eigen_constants.any?
+          first, *rest = eigen_constants
+          result += T.must(first).generate_rbi(indent_level + 1, options) + T.must(rest)
+            .map { |obj| obj.generate_rbi(indent_level + 1, options) }
+            .map { |lines| [""] + lines }
+            .flatten
+        end
+
+        result << '' if eigen_constants.any? && class_attributes.any?
+
+        if class_attributes.any?
           first, *rest = class_attributes
           result += T.must(first).generate_rbi(indent_level + 1, options) + T.must(rest)
             .map { |obj| obj.generate_rbi(indent_level + 1, options) }
             .map { |lines| [""] + lines }
             .flatten
+        end
+
+        if class_attributes.any? || eigen_constants.any?
           result << options.indented(indent_level, 'end')
           result << ''
         end

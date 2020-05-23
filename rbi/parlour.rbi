@@ -1,6 +1,9 @@
 # typed: strong
+module Kernel
+end
+
 module Parlour
-  VERSION = '2.1.0'
+  VERSION = '3.0.0'
 
   class ConflictResolver
     extend T::Sig
@@ -317,13 +320,17 @@ module Parlour
           generator: RbiGenerator,
           name: String,
           value: String,
+          eigen_constant: T::Boolean,
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
       end
-      def initialize(generator, name: '', value: '', &block); end
+      def initialize(generator, name: '', value: '', eigen_constant: false, &block); end
 
       sig { returns(String) }
       attr_reader :value
+
+      sig { returns(T.untyped) }
+      attr_reader :eigen_constant
 
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other); end
@@ -663,8 +670,15 @@ module Parlour
       sig { params(includables: T::Array[String]).returns(T::Array[Include]) }
       def create_includes(includables); end
 
-      sig { params(name: String, value: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
-      def create_constant(name, value:, &block); end
+      sig do
+        params(
+          name: String,
+          value: String,
+          eigen_constant: T::Boolean,
+          block: T.nilable(T.proc.params(x: Constant).void)
+        ).returns(Constant)
+      end
+      def create_constant(name, value:, eigen_constant: false, &block); end
 
       sig { params(name: String, type: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
       def create_type_alias(name, type:, &block); end
