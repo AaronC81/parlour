@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [4.0.0] - 2020-05-23
+### Added
+- Parlour now defaults to loading the current project when running its command
+  line tool, allowing it to be used as a "`sig` extractor" when run without
+  plugins! **Breaking if you invoke Parlour from its command line tool** - to
+  revert to the old behaviour of having nothing loaded into the root namespace
+  initially, add `parser: false` to your `.parlour` file.
+- Generating constants in an eigenclass context (`class << self`) is now
+  supported.
+
 ## [3.0.0] - 2020-05-15
 ### Added
 - `T::Struct` classes can now be generated and parsed.
