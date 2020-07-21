@@ -605,7 +605,57 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(x.children.length).to be 2
   end
-  
+
+  it 'should deduplicate multiple includes on the same module' do
+    m = gen.root.create_module('M') do |m|
+      m.create_include('I1')
+      m.create_include('I2')
+      m.create_include('I1')
+      m.create_include('I1')
+      m.create_include('I1')
+    end
+
+    expect(m.children.length).to be 5
+
+    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+    expect(m.children.length).to be 2
+  end
+
+  it 'should deduplicate multiple extends on the same module' do
+    m = gen.root.create_module('M') do |m|
+      m.create_extend('I1')
+      m.create_extend('I2')
+      m.create_extend('I1')
+      m.create_extend('I1')
+      m.create_extend('I1')
+    end
+
+    expect(m.children.length).to be 5
+
+    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+    expect(m.children.length).to be 2
+  end
+
+  it 'should deduplicate multiple extends and multipe includes on the same module' do
+    m = gen.root.create_module('M') do |m|
+      m.create_extend('I1')
+      m.create_extend('I2')
+      m.create_extend('I1')
+      m.create_extend('I1')
+      m.create_include('J1')
+      m.create_include('J1')
+      m.create_include('J1')
+    end
+
+    expect(m.children.length).to be 7
+
+    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+    expect(m.children.length).to be 3
+  end
+
   it 'does not conflict writers with non-=-suffixed methods' do
     x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
       class A

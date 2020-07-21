@@ -23,13 +23,13 @@ module Parlour
     # All children of the given namespace which are also namespaces are
     # processed recursively, so passing {RbiGenerator#root} will eliminate all
     # conflicts in the entire object tree.
-    # 
+    #
     # If automatic resolution is not possible, the block passed to this method
     # is invoked and passed two arguments: a message on what the conflict is,
     # and an array of candidate objects. The block should return one of these
     # candidate objects, which will be kept, and all other definitions are
     # deleted. Alternatively, the block may return nil, which will delete all
-    # definitions. The block may be invoked many times from one call to 
+    # definitions. The block may be invoked many times from one call to
     # {resolve_conflicts}, one for each unresolvable conflict.
     #
     # @param namespace [RbiGenerator::Namespace] The starting namespace to
@@ -52,14 +52,14 @@ module Parlour
           child.name
         end
       end
-      
+
       grouped_by_name_children.each do |name, children|
         Debugging.debug_puts(self, Debugging::Tree.begin("Checking children named #{name}..."))
 
         if children.length > 1
           Debugging.debug_puts(self, Debugging::Tree.here("Possible conflict between #{children.length} objects"))
 
-          # Special case: do we have two methods, one of which is a class method 
+          # Special case: do we have two methods, one of which is a class method
           # and the other isn't? If so, do nothing - this is fine
           if children.length == 2 &&
             children.all? { |c| c.is_a?(RbiGenerator::Method) } &&
@@ -78,30 +78,25 @@ module Parlour
                 c.is_a?(RbiGenerator::Include) || c.is_a?(RbiGenerator::Extend)
               end
             end
-            
+
+            # Special case: is there any duplication? If so, remove duplication.
+            if all_eql?(children)
+              Debugging.debug_puts(self, Debugging::Tree.end("All children are identical"))
+
+              namespace.children.uniq! { |m| [m.class, m.name] }
+            end
+
             Debugging.debug_puts(self, Debugging::Tree.end("Includes/extends do not conflict with namespaces; no resolution required"))
             next
           end
 
-          # Special case: do we have two attributes, one of which is a class 
+          # Special case: do we have two attributes, one of which is a class
           # attribute and the other isn't? If so, do nothing - this is fine
           if children.length == 2 &&
             children.all? { |c| c.is_a?(RbiGenerator::Attribute) } &&
             children.count { |c| T.cast(c, RbiGenerator::Attribute).class_attribute } == 1
 
             Debugging.debug_puts(self, Debugging::Tree.end("One is an instance attribute and one is a class attribute; no resolution required"))
-            next
-          end
-
-          # Special case: are they all clearly equal? If so, remove all but one
-          if all_eql?(children)
-            Debugging.debug_puts(self, Debugging::Tree.end("All children are identical"))
-
-            # All of the children are the same, so this deletes all of them
-            namespace.children.delete(T.must(children.first))
-          
-            # Re-add one child
-            namespace.children << T.must(children.first)
             next
           end
 
