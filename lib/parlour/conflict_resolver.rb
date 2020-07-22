@@ -241,7 +241,7 @@ module Parlour
       arr.each_cons(2).all? { |x, y| x == y }
     end
 
-    sig { params(namespace: RbiGenerator::Namespace, name: String).void }
+    sig { params(namespace: RbiGenerator::Namespace, name: T.nilable(String)).void }
     # Given a namespace and a child name, removes all duplicate children that are mixins
     # and that have the given name, except the first found instance.
     #
