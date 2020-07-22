@@ -674,6 +674,24 @@ RSpec.describe Parlour::ConflictResolver do
     expect(m.children.length).to be 3
   end
 
+  it 'should deduplicate multiple extends and multipe includes on multiple different modules' do
+    m = gen.root.create_module('M') do |m|
+      m.create_extend('I1')
+      m.create_extend('I2')
+      m.create_extend('I1')
+      m.create_extend('I1')
+      m.create_include('I1')
+      m.create_include('I1')
+      m.create_include('I2')
+    end
+
+    expect(m.children.length).to be 7
+
+    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+
+    expect(m.children.length).to be 4
+  end
+
   it 'does not conflict writers with non-=-suffixed methods' do
     x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
       class A
