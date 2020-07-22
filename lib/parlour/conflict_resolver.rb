@@ -78,12 +78,8 @@ module Parlour
                 c.is_a?(RbiGenerator::Include) || c.is_a?(RbiGenerator::Extend)
               end
             end
-
-            # Special case: is there any duplication? If so, remove duplication.
-            if all_eql?(children)
-              Debugging.debug_puts(self, Debugging::Tree.end("All children are identical"))
-
-              namespace.children.uniq! { |m| [m.class, m.name] }
+            namespace.children.each do |c|
+              deduplicate_mixins_of_name(namespace, c.name)
             end
 
             Debugging.debug_puts(self, Debugging::Tree.end("Includes/extends do not conflict with namespaces; no resolution required"))
@@ -245,6 +241,27 @@ module Parlour
     # @return [Boolean] A boolean indicating if all elements are equal by +==+.
     def all_eql?(arr)
       arr.each_cons(2).all? { |x, y| x == y }
+    end
+
+    sig { params(namespace: RbiGenerator::Namespace, name: String).void }
+    # Given a namespace and a child name, removes all duplicate children that are mixins
+    # and that have the given name, except the first found instance.
+    #
+    # @param namespace [RbiGenerator::Namespace] The namespace to deduplicate mixins in.
+    # @param name [String] The name of the mixin modules to deduplicate.
+    # @return [void]
+    def deduplicate_mixins_of_name(namespace, name)
+      found_map = {}
+      namespace.children.delete_if do |x|
+        # ignore children whose names don't match
+        next unless x.name == name
+        # ignore children that are not mixins
+        next unless x.is_a?(RbiGenerator::Include) || x.is_a?(RbiGenerator::Extend)
+
+        delete = found_map.key?(x.class)
+        found_map[x.class] = true
+        delete
+      end
     end
   end
 end
