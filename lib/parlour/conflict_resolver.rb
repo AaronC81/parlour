@@ -100,6 +100,18 @@ module Parlour
             next
           end
 
+          # Optimization for Special case: are they all clearly equal? If so, remove all but one
+          if all_eql?(children)
+            Debugging.debug_puts(self, Debugging::Tree.end("All children are identical"))
+
+            # All of the children are the same, so this deletes all of them
+            namespace.children.delete(T.must(children.first))
+
+            # Re-add one child
+            namespace.children << T.must(children.first)
+            next
+          end
+
           # We found a conflict!
           # Start by removing all the conflicting items
           children.each do |c|
