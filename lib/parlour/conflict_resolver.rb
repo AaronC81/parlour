@@ -78,9 +78,7 @@ module Parlour
                 c.is_a?(RbiGenerator::Include) || c.is_a?(RbiGenerator::Extend)
               end
             end
-            namespace.children.each do |c|
-              deduplicate_mixins_of_name(namespace, c.name)
-            end
+            deduplicate_mixins_of_name(namespace, name)
 
             Debugging.debug_puts(self, Debugging::Tree.end("Includes/extends do not conflict with namespaces; no resolution required"))
             next
