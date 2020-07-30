@@ -857,4 +857,57 @@ RSpec.describe Parlour::TypeParser do
     expect(foo).to have_attributes(name: "FOO", value: "T.let(nil, T.nilable(String))")
     expect(bar).to have_attributes(name: "BAR", value: "'Hey'.freeze")
   end
+
+  describe 'parsing of RBI types into Types::Type' do
+    def t(s)
+      i = described_class.from_source('(test)', s)
+      i.parse_node_to_type(i.ast)
+    end
+
+    it 'parses raw constants' do
+      expect(t('A')).to eq Parlour::Types::Raw.new('A')
+      expect(t('A::B::C')).to eq Parlour::Types::Raw.new('A::B::C')
+    end
+
+    it 'parses unions' do
+      expect(t('T.any(A, B, C)')).to eq Parlour::Types::Union.new([
+        Parlour::Types::Raw.new('A'),
+        Parlour::Types::Raw.new('B'),
+        Parlour::Types::Raw.new('C'),
+      ])
+    end
+
+    it 'parses intersections' do
+      expect(t('T.all(A, B, C)')).to eq Parlour::Types::Intersection.new([
+        Parlour::Types::Raw.new('A'),
+        Parlour::Types::Raw.new('B'),
+        Parlour::Types::Raw.new('C'),
+      ])
+    end
+
+    it 'parses nilables' do
+      expect(t('T.nilable(A)')).to eq Parlour::Types::Nilable.new(
+        Parlour::Types::Raw.new('A'),
+      )
+    end
+
+    it 'parses arrays' do
+      expect(t('T::Array[String]')).to eq Parlour::Types::Array.new(
+        Parlour::Types::Raw.new('String')
+      )
+    end
+
+    it 'parses complex nested types' do
+      expect(t('T.any(String, T.all(Integer, T.nilable(Numeric)))')).to eq \
+        Parlour::Types::Union.new([
+          Parlour::Types::Raw.new('String'),
+          Parlour::Types::Intersection.new([
+            Parlour::Types::Raw.new('Integer'),
+            Parlour::Types::Nilable.new(
+              Parlour::Types::Raw.new('Numeric'),
+            ),
+          ]),
+        ])
+    end
+  end
 end

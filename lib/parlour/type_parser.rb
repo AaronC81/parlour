@@ -696,6 +696,64 @@ module Parlour
       end
     end
 
+    sig { params(node: Parser::AST::Node).returns(Types::Type) }
+    # Given an AST node representing an RBI type (such as 'T::Array[String]'),  
+    # parses it into a generic type.
+    #
+    # @param [Parser::AST::Node] node
+    # @return [Parlour::Types::Type]
+    def parse_node_to_type(node)
+      case node.type
+      when :index
+        # We're looking at some generic type
+        collection_type, element_type = *node
+
+        names = constant_names(node)
+        if names == [:T, :Array]
+          Types::Array.new(parse_node_to_type(element_type))
+        else
+          parse_err 'user-defined generic types not implemented', node # TODO
+        end
+      when :send
+        target, message, *args = *node
+
+        # Special case: is this a generic type instantiation?
+        if message == :[]
+          names = constant_names(target)
+          if names == [:T, :Array]
+            parse_err 'no type in T::Array[...]', node if args.nil? || args.empty?
+            parse_err 'too many types in T::Array[...]', node unless args.length == 1
+            return Types::Array.new(parse_node_to_type(T.must(args.first)))
+          else
+            parse_err 'user-defined generic types not implemented', node # TODO
+          end
+        end
+
+        # The other options for a valid call are all "T.something" methods
+        parse_err 'unexpected call in type', node \
+          unless target.type == :const && target.to_a == [nil, :T]
+            
+        case message
+        when :nilable
+          parse_err 'no argument to T.nilable', node if args.nil? || args.empty?
+          parse_err 'too many arguments to T.nilable', node unless args.length == 1
+          Types::Nilable.new(parse_node_to_type(T.must(args.first)))
+        when :any
+          Types::Union.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
+        when :all
+          Types::Intersection.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
+        else
+          parse_err "unknown method T.#{message}", node
+        end 
+      when :const
+        # TODO: What about T::Boolean?
+        # Just a plain old constant
+        Types::Raw.new(constant_names(node).join('::'))
+      else
+        parse_err 'unable to parse type', node
+      end
+    end
+
     protected
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
