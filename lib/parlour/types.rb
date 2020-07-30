@@ -33,6 +33,11 @@ module Parlour
       sig { returns(String) }
       attr_reader :str
 
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Raw === other && str == other.str
+      end
+
       sig { override.returns(String) }
       def generate_rbi
         str
@@ -43,6 +48,11 @@ module Parlour
       sig { params(type: TypeLike).void }
       def initialize(type)
         @type = to_type(type)
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Nilable === other && type == other.type
       end
 
       sig { returns(Type) }
@@ -60,6 +70,11 @@ module Parlour
         @types = types.map(&method(:to_type))
       end
 
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Union === other && types == other.types
+      end
+
       sig { returns(T::Array[Type]) }
       attr_reader :types
 
@@ -75,6 +90,11 @@ module Parlour
         @types = types.map(&method(:to_type))
       end
 
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Intersection === other && types == other.types
+      end
+
       sig { returns(T::Array[Type]) }
       attr_reader :types
 
@@ -88,6 +108,11 @@ module Parlour
       sig { params(element: TypeLike).void }
       def initialize(element)
         @element = to_type(element)
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Array === other && element == other.element
       end
 
       sig { returns(Type) }

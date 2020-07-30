@@ -9,6 +9,8 @@ require 'parlour/kernel_hack'
 
 require 'parlour/plugin'
 
+require 'parlour/types'
+
 require 'parlour/rbi_generator/parameter'
 require 'parlour/rbi_generator/rbi_object'
 require 'parlour/rbi_generator/method'
