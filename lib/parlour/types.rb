@@ -104,6 +104,26 @@ module Parlour
       end
     end
 
+    class Tuple < Type
+      sig { params(types: T::Array[TypeLike]).void }
+      def initialize(types)
+        @types = types.map(&method(:to_type))
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Tuple === other && types == other.types
+      end
+
+      sig { returns(T::Array[Type]) }
+      attr_reader :types
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "[#{types.map(&:generate_rbi).join(', ')}]"
+      end
+    end
+
     class Array < Type
       sig { params(element: TypeLike).void }
       def initialize(element)

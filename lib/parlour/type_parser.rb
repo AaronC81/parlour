@@ -753,6 +753,9 @@ module Parlour
 
         # Otherwise, just a plain old constant
         Types::Raw.new(constant_names(node).join('::'))
+      when :array
+        # Tuple
+        Types::Tuple.new(node.to_a.map { |x| parse_node_to_type(T.must(x)) })
       else
         parse_err "unable to parse type #{node_to_s(node).inspect}", node
       end
