@@ -746,8 +746,12 @@ module Parlour
           parse_err "unknown method T.#{message}", node
         end 
       when :const
-        # TODO: What about T::Boolean?
-        # Just a plain old constant
+        # Special case: T::Boolean
+        if constant_names(node) == [:T, :Boolean]
+          return Types::Boolean.new
+        end
+
+        # Otherwise, just a plain old constant
         Types::Raw.new(constant_names(node).join('::'))
       else
         parse_err 'unable to parse type', node

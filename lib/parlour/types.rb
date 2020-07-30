@@ -123,6 +123,18 @@ module Parlour
         "T::Array[#{element.generate_rbi}]"
       end
     end
+
+    class Boolean < Type
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Boolean === other
+      end
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T::Boolean"
+      end
+    end
   end
 end
         

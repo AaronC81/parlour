@@ -897,6 +897,10 @@ RSpec.describe Parlour::TypeParser do
       )
     end
 
+    it 'parses booleans' do
+      expect(t('T::Boolean')).to eq Parlour::Types::Boolean.new
+    end
+
     it 'parses complex nested types' do
       expect(t('T.any(String, T.all(Integer, T.nilable(Numeric)))')).to eq \
         Parlour::Types::Union.new([
