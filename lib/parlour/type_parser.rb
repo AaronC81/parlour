@@ -696,6 +696,13 @@ module Parlour
       end
     end
 
+    sig { params(str: String).returns(Types::Type) }
+    # TODO doc
+    def self.parse_single_type(str)
+      i = TypeParser.from_source('(none)', str)
+      i.parse_node_to_type(i.ast)
+    end
+
     sig { params(node: Parser::AST::Node).returns(Types::Type) }
     # Given an AST node representing an RBI type (such as 'T::Array[String]'),  
     # parses it into a generic type.
@@ -704,16 +711,6 @@ module Parlour
     # @return [Parlour::Types::Type]
     def parse_node_to_type(node)
       case node.type
-      when :index
-        # We're looking at some generic type
-        collection_type, element_type = *node
-
-        names = constant_names(node)
-        if names == [:T, :Array]
-          Types::Array.new(parse_node_to_type(element_type))
-        else
-          parse_err 'user-defined generic types not implemented', node # TODO
-        end
       when :send
         target, message, *args = *node
 
@@ -742,6 +739,9 @@ module Parlour
           Types::Union.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
         when :all
           Types::Intersection.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
+        when :untyped
+          parse_err 'T.untyped does not accept arguments', node if !args.nil? && !args.empty?
+          Types::Untyped.new
         else
           parse_err "unknown method T.#{message}", node
         end 
@@ -754,7 +754,7 @@ module Parlour
         # Otherwise, just a plain old constant
         Types::Raw.new(constant_names(node).join('::'))
       else
-        parse_err 'unable to parse type', node
+        parse_err "unable to parse type #{node_to_s(node).inspect}", node
       end
     end
 

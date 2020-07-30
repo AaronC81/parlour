@@ -135,6 +135,18 @@ module Parlour
         "T::Boolean"
       end
     end
+
+    class Untyped < Type
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Untyped === other
+      end
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T.untyped"
+      end
+    end
   end
 end
         
