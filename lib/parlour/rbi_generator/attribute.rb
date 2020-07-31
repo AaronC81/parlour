@@ -8,7 +8,7 @@ module Parlour
           generator: RbiGenerator,
           name: String,
           kind: Symbol,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).void
@@ -20,8 +20,7 @@ module Parlour
       # @param name [String] The name of this attribute.
       # @param kind [Symbol] The kind of attribute this is; one of :writer, :reader or
       #   :accessor.
-      # @param type [String] A Sorbet string of this attribute's type, such as
-      #   +"String"+ or +"T.untyped"+.
+      # @param type [String, Types::Type] This attribute's type.
       # @param class_attribute [Boolean] Whether this attribute belongs to the
       #   singleton class.
       # @param block A block which the new instance yields itself to.
@@ -67,6 +66,11 @@ module Parlour
             kind            == other.kind &&
             class_attribute == other.class_attribute
         )
+      end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
       end
 
       private

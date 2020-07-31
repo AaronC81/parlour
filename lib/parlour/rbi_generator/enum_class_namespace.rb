@@ -107,6 +107,11 @@ module Parlour
           @enums = other.enums if enums.empty?
         end
       end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
+      end
     end
   end
 end

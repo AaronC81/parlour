@@ -615,6 +615,11 @@ module Parlour
           "includes, #{extends.length} extends, #{constants.length} constants"
       end
 
+      sig { override.void }
+      def generalize_from_rbi!
+        children.each(&:generalize_from_rbi!)
+      end
+
       private
 
       sig do

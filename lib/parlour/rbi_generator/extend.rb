@@ -82,6 +82,9 @@ module Parlour
       def describe
         "Extend (#{name})"
       end
+
+      sig { override.void }
+      def generalize_from_rbi!; end # Nothing to do
     end
   end
 end

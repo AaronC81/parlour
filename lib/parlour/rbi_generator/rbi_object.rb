@@ -122,6 +122,15 @@ module Parlour
       # @abstract
       # @return [String]
       def describe; end
+
+      sig { abstract.void }
+      # Assuming that the types throughout this object and its children have
+      # been specified as RBI-style types, generalises them into type instances
+      # from the {Parlour::Types} module.
+      #
+      # @abstract
+      # @return [void]
+      def generalize_from_rbi!; end
       
       private
 

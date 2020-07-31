@@ -8,7 +8,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           optional: T.nilable(T.any(T::Boolean, Symbol)),
           enum: T.nilable(String),
           dont_store: T.nilable(T::Boolean),
@@ -28,8 +28,7 @@ module Parlour
       # https://github.com/sorbet/sorbet/blob/master/gems/sorbet-runtime/lib/types/props/_props.rb#L31-L106
       #
       # @param name [String] The name of this property.
-      # @param type [String] A Sorbet string of this property's type, such as
-      #   +"String"+.
+      # @param type [String] This property's type.
       # @return [void]
       def initialize(name, type, optional: nil, enum: nil, dont_store: nil,
         foreign: nil, default: nil, factory: nil, immutable: nil, array: nil,
@@ -77,10 +76,9 @@ module Parlour
       # @return [String]
       attr_reader :name
 
-      sig { returns(T.nilable(String)) }
-      # A Sorbet string of this parameter's type, such as +"String"+ or
-      # +"T.untyped"+.
-      # @return [String, nil]
+      sig { returns(Types::TypeLike) }
+      # This parameter's type.
+      # @return [Types::TypeLike, nil]
       attr_reader :type
 
       sig { returns(T.nilable(T.any(T::Boolean, Symbol))) }
@@ -122,7 +120,7 @@ module Parlour
       # Returns the +prop+ call required to create this property.
       # @return [String]
       def to_prop_call
-        call = "prop :#{name}, #{type}"
+        call = "prop :#{name}, #{String === @type ? @type : @type.generate_rbi}"
 
         EXTRA_PROPERTIES.each do |extra_property|
           value = send extra_property
@@ -130,6 +128,11 @@ module Parlour
         end
 
         call
+      end
+
+      sig { void }
+      def generalize_from_rbi!
+        @type = TypeParser.parse_single_type(@type) if String === @type
       end
     end
   end

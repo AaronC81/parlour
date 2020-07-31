@@ -87,6 +87,9 @@ module Parlour
       def describe
         "Arbitrary code (#{code})"
       end
+
+      sig { override.void }
+      def generalize_from_rbi!; end # Nothing to do
     end
   end
 end

@@ -181,6 +181,12 @@ module Parlour
     sig { params(path: NodePath, is_within_eigenclass: T::Boolean).returns(T::Array[RbiGenerator::Method]) }
     def parse_method_into_methods(path, is_within_eigenclass: false); end
 
+    sig { params(str: String).returns(Types::Type) }
+    def self.parse_single_type(str); end
+
+    sig { params(node: Parser::AST::Node).returns(Types::Type) }
+    def parse_node_to_type(node); end
+
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
     def constant_names(node); end
 
@@ -211,6 +217,101 @@ module Parlour
       ).returns(T::Array[[T.type_parameter(:A), T.type_parameter(:B)]])
     end
     def zip_by(a, fa, b, fb); end
+  end
+
+  module Types
+    TypeLike = T.type_alias { T.any(String, Type) }
+
+    class Type
+      abstract!
+
+      extend T::Sig
+      extend T::Helpers
+
+      sig { abstract.returns(String) }
+      def generate_rbi; end
+
+      sig { params(type_like: TypeLike).returns(Type) }
+      def to_type(type_like); end
+    end
+
+    class Raw < Type
+      sig { params(str: String).void }
+      def initialize(str); end
+
+      sig { returns(String) }
+      attr_reader :str
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+    end
+
+    class Nilable < Type
+      sig { params(type: TypeLike).void }
+      def initialize(type); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Type) }
+      attr_reader :type
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+    end
+
+    class Union < Type
+      sig { params(types: T::Array[TypeLike]).void }
+      def initialize(types); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(T::Array[Type]) }
+      attr_reader :types
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+    end
+
+    class Intersection < Type
+      sig { params(types: T::Array[TypeLike]).void }
+      def initialize(types); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(T::Array[Type]) }
+      attr_reader :types
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+    end
+
+    class Array < Type
+      sig { params(element: TypeLike).void }
+      def initialize(element); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Type) }
+      attr_reader :element
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+    end
+
+    class Boolean < Type
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+    end
   end
 
   class RbiGenerator
@@ -252,6 +353,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class Attribute < Method
@@ -260,7 +364,7 @@ module Parlour
           generator: RbiGenerator,
           name: String,
           kind: Symbol,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).void
@@ -278,6 +382,9 @@ module Parlour
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_definition(indent_level, options); end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class ClassNamespace < Namespace
@@ -312,6 +419,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class Constant < RbiObject
@@ -346,6 +456,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class EnumClassNamespace < ClassNamespace
@@ -374,6 +487,9 @@ module Parlour
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class Extend < RbiObject
@@ -394,6 +510,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class Include < RbiObject
@@ -414,6 +533,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class Method < RbiObject
@@ -424,7 +546,7 @@ module Parlour
           generator: RbiGenerator,
           name: String,
           parameters: T::Array[Parameter],
-          return_type: T.nilable(String),
+          return_type: T.nilable(Types::TypeLike),
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
@@ -443,7 +565,7 @@ module Parlour
       sig { returns(T::Array[Parameter]) }
       attr_reader :parameters
 
-      sig { returns(T.nilable(String)) }
+      sig { returns(T.nilable(Types::TypeLike)) }
       attr_reader :return_type
 
       sig { returns(T::Boolean) }
@@ -484,6 +606,9 @@ module Parlour
 
       sig { returns(String) }
       def qualifiers; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class ModuleNamespace < Namespace
@@ -514,6 +639,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class Namespace < RbiObject
@@ -692,6 +820,9 @@ module Parlour
       sig { override.overridable.returns(String) }
       def describe; end
 
+      sig { override.void }
+      def generalize_from_rbi!; end
+
       sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_body(indent_level, options); end
 
@@ -727,7 +858,7 @@ module Parlour
         block: '&'
       }.freeze
 
-      sig { params(name: String, type: T.nilable(String), default: T.nilable(String)).void }
+      sig { params(name: String, type: T.nilable(Types::TypeLike), default: T.nilable(String)).void }
       def initialize(name, type: nil, default: nil); end
 
       sig { params(other: Object).returns(T::Boolean) }
@@ -739,7 +870,7 @@ module Parlour
       sig { returns(String) }
       def name_without_kind; end
 
-      sig { returns(String) }
+      sig { returns(Types::TypeLike) }
       attr_reader :type
 
       sig { returns(T.nilable(String)) }
@@ -753,6 +884,9 @@ module Parlour
 
       sig { returns(String) }
       def to_sig_param; end
+
+      sig { void }
+      def generalize_from_rbi!; end
     end
 
     class RbiObject
@@ -791,6 +925,9 @@ module Parlour
       sig { abstract.returns(String) }
       def describe; end
 
+      sig { abstract.void }
+      def generalize_from_rbi!; end
+
       sig { params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_comments(indent_level, options); end
     end
@@ -821,6 +958,9 @@ module Parlour
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
     end
 
     class StructProp
@@ -832,7 +972,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           optional: T.nilable(T.any(T::Boolean, Symbol)),
           enum: T.nilable(String),
           dont_store: T.nilable(T::Boolean),
@@ -853,7 +993,7 @@ module Parlour
       sig { returns(String) }
       attr_reader :name
 
-      sig { returns(T.nilable(String)) }
+      sig { returns(Types::TypeLike) }
       attr_reader :type
 
       sig { returns(T.nilable(T.any(T::Boolean, Symbol))) }

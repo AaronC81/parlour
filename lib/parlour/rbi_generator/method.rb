@@ -10,7 +10,7 @@ module Parlour
           generator: RbiGenerator,
           name: String,
           parameters: T::Array[Parameter],
-          return_type: T.nilable(String),
+          return_type: T.nilable(Types::TypeLike),
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
@@ -29,8 +29,7 @@ module Parlour
       #   this - use the +class_method+ parameter instead.
       # @param parameters [Array<Parameter>] An array of {Parameter} instances representing this 
       #   method's parameters.
-      # @param return_type [String, nil] A Sorbet string of what this method returns, such as
-      #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
+      # @param return_type [Types::TypeLike, nil] What this method returns. Passing nil denotes a void return.
       # @param abstract [Boolean] Whether this method is abstract.
       # @param implementation [Boolean] DEPRECATED: Whether this method is an 
       #   implementation of a parent abstract method.
@@ -82,10 +81,9 @@ module Parlour
       # @return [Array<Parameter>]
       attr_reader :parameters
 
-      sig { returns(T.nilable(String)) }
-      # A Sorbet string of what this method returns, such as "String" or
-      # "T.untyped". Passing nil denotes a void return.
-      # @return [String, nil]
+      sig { returns(T.nilable(Types::TypeLike)) }
+      # What this method returns. Passing nil denotes a void return.
+      # @return [Types::TypeLike, nil]
       attr_reader :return_type
 
       sig { returns(T::Boolean) }
@@ -140,7 +138,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        return_call = return_type ? "returns(#{return_type})" : 'void'
+        return_call = @return_type ? "returns(#{String === @return_type ? @return_type : @return_type.generate_rbi})" : 'void'
         sig_args = final ? '(:final)' : ''
 
         sig_params = parameters.map(&:to_sig_param)
@@ -216,6 +214,13 @@ module Parlour
         # TODO: more info
         "Method #{name} - #{parameters.length} parameters, " +
           " returns #{return_type}"
+      end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        @return_type = TypeParser.parse_single_type(@return_type) if String === @return_type
+
+        parameters.each(&:generalize_from_rbi!)
       end
 
       private

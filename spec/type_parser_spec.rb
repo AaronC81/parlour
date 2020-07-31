@@ -913,5 +913,29 @@ RSpec.describe Parlour::TypeParser do
           ]),
         ])
     end
+    
+    it 'can generalize this project' do
+      project_root = Parlour::TypeLoader.load_project('.', exclusions: ['rbi'])
+      project_root.generalize_from_rbi!
+      
+      parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
+      expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
+
+      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
+      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
+
+      meth = rbi_generator.children.find { |x| x.name == 'initialize' }
+
+      expect(meth.parameters.length).to eq 3
+      expect(meth.parameters[0]).to have_attributes(
+        name: 'break_params:', type: Parlour::Types::Raw.new('Integer'),
+      )
+      expect(meth.parameters[1]).to have_attributes(
+        name: 'tab_size:', type: Parlour::Types::Raw.new('Integer'),
+      )
+      expect(meth.parameters[2]).to have_attributes(
+        name: 'sort_namespaces:', type: Parlour::Types::Boolean.new,
+      )
+    end 
   end
 end

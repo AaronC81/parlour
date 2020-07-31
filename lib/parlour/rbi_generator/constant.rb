@@ -98,6 +98,11 @@ module Parlour
       def describe
         "Constant (#{name} = #{value})"
       end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        puts "warning: constants unimplemented" #todo
+      end
     end
   end
 end

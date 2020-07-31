@@ -98,6 +98,13 @@ module Parlour
           @props = other.props if props.empty?
         end
       end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
+
+        props.each(&:generalize_from_rbi!)
+      end
     end
   end
 end

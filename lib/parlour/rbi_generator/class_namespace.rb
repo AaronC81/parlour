@@ -116,6 +116,11 @@ module Parlour
           "#{"abstract, " if abstract}#{children.length} children, " +
           "#{includes.length} includes, #{extends.length} extends"
       end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
+      end
     end
   end
 end

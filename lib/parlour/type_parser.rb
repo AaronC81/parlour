@@ -722,12 +722,20 @@ module Parlour
             parse_err 'too many types in T::Array[...]', node unless args.length == 1
             return Types::Array.new(parse_node_to_type(T.must(args.first)))
           else
-            parse_err 'user-defined generic types not implemented', node # TODO
+            # TODO
+            puts "warning: user-defined generic types not implemented, treating as untyped"
+            return Types::Untyped.new
           end
         end
 
+        # TODO: terrible heuristic
+        if node_to_s(node)&.include?('T.proc.')
+          puts "warning: encountered proc, treating as untyped"
+          return Types::Untyped.new
+        end
+
         # The other options for a valid call are all "T.something" methods
-        parse_err 'unexpected call in type', node \
+        parse_err "unexpected call #{node_to_s(node).inspect} in type", node \
           unless target.type == :const && target.to_a == [nil, :T]
             
         case message
@@ -743,7 +751,8 @@ module Parlour
           parse_err 'T.untyped does not accept arguments', node if !args.nil? && !args.empty?
           Types::Untyped.new
         else
-          parse_err "unknown method T.#{message}", node
+          puts "warning: unknown method T.#{message}, treating as untyped"
+          Types::Untyped.new
         end 
       when :const
         # Special case: T::Boolean
@@ -756,6 +765,11 @@ module Parlour
       when :array
         # Tuple
         Types::Tuple.new(node.to_a.map { |x| parse_node_to_type(T.must(x)) })
+      when :hash
+        # Shape/record
+        # TODO
+        puts "warning: shapes/records not implemented, treating as untyped"
+        Types::Untyped.new
       else
         parse_err "unable to parse type #{node_to_s(node).inspect}", node
       end
