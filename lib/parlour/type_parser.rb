@@ -747,6 +747,12 @@ module Parlour
           Types::Union.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
         when :all
           Types::Intersection.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
+        when :let
+          # Not really allowed in a type signature, but handy for generalizing
+          # constant types
+          parse_err 'not enough argument to T.let', node if args.nil? || args.length < 2
+          parse_err 'too many arguments to T.nilable', node unless args.length == 2
+          parse_node_to_type(args[1])
         when :untyped
           parse_err 'T.untyped does not accept arguments', node if !args.nil? && !args.empty?
           Types::Untyped.new

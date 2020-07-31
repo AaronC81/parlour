@@ -7,7 +7,7 @@ module Parlour
         params(
           generator: Generator,
           name: String,
-          value: String,
+          value: Types::TypeLike,
           eigen_constant: T::Boolean,
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
@@ -25,8 +25,8 @@ module Parlour
         yield_self(&block) if block
       end
 
-      # @return [String] The value of the constant, as a Ruby code string.
-      sig { returns(String) }
+      # @return [String] The value or type of the constant.
+      sig { returns(Types::TypeLike) }
       attr_reader :value
 
       # @return [Boolean] Whether this constant is defined on the eigenclass
@@ -56,7 +56,11 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        [options.indented(indent_level, "#{name} = #{value}")]
+        if String === value
+          [options.indented(indent_level, "#{name} = #{value}")]
+        else
+          [options.indented(indent_level, "#{name} = T.let(nil, #{value.generate_rbi})")]
+        end
       end
 
       sig do
@@ -71,8 +75,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS lines, formatted as specified.
       def generate_rbs(indent_level, options)
-        puts "warning: constants unimplemented" #todo
-        [options.indented(indent_level, "# TODO: constants unimplemented")]
+        [options.indented(indent_level, "#{name}: #{value.generate_rbs}")]
       end
 
       sig do
@@ -117,7 +120,9 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!
-        puts "warning: constants unimplemented" #todo
+        # There's a good change this is an untyped constant, so rescue
+        # ParseError and use untyped
+        @value = (TypeParser.parse_single_type(@value) if String === @value) rescue Types::Untyped.new
       end
     end
   end
