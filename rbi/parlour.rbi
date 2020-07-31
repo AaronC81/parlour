@@ -379,6 +379,26 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbs; end
     end
+
+    class Proc < Type
+      sig { params(parameters: T::Array[RbiGenerator::Parameter], return_type: T.nilable(TypeLike)).void }
+      def initialize(parameters, return_type); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(T::Array[RbiGenerator::Parameter]) }
+      attr_reader :parameters
+
+      sig { returns(T.nilable(Type)) }
+      attr_reader :return_type
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
+    end
   end
 
   class RbiGenerator < Generator
@@ -500,14 +520,14 @@ module Parlour
         params(
           generator: Generator,
           name: String,
-          value: String,
+          value: Types::TypeLike,
           eigen_constant: T::Boolean,
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
       end
       def initialize(generator, name: '', value: '', eigen_constant: false, &block); end
 
-      sig { returns(String) }
+      sig { returns(Types::TypeLike) }
       attr_reader :value
 
       sig { returns(T.untyped) }
@@ -530,6 +550,40 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
+    end
+
+    class EnumClassNamespace < ClassNamespace
+      extend T::Sig
+
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          final: T::Boolean,
+          enums: T::Array[T.any([String, String], String)],
+          abstract: T::Boolean,
+          block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
+        ).void
+      end
+      def initialize(generator, name, final, enums, abstract, &block); end
+
+      sig { returns(T::Array[T.any([String, String], String)]) }
+      attr_reader :enums
+
+      sig { override.params(indent_level: Integer, options: Options, mode: Symbol).returns(T::Array[String]) }
+      def generate_body(indent_level, options, mode); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
+      def merge_into_self(others); end
 
       sig { override.void }
       def generalize_from_rbi!; end
@@ -909,6 +963,9 @@ module Parlour
 
     class Parameter
       extend T::Sig
+      RBS_KEYWORDS = [
+        'type', 'interface', 'out', 'in', 'instance'
+      ]
       PREFIXES = {
         normal: '',
         splat: '*',

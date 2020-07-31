@@ -56,10 +56,10 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        if String === value
-          [options.indented(indent_level, "#{name} = #{value}")]
+        if String === @value
+          [options.indented(indent_level, "#{name} = #{@value}")]
         else
-          [options.indented(indent_level, "#{name} = T.let(nil, #{value.generate_rbi})")]
+          [options.indented(indent_level, "#{name} = T.let(nil, #{@value.generate_rbi})")]
         end
       end
 
@@ -75,7 +75,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS lines, formatted as specified.
       def generate_rbs(indent_level, options)
-        [options.indented(indent_level, "#{name}: #{value.generate_rbs}")]
+        [options.indented(indent_level, "#{name}: #{String === @value ? @value : @value.generate_rbs}")]
       end
 
       sig do

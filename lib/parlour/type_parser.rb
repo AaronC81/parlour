@@ -728,10 +728,43 @@ module Parlour
           end
         end
 
-        # TODO: terrible heuristic
-        if node_to_s(node)&.include?('T.proc.')
-          puts "warning: encountered proc, treating as untyped"
-          return Types::Untyped.new
+        # Special case: is this a proc?
+        # This parsing is pretty simplified, but you'd also have to be doing
+        # something pretty cursed with procs to break this
+        # This checks for (send (send (send (const nil :T) :proc) ...) ...)
+        # That's the right amount of nesting for T.proc.params(...).returns(...)
+        if node.to_a[0].type == :send && 
+          node.to_a[0].to_a[0].type == :send &&
+          node.to_a[0].to_a[0].to_a[1] == :proc &&
+          node.to_a[0].to_a[0].to_a[0].type == :const &&
+          node.to_a[0].to_a[0].to_a[0].to_a == [nil, :T] # yuck
+
+          # Get parameters
+          params_send = node.to_a[0]
+          parse_err "expected 'params' to follow 'T.proc'" unless params_send.to_a[1] == :params
+          parse_err "expected 'params' to have kwargs" unless params_send.to_a[2].type == :hash
+
+          parameters = params_send.to_a[2].to_a.map do |pair|
+            name, value = *pair
+            parse_err "expected 'params' name to be symbol" unless name.type == :sym
+            name = name.to_a[0].to_s
+            value = parse_node_to_type(value)
+
+            RbiGenerator::Parameter.new(name, type: value)
+          end
+
+          # Get return value
+          if node.to_a[1] == :void
+            return_type = nil
+          else
+            _, call, *args = *node
+            parse_err 'expected .returns or .void', node unless call == :returns
+            parse_err 'no argument to .returns', node if args.nil? || args.empty?
+            parse_err 'too many arguments to .returns', node unless args.length == 1
+            return_type = parse_node_to_type(T.must(args.first))
+          end
+
+          return Types::Proc.new(parameters, return_type)
         end
 
         # The other options for a valid call are all "T.something" methods

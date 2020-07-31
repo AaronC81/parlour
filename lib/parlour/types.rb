@@ -210,6 +210,37 @@ module Parlour
         "untyped"
       end
     end
+
+    class Proc < Type
+      sig { params(parameters: T::Array[RbiGenerator::Parameter], return_type: T.nilable(TypeLike)).void }
+      def initialize(parameters, return_type)
+        @parameters = parameters
+        @return_type = return_type && to_type(return_type)
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Proc === other && parameters == other.parameters && return_type == other.return_type
+      end
+
+      sig { returns(T::Array[RbiGenerator::Parameter]) }
+      attr_reader :parameters
+
+      sig { returns(T.nilable(Type)) }
+      attr_reader :return_type
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T.proc.params(#{parameters.map(&:to_sig_param).join(', ')}).#{
+          @return_type ? "returns(#{return_type.generate_rbi})" : 'void'
+        }"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "(#{parameters.map(&:to_rbs_param).join(', ')}) -> #{return_type&.generate_rbs || 'void'}"
+      end
+    end
   end
 end
         

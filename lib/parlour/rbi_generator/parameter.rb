@@ -134,6 +134,7 @@ module Parlour
         raise 'blocks are not parameters in RBS' if kind == :block
 
         t = String === @type ? @type : @type.generate_rbs
+        t = "^#{t}" if Types::Proc === @type
 
         if RBS_KEYWORDS.include? name_without_kind
           puts "warning: '#{name_without_kind}' is a keyword in RBS, renaming method parameter to '_#{name_without_kind}'"
