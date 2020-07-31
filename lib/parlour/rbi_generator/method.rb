@@ -187,18 +187,20 @@ module Parlour
       # @return [Array<String>] The RBS lines, formatted as specified.
       def generate_rbs(indent_level, options)
         # TODO: ignores formatting options
-        # TODO: blocks
 
-        rbs_params = parameters.select do |x|
-          puts 'warning: blocks not implemented for RBS' if x.kind == :block
-          x.kind != :block
-        end.map(&:to_rbs_param)
+        block_param = parameters.find { |x| x.kind == :block }
+        block_type = block_param&.type
+        block_type = String === block_type ? block_type : block_type&.generate_rbs
+
+        rbs_params = parameters.reject { |x| x.kind == :block }.map(&:to_rbs_param)
         rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
 
         generate_comments(indent_level, options) + [
           options.indented(
             indent_level,
-            "def #{class_method ? 'self.' : ''}#{name}: (#{rbs_params.join(', ')}) -> #{rbs_return_type || 'void'}"
+            "def #{class_method ? 'self.' : ''}#{name}: (#{rbs_params.join(', ')}) #{
+              (block_type && block_type != 'untyped') ? "{ #{block_type} } " : ''
+            }-> #{rbs_return_type || 'void'}"
           )
         ]
       end
