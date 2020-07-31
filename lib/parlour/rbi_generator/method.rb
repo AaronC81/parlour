@@ -189,7 +189,10 @@ module Parlour
         # TODO: ignores formatting options
         # TODO: blocks
 
-        rbs_params = parameters.select { |x| x.kind != :block }.map(&:to_rbs_param)
+        rbs_params = parameters.select do |x|
+          puts 'warning: blocks not implemented for RBS' if x.kind == :block
+          x.kind != :block
+        end.map(&:to_rbs_param)
         rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
 
         generate_comments(indent_level, options) + [
