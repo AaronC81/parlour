@@ -49,7 +49,10 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
       def generate_body(indent_level, options, mode)
-        raise 'RBS does not support enums' if mode == :generate_rbs
+        if mode == :generate_rbs
+          puts 'warning: RBS does not support enums'
+          return ['# This was an enum, which are unsupported.']
+        end
 
         result = [options.indented(indent_level, 'enums do')]
         enums.each do |enum_value|

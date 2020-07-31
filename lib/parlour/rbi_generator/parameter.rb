@@ -121,17 +121,31 @@ module Parlour
         "#{name_without_kind}: #{String === @type ? @type : @type.generate_rbi}"
       end
 
+      # TODO: probably incomplete
+      RBS_KEYWORDS = [
+        'type', 'interface', 'out', 'in', 'instance'
+      ]
+
       sig { returns(String) }
       # A string of how this parameter should be defiend in an RBS signature.
       #
       # @return [String]
       def to_rbs_param
+        raise 'blocks are not parameters in RBS' if kind == :block
+
         t = String === @type ? @type : @type.generate_rbs
 
-        (default ? '?' : '') + if kind == :keyword
-          "#{name}: #{t}"
+        if RBS_KEYWORDS.include? name_without_kind
+          puts "warning: '#{name_without_kind}' is a keyword in RBS, renaming method parameter to '_#{name_without_kind}'"
+          n = "_#{name_without_kind}"
         else
-          "#{PREFIXES[kind]}#{t} #{name}"
+          n = name_without_kind
+        end
+
+        (default ? '?' : '') + if kind == :keyword
+          "#{n}: #{t}"
+        else
+          "#{PREFIXES[kind]}#{t} #{n}"
         end
       end
 

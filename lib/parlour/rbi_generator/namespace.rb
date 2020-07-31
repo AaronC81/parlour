@@ -725,6 +725,16 @@ module Parlour
         first, *rest = remaining_children.reject do |child|
           # We already processed these kinds of children
           child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
+        end.reject do |child|
+          next if mode != :generate_rbs
+          next if is_a?(ClassNamespace) || is_a?(ModuleNamespace) # next if this is not root
+        
+          if child.is_a?(RbiGenerator::Method)
+            puts "warning: RBS does not support top-level method definitions, ignoring #{child.name}"
+            next true
+          end
+
+          false
         end
         unless first
           # Remove any trailing whitespace due to includes or class attributes

@@ -187,8 +187,9 @@ module Parlour
       # @return [Array<String>] The RBS lines, formatted as specified.
       def generate_rbs(indent_level, options)
         # TODO: ignores formatting options
+        # TODO: blocks
 
-        rbs_params = parameters.map(&:to_rbs_param)
+        rbs_params = parameters.select { |x| x.kind != :block }.map(&:to_rbs_param)
         rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
 
         generate_comments(indent_level, options) + [

@@ -93,7 +93,7 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!
-        super
+        @type = TypeParser.parse_single_type(@type) if String === @type
       end
 
       private
