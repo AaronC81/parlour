@@ -1,6 +1,6 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # An abstract class which is subclassed by any classes which can generate
     # entire lines of an RBI, such as {Namespace} and {Method}. (As an example,
     # {Parameter} is _not_ a subclass because it does not generate lines, only
@@ -11,7 +11,7 @@ module Parlour
       extend T::Sig
       abstract!
 
-      sig { params(generator: RbiGenerator, name: String).void }
+      sig { params(generator: Generator, name: String).void }
       # Creates a new RBI object.
       # @note Don't call this directly.
       #
@@ -20,14 +20,14 @@ module Parlour
       # @return [void]
       def initialize(generator, name)
         @generator = generator
-        @generated_by = generator.current_plugin
+        @generated_by = RbiGenerator === generator ? generator.current_plugin : nil
         @name = name
         @comments = []
       end
 
-      sig { returns(RbiGenerator) }
+      sig { returns(Generator) }
       # The generator which this object belongs to.
-      # @return [RbiGenerator]
+      # @return [Generator]
       attr_reader :generator
 
       sig { returns(T.nilable(Plugin)) }
@@ -86,6 +86,20 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options); end
+
+      sig do
+        abstract.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this object.
+      #
+      # @abstract
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options); end
 
       sig do
         abstract.params(

@@ -1,11 +1,11 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents miscellaneous Ruby code.
     class Arbitrary < RbiObject
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           code: String,
           block: T.nilable(T.proc.params(x: Arbitrary).void)
         ).void
@@ -47,6 +47,21 @@ module Parlour
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         code.split("\n").map { |l| options.indented(indent_level, l) }
+      end
+
+      sig do
+        override.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this arbitrary code.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        generate_rbi(indent_level, options)
       end
 
       sig do

@@ -1,6 +1,6 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # A set of immutable formatting options passed to all calls of
     # {RbiObject#generate_rbi}.
     class Options

@@ -281,9 +281,9 @@ RSpec.describe Parlour::TypeParser do
 
       expect(meth.parameters.length).to eq 2
       expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
-        type: "T.untyped", default: nil)
+        type: Parlour::Types::Untyped.new, default: nil)
       expect(meth.parameters[1]).to have_attributes(name: 'y', kind: :normal,
-        type: "T.untyped", default: 'true')
+        type: Parlour::Types::Untyped.new, default: 'true')
     end
 
     it 'works for methods with complex parameters' do
@@ -299,13 +299,13 @@ RSpec.describe Parlour::TypeParser do
 
       expect(meth.parameters.length).to eq 4
       expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
-        type: "T.untyped", default: nil)
+        type: Parlour::Types::Untyped.new, default: nil)
       expect(meth.parameters[1]).to have_attributes(name: 'y:', kind: :keyword,
-        type: "T.untyped", default: nil)
+        type: Parlour::Types::Untyped.new, default: nil)
       expect(meth.parameters[2]).to have_attributes(name: 'z:', kind: :keyword,
-        type: "T.untyped", default: '3')
+        type: Parlour::Types::Untyped.new, default: '3')
       expect(meth.parameters[3]).to have_attributes(name: '&blk', kind: :block,
-        type: "T.untyped", default: nil)
+        type: Parlour::Types::Untyped.new, default: nil)
     end
 
     it 'works with splat-arguments' do
@@ -320,9 +320,9 @@ RSpec.describe Parlour::TypeParser do
         return_type: "T.untyped", override: false)
 
       expect(meth.parameters[0]).to have_attributes(name: '*args', type: :splat,
-        type: "T.untyped")
+        type: Parlour::Types::Untyped.new)
       expect(meth.parameters[1]).to have_attributes(name: '**kwargs',
-        type: :double_splat, type: "T.untyped")
+        type: :double_splat, type: Parlour::Types::Untyped.new)
     end
 
     it 'supports class methods using self.x' do
@@ -337,7 +337,7 @@ RSpec.describe Parlour::TypeParser do
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
       expect(meth.parameters.first).to have_attributes(name: 'x',
-        type: "T.untyped")
+        type: Parlour::Types::Untyped.new)
     end
 
     it 'supports class methods within an eigenclass' do
@@ -348,11 +348,11 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([]), is_within_eigenclass: true).only
-      expect(meth).to have_attributes(name: 'foo', return_type: "T.untyped",
+      expect(meth).to have_attributes(name: 'foo', return_type: 'T.untyped',
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
       expect(meth.parameters.first).to have_attributes(name: 'x',
-        type: "T.untyped")
+        type: Parlour::Types::Untyped.new)
     end
 
     it 'errors on a self.x method within an eigenclass' do
@@ -921,10 +921,10 @@ RSpec.describe Parlour::TypeParser do
       parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
       expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 
-      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
-      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
+      generator = parlour_module.children.find { |x| x.name == 'Generator' }
+      expect(generator).to be_a Parlour::RbiGenerator::ClassNamespace
 
-      meth = rbi_generator.children.find { |x| x.name == 'initialize' }
+      meth = generator.children.find { |x| x.name == 'initialize' }
 
       expect(meth.parameters.length).to eq 3
       expect(meth.parameters[0]).to have_attributes(

@@ -1,13 +1,13 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents a class definition.
     class ClassNamespace < Namespace
       extend T::Sig
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           final: T::Boolean,
           superclass: T.nilable(String),
@@ -44,15 +44,22 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        class_definition = superclass.nil? \
-          ? "class #{name}"
-          : "class #{name} < #{superclass}"
-        
-        lines = generate_comments(indent_level, options)
-        lines << options.indented(indent_level, class_definition)
-        lines += [options.indented(indent_level + 1, "abstract!"), ""] if abstract
-        lines += generate_body(indent_level + 1, options)
-        lines << options.indented(indent_level, "end")
+        generate(indent_level, options, :generate_rbi)
+      end
+
+      sig do
+        override.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this arbitrary code.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        generate(indent_level, options, :generate_rbs)
       end
 
       sig { returns(T.nilable(String)) }
@@ -120,6 +127,27 @@ module Parlour
       sig { override.void }
       def generalize_from_rbi!
         super
+      end
+
+      private
+
+      sig do
+        params(
+          indent_level: Integer,
+          options: Options,
+          mode: Symbol,
+        ).returns(T::Array[String])
+      end
+      def generate(indent_level, options, mode)
+        class_definition = superclass.nil? \
+          ? "class #{name}"
+          : "class #{name} < #{superclass}"
+      
+        lines = generate_comments(indent_level, options)
+        lines << options.indented(indent_level, class_definition)
+        lines += [options.indented(indent_level + 1, "abstract!"), ""] if mode == :generate_rbi && abstract
+        lines += generate_body(indent_level + 1, options, mode)
+        lines << options.indented(indent_level, "end")
       end
     end
   end

@@ -14,6 +14,9 @@ module Parlour
       sig { abstract.returns(String) }
       def generate_rbi; end
 
+      sig { abstract.returns(String) }
+      def generate_rbs; end
+
       sig { params(type_like: TypeLike).returns(Type) }
       def to_type(type_like)
         if type_like.is_a?(String)
@@ -42,6 +45,11 @@ module Parlour
       def generate_rbi
         str
       end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        str
+      end
     end
 
     class Nilable < Type
@@ -61,6 +69,11 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbi
         "T.nilable(#{type.generate_rbi})"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "#{type.generate_rbs}?"
       end
     end
 
@@ -82,6 +95,11 @@ module Parlour
       def generate_rbi
         "T.any(#{types.map(&:generate_rbi).join(', ')})"
       end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "(#{types.map(&:generate_rbs).join(' | ')})"
+      end
     end
 
     class Intersection < Type
@@ -101,6 +119,11 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbi
         "T.all(#{types.map(&:generate_rbi).join(', ')})"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "(#{types.map(&:generate_rbs).join(' & ')})"
       end
     end
 
@@ -122,6 +145,11 @@ module Parlour
       def generate_rbi
         "[#{types.map(&:generate_rbi).join(', ')}]"
       end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "[#{types.map(&:generate_rbs).join(', ')}]"
+      end
     end
 
     class Array < Type
@@ -142,6 +170,11 @@ module Parlour
       def generate_rbi
         "T::Array[#{element.generate_rbi}]"
       end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "Array[#{element.generate_rbs}]"
+      end
     end
 
     class Boolean < Type
@@ -154,6 +187,11 @@ module Parlour
       def generate_rbi
         "T::Boolean"
       end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "bool"
+      end
     end
 
     class Untyped < Type
@@ -165,6 +203,11 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbi
         "T.untyped"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "untyped"
       end
     end
   end

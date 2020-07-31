@@ -1,13 +1,13 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents a method definition.
     class Method < RbiObject
       extend T::Sig
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           parameters: T::Array[Parameter],
           return_type: T.nilable(Types::TypeLike),
@@ -172,6 +172,31 @@ module Parlour
 
         generate_comments(indent_level, options) + sig_lines +
           generate_definition(indent_level, options)
+      end
+
+      sig do
+        override.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this method.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        # TODO: ignores formatting options
+
+        rbs_params = parameters.map(&:to_rbs_param)
+        rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
+
+        generate_comments(indent_level, options) + [
+          options.indented(
+            indent_level,
+            "def #{class_method ? 'self.' : ''}#{name}: (#{rbs_params.join(', ')}) -> #{rbs_return_type || 'void'}"
+          )
+        ]
       end
 
       sig do

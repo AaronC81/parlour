@@ -71,11 +71,11 @@ RSpec.describe Parlour::TypeLoader do
       parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
       expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 
-      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
-      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
+      generator = parlour_module.children.find { |x| x.name == 'Generator' }
+      expect(generator).to be_a Parlour::RbiGenerator::ClassNamespace
 
-      rbi_generator_init = rbi_generator.children.find { |x| x.name == 'initialize' }
-      expect(rbi_generator_init).to have_attributes(class_method: false,
+      generator_init = generator.children.find { |x| x.name == 'initialize' }
+      expect(generator_init).to have_attributes(class_method: false,
         return_type: nil)
     end
 
@@ -85,12 +85,15 @@ RSpec.describe Parlour::TypeLoader do
       parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
       expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 
-      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
-      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace
+      generator = parlour_module.children.find { |x| x.name == 'Generator' }
+      expect(generator).to be_a Parlour::RbiGenerator::ClassNamespace
 
-      rbi_generator_init = rbi_generator.children.find { |x| x.name == 'initialize' }
-      expect(rbi_generator_init).to have_attributes(class_method: false,
+      generator_init = generator.children.find { |x| x.name == 'initialize' }
+      expect(generator_init).to have_attributes(class_method: false,
         return_type: nil)
+
+      rbi_generator = parlour_module.children.find { |x| x.name == 'RbiGenerator' }
+      expect(rbi_generator).to be_a Parlour::RbiGenerator::ClassNamespace  
 
       # This file was not excluded
       expect(rbi_generator.children.find { |x| x.name == 'Attribute' }).not_to be nil

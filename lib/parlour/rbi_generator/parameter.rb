@@ -1,6 +1,6 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents a method parameter with a Sorbet type signature.
     class Parameter
       extend T::Sig
@@ -42,7 +42,7 @@ module Parlour
 
         @kind = :keyword if kind == :normal && name.end_with?(':')
 
-        @type = type || 'T.untyped'
+        @type = type || Parlour::Types::Untyped.new
         @default = default
       end
 
@@ -119,7 +119,21 @@ module Parlour
       # @return [String]
       def to_sig_param
         "#{name_without_kind}: #{String === @type ? @type : @type.generate_rbi}"
-      end#
+      end
+
+      sig { returns(String) }
+      # A string of how this parameter should be defiend in an RBS signature.
+      #
+      # @return [String]
+      def to_rbs_param
+        t = String === @type ? @type : @type.generate_rbs
+
+        (default ? '?' : '') + if kind == :keyword
+          "#{name}: #{t}"
+        else
+          "#{PREFIXES[kind]}#{t} #{name}"
+        end
+      end
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.
       PREFIXES = {

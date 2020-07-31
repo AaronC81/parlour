@@ -11,6 +11,7 @@ require 'parlour/plugin'
 
 require 'parlour/types'
 
+require 'parlour/generator'
 require 'parlour/rbi_generator/parameter'
 require 'parlour/rbi_generator/rbi_object'
 require 'parlour/rbi_generator/method'
@@ -27,6 +28,7 @@ require 'parlour/rbi_generator/enum_class_namespace'
 require 'parlour/rbi_generator/struct_prop'
 require 'parlour/rbi_generator/struct_class_namespace'
 require 'parlour/rbi_generator'
+require 'parlour/rbs_generator'
 require 'parlour/detached_rbi_generator'
 
 require 'parlour/conflict_resolver'

@@ -8,7 +8,7 @@ module Parlour
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           final: T::Boolean,
           props: T::Array[StructProp],
@@ -39,7 +39,8 @@ module Parlour
       sig do
         override.params(
           indent_level: Integer,
-          options: Options
+          options: Options,
+          mode: Symbol,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this struct. This consists of
@@ -48,7 +49,9 @@ module Parlour
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
-      def generate_body(indent_level, options)
+      def generate_body(indent_level, options, mode)
+        raise 'RBS does not support structs' if mode == :generate_rbs
+
         result = []
         props.each do |prop|
           result << options.indented(indent_level, prop.to_prop_call)

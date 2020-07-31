@@ -1,11 +1,11 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents an +include+ call.
     class Include < RbiObject
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           block: T.nilable(T.proc.params(x: Include).void)
         ).void
@@ -41,6 +41,21 @@ module Parlour
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         [options.indented(indent_level, "include #{name}")]
+      end
+
+      sig do
+        override.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this constant.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        generate_rbi(indent_level, options)
       end
 
       sig do

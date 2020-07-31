@@ -1,6 +1,6 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents a +T::Struct+ property.
     class StructProp
       extend T::Sig

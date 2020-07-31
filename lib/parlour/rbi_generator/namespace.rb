@@ -1,6 +1,6 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # A generic namespace. This shouldn't be used, except as the type of
     # {RbiGenerator#root}.
     class Namespace < RbiObject
@@ -19,12 +19,28 @@ module Parlour
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         generate_comments(indent_level, options) +
-          generate_body(indent_level, options)
+          generate_body(indent_level, options, :generate_rbi)
+      end
+
+      sig do
+        override.overridable.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this namespace.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        generate_comments(indent_level, options) +
+          generate_body(indent_level, options, :generate_rbs)
       end
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: T.nilable(String),
           final: T::Boolean,
           block: T.nilable(T.proc.params(x: Namespace).void)
@@ -260,7 +276,7 @@ module Parlour
         params(
           name: String,
           parameters: T.nilable(T::Array[Parameter]),
-          return_type: T.nilable(String),
+          return_type: T.nilable(Types::TypeLike),
           returns: T.nilable(String),
           abstract: T::Boolean,
           implementation: T::Boolean,
@@ -320,7 +336,7 @@ module Parlour
         params(
           name: String,
           kind: Symbol,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -376,7 +392,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -397,7 +413,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -418,7 +434,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -563,6 +579,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Constant]
       def create_type_alias(name, type:, &block)
+        # TODO: RBS support
         create_constant(name, value: "T.type_alias { #{type} }", &block)
       end
 
@@ -625,7 +642,8 @@ module Parlour
       sig do
         overridable.params(
           indent_level: Integer,
-          options: Options
+          options: Options,
+          mode: Symbol,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this namespace. This consists of
@@ -633,8 +651,10 @@ module Parlour
       #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
+      # @param mode [Symbol] The symbol to send to generate children: one of
+      #   :generate_rbi or :generate_rbs.
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
-      def generate_body(indent_level, options)
+      def generate_body(indent_level, options, mode)
         result = []
 
         result += [options.indented(indent_level, 'final!'), ''] if final
@@ -646,13 +666,13 @@ module Parlour
 
         if includes.any? || extends.any? || non_eigen_constants.any?
           result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
-            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .flat_map { |x| x.send(mode, indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
-            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .flat_map { |x| x.send(mode, indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? non_eigen_constants.sort_by(&:name) : non_eigen_constants)
-            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .flat_map { |x| x.send(mode, indent_level, options) }
             .reject { |x| x.strip == '' }
           result << ""
         end
@@ -671,14 +691,18 @@ module Parlour
           child.is_a?(Attribute) && child.class_attribute
         end
 
+        if (class_attributes.any? || eigen_constants.any?) && mode == :generate_rbs
+          raise 'RBS does not support class << self blocks'
+        end
+
         # Handle the "class << self block"
         result << options.indented(indent_level, 'class << self') \
           if class_attributes.any? || eigen_constants.any?
 
         if eigen_constants.any?
           first, *rest = eigen_constants
-          result += T.must(first).generate_rbi(indent_level + 1, options) + T.must(rest)
-            .map { |obj| obj.generate_rbi(indent_level + 1, options) }
+          result += T.must(first).send(mode, indent_level + 1, options) + T.must(rest)
+            .map { |obj| obj.send(mode, indent_level + 1, options) }
             .map { |lines| [""] + lines }
             .flatten
         end
@@ -687,8 +711,8 @@ module Parlour
 
         if class_attributes.any?
           first, *rest = class_attributes
-          result += T.must(first).generate_rbi(indent_level + 1, options) + T.must(rest)
-            .map { |obj| obj.generate_rbi(indent_level + 1, options) }
+          result += T.must(first).send(mode, indent_level + 1, options) + T.must(rest)
+            .map { |obj| obj.send(mode, indent_level + 1, options) }
             .map { |lines| [""] + lines }
             .flatten
         end
@@ -708,8 +732,8 @@ module Parlour
           return result
         end
 
-        result += first.generate_rbi(indent_level, options) + T.must(rest)
-          .map { |obj| obj.generate_rbi(indent_level, options) }
+        result += first.send(mode, indent_level, options) + T.must(rest)
+          .map { |obj| obj.send(mode, indent_level, options) }
           .map { |lines| [""] + lines }
           .flatten
 

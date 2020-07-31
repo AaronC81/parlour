@@ -1,11 +1,11 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents an attribute reader, writer or accessor.
     class Attribute < Method
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           kind: Symbol,
           type: Types::TypeLike,
@@ -31,6 +31,7 @@ module Parlour
         # attr_accessor and attr_reader should have: sig { returns(X) }
         # attr_writer :foo should have: sig { params(foo: X).returns(X) }
 
+        @type = type
         @kind = kind
         @class_attribute = class_attribute
         case kind
@@ -53,6 +54,28 @@ module Parlour
       sig { returns(T::Boolean) }
       # Whether this attribute belongs to the singleton class.
       attr_reader :class_attribute
+
+      sig { returns(Types::TypeLike) }
+      # The type of this attribute.
+      attr_reader :type
+
+      sig do
+        override.params(
+          indent_level: Integer,
+          options: Options
+        ).returns(T::Array[String])
+      end
+      # Generates the RBS lines for this arbitrary code.
+      #
+      # @param indent_level [Integer] The indentation level to generate the lines at.
+      # @param options [Options] The formatting options to use.
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        [options.indented(
+          indent_level,
+          "attr_#{kind} #{name}: #{String === @type ? @type : @type.generate_rbs}"
+        )]
+      end
 
       sig { override.params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another attribute.
