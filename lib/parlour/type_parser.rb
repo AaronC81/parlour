@@ -724,7 +724,7 @@ module Parlour
             
             parse_err "no type in T::#{names[1]}[...]", node if args.nil? || args.empty?
             parse_err "too many types in T::#{names[1]}[...]", node unless args.length == 1
-            return T.must(Types.const_get(names[1])).new(parse_node_to_type(T.must(args.first)))
+            return T.must(Types.const_get(T.must(names[1]))).new(parse_node_to_type(T.must(args.first)))
           elsif names.length == 2 && names == [:T, :Hash]
             parse_err "not enough types in T::Hash[...]", node if args.nil? || args.length < 2
             parse_err "too many types in T::Hash[...]", node unless args.length == 2
