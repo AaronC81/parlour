@@ -717,13 +717,23 @@ module Parlour
         # Special case: is this a generic type instantiation?
         if message == :[]
           names = constant_names(target)
-          if names == [:T, :Array]
-            parse_err 'no type in T::Array[...]', node if args.nil? || args.empty?
-            parse_err 'too many types in T::Array[...]', node unless args.length == 1
-            return Types::Array.new(parse_node_to_type(T.must(args.first)))
+          known_single_element_collections = [:Array, :Set, :Range, :Enumerator, :Enumerable]
+
+          if names.length == 2 && names[0] == :T && 
+            known_single_element_collections.include?(names[1])
+            
+            parse_err "no type in T::#{names[1]}[...]", node if args.nil? || args.empty?
+            parse_err "too many types in T::#{names[1]}[...]", node unless args.length == 1
+            return T.must(Types.const_get(names[1])).new(parse_node_to_type(T.must(args.first)))
+          elsif names.length == 2 && names == [:T, :Hash]
+            parse_err "not enough types in T::Hash[...]", node if args.nil? || args.length < 2
+            parse_err "too many types in T::Hash[...]", node unless args.length == 2
+            return Types::Hash.new(
+              parse_node_to_type(args[0]), parse_node_to_type(args[1])
+            )
           else
             # TODO
-            puts "warning: user-defined generic types not implemented, treating as untyped"
+            puts "warning: user-defined generic types not implemented, treating #{names.last} as untyped"
             return Types::Untyped.new
           end
         end
@@ -741,12 +751,12 @@ module Parlour
 
           # Get parameters
           params_send = node.to_a[0]
-          parse_err "expected 'params' to follow 'T.proc'" unless params_send.to_a[1] == :params
-          parse_err "expected 'params' to have kwargs" unless params_send.to_a[2].type == :hash
+          parse_err "expected 'params' to follow 'T.proc'", node unless params_send.to_a[1] == :params
+          parse_err "expected 'params' to have kwargs", node unless params_send.to_a[2].type == :hash
 
           parameters = params_send.to_a[2].to_a.map do |pair|
             name, value = *pair
-            parse_err "expected 'params' name to be symbol" unless name.type == :sym
+            parse_err "expected 'params' name to be symbol", node unless name.type == :sym
             name = name.to_a[0].to_s
             value = parse_node_to_type(value)
 
@@ -786,6 +796,11 @@ module Parlour
           parse_err 'not enough argument to T.let', node if args.nil? || args.length < 2
           parse_err 'too many arguments to T.nilable', node unless args.length == 2
           parse_node_to_type(args[1])
+        when :type_parameter
+          parse_err 'no argument to T.type_parameter', node if args.nil? || args.empty?
+          parse_err 'too many arguments to T.type_parameter', node unless args.length == 1
+          parse_err 'expected T.type_parameter to be passed a symbol', node unless T.must(args.first).type == :sym
+          Types::Raw.new(T.must(args.first.to_a[0].to_s))
         when :untyped
           parse_err 'T.untyped does not accept arguments', node if !args.nil? && !args.empty?
           Types::Untyped.new

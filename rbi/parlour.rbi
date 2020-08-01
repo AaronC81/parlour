@@ -341,7 +341,9 @@ module Parlour
       def generate_rbs; end
     end
 
-    class Array < Type
+    class SingleElementCollection < Type
+      abstract!
+
       sig { params(element: TypeLike).void }
       def initialize(element); end
 
@@ -351,11 +353,30 @@ module Parlour
       sig { returns(Type) }
       attr_reader :element
 
+      sig { abstract.returns(String) }
+      def collection_name; end
+
       sig { override.returns(String) }
       def generate_rbi; end
 
       sig { override.returns(String) }
       def generate_rbs; end
+    end
+
+    class Array < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name; end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+    end
+
+    class Set < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name; end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
     end
 
     class Boolean < Type

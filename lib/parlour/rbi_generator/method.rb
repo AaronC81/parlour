@@ -198,7 +198,9 @@ module Parlour
         generate_comments(indent_level, options) + [
           options.indented(
             indent_level,
-            "def #{class_method ? 'self.' : ''}#{name}: (#{rbs_params.join(', ')}) #{
+            "def #{class_method ? 'self.' : ''}#{name}: #{
+              type_parameters.any? ? "[#{type_parameters.join(', ')}] " : '' 
+            }(#{rbs_params.join(', ')}) #{
               (block_type && block_type != 'untyped') ? "{ #{block_type} } " : ''
             }-> #{rbs_return_type || 'void'}"
           )

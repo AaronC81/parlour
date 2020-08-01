@@ -152,28 +152,117 @@ module Parlour
       end
     end
 
-    class Array < Type
+    class SingleElementCollection < Type
+      abstract!
+
       sig { params(element: TypeLike).void }
       def initialize(element)
         @element = to_type(element)
+      end
+
+      sig { returns(Type) }
+      attr_reader :element
+
+      sig { abstract.returns(String) }
+      def collection_name; end
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T::#{collection_name}[#{element.generate_rbi}]"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "#{collection_name}[#{element.generate_rbs}]"
+      end
+    end
+
+    class Array < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name
+        'Array'
       end
 
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
         Array === other && element == other.element
       end
+    end
+
+    class Set < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name
+        'Set'
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Set === other && element == other.element
+      end
+    end
+
+    class Range < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name
+        'Range'
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Range === other && element == other.element
+      end
+    end
+
+    class Enumerable < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name
+        'Enumerable'
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Enumerable === other && element == other.element
+      end
+    end
+
+    class Enumerator < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name
+        'Enumerator'
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Enumerator === other && element == other.element
+      end
+    end
+
+    class Hash < Type
+      sig { params(key: TypeLike, value: TypeLike).void }
+      def initialize(key, value)
+        @key = to_type(key)
+        @value = to_type(value)
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Hash === other && key == other.key && value == other.value
+      end
 
       sig { returns(Type) }
-      attr_reader :element
+      attr_reader :key
+
+      sig { returns(Type) }
+      attr_reader :value
 
       sig { override.returns(String) }
       def generate_rbi
-        "T::Array[#{element.generate_rbi}]"
+        "T::Hash[#{key.generate_rbi}, #{value.generate_rbi}]"
       end
 
       sig { override.returns(String) }
       def generate_rbs
-        "Array[#{element.generate_rbs}]"
+        "Hash[#{key.generate_rbs}, #{value.generate_rbs}]"
       end
     end
 
@@ -232,7 +321,7 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbi
         "T.proc.params(#{parameters.map(&:to_sig_param).join(', ')}).#{
-          @return_type ? "returns(#{return_type.generate_rbi})" : 'void'
+          @return_type ? "returns(#{@return_type.generate_rbi})" : 'void'
         }"
       end
 
