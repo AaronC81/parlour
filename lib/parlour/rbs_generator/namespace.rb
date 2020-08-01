@@ -507,19 +507,36 @@ module Parlour
         result = []
 
         if includes.any? || extends.any? || constants.any?
-          result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
+          result += (options.sort_namespaces \
+              ? includes.sort_by { |x| t = x.type; String === t ? t : t.generate_rbs }
+              : includes)
             .flat_map { |x| x.generate_rbs(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
+          result += (options.sort_namespaces \
+              ? extends.sort_by { |x| t = x.type; String === t ? t : t.generate_rbs }
+              : extends)
             .flat_map { |x| x.generate_rbs(indent_level, options) }
             .reject { |x| x.strip == '' }
-          result += (options.sort_namespaces ? constants.sort_by(&:name) : constants)
+          result += (options.sort_namespaces \
+              ? constants.sort_by { |x| t = x.type; String === t ? t : t.generate_rbs }
+              : constants)
             .flat_map { |x| x.generate_rbs(indent_level, options) }
             .reject { |x| x.strip == '' }
           result << ""
         end
 
-        first, *rest = children.reject do |child|
+        # Sort children
+        sorted_children = (
+          if options.sort_namespaces
+            # sort_by can be unstable (and is in current MRI).
+            # Use the this work around to preserve order for ties
+            children.sort_by.with_index { |child, i| [child.name, i] }
+          else
+            children
+          end
+        )        
+
+        first, *rest = sorted_children.reject do |child|
           # We already processed these kinds of children
           child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
         end.reject do |child|
