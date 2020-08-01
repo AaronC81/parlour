@@ -345,19 +345,19 @@ module Parlour
         new_arbitrary
       end
 
-      sig { params(name: Types::TypeLike, block: T.nilable(T.proc.params(x: Extend).void)).returns(RbsGenerator::Extend) }
+      sig { params(type: Types::TypeLike, block: T.nilable(T.proc.params(x: Extend).void)).returns(RbsGenerator::Extend) }
       # Adds a new +extend+ to this namespace.
       #
       # @example Add an +extend+ to a class.
       #   class.create_extend('ExtendableClass') #=> extend ExtendableClass
       #
-      # @param object [Types::TypeLike] The type to extend.
+      # @param type [Types::TypeLike] The type to extend.
       # @param block A block which the new instance yields itself to.
       # @return [RbsGenerator::Extend]
-      def create_extend(name, &block)
+      def create_extend(type, &block)
         new_extend = RbsGenerator::Extend.new(
           generator,
-          name: name,
+          type: type,
           &block
         )
         move_next_comments(new_extend)
@@ -381,19 +381,19 @@ module Parlour
         returned_extendables
       end
 
-      sig { params(name: Types::TypeLike, block: T.nilable(T.proc.params(x: Include).void)).returns(Include) }
+      sig { params(type: Types::TypeLike, block: T.nilable(T.proc.params(x: Include).void)).returns(Include) }
       # Adds a new +include+ to this namespace.
       #
       # @example Add an +include+ to a class.
       #   class.create_include('IncludableClass') #=> include IncludableClass
       #
-      # @param object [Types::TypeLike] The type to extend.
+      # @param type [Types::TypeLike] The type to extend.
       # @param block A block which the new instance yields itself to.
       # @return [RbsGenerator::Include]
-      def create_include(name, &block)
+      def create_include(type, &block)
         new_include = RbsGenerator::Include.new(
           generator,
-          name: name,
+          type: type,
           &block
         )
         move_next_comments(new_include)
