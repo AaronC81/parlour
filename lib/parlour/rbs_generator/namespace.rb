@@ -187,11 +187,8 @@ module Parlour
       sig do
         params(
           name: String,
-          parameters: T.nilable(T::Array[Parameter]),
-          return_type: T.nilable(Types::TypeLike),
-          returns: T.nilable(String),
+          signatures: T::Array[MethodSignature],
           class_method: T::Boolean,
-          type_parameters: T.nilable(T::Array[Symbol]),
           block: T.nilable(T.proc.params(x: Method).void)
         ).returns(Method)
       end
@@ -199,27 +196,18 @@ module Parlour
       #
       # @param name [String] The name of this method. You should not specify +self.+ in
       #   this - use the +class_method+ parameter instead.
-      # @param parameters [Array<Parameter>] An array of {Parameter} instances representing this
-      #   method's parameters.
-      # @param return_type [String, nil] A Sorbet string of what this method returns, such as
-      #   +"String"+ or +"T.untyped"+. Passing nil denotes a void return.
-      # @param returns [String, nil] Same as return_type.
+      # @param signatures [Array<MethodSignature>] The signatures for each
+      #   overload of this method.
       # @param class_method [Boolean] Whether this method is a class method; that is, it
       #   it is defined using +self.+.
-      # @param type_parameters [Array<Symbol>, nil] This method's type parameters.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
-      def create_method(name, parameters: nil, return_type: nil, returns: nil, class_method: false, type_parameters: nil, &block)
-        parameters = parameters || []
-        raise 'cannot specify both return_type: and returns:' if return_type && returns
-        return_type ||= returns
+      def create_method(name, signatures, class_method: false, &block)
         new_method = RbsGenerator::Method.new(
           generator,
           name,
-          parameters,
-          return_type,
+          signatures,
           class_method: class_method,
-          type_parameters: type_parameters,
           &block
         )
         move_next_comments(new_method)
