@@ -3899,8 +3899,18 @@
 # wrong constant name at_exit
 # uninitialized constant LUSolve
 # uninitialized constant LUSolve
-# uninitialized constant Logger
-# uninitialized constant Logger
+# undefined method `initialize<defaultArg>8' for class `Logger'
+# Did you mean?  initialize_dup
+# wrong constant name debug!
+# wrong constant name error!
+# wrong constant name fatal!
+# wrong constant name info!
+# wrong constant name initialize<defaultArg>8
+# wrong constant name warn!
+# undefined method `initialize<defaultArg>5' for class `Logger::LogDevice'
+# Did you mean?  initialize_dup
+# uninitialized constant Logger::LogDevice::SiD
+# wrong constant name initialize<defaultArg>5
 # uninitialized constant Matrix
 # uninitialized constant Matrix
 # uninitialized constant MessagePack
@@ -4024,6 +4034,7 @@
 # uninitialized constant PackageSpec
 # wrong constant name <Class:PackageSpec>
 # wrong constant name inherited
+# wrong constant name initialize
 # wrong constant name <Class:Base>
 # wrong constant name <Class:Builders>
 # wrong constant name <Class:ClobberingError>
@@ -4169,28 +4180,28 @@
 #                Parser::Base::Racc_Runtime_Core_Revision_R
 #                Parser::Base::Racc_Runtime_Revision
 #                Parser::Base::Racc_Runtime_Core_Version
-#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Version
 #                Parser::Base::Racc_Runtime_Core_Id_C
 # uninitialized constant Parser::Base::Racc_Runtime_Core_Revision_C
 # Did you mean?  Parser::Base::Racc_Runtime_Core_Revision_R
 #                Parser::Base::Racc_Runtime_Revision
-#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Version
 #                Parser::Base::Racc_Runtime_Core_Id_C
 # uninitialized constant Parser::Base::Racc_Runtime_Core_Revision_R
 # Did you mean?  Parser::Base::Racc_Runtime_Core_Revision_C
 #                Parser::Base::Racc_Runtime_Revision
-#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Version
 # uninitialized constant Parser::Base::Racc_Runtime_Core_Version
 # Did you mean?  Parser::Base::Racc_Runtime_Revision
 #                Parser::Base::Racc_Runtime_Core_Revision
-#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Version_R
+#                Parser::Base::Racc_Runtime_Core_Version_C
 #                Parser::Base::Racc_Runtime_Core_Revision_C
 #                Parser::Base::Racc_Runtime_Core_Revision_R
 #                Parser::Base::Racc_Runtime_Version
@@ -4718,28 +4729,28 @@
 #                Parser::Ruby24::Racc_Runtime_Core_Revision_R
 #                Parser::Ruby24::Racc_Runtime_Revision
 #                Parser::Ruby24::Racc_Runtime_Core_Version
-#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Version_R
+#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Version
 #                Parser::Ruby24::Racc_Runtime_Core_Id_C
 # uninitialized constant Parser::Ruby24::Racc_Runtime_Core_Revision_C
 # Did you mean?  Parser::Ruby24::Racc_Runtime_Core_Revision_R
 #                Parser::Ruby24::Racc_Runtime_Revision
-#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Version_R
+#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Version
 #                Parser::Ruby24::Racc_Runtime_Core_Id_C
 # uninitialized constant Parser::Ruby24::Racc_Runtime_Core_Revision_R
 # Did you mean?  Parser::Ruby24::Racc_Runtime_Core_Revision_C
 #                Parser::Ruby24::Racc_Runtime_Revision
-#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Version_R
+#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Version
 # uninitialized constant Parser::Ruby24::Racc_Runtime_Core_Version
 # Did you mean?  Parser::Ruby24::Racc_Runtime_Revision
 #                Parser::Ruby24::Racc_Runtime_Core_Revision
-#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Version_R
+#                Parser::Ruby24::Racc_Runtime_Core_Version_C
 #                Parser::Ruby24::Racc_Runtime_Core_Revision_C
 #                Parser::Ruby24::Racc_Runtime_Core_Revision_R
 #                Parser::Ruby24::Racc_Runtime_Version
@@ -5216,28 +5227,28 @@
 #                Parser::Ruby27::Racc_Runtime_Core_Revision_R
 #                Parser::Ruby27::Racc_Runtime_Revision
 #                Parser::Ruby27::Racc_Runtime_Core_Version
-#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Version_R
+#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Version
 #                Parser::Ruby27::Racc_Runtime_Core_Id_C
 # uninitialized constant Parser::Ruby27::Racc_Runtime_Core_Revision_C
 # Did you mean?  Parser::Ruby27::Racc_Runtime_Core_Revision_R
 #                Parser::Ruby27::Racc_Runtime_Revision
-#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Version_R
+#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Version
 #                Parser::Ruby27::Racc_Runtime_Core_Id_C
 # uninitialized constant Parser::Ruby27::Racc_Runtime_Core_Revision_R
 # Did you mean?  Parser::Ruby27::Racc_Runtime_Core_Revision_C
 #                Parser::Ruby27::Racc_Runtime_Revision
-#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Version_R
+#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Version
 # uninitialized constant Parser::Ruby27::Racc_Runtime_Core_Version
 # Did you mean?  Parser::Ruby27::Racc_Runtime_Revision
 #                Parser::Ruby27::Racc_Runtime_Core_Revision
-#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Version_R
+#                Parser::Ruby27::Racc_Runtime_Core_Version_C
 #                Parser::Ruby27::Racc_Runtime_Core_Revision_C
 #                Parser::Ruby27::Racc_Runtime_Core_Revision_R
 #                Parser::Ruby27::Racc_Runtime_Version
@@ -6153,6 +6164,1560 @@
 # uninitialized constant Proc9
 # uninitialized constant Psych
 # uninitialized constant Psych
+# wrong constant name <Class:AST>
+# wrong constant name <Class:Buffer>
+# wrong constant name <Class:BuiltinNames>
+# wrong constant name <Class:Constant>
+# wrong constant name <Class:ConstantTable>
+# wrong constant name <Class:Definition>
+# wrong constant name <Class:DefinitionBuilder>
+# wrong constant name <Class:DuplicatedDeclarationError>
+# wrong constant name <Class:DuplicatedMethodDefinitionError>
+# wrong constant name <Class:Environment>
+# wrong constant name <Class:EnvironmentLoader>
+# wrong constant name <Class:EnvironmentWalker>
+# wrong constant name <Class:Factory>
+# wrong constant name <Class:GenericParameterMismatchError>
+# wrong constant name <Class:InconsistentMethodVisibilityError>
+# wrong constant name <Class:InvalidExtensionParameterError>
+# wrong constant name <Class:InvalidOverloadMethodError>
+# wrong constant name <Class:InvalidTypeApplicationError>
+# wrong constant name <Class:InvalidVarianceAnnotationError>
+# wrong constant name <Class:Location>
+# wrong constant name <Class:MethodDefinitionConflictWithInterfaceMixinError>
+# wrong constant name <Class:MethodNameHelper>
+# wrong constant name <Class:MethodType>
+# wrong constant name <Class:Namespace>
+# wrong constant name <Class:NoMixinFoundError>
+# wrong constant name <Class:NoSelfTypeFoundError>
+# wrong constant name <Class:NoSuperclassFoundError>
+# wrong constant name <Class:NoTypeFoundError>
+# wrong constant name <Class:Parser>
+# wrong constant name <Class:Prototype>
+# wrong constant name <Class:RecursiveAncestorError>
+# wrong constant name <Class:Substitution>
+# wrong constant name <Class:SuperclassMismatchError>
+# wrong constant name <Class:TypeName>
+# wrong constant name <Class:TypeNameResolver>
+# wrong constant name <Class:Types>
+# wrong constant name <Class:UnknownMethodAliasError>
+# wrong constant name <Class:Validator>
+# wrong constant name <Class:VarianceCalculator>
+# wrong constant name <Class:Vendorer>
+# wrong constant name <Class:Writer>
+# wrong constant name <Class:Annotation>
+# wrong constant name <Class:Comment>
+# wrong constant name <Class:Declarations>
+# wrong constant name <Class:Members>
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name string
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name string
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name <Class:Alias>
+# wrong constant name <Class:Base>
+# wrong constant name <Class:Class>
+# wrong constant name <Class:Constant>
+# wrong constant name <Class:Extension>
+# wrong constant name <Class:Global>
+# wrong constant name <Class:Interface>
+# wrong constant name <Class:MixinHelper>
+# wrong constant name <Class:Module>
+# wrong constant name <Class:ModuleTypeParams>
+# wrong constant name <Class:NestedDeclarationHelper>
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name <Class:Super>
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name members
+# wrong constant name name
+# wrong constant name super_class
+# wrong constant name to_json
+# wrong constant name type_params
+# wrong constant name ==
+# wrong constant name args
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name extension_name
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name members
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name type_params
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name members
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name type_params
+# wrong constant name <static-init>
+# wrong constant name each_mixin
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name <Class:Self>
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name members
+# wrong constant name name
+# wrong constant name self_types
+# wrong constant name to_json
+# wrong constant name type_params
+# wrong constant name ==
+# wrong constant name args
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name <Class:TypeParam>
+# wrong constant name []
+# wrong constant name add
+# wrong constant name each
+# wrong constant name empty?
+# wrong constant name eql?
+# wrong constant name params
+# wrong constant name rename_to
+# wrong constant name size
+# wrong constant name skip_validation?
+# wrong constant name to_json
+# wrong constant name variance
+# uninitialized constant #<Class:0x0000561ed5f6fc58>::Elem
+# wrong constant name name
+# wrong constant name name=
+# wrong constant name skip_validation
+# wrong constant name skip_validation=
+# wrong constant name to_json
+# wrong constant name variance
+# wrong constant name variance=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
+# wrong constant name empty
+# wrong constant name each_decl
+# wrong constant name each_member
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <Class:Alias>
+# wrong constant name <Class:AttrAccessor>
+# wrong constant name <Class:AttrReader>
+# wrong constant name <Class:AttrWriter>
+# wrong constant name <Class:Attribute>
+# wrong constant name <Class:Base>
+# wrong constant name <Class:ClassInstanceVariable>
+# wrong constant name <Class:ClassVariable>
+# wrong constant name <Class:Extend>
+# wrong constant name <Class:Include>
+# wrong constant name <Class:InstanceVariable>
+# wrong constant name <Class:LocationOnly>
+# wrong constant name <Class:MethodDefinition>
+# wrong constant name <Class:Mixin>
+# wrong constant name <Class:Prepend>
+# wrong constant name <Class:Private>
+# wrong constant name <Class:Public>
+# wrong constant name <Class:Var>
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name instance?
+# wrong constant name kind
+# wrong constant name location
+# wrong constant name new_name
+# wrong constant name old_name
+# wrong constant name singleton?
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name hash
+# wrong constant name initialize
+# wrong constant name ivar_name
+# wrong constant name location
+# wrong constant name name
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name hash
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name <static-init>
+# undefined method `update<defaultArg>1' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>2' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>3' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>4' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>5' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>6' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>7' for class `RBS::AST::Members::MethodDefinition'
+# undefined method `update<defaultArg>8' for class `RBS::AST::Members::MethodDefinition'
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name attributes
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name instance?
+# wrong constant name kind
+# wrong constant name location
+# wrong constant name name
+# wrong constant name overload
+# wrong constant name overload?
+# wrong constant name singleton?
+# wrong constant name to_json
+# wrong constant name types
+# wrong constant name update<defaultArg>1
+# wrong constant name update<defaultArg>2
+# wrong constant name update<defaultArg>3
+# wrong constant name update<defaultArg>4
+# wrong constant name update<defaultArg>5
+# wrong constant name update<defaultArg>6
+# wrong constant name update<defaultArg>7
+# wrong constant name update<defaultArg>8
+# wrong constant name update
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name annotations
+# wrong constant name args
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name hash
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name to_json
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name comment
+# wrong constant name eql?
+# wrong constant name hash
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name content
+# wrong constant name initialize
+# wrong constant name last_position
+# wrong constant name lines
+# wrong constant name loc_to_pos
+# wrong constant name name
+# wrong constant name pos_to_loc
+# wrong constant name ranges
+# wrong constant name <static-init>
+# wrong constant name <Class:Name>
+# wrong constant name initialize
+# wrong constant name instance_type
+# wrong constant name instance_type?
+# wrong constant name name
+# wrong constant name singleton_type
+# wrong constant name singleton_type?
+# undefined singleton method `define<defaultArg>1' for `RBS::BuiltinNames::Name'
+# wrong constant name <static-init>
+# wrong constant name define<defaultArg>1
+# wrong constant name define
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name declaration
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name type
+# wrong constant name <static-init>
+# undefined method `constant_scopes0<defaultArg>1' for class `RBS::ConstantTable'
+# undefined method `resolve_constant_reference_inherit<defaultArg>1' for class `RBS::ConstantTable'
+# wrong constant name absolute_type
+# wrong constant name absolute_type_name
+# wrong constant name constant_scopes
+# wrong constant name constant_scopes0<defaultArg>1
+# wrong constant name constant_scopes0
+# wrong constant name constant_scopes_cache
+# wrong constant name constant_scopes_module
+# wrong constant name definition_builder
+# wrong constant name env
+# wrong constant name initialize
+# wrong constant name name_to_constant
+# wrong constant name resolve_constant_reference
+# wrong constant name resolve_constant_reference_context
+# wrong constant name resolve_constant_reference_inherit<defaultArg>1
+# wrong constant name resolve_constant_reference_inherit
+# wrong constant name resolver
+# wrong constant name split_name
+# wrong constant name <static-init>
+# wrong constant name <Class:Ancestor>
+# wrong constant name <Class:InstanceAncestors>
+# wrong constant name <Class:Method>
+# wrong constant name <Class:SingletonAncestors>
+# wrong constant name <Class:Variable>
+# wrong constant name ancestors
+# wrong constant name class?
+# wrong constant name class_type?
+# wrong constant name class_variables
+# wrong constant name each_type
+# wrong constant name entry
+# wrong constant name initialize
+# wrong constant name instance_type?
+# wrong constant name interface?
+# wrong constant name interface_type?
+# wrong constant name map_method_type
+# wrong constant name methods
+# wrong constant name module?
+# wrong constant name self_type
+# wrong constant name sub
+# wrong constant name type_name
+# wrong constant name type_params
+# wrong constant name type_params_decl
+# wrong constant name <Class:Instance>
+# wrong constant name <Class:Singleton>
+# uninitialized constant RBS::Definition::Ancestor::Instance(keyword_init: true)::Elem
+# wrong constant name args
+# wrong constant name args=
+# wrong constant name name
+# wrong constant name name=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# uninitialized constant RBS::Definition::Ancestor::Singleton(keyword_init: true)::Elem
+# wrong constant name name
+# wrong constant name name=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
+# wrong constant name ancestors
+# wrong constant name apply
+# wrong constant name initialize
+# wrong constant name params
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name <Class:TypeDef>
+# wrong constant name accessibility
+# wrong constant name annotations
+# wrong constant name attributes
+# wrong constant name comments
+# wrong constant name defined_in
+# wrong constant name defs
+# wrong constant name implemented_in
+# wrong constant name initialize
+# wrong constant name map_method_type
+# wrong constant name map_type
+# wrong constant name method_types
+# wrong constant name private?
+# wrong constant name public?
+# wrong constant name sub
+# wrong constant name super_method
+# undefined method `update<defaultArg>1' for class `RBS::Definition::Method::TypeDef'
+# undefined method `update<defaultArg>2' for class `RBS::Definition::Method::TypeDef'
+# undefined method `update<defaultArg>3' for class `RBS::Definition::Method::TypeDef'
+# undefined method `update<defaultArg>4' for class `RBS::Definition::Method::TypeDef'
+# wrong constant name annotations
+# wrong constant name comment
+# wrong constant name defined_in
+# wrong constant name implemented_in
+# wrong constant name initialize
+# wrong constant name member
+# wrong constant name type
+# wrong constant name update<defaultArg>1
+# wrong constant name update<defaultArg>2
+# wrong constant name update<defaultArg>3
+# wrong constant name update<defaultArg>4
+# wrong constant name update
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name ancestors
+# wrong constant name initialize
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name declared_in
+# wrong constant name initialize
+# wrong constant name parent_variable
+# wrong constant name sub
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# undefined method `each_member_with_accessibility<defaultArg>1' for class `RBS::DefinitionBuilder'
+# undefined method `instance_ancestors<defaultArg>1' for class `RBS::DefinitionBuilder'
+# Did you mean?  instance_variable_set
+# undefined method `singleton_ancestors<defaultArg>1' for class `RBS::DefinitionBuilder'
+# wrong constant name <Class:OneAncestors>
+# wrong constant name build_instance
+# wrong constant name build_interface
+# wrong constant name build_one_instance
+# wrong constant name build_one_singleton
+# wrong constant name build_singleton
+# wrong constant name each_member_with_accessibility<defaultArg>1
+# wrong constant name each_member_with_accessibility
+# wrong constant name env
+# wrong constant name expand_alias
+# wrong constant name initialize
+# wrong constant name instance_ancestors<defaultArg>1
+# wrong constant name instance_ancestors
+# wrong constant name instance_ancestors_cache
+# wrong constant name instance_cache
+# wrong constant name interface_cache
+# wrong constant name merge_definitions
+# wrong constant name merge_method
+# wrong constant name merge_variable
+# wrong constant name method_definition_members
+# wrong constant name mixin_ancestors
+# wrong constant name one_instance_ancestors
+# wrong constant name one_instance_ancestors_cache
+# wrong constant name one_instance_cache
+# wrong constant name one_singleton_ancestors
+# wrong constant name one_singleton_ancestors_cache
+# wrong constant name one_singleton_cache
+# wrong constant name singleton_ancestor_cache
+# wrong constant name singleton_ancestors<defaultArg>1
+# wrong constant name singleton_ancestors
+# wrong constant name singleton_cache
+# wrong constant name try_cache
+# wrong constant name type_name_resolver
+# wrong constant name validate_parameter_variance
+# wrong constant name validate_params_with
+# wrong constant name validate_super_class!
+# wrong constant name each_ancestor
+# wrong constant name extended_modules
+# wrong constant name included_modules
+# wrong constant name initialize
+# wrong constant name params
+# wrong constant name prepended_modules
+# wrong constant name self_types
+# wrong constant name super_class
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name class_instance
+# wrong constant name module_instance
+# wrong constant name singleton
+# wrong constant name <static-init>
+# wrong constant name decls
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name <static-init>
+# wrong constant name decl
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name <<
+# wrong constant name <Class:ClassEntry>
+# wrong constant name <Class:ContextUtil>
+# wrong constant name <Class:ModuleEntry>
+# wrong constant name <Class:MultiEntry>
+# wrong constant name <Class:SingleEntry>
+# wrong constant name absolute_type
+# wrong constant name absolute_type_name
+# wrong constant name alias_decls
+# wrong constant name buffers
+# wrong constant name cache_name
+# wrong constant name class_decls
+# wrong constant name constant_decls
+# wrong constant name declarations
+# wrong constant name global_decls
+# wrong constant name insert_decl
+# wrong constant name interface_decls
+# wrong constant name resolve_declaration
+# wrong constant name resolve_member
+# wrong constant name resolve_type_names
+# wrong constant name primary
+# wrong constant name <static-init>
+# wrong constant name context
+# wrong constant name <static-init>
+# wrong constant name primary
+# wrong constant name self_types
+# wrong constant name <static-init>
+# wrong constant name <Class:D>
+# wrong constant name decls
+# wrong constant name initialize
+# wrong constant name insert
+# wrong constant name name
+# wrong constant name type_params
+# wrong constant name validate_type_params
+# uninitialized constant RBS::Environment::MultiEntry::D(keyword_init: true)::Elem
+# wrong constant name decl
+# wrong constant name decl=
+# wrong constant name outer
+# wrong constant name outer=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
+# wrong constant name decl
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name outer
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name from_loader
+# undefined method `add<defaultArg>1' for class `RBS::EnvironmentLoader'
+# undefined method `add<defaultArg>2' for class `RBS::EnvironmentLoader'
+# undefined method `each_signature<defaultArg>1' for class `RBS::EnvironmentLoader'
+# undefined method `each_signature<defaultArg>2' for class `RBS::EnvironmentLoader'
+# undefined method `initialize<defaultArg>1' for class `RBS::EnvironmentLoader'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `RBS::EnvironmentLoader'
+# Did you mean?  initialize_dup
+# wrong constant name <Class:GemPath>
+# wrong constant name <Class:LibraryPath>
+# wrong constant name <Class:UnknownLibraryNameError>
+# wrong constant name add<defaultArg>1
+# wrong constant name add<defaultArg>2
+# wrong constant name add
+# wrong constant name each_signature<defaultArg>1
+# wrong constant name each_signature<defaultArg>2
+# wrong constant name each_signature
+# wrong constant name gem?
+# wrong constant name gem_vendor_path
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize
+# wrong constant name load
+# wrong constant name no_builtin!
+# wrong constant name no_builtin?
+# wrong constant name paths
+# wrong constant name stdlib?
+# wrong constant name stdlib_root
+# uninitialized constant RBS::EnvironmentLoader::GemPath(keyword_init: true)::Elem
+# wrong constant name name
+# wrong constant name name=
+# wrong constant name path
+# wrong constant name path=
+# wrong constant name version
+# wrong constant name version=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# uninitialized constant RBS::EnvironmentLoader::LibraryPath(keyword_init: true)::Elem
+# wrong constant name name
+# wrong constant name name=
+# wrong constant name path
+# wrong constant name path=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name gem_sig_path
+# wrong constant name parse_library
+# undefined method `only_ancestors!<defaultArg>1' for class `RBS::EnvironmentWalker'
+# wrong constant name builder
+# wrong constant name each_type_name
+# wrong constant name env
+# wrong constant name initialize
+# wrong constant name only_ancestors!<defaultArg>1
+# wrong constant name only_ancestors!
+# wrong constant name only_ancestors?
+# wrong constant name tsort_each_child
+# wrong constant name tsort_each_node
+# wrong constant name <static-init>
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name decl
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name <static-init>
+# wrong constant name initialize
+# wrong constant name kind
+# wrong constant name member_pairs
+# wrong constant name method_name
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name class_params
+# wrong constant name extension_name
+# wrong constant name extension_params
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name initialize
+# wrong constant name kind
+# wrong constant name members
+# wrong constant name method_name
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name args
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name params
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name <Class:InheritanceError>
+# wrong constant name <Class:MethodTypeError>
+# wrong constant name <Class:MixinError>
+# wrong constant name decl
+# wrong constant name errors
+# wrong constant name initialize
+# uninitialized constant #<Class:0x0000561ed651dc90>::Elem
+# wrong constant name param
+# wrong constant name param=
+# wrong constant name super_class
+# wrong constant name super_class=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# uninitialized constant #<Class:0x0000561ed651e168>::Elem
+# wrong constant name method_name
+# wrong constant name method_name=
+# wrong constant name method_type
+# wrong constant name method_type=
+# wrong constant name param
+# wrong constant name param=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# uninitialized constant #<Class:0x0000561ed651d8f8>::Elem
+# wrong constant name include_member
+# wrong constant name include_member=
+# wrong constant name param
+# wrong constant name param=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
+# wrong constant name +
+# wrong constant name ==
+# wrong constant name buffer
+# wrong constant name end_column
+# wrong constant name end_line
+# wrong constant name end_loc
+# wrong constant name end_pos
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name pred?
+# wrong constant name source
+# wrong constant name start_column
+# wrong constant name start_line
+# wrong constant name start_loc
+# wrong constant name start_pos
+# wrong constant name to_json
+# undefined singleton method `to_string<defaultArg>1' for `RBS::Location'
+# wrong constant name <static-init>
+# wrong constant name concat
+# wrong constant name to_string<defaultArg>1
+# wrong constant name to_string
+# wrong constant name entries
+# wrong constant name initialize
+# wrong constant name kind
+# wrong constant name method_name
+# wrong constant name mixin_member
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name method_name_string
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::MethodType'
+# undefined method `update<defaultArg>1' for class `RBS::MethodType'
+# undefined method `update<defaultArg>2' for class `RBS::MethodType'
+# undefined method `update<defaultArg>3' for class `RBS::MethodType'
+# undefined method `update<defaultArg>4' for class `RBS::MethodType'
+# wrong constant name ==
+# wrong constant name <Class:Block>
+# wrong constant name block
+# wrong constant name each_type
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name type
+# wrong constant name type_params
+# wrong constant name update<defaultArg>1
+# wrong constant name update<defaultArg>2
+# wrong constant name update<defaultArg>3
+# wrong constant name update<defaultArg>4
+# wrong constant name update
+# wrong constant name ==
+# wrong constant name initialize
+# wrong constant name required
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name +
+# wrong constant name ==
+# wrong constant name absolute!
+# wrong constant name absolute?
+# wrong constant name append
+# wrong constant name ascend
+# wrong constant name empty?
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name parent
+# wrong constant name path
+# wrong constant name relative!
+# wrong constant name relative?
+# wrong constant name split
+# wrong constant name to_type_name
+# wrong constant name <static-init>
+# wrong constant name empty
+# wrong constant name parse
+# wrong constant name root
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name member
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name type_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# undefined method `new_token<defaultArg>1' for class `RBS::Parser'
+# wrong constant name <Class:LocatedValue>
+# uninitialized constant RBS::Parser::Racc_Main_Parsing_Routine
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Id_C
+# Did you mean?  RBS::Parser::Racc_Runtime_Core_Version_C
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Revision
+# Did you mean?  RBS::Parser::Racc_Runtime_Core_Revision_C
+#                RBS::Parser::Racc_Runtime_Core_Revision_R
+#                RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Version
+#                RBS::Parser::Racc_Runtime_Core_Version_R
+#                RBS::Parser::Racc_Runtime_Core_Version_C
+#                RBS::Parser::Racc_Runtime_Version
+#                RBS::Parser::Racc_Runtime_Core_Id_C
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Revision_C
+# Did you mean?  RBS::Parser::Racc_Runtime_Core_Revision_R
+#                RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Version_R
+#                RBS::Parser::Racc_Runtime_Core_Version_C
+#                RBS::Parser::Racc_Runtime_Core_Version
+#                RBS::Parser::Racc_Runtime_Core_Id_C
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Revision_R
+# Did you mean?  RBS::Parser::Racc_Runtime_Core_Revision_C
+#                RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Version_R
+#                RBS::Parser::Racc_Runtime_Core_Version_C
+#                RBS::Parser::Racc_Runtime_Core_Version
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Version
+# Did you mean?  RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Revision
+#                RBS::Parser::Racc_Runtime_Core_Version_R
+#                RBS::Parser::Racc_Runtime_Core_Version_C
+#                RBS::Parser::Racc_Runtime_Core_Revision_C
+#                RBS::Parser::Racc_Runtime_Core_Revision_R
+#                RBS::Parser::Racc_Runtime_Version
+#                RBS::Parser::Racc_Runtime_Core_Id_C
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Version_C
+# Did you mean?  RBS::Parser::Racc_Runtime_Core_Version_R
+#                RBS::Parser::Racc_Runtime_Core_Revision_C
+#                RBS::Parser::Racc_Runtime_Core_Revision_R
+#                RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Revision
+#                RBS::Parser::Racc_Runtime_Version
+#                RBS::Parser::Racc_Runtime_Core_Id_C
+# uninitialized constant RBS::Parser::Racc_Runtime_Core_Version_R
+# Did you mean?  RBS::Parser::Racc_Runtime_Core_Version_C
+#                RBS::Parser::Racc_Runtime_Core_Revision_C
+#                RBS::Parser::Racc_Runtime_Core_Revision_R
+#                RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Revision
+#                RBS::Parser::Racc_Runtime_Version
+#                RBS::Parser::Racc_Runtime_Core_Id_C
+# uninitialized constant RBS::Parser::Racc_Runtime_Revision
+# Did you mean?  RBS::Parser::Racc_Runtime_Version
+#                RBS::Parser::Racc_Runtime_Core_Version
+#                RBS::Parser::Racc_Runtime_Core_Revision
+# uninitialized constant RBS::Parser::Racc_Runtime_Type
+# uninitialized constant RBS::Parser::Racc_Runtime_Version
+# Did you mean?  RBS::Parser::Racc_Runtime_Revision
+#                RBS::Parser::Racc_Runtime_Core_Version
+# uninitialized constant RBS::Parser::Racc_YY_Parse_Method
+# wrong constant name <Class:SemanticsError>
+# wrong constant name <Class:SyntaxError>
+# wrong constant name _reduce_1
+# wrong constant name _reduce_141
+# wrong constant name _reduce_142
+# wrong constant name _reduce_143
+# wrong constant name _reduce_144
+# wrong constant name _reduce_145
+# wrong constant name _reduce_146
+# wrong constant name _reduce_147
+# wrong constant name _reduce_148
+# wrong constant name _reduce_149
+# wrong constant name _reduce_15
+# wrong constant name _reduce_150
+# wrong constant name _reduce_151
+# wrong constant name _reduce_152
+# wrong constant name _reduce_153
+# wrong constant name _reduce_154
+# wrong constant name _reduce_155
+# wrong constant name _reduce_156
+# wrong constant name _reduce_157
+# wrong constant name _reduce_158
+# wrong constant name _reduce_159
+# wrong constant name _reduce_16
+# wrong constant name _reduce_160
+# wrong constant name _reduce_162
+# wrong constant name _reduce_163
+# wrong constant name _reduce_164
+# wrong constant name _reduce_165
+# wrong constant name _reduce_166
+# wrong constant name _reduce_167
+# wrong constant name _reduce_168
+# wrong constant name _reduce_169
+# wrong constant name _reduce_17
+# wrong constant name _reduce_170
+# wrong constant name _reduce_171
+# wrong constant name _reduce_172
+# wrong constant name _reduce_173
+# wrong constant name _reduce_174
+# wrong constant name _reduce_175
+# wrong constant name _reduce_176
+# wrong constant name _reduce_177
+# wrong constant name _reduce_178
+# wrong constant name _reduce_179
+# wrong constant name _reduce_18
+# wrong constant name _reduce_180
+# wrong constant name _reduce_181
+# wrong constant name _reduce_182
+# wrong constant name _reduce_183
+# wrong constant name _reduce_184
+# wrong constant name _reduce_185
+# wrong constant name _reduce_186
+# wrong constant name _reduce_187
+# wrong constant name _reduce_189
+# wrong constant name _reduce_19
+# wrong constant name _reduce_190
+# wrong constant name _reduce_191
+# wrong constant name _reduce_192
+# wrong constant name _reduce_193
+# wrong constant name _reduce_194
+# wrong constant name _reduce_195
+# wrong constant name _reduce_196
+# wrong constant name _reduce_197
+# wrong constant name _reduce_199
+# wrong constant name _reduce_2
+# wrong constant name _reduce_202
+# wrong constant name _reduce_203
+# wrong constant name _reduce_204
+# wrong constant name _reduce_205
+# wrong constant name _reduce_207
+# wrong constant name _reduce_208
+# wrong constant name _reduce_210
+# wrong constant name _reduce_211
+# wrong constant name _reduce_213
+# wrong constant name _reduce_214
+# wrong constant name _reduce_216
+# wrong constant name _reduce_217
+# wrong constant name _reduce_218
+# wrong constant name _reduce_219
+# wrong constant name _reduce_22
+# wrong constant name _reduce_220
+# wrong constant name _reduce_221
+# wrong constant name _reduce_222
+# wrong constant name _reduce_223
+# wrong constant name _reduce_224
+# wrong constant name _reduce_225
+# wrong constant name _reduce_226
+# wrong constant name _reduce_227
+# wrong constant name _reduce_23
+# wrong constant name _reduce_232
+# wrong constant name _reduce_236
+# wrong constant name _reduce_237
+# wrong constant name _reduce_238
+# wrong constant name _reduce_239
+# wrong constant name _reduce_24
+# wrong constant name _reduce_240
+# wrong constant name _reduce_241
+# wrong constant name _reduce_25
+# wrong constant name _reduce_26
+# wrong constant name _reduce_27
+# wrong constant name _reduce_28
+# wrong constant name _reduce_29
+# wrong constant name _reduce_3
+# wrong constant name _reduce_30
+# wrong constant name _reduce_31
+# wrong constant name _reduce_32
+# wrong constant name _reduce_33
+# wrong constant name _reduce_34
+# wrong constant name _reduce_35
+# wrong constant name _reduce_42
+# wrong constant name _reduce_43
+# wrong constant name _reduce_46
+# wrong constant name _reduce_47
+# wrong constant name _reduce_48
+# wrong constant name _reduce_49
+# wrong constant name _reduce_50
+# wrong constant name _reduce_51
+# wrong constant name _reduce_52
+# wrong constant name _reduce_53
+# wrong constant name _reduce_54
+# wrong constant name _reduce_55
+# wrong constant name _reduce_56
+# wrong constant name _reduce_57
+# wrong constant name _reduce_58
+# wrong constant name _reduce_59
+# wrong constant name _reduce_6
+# wrong constant name _reduce_60
+# wrong constant name _reduce_61
+# wrong constant name _reduce_62
+# wrong constant name _reduce_64
+# wrong constant name _reduce_65
+# wrong constant name _reduce_66
+# wrong constant name _reduce_67
+# wrong constant name _reduce_68
+# wrong constant name _reduce_69
+# wrong constant name _reduce_7
+# wrong constant name _reduce_70
+# wrong constant name _reduce_72
+# wrong constant name _reduce_73
+# wrong constant name _reduce_74
+# wrong constant name _reduce_75
+# wrong constant name _reduce_76
+# wrong constant name _reduce_77
+# wrong constant name _reduce_78
+# wrong constant name _reduce_79
+# wrong constant name _reduce_80
+# wrong constant name _reduce_81
+# wrong constant name _reduce_82
+# wrong constant name _reduce_83
+# wrong constant name _reduce_84
+# wrong constant name _reduce_85
+# wrong constant name _reduce_86
+# wrong constant name _reduce_88
+# wrong constant name _reduce_98
+# wrong constant name _reduce_99
+# wrong constant name _reduce_none
+# wrong constant name buffer
+# wrong constant name charpos
+# wrong constant name empty_params_result
+# wrong constant name eof_re
+# wrong constant name initialize
+# wrong constant name input
+# wrong constant name insert_bound_variable
+# wrong constant name is_bound_variable?
+# wrong constant name leading_comment
+# wrong constant name new_token<defaultArg>1
+# wrong constant name new_token
+# wrong constant name on_error
+# wrong constant name push_comment
+# wrong constant name reset_variable_scope
+# wrong constant name start_merged_variables_scope
+# wrong constant name start_new_variables_scope
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name value
+# wrong constant name <static-init>
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name original_message
+# wrong constant name subject
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `RBS::Parser::SyntaxError'
+# Did you mean?  initialize_dup
+# wrong constant name error_value
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name token_str
+# wrong constant name value_stack
+# wrong constant name <static-init>
+# undefined singleton method `parse_method_type<defaultArg>1' for `RBS::Parser'
+# undefined singleton method `parse_method_type<defaultArg>2' for `RBS::Parser'
+# undefined singleton method `parse_signature<defaultArg>1' for `RBS::Parser'
+# undefined singleton method `parse_type<defaultArg>1' for `RBS::Parser'
+# undefined singleton method `parse_type<defaultArg>2' for `RBS::Parser'
+# wrong constant name <static-init>
+# wrong constant name parse_method_type<defaultArg>1
+# wrong constant name parse_method_type<defaultArg>2
+# wrong constant name parse_method_type
+# wrong constant name parse_signature<defaultArg>1
+# wrong constant name parse_signature
+# wrong constant name parse_type<defaultArg>1
+# wrong constant name parse_type<defaultArg>2
+# wrong constant name parse_type
+# wrong constant name <Class:RB>
+# wrong constant name <Class:RBI>
+# wrong constant name <Class:Runtime>
+# undefined method `any_node?<defaultArg>1' for class `RBS::Prototype::RB'
+# undefined method `node_type<defaultArg>1' for class `RBS::Prototype::RB'
+# wrong constant name any_node?<defaultArg>1
+# wrong constant name any_node?
+# wrong constant name block_from_body
+# wrong constant name const_to_name
+# wrong constant name decls
+# wrong constant name each_child
+# wrong constant name each_node
+# wrong constant name function_return_type_from_body
+# wrong constant name function_type_from_body
+# wrong constant name keyword_hash?
+# wrong constant name literal_to_type
+# wrong constant name node_type<defaultArg>1
+# wrong constant name node_type
+# wrong constant name parse
+# wrong constant name process
+# wrong constant name range_element_type
+# wrong constant name source_decls
+# wrong constant name toplevel_members
+# wrong constant name types_to_union_type
+# wrong constant name untyped
+# wrong constant name <static-init>
+# undefined method `call_node?<defaultArg>1' for class `RBS::Prototype::RBI'
+# undefined method `call_node?<defaultArg>2' for class `RBS::Prototype::RBI'
+# undefined method `process<defaultArg>1' for class `RBS::Prototype::RBI'
+# wrong constant name call_node?<defaultArg>1
+# wrong constant name call_node?<defaultArg>2
+# wrong constant name call_node?
+# wrong constant name const_to_name
+# wrong constant name current_module
+# wrong constant name current_namespace
+# wrong constant name decls
+# wrong constant name each_arg
+# wrong constant name each_child
+# wrong constant name join_comments
+# wrong constant name last_sig
+# wrong constant name method_type
+# wrong constant name modules
+# wrong constant name nested_name
+# wrong constant name node_to_hash
+# wrong constant name parse
+# wrong constant name parse_params
+# wrong constant name pop_sig
+# wrong constant name proc_type?
+# wrong constant name process<defaultArg>1
+# wrong constant name process
+# wrong constant name push_class
+# wrong constant name push_module
+# wrong constant name push_sig
+# wrong constant name type_of
+# wrong constant name type_of0
+# wrong constant name <static-init>
+# undefined method `initialize<defaultArg>1' for class `RBS::Prototype::Runtime'
+# Did you mean?  initialize_dup
+# undefined method `merge_rbs<defaultArg>1' for class `RBS::Prototype::Runtime'
+# undefined method `merge_rbs<defaultArg>2' for class `RBS::Prototype::Runtime'
+# undefined method `target_method?<defaultArg>1' for class `RBS::Prototype::Runtime'
+# undefined method `target_method?<defaultArg>2' for class `RBS::Prototype::Runtime'
+# wrong constant name builder
+# wrong constant name decls
+# wrong constant name each_mixin
+# wrong constant name env
+# wrong constant name generate_class
+# wrong constant name generate_constants
+# wrong constant name generate_methods
+# wrong constant name generate_module
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name merge
+# wrong constant name merge_rbs<defaultArg>1
+# wrong constant name merge_rbs<defaultArg>2
+# wrong constant name merge_rbs
+# wrong constant name method_type
+# wrong constant name owners_included
+# wrong constant name parse
+# wrong constant name patterns
+# wrong constant name target?
+# wrong constant name target_method?<defaultArg>1
+# wrong constant name target_method?<defaultArg>2
+# wrong constant name target_method?
+# wrong constant name to_type_name
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name ancestors
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name add
+# wrong constant name apply
+# wrong constant name instance_type
+# wrong constant name instance_type=
+# wrong constant name mapping
+# wrong constant name without
+# undefined singleton method `build<defaultArg>1' for `RBS::Substitution'
+# wrong constant name <static-init>
+# wrong constant name build<defaultArg>1
+# wrong constant name build
+# wrong constant name entry
+# wrong constant name initialize
+# wrong constant name name
+# wrong constant name <static-init>
+# wrong constant name ==
+# wrong constant name absolute!
+# wrong constant name absolute?
+# wrong constant name alias?
+# wrong constant name class?
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name interface?
+# wrong constant name kind
+# wrong constant name name
+# wrong constant name namespace
+# wrong constant name relative!
+# wrong constant name to_json
+# wrong constant name to_namespace
+# wrong constant name with_prefix
+# wrong constant name <static-init>
+# wrong constant name <Class:Query>
+# wrong constant name add_names
+# wrong constant name all_names
+# wrong constant name cache
+# wrong constant name has_name?
+# wrong constant name resolve
+# wrong constant name try_cache
+# uninitialized constant RBS::TypeNameResolver::Query(keyword_init: true)::Elem
+# wrong constant name context
+# wrong constant name context=
+# wrong constant name type_name
+# wrong constant name type_name=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
+# wrong constant name from_env
+# wrong constant name <Class:Alias>
+# wrong constant name <Class:Application>
+# wrong constant name <Class:Bases>
+# wrong constant name <Class:ClassInstance>
+# wrong constant name <Class:ClassSingleton>
+# wrong constant name <Class:EmptyEachType>
+# wrong constant name <Class:Function>
+# wrong constant name <Class:Interface>
+# wrong constant name <Class:Intersection>
+# wrong constant name <Class:Literal>
+# wrong constant name <Class:NoFreeVariables>
+# wrong constant name <Class:NoSubst>
+# wrong constant name <Class:NoTypeName>
+# wrong constant name <Class:Optional>
+# wrong constant name <Class:Proc>
+# wrong constant name <Class:Record>
+# wrong constant name <Class:Tuple>
+# wrong constant name <Class:Union>
+# wrong constant name <Class:Variable>
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Alias'
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for module `RBS::Types::Application'
+# undefined method `to_s<defaultArg>1' for module `RBS::Types::Application'
+# wrong constant name ==
+# wrong constant name args
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name hash
+# wrong constant name name
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name <static-init>
+# wrong constant name <Class:Any>
+# wrong constant name <Class:Base>
+# wrong constant name <Class:Bool>
+# wrong constant name <Class:Bottom>
+# wrong constant name <Class:Class>
+# wrong constant name <Class:Instance>
+# wrong constant name <Class:Nil>
+# wrong constant name <Class:Self>
+# wrong constant name <Class:Top>
+# wrong constant name <Class:Void>
+# wrong constant name <static-init>
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Bases::Base'
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name <static-init>
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::ClassSingleton'
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name <static-init>
+# wrong constant name each_type
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>1' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>2' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>3' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>4' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>5' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>6' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>7' for class `RBS::Types::Function'
+# undefined method `update<defaultArg>8' for class `RBS::Types::Function'
+# wrong constant name ==
+# wrong constant name <Class:Param>
+# wrong constant name drop_head
+# wrong constant name drop_tail
+# wrong constant name each_param
+# wrong constant name each_type
+# wrong constant name empty?
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name has_keyword?
+# wrong constant name initialize
+# wrong constant name map_type
+# wrong constant name map_type_name
+# wrong constant name optional_keywords
+# wrong constant name optional_positionals
+# wrong constant name param_to_s
+# wrong constant name required_keywords
+# wrong constant name required_positionals
+# wrong constant name rest_keywords
+# wrong constant name rest_positionals
+# wrong constant name return_to_s
+# wrong constant name return_type
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name trailing_positionals
+# wrong constant name update<defaultArg>1
+# wrong constant name update<defaultArg>2
+# wrong constant name update<defaultArg>3
+# wrong constant name update<defaultArg>4
+# wrong constant name update<defaultArg>5
+# wrong constant name update<defaultArg>6
+# wrong constant name update<defaultArg>7
+# wrong constant name update<defaultArg>8
+# wrong constant name update
+# wrong constant name with_return_type
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name map_type
+# wrong constant name name
+# wrong constant name to_json
+# wrong constant name type
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name empty
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Intersection'
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Intersection'
+# wrong constant name ==
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name types
+# wrong constant name <static-init>
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Literal'
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name initialize
+# wrong constant name literal
+# wrong constant name location
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for module `RBS::Types::NoFreeVariables'
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name <static-init>
+# wrong constant name sub
+# wrong constant name <static-init>
+# wrong constant name map_type_name
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Optional'
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Optional'
+# wrong constant name ==
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name type
+# wrong constant name <static-init>
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Proc'
+# wrong constant name ==
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name type
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Record'
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Record'
+# wrong constant name ==
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name fields
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Tuple'
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Tuple'
+# wrong constant name ==
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name types
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Union'
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Union'
+# wrong constant name ==
+# wrong constant name each_type
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name map_type
+# wrong constant name map_type_name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# wrong constant name types
+# wrong constant name <static-init>
+# undefined method `free_variables<defaultArg>1' for class `RBS::Types::Variable'
+# undefined method `to_s<defaultArg>1' for class `RBS::Types::Variable'
+# wrong constant name ==
+# wrong constant name eql?
+# wrong constant name free_variables<defaultArg>1
+# wrong constant name free_variables
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name name
+# wrong constant name sub
+# wrong constant name to_json
+# wrong constant name to_s<defaultArg>1
+# wrong constant name to_s
+# undefined singleton method `fresh<defaultArg>1' for `RBS::Types::Variable'
+# wrong constant name <static-init>
+# wrong constant name build
+# wrong constant name fresh<defaultArg>1
+# wrong constant name fresh
+# wrong constant name <static-init>
+# wrong constant name aliased_name
+# wrong constant name initialize
+# wrong constant name location
+# wrong constant name original_name
+# wrong constant name <static-init>
+# wrong constant name check!
+# wrong constant name absolute_type
+# wrong constant name env
+# wrong constant name initialize
+# wrong constant name resolver
+# wrong constant name validate_type
+# wrong constant name <static-init>
+# wrong constant name <Class:Result>
+# wrong constant name builder
+# wrong constant name env
+# wrong constant name in_inherit
+# wrong constant name in_method_type
+# wrong constant name initialize
+# wrong constant name type
+# wrong constant name compatible?
+# wrong constant name contravariant
+# wrong constant name covariant
+# wrong constant name each
+# wrong constant name include?
+# wrong constant name initialize
+# wrong constant name invariant
+# wrong constant name result
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name clean!
+# wrong constant name ensure_dir
+# wrong constant name gem!
+# wrong constant name initialize
+# wrong constant name stdlib!
+# wrong constant name vendor_dir
+# wrong constant name <static-init>
+# undefined method `indent<defaultArg>1' for class `RBS::Writer'
+# undefined method `puts<defaultArg>1' for class `RBS::Writer'
+# wrong constant name attribute
+# wrong constant name indent<defaultArg>1
+# wrong constant name indent
+# wrong constant name indentation
+# wrong constant name initialize
+# wrong constant name method_name
+# wrong constant name name_and_args
+# wrong constant name name_and_params
+# wrong constant name out
+# wrong constant name prefix
+# wrong constant name preserve_empty_line
+# wrong constant name puts<defaultArg>1
+# wrong constant name puts
+# wrong constant name write
+# wrong constant name write_annotation
+# wrong constant name write_comment
+# wrong constant name write_decl
+# wrong constant name write_def
+# wrong constant name write_member
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name logger
+# wrong constant name logger_level
+# wrong constant name logger_level=
+# wrong constant name logger_output
+# wrong constant name logger_output=
 # uninitialized constant RDoc
 # uninitialized constant RDoc
 # uninitialized constant REXML
@@ -6903,7 +8468,7 @@
 # wrong constant name <static-init>
 # wrong constant name worse_than?
 # wrong constant name +
-# uninitialized constant #<Class:0x000055c80121fa60>::Elem
+# uninitialized constant #<Class:0x0000561ed5a85738>::Elem
 # wrong constant name candidate?
 # wrong constant name ideal?
 # wrong constant name indeterminate_actual_indexes
@@ -8324,8 +9889,597 @@
 # uninitialized constant Readline
 # uninitialized constant Rinda
 # uninitialized constant Rinda
-# uninitialized constant Ripper
-# uninitialized constant Ripper
+# wrong constant name <Class:Lexer>
+# wrong constant name <Class:SexpBuilder>
+# wrong constant name <Class:SexpBuilderPP>
+# wrong constant name <Class:TokenPattern>
+# wrong constant name column
+# wrong constant name debug_output
+# wrong constant name debug_output=
+# wrong constant name encoding
+# wrong constant name end_seen?
+# wrong constant name error?
+# wrong constant name filename
+# wrong constant name initialize
+# wrong constant name lineno
+# wrong constant name parse
+# wrong constant name state
+# wrong constant name token
+# wrong constant name yydebug
+# wrong constant name yydebug=
+# undefined method `initialize<defaultArg>1' for class `Ripper::Filter'
+# Did you mean?  initialize_dup
+# undefined method `initialize<defaultArg>2' for class `Ripper::Filter'
+# Did you mean?  initialize_dup
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize<defaultArg>2
+# wrong constant name initialize
+# uninitialized constant Ripper::Lexer::EVENTS
+# Did you mean?  Ripper::EVENTS
+# uninitialized constant Ripper::Lexer::EXPR_ARG
+# Did you mean?  Ripper::Lexer::EXPR_BEG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_BEG
+# uninitialized constant Ripper::Lexer::EXPR_ARG_ANY
+# Did you mean?  Ripper::Lexer::EXPR_BEG_ANY
+#                Ripper::Lexer::EXPR_END_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+# uninitialized constant Ripper::Lexer::EXPR_BEG
+# Did you mean?  Ripper::Lexer::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_BEG
+# uninitialized constant Ripper::Lexer::EXPR_BEG_ANY
+# Did you mean?  Ripper::Lexer::EXPR_END_ANY
+#                Ripper::Lexer::EXPR_ARG_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+# uninitialized constant Ripper::Lexer::EXPR_CLASS
+# Did you mean?  Ripper::EXPR_CLASS
+# uninitialized constant Ripper::Lexer::EXPR_CMDARG
+# Did you mean?  Ripper::Lexer::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::Lexer::EXPR_ENDARG
+#                Ripper::EXPR_CMDARG
+#                Ripper::EXPR_ENDARG
+# uninitialized constant Ripper::Lexer::EXPR_DOT
+# Did you mean?  Ripper::EXPR_DOT
+# uninitialized constant Ripper::Lexer::EXPR_END
+# Did you mean?  Ripper::Lexer::EXPR_MID
+#                Ripper::EXPR_MID
+#                Ripper::EXPR_END
+#                Ripper::Lexer::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+# uninitialized constant Ripper::Lexer::EXPR_ENDARG
+# Did you mean?  Ripper::Lexer::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_END
+#                Ripper::Lexer::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+#                Ripper::Lexer::EXPR_CMDARG
+#                Ripper::EXPR_CMDARG
+#                Ripper::EXPR_ENDARG
+#                Ripper::Lexer::EXPR_END_ANY
+#                Ripper::EXPR_END_ANY
+# uninitialized constant Ripper::Lexer::EXPR_ENDFN
+# Did you mean?  Ripper::EXPR_END
+#                Ripper::EXPR_ENDFN
+#                Ripper::Lexer::EXPR_ENDARG
+#                Ripper::EXPR_ENDARG
+#                Ripper::Lexer::EXPR_END_ANY
+#                Ripper::EXPR_END_ANY
+# uninitialized constant Ripper::Lexer::EXPR_END_ANY
+# Did you mean?  Ripper::Lexer::EXPR_BEG_ANY
+#                Ripper::Lexer::EXPR_ARG_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+#                Ripper::Lexer::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+#                Ripper::Lexer::EXPR_ENDARG
+#                Ripper::EXPR_ENDARG
+# uninitialized constant Ripper::Lexer::EXPR_FITEM
+# Did you mean?  Ripper::EXPR_FITEM
+# uninitialized constant Ripper::Lexer::EXPR_FNAME
+# Did you mean?  Ripper::Lexer::EXPR_NONE
+#                Ripper::EXPR_NONE
+#                Ripper::EXPR_FNAME
+# uninitialized constant Ripper::Lexer::EXPR_LABEL
+# Did you mean?  Ripper::Lexer::EXPR_BEG
+#                Ripper::EXPR_BEG
+#                Ripper::EXPR_LABEL
+#                Ripper::Lexer::EXPR_LABELED
+#                Ripper::EXPR_LABELED
+# uninitialized constant Ripper::Lexer::EXPR_LABELED
+# Did you mean?  Ripper::EXPR_LABEL
+#                Ripper::EXPR_LABELED
+# uninitialized constant Ripper::Lexer::EXPR_MID
+# Did you mean?  Ripper::Lexer::EXPR_END
+#                Ripper::EXPR_MID
+#                Ripper::EXPR_END
+# uninitialized constant Ripper::Lexer::EXPR_NONE
+# Did you mean?  Ripper::Lexer::EXPR_DOT
+#                Ripper::Lexer::EXPR_END
+#                Ripper::EXPR_DOT
+#                Ripper::EXPR_END
+#                Ripper::EXPR_NONE
+#                Ripper::Lexer::EXPR_FNAME
+#                Ripper::EXPR_FNAME
+# uninitialized constant Ripper::Lexer::EXPR_VALUE
+# Did you mean?  Ripper::EXPR_VALUE
+# wrong constant name <Class:Elem>
+# uninitialized constant Ripper::Lexer::PARSER_EVENTS
+# Did you mean?  Ripper::PARSER_EVENTS
+# uninitialized constant Ripper::Lexer::PARSER_EVENT_TABLE
+# Did you mean?  Ripper::PARSER_EVENT_TABLE
+# uninitialized constant Ripper::Lexer::SCANNER_EVENTS
+# Did you mean?  Ripper::SCANNER_EVENTS
+# uninitialized constant Ripper::Lexer::SCANNER_EVENT_TABLE
+# Did you mean?  Ripper::SCANNER_EVENT_TABLE
+# wrong constant name <Class:State>
+# uninitialized constant Ripper::Lexer::Version
+# Did you mean?  Ripper::Version
+# wrong constant name errors
+# wrong constant name lex
+# wrong constant name scan
+# wrong constant name tokenize
+# undefined method `initialize<defaultArg>1' for class `Ripper::Lexer::Elem'
+# Did you mean?  initialize_dup
+# uninitialized constant Ripper::Lexer::Elem::Elem
+# wrong constant name event
+# wrong constant name event=
+# wrong constant name initialize<defaultArg>1
+# wrong constant name initialize
+# wrong constant name message
+# wrong constant name message=
+# wrong constant name pos
+# wrong constant name pos=
+# wrong constant name state
+# wrong constant name state=
+# wrong constant name tok
+# wrong constant name tok=
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name &
+# wrong constant name ==
+# uninitialized constant Ripper::Lexer::State::Elem
+# Did you mean?  Ripper::Lexer::Elem
+# wrong constant name allbits?
+# wrong constant name anybits?
+# wrong constant name initialize
+# wrong constant name nobits?
+# wrong constant name to_i
+# wrong constant name to_int
+# wrong constant name to_int=
+# wrong constant name to_s=
+# wrong constant name |
+# wrong constant name <static-init>
+# wrong constant name []
+# wrong constant name members
+# wrong constant name <static-init>
+# uninitialized constant Ripper::SexpBuilder::EVENTS
+# Did you mean?  Ripper::EVENTS
+# uninitialized constant Ripper::SexpBuilder::EXPR_ARG
+# Did you mean?  Ripper::SexpBuilder::EXPR_BEG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_BEG
+# uninitialized constant Ripper::SexpBuilder::EXPR_ARG_ANY
+# Did you mean?  Ripper::SexpBuilder::EXPR_BEG_ANY
+#                Ripper::SexpBuilder::EXPR_END_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+# uninitialized constant Ripper::SexpBuilder::EXPR_BEG
+# Did you mean?  Ripper::SexpBuilder::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_BEG
+# uninitialized constant Ripper::SexpBuilder::EXPR_BEG_ANY
+# Did you mean?  Ripper::SexpBuilder::EXPR_END_ANY
+#                Ripper::SexpBuilder::EXPR_ARG_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+# uninitialized constant Ripper::SexpBuilder::EXPR_CLASS
+# Did you mean?  Ripper::EXPR_CLASS
+# uninitialized constant Ripper::SexpBuilder::EXPR_CMDARG
+# Did you mean?  Ripper::SexpBuilder::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::SexpBuilder::EXPR_ENDARG
+#                Ripper::EXPR_CMDARG
+#                Ripper::EXPR_ENDARG
+# uninitialized constant Ripper::SexpBuilder::EXPR_DOT
+# Did you mean?  Ripper::EXPR_DOT
+# uninitialized constant Ripper::SexpBuilder::EXPR_END
+# Did you mean?  Ripper::SexpBuilder::EXPR_MID
+#                Ripper::EXPR_MID
+#                Ripper::EXPR_END
+#                Ripper::SexpBuilder::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+# uninitialized constant Ripper::SexpBuilder::EXPR_ENDARG
+# Did you mean?  Ripper::SexpBuilder::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_END
+#                Ripper::SexpBuilder::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+#                Ripper::SexpBuilder::EXPR_CMDARG
+#                Ripper::EXPR_CMDARG
+#                Ripper::EXPR_ENDARG
+#                Ripper::SexpBuilder::EXPR_END_ANY
+#                Ripper::EXPR_END_ANY
+# uninitialized constant Ripper::SexpBuilder::EXPR_ENDFN
+# Did you mean?  Ripper::EXPR_END
+#                Ripper::EXPR_ENDFN
+#                Ripper::SexpBuilder::EXPR_ENDARG
+#                Ripper::EXPR_ENDARG
+#                Ripper::SexpBuilder::EXPR_END_ANY
+#                Ripper::EXPR_END_ANY
+# uninitialized constant Ripper::SexpBuilder::EXPR_END_ANY
+# Did you mean?  Ripper::SexpBuilder::EXPR_BEG_ANY
+#                Ripper::SexpBuilder::EXPR_ARG_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+#                Ripper::SexpBuilder::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+#                Ripper::SexpBuilder::EXPR_ENDARG
+#                Ripper::EXPR_ENDARG
+# uninitialized constant Ripper::SexpBuilder::EXPR_FITEM
+# Did you mean?  Ripper::EXPR_FITEM
+# uninitialized constant Ripper::SexpBuilder::EXPR_FNAME
+# Did you mean?  Ripper::SexpBuilder::EXPR_NONE
+#                Ripper::EXPR_NONE
+#                Ripper::EXPR_FNAME
+# uninitialized constant Ripper::SexpBuilder::EXPR_LABEL
+# Did you mean?  Ripper::SexpBuilder::EXPR_BEG
+#                Ripper::EXPR_BEG
+#                Ripper::EXPR_LABEL
+#                Ripper::SexpBuilder::EXPR_LABELED
+#                Ripper::EXPR_LABELED
+# uninitialized constant Ripper::SexpBuilder::EXPR_LABELED
+# Did you mean?  Ripper::EXPR_LABEL
+#                Ripper::EXPR_LABELED
+# uninitialized constant Ripper::SexpBuilder::EXPR_MID
+# Did you mean?  Ripper::SexpBuilder::EXPR_END
+#                Ripper::EXPR_MID
+#                Ripper::EXPR_END
+# uninitialized constant Ripper::SexpBuilder::EXPR_NONE
+# Did you mean?  Ripper::SexpBuilder::EXPR_DOT
+#                Ripper::SexpBuilder::EXPR_END
+#                Ripper::EXPR_DOT
+#                Ripper::EXPR_END
+#                Ripper::EXPR_NONE
+#                Ripper::SexpBuilder::EXPR_FNAME
+#                Ripper::EXPR_FNAME
+# uninitialized constant Ripper::SexpBuilder::EXPR_VALUE
+# Did you mean?  Ripper::EXPR_VALUE
+# uninitialized constant Ripper::SexpBuilder::PARSER_EVENTS
+# Did you mean?  Ripper::PARSER_EVENTS
+# uninitialized constant Ripper::SexpBuilder::PARSER_EVENT_TABLE
+# Did you mean?  Ripper::PARSER_EVENT_TABLE
+# uninitialized constant Ripper::SexpBuilder::SCANNER_EVENTS
+# Did you mean?  Ripper::SCANNER_EVENTS
+# uninitialized constant Ripper::SexpBuilder::SCANNER_EVENT_TABLE
+# Did you mean?  Ripper::SCANNER_EVENT_TABLE
+# uninitialized constant Ripper::SexpBuilder::Version
+# Did you mean?  Ripper::Version
+# wrong constant name on_BEGIN
+# wrong constant name on_CHAR
+# wrong constant name on_END
+# wrong constant name on___end__
+# wrong constant name on_alias
+# wrong constant name on_alias_error
+# wrong constant name on_aref
+# wrong constant name on_aref_field
+# wrong constant name on_arg_ambiguous
+# wrong constant name on_arg_paren
+# wrong constant name on_args_add
+# wrong constant name on_args_add_block
+# wrong constant name on_args_add_star
+# wrong constant name on_args_forward
+# wrong constant name on_args_new
+# wrong constant name on_array
+# wrong constant name on_aryptn
+# wrong constant name on_assign
+# wrong constant name on_assign_error
+# wrong constant name on_assoc_new
+# wrong constant name on_assoc_splat
+# wrong constant name on_assoclist_from_args
+# wrong constant name on_backref
+# wrong constant name on_backtick
+# wrong constant name on_bare_assoc_hash
+# wrong constant name on_begin
+# wrong constant name on_binary
+# wrong constant name on_block_var
+# wrong constant name on_blockarg
+# wrong constant name on_bodystmt
+# wrong constant name on_brace_block
+# wrong constant name on_break
+# wrong constant name on_call
+# wrong constant name on_case
+# wrong constant name on_class
+# wrong constant name on_class_name_error
+# wrong constant name on_comma
+# wrong constant name on_command
+# wrong constant name on_command_call
+# wrong constant name on_comment
+# wrong constant name on_const
+# wrong constant name on_const_path_field
+# wrong constant name on_const_path_ref
+# wrong constant name on_const_ref
+# wrong constant name on_cvar
+# wrong constant name on_def
+# wrong constant name on_defined
+# wrong constant name on_defs
+# wrong constant name on_do_block
+# wrong constant name on_dot2
+# wrong constant name on_dot3
+# wrong constant name on_dyna_symbol
+# wrong constant name on_else
+# wrong constant name on_elsif
+# wrong constant name on_embdoc
+# wrong constant name on_embdoc_beg
+# wrong constant name on_embdoc_end
+# wrong constant name on_embexpr_beg
+# wrong constant name on_embexpr_end
+# wrong constant name on_embvar
+# wrong constant name on_ensure
+# wrong constant name on_excessed_comma
+# wrong constant name on_fcall
+# wrong constant name on_field
+# wrong constant name on_float
+# wrong constant name on_for
+# wrong constant name on_gvar
+# wrong constant name on_hash
+# wrong constant name on_heredoc_beg
+# wrong constant name on_heredoc_end
+# wrong constant name on_hshptn
+# wrong constant name on_ident
+# wrong constant name on_if
+# wrong constant name on_if_mod
+# wrong constant name on_ifop
+# wrong constant name on_ignored_nl
+# wrong constant name on_ignored_sp
+# wrong constant name on_imaginary
+# wrong constant name on_in
+# wrong constant name on_int
+# wrong constant name on_ivar
+# wrong constant name on_kw
+# wrong constant name on_kwrest_param
+# wrong constant name on_label
+# wrong constant name on_label_end
+# wrong constant name on_lambda
+# wrong constant name on_lbrace
+# wrong constant name on_lbracket
+# wrong constant name on_lparen
+# wrong constant name on_magic_comment
+# wrong constant name on_massign
+# wrong constant name on_method_add_arg
+# wrong constant name on_method_add_block
+# wrong constant name on_mlhs_add
+# wrong constant name on_mlhs_add_post
+# wrong constant name on_mlhs_add_star
+# wrong constant name on_mlhs_new
+# wrong constant name on_mlhs_paren
+# wrong constant name on_module
+# wrong constant name on_mrhs_add
+# wrong constant name on_mrhs_add_star
+# wrong constant name on_mrhs_new
+# wrong constant name on_mrhs_new_from_args
+# wrong constant name on_next
+# wrong constant name on_nl
+# wrong constant name on_nokw_param
+# wrong constant name on_op
+# wrong constant name on_opassign
+# wrong constant name on_operator_ambiguous
+# wrong constant name on_param_error
+# wrong constant name on_params
+# wrong constant name on_paren
+# wrong constant name on_parse_error
+# wrong constant name on_period
+# wrong constant name on_program
+# wrong constant name on_qsymbols_add
+# wrong constant name on_qsymbols_beg
+# wrong constant name on_qsymbols_new
+# wrong constant name on_qwords_add
+# wrong constant name on_qwords_beg
+# wrong constant name on_qwords_new
+# wrong constant name on_rational
+# wrong constant name on_rbrace
+# wrong constant name on_rbracket
+# wrong constant name on_redo
+# wrong constant name on_regexp_add
+# wrong constant name on_regexp_beg
+# wrong constant name on_regexp_end
+# wrong constant name on_regexp_literal
+# wrong constant name on_regexp_new
+# wrong constant name on_rescue
+# wrong constant name on_rescue_mod
+# wrong constant name on_rest_param
+# wrong constant name on_retry
+# wrong constant name on_return
+# wrong constant name on_return0
+# wrong constant name on_rparen
+# wrong constant name on_sclass
+# wrong constant name on_semicolon
+# wrong constant name on_sp
+# wrong constant name on_stmts_add
+# wrong constant name on_stmts_new
+# wrong constant name on_string_add
+# wrong constant name on_string_concat
+# wrong constant name on_string_content
+# wrong constant name on_string_dvar
+# wrong constant name on_string_embexpr
+# wrong constant name on_string_literal
+# wrong constant name on_super
+# wrong constant name on_symbeg
+# wrong constant name on_symbol
+# wrong constant name on_symbol_literal
+# wrong constant name on_symbols_add
+# wrong constant name on_symbols_beg
+# wrong constant name on_symbols_new
+# wrong constant name on_tlambda
+# wrong constant name on_tlambeg
+# wrong constant name on_top_const_field
+# wrong constant name on_top_const_ref
+# wrong constant name on_tstring_beg
+# wrong constant name on_tstring_content
+# wrong constant name on_tstring_end
+# wrong constant name on_unary
+# wrong constant name on_undef
+# wrong constant name on_unless
+# wrong constant name on_unless_mod
+# wrong constant name on_until
+# wrong constant name on_until_mod
+# wrong constant name on_var_alias
+# wrong constant name on_var_field
+# wrong constant name on_var_ref
+# wrong constant name on_vcall
+# wrong constant name on_void_stmt
+# wrong constant name on_when
+# wrong constant name on_while
+# wrong constant name on_while_mod
+# wrong constant name on_word_add
+# wrong constant name on_word_new
+# wrong constant name on_words_add
+# wrong constant name on_words_beg
+# wrong constant name on_words_new
+# wrong constant name on_words_sep
+# wrong constant name on_xstring_add
+# wrong constant name on_xstring_literal
+# wrong constant name on_xstring_new
+# wrong constant name on_yield
+# wrong constant name on_yield0
+# wrong constant name on_zsuper
+# wrong constant name <static-init>
+# uninitialized constant Ripper::SexpBuilderPP::EVENTS
+# Did you mean?  Ripper::EVENTS
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_ARG
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_BEG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_BEG
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_ARG_ANY
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_BEG_ANY
+#                Ripper::SexpBuilderPP::EXPR_END_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_BEG
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_BEG
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_BEG_ANY
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_END_ANY
+#                Ripper::SexpBuilderPP::EXPR_ARG_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_CLASS
+# Did you mean?  Ripper::EXPR_CLASS
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_CMDARG
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::SexpBuilderPP::EXPR_ENDARG
+#                Ripper::EXPR_CMDARG
+#                Ripper::EXPR_ENDARG
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_DOT
+# Did you mean?  Ripper::EXPR_DOT
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_END
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_MID
+#                Ripper::EXPR_MID
+#                Ripper::EXPR_END
+#                Ripper::SexpBuilderPP::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_ENDARG
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_ARG
+#                Ripper::EXPR_ARG
+#                Ripper::EXPR_END
+#                Ripper::SexpBuilderPP::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+#                Ripper::SexpBuilderPP::EXPR_CMDARG
+#                Ripper::EXPR_CMDARG
+#                Ripper::EXPR_ENDARG
+#                Ripper::SexpBuilderPP::EXPR_END_ANY
+#                Ripper::EXPR_END_ANY
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_ENDFN
+# Did you mean?  Ripper::EXPR_END
+#                Ripper::EXPR_ENDFN
+#                Ripper::SexpBuilderPP::EXPR_ENDARG
+#                Ripper::EXPR_ENDARG
+#                Ripper::SexpBuilderPP::EXPR_END_ANY
+#                Ripper::EXPR_END_ANY
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_END_ANY
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_BEG_ANY
+#                Ripper::SexpBuilderPP::EXPR_ARG_ANY
+#                Ripper::EXPR_BEG_ANY
+#                Ripper::EXPR_END_ANY
+#                Ripper::EXPR_ARG_ANY
+#                Ripper::SexpBuilderPP::EXPR_ENDFN
+#                Ripper::EXPR_ENDFN
+#                Ripper::SexpBuilderPP::EXPR_ENDARG
+#                Ripper::EXPR_ENDARG
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_FITEM
+# Did you mean?  Ripper::EXPR_FITEM
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_FNAME
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_NONE
+#                Ripper::EXPR_NONE
+#                Ripper::EXPR_FNAME
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_LABEL
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_BEG
+#                Ripper::EXPR_BEG
+#                Ripper::EXPR_LABEL
+#                Ripper::SexpBuilderPP::EXPR_LABELED
+#                Ripper::EXPR_LABELED
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_LABELED
+# Did you mean?  Ripper::EXPR_LABEL
+#                Ripper::EXPR_LABELED
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_MID
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_END
+#                Ripper::EXPR_MID
+#                Ripper::EXPR_END
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_NONE
+# Did you mean?  Ripper::SexpBuilderPP::EXPR_DOT
+#                Ripper::SexpBuilderPP::EXPR_END
+#                Ripper::EXPR_DOT
+#                Ripper::EXPR_END
+#                Ripper::EXPR_NONE
+#                Ripper::SexpBuilderPP::EXPR_FNAME
+#                Ripper::EXPR_FNAME
+# uninitialized constant Ripper::SexpBuilderPP::EXPR_VALUE
+# Did you mean?  Ripper::EXPR_VALUE
+# uninitialized constant Ripper::SexpBuilderPP::PARSER_EVENTS
+# Did you mean?  Ripper::PARSER_EVENTS
+# uninitialized constant Ripper::SexpBuilderPP::PARSER_EVENT_TABLE
+# Did you mean?  Ripper::PARSER_EVENT_TABLE
+# uninitialized constant Ripper::SexpBuilderPP::SCANNER_EVENTS
+# Did you mean?  Ripper::SCANNER_EVENTS
+# uninitialized constant Ripper::SexpBuilderPP::SCANNER_EVENT_TABLE
+# Did you mean?  Ripper::SCANNER_EVENT_TABLE
+# uninitialized constant Ripper::SexpBuilderPP::Version
+# Did you mean?  Ripper::Version
+# wrong constant name <static-init>
+# wrong constant name <Class:CompileError>
+# wrong constant name <Class:Error>
+# wrong constant name <Class:MatchData>
+# wrong constant name <Class:MatchError>
+# wrong constant name initialize
+# wrong constant name match
+# wrong constant name match_list
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# undefined method `string<defaultArg>1' for class `Ripper::TokenPattern::MatchData'
+# wrong constant name initialize
+# wrong constant name string<defaultArg>1
+# wrong constant name string
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name <static-init>
+# wrong constant name compile
+# wrong constant name dedent_string
+# wrong constant name lex_state_name
+# wrong constant name token_match
 # wrong constant name <Class:Node>
 # undefined method `pretty_print_children<defaultArg>1' for class `RubyVM::AbstractSyntaxTree::Node'
 # Did you mean?  pretty_print_inspect

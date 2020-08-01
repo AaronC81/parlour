@@ -13,7 +13,7 @@ module Parlour
     #   namespace alphabetically.
     # @return [void]
     def initialize(break_params: 4, tab_size: 2, sort_namespaces: false)
-      @options = RbiGenerator::Options.new(
+      @options = Options.new(
         break_params: break_params,
         tab_size: tab_size,
         sort_namespaces: sort_namespaces
@@ -21,7 +21,7 @@ module Parlour
       @root = RbiGenerator::Namespace.new(self)
     end
 
-    sig { overridable.returns(RbiGenerator::Options) }
+    sig { overridable.returns(Options) }
     # The formatting options for this generator. Currently ignored.
     # @return [Options]
     attr_reader :options
@@ -30,5 +30,11 @@ module Parlour
     # The root {Namespace} of this generator.
     # @return [Namespace]
     attr_reader :root
+
+    sig { overridable.returns(T.nilable(Plugin)) }
+    # The plugin which is currently generating new definitions.
+    # {Plugin#run_plugins} controls this value.
+    # @return [Plugin, nil]
+    attr_accessor :current_plugin
   end
 end

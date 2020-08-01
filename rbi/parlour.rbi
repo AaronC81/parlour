@@ -63,11 +63,33 @@ module Parlour
     sig { params(break_params: Integer, tab_size: Integer, sort_namespaces: T::Boolean).void }
     def initialize(break_params: 4, tab_size: 2, sort_namespaces: false); end
 
-    sig { returns(RbiGenerator::Options) }
+    sig { returns(Options) }
     attr_reader :options
 
     sig { returns(RbiGenerator::Namespace) }
     attr_reader :root
+
+    sig { returns(T.nilable(Plugin)) }
+    attr_accessor :current_plugin
+  end
+
+  class Options
+    extend T::Sig
+
+    sig { params(break_params: Integer, tab_size: Integer, sort_namespaces: T::Boolean).void }
+    def initialize(break_params:, tab_size:, sort_namespaces:); end
+
+    sig { returns(Integer) }
+    attr_reader :break_params
+
+    sig { returns(Integer) }
+    attr_reader :tab_size
+
+    sig { returns(T::Boolean) }
+    attr_reader :sort_namespaces
+
+    sig { params(level: Integer, str: String).returns(String) }
+    def indented(level, str); end
   end
 
   class ParseError < StandardError
@@ -106,11 +128,6 @@ module Parlour
 
     sig { returns(T.nilable(String)) }
     attr_accessor :strictness
-  end
-
-  class RbsGenerator < Generator
-    sig { overridable.params(strictness: String).returns(String) }
-    def rbs(strictness = 'strong'); end
   end
 
   module TypeLoader
@@ -237,6 +254,34 @@ module Parlour
     def zip_by(a, fa, b, fb); end
   end
 
+  class TypedObject
+    abstract!
+
+    extend T::Sig
+    extend T::Helpers
+
+    sig { params(name: String).void }
+    def initialize(name); end
+
+    sig { returns(T.nilable(Plugin)) }
+    attr_reader :generated_by
+
+    sig { returns(String) }
+    attr_reader :name
+
+    sig { returns(T::Array[String]) }
+    attr_reader :comments
+
+    sig { params(comment: T.any(String, T::Array[String])).void }
+    def add_comment(comment); end
+
+    sig { abstract.returns(String) }
+    def describe; end
+
+    sig { params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+    def generate_comments(indent_level, options); end
+  end
+
   module Types
     TypeLike = T.type_alias { T.any(String, Type) }
 
@@ -347,9 +392,6 @@ module Parlour
       sig { params(element: TypeLike).void }
       def initialize(element); end
 
-      sig { params(other: Object).returns(T::Boolean) }
-      def ==(other); end
-
       sig { returns(Type) }
       attr_reader :element
 
@@ -377,6 +419,50 @@ module Parlour
 
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other); end
+    end
+
+    class Range < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name; end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+    end
+
+    class Enumerable < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name; end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+    end
+
+    class Enumerator < SingleElementCollection
+      sig { override.returns(String) }
+      def collection_name; end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+    end
+
+    class Hash < Type
+      sig { params(key: TypeLike, value: TypeLike).void }
+      def initialize(key, value); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Type) }
+      attr_reader :key
+
+      sig { returns(Type) }
+      attr_reader :value
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
     end
 
     class Boolean < Type
@@ -423,9 +509,6 @@ module Parlour
   end
 
   class RbiGenerator < Generator
-    sig { returns(T.nilable(Plugin)) }
-    attr_accessor :current_plugin
-
     sig { overridable.params(strictness: String).returns(String) }
     def rbi(strictness = 'strong'); end
 
@@ -963,25 +1046,6 @@ module Parlour
       def move_next_comments(object); end
     end
 
-    class Options
-      extend T::Sig
-
-      sig { params(break_params: Integer, tab_size: Integer, sort_namespaces: T::Boolean).void }
-      def initialize(break_params:, tab_size:, sort_namespaces:); end
-
-      sig { returns(Integer) }
-      attr_reader :break_params
-
-      sig { returns(Integer) }
-      attr_reader :tab_size
-
-      sig { returns(T::Boolean) }
-      attr_reader :sort_namespaces
-
-      sig { params(level: Integer, str: String).returns(String) }
-      def indented(level, str); end
-    end
-
     class Parameter
       extend T::Sig
       RBS_KEYWORDS = [
@@ -1173,6 +1237,36 @@ module Parlour
 
       sig { void }
       def generalize_from_rbi!; end
+    end
+  end
+
+  class RbsGenerator < Generator
+    sig { overridable.params(strictness: String).returns(String) }
+    def rbs(strictness = 'strong'); end
+
+    class RbsObject < TypedObject
+      abstract!
+
+      extend T::Helpers
+      extend T::Sig
+
+      sig { params(generator: Generator, name: String).void }
+      def initialize(generator, name); end
+
+      sig { returns(Generator) }
+      attr_reader :generator
+
+      sig { abstract.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { abstract.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { abstract.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { abstract.override.returns(String) }
+      def describe; end
     end
   end
 end

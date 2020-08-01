@@ -541,7 +541,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       actual_rbi = x.generate_rbi(
         0,
-        Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2, sort_namespaces: true)
+        Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: true)
       ).join("\n")
 
       expect(actual_rbi).to eq (expected_rbi)

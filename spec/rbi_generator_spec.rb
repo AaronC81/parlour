@@ -16,7 +16,7 @@ RSpec.describe Parlour::RbiGenerator do
   end
 
   def opts
-    Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
   end
 
   it 'has a root namespace' do
@@ -551,7 +551,7 @@ RSpec.describe Parlour::RbiGenerator do
 
   it 'supports sorting output' do
     custom_rbi_gen = Parlour::RbiGenerator.new(sort_namespaces: true)
-    custom_opts = Parlour::RbiGenerator::Options.new(
+    custom_opts = Parlour::Options.new(
       break_params: 4,
       tab_size: 2,
       sort_namespaces: true
