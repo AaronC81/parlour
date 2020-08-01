@@ -418,7 +418,7 @@ module Parlour
       def create_constant(name, type:, &block)
         new_constant = RbsGenerator::Constant.new(
           generator,
-          name: name,
+          name,
           type: type,
           &block
         )
