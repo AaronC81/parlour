@@ -38,7 +38,7 @@ module Parlour
             node.name,
             kind: node.kind,
             type: node.type,
-          )
+          ).add_comments(node.comments)
 
         when RbiGenerator::ClassNamespace
           if node.abstract
@@ -48,6 +48,7 @@ module Parlour
             node.name,
             superclass: node.superclass
           )
+          klass.add_comments(node.comments)
           node.children.each do |child|
             convert_object(child, klass)
           end
@@ -60,17 +61,17 @@ module Parlour
           new_parent.create_constant(
             node.name,
             type: node.value,
-          )
+          ).add_comments(node.comments)
 
         when RbiGenerator::EnumClassNamespace
           add_warning 'RBS does not support enums; dropping', node
           return
 
         when RbiGenerator::Extend
-          new_parent.create_extend(node.name)
+          new_parent.create_extend(node.name).add_comments(node.comments)
 
         when RbiGenerator::Include
-          new_parent.create_include(node.name)
+          new_parent.create_include(node.name).add_comments(node.comments)
 
         when RbiGenerator::Method
           # Convert parameters
@@ -120,7 +121,7 @@ module Parlour
               )
             ],
             class_method: node.class_method,
-          )
+          ).add_comments(node.comments)
 
         when RbiGenerator::ModuleNamespace
           if node.interface
@@ -129,6 +130,7 @@ module Parlour
           mod = new_parent.create_module(
             node.name,
           )
+          mod.add_comments(node.comments)
           node.children.each do |child|
             convert_object(child, mod)
           end
@@ -136,6 +138,7 @@ module Parlour
         when RbiGenerator::Namespace
           add_warning 'unspecialized namespaces are not supposed to be in the tree; you may run into issues', node
           namespace = RbsGenerator::Namespace.new(rbs_gen)
+          namespace.add_comments(node.comments)
           node.children.each do |child|
             convert_object(child, namespace)
           end
