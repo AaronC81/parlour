@@ -128,7 +128,7 @@ module Parlour
           n = name_without_kind
         end
 
-        (required ? '?' : '') + if kind == :keyword
+        (required ? '' : '?') + if kind == :keyword
           "#{n}: #{t}"
         else
           "#{PREFIXES[kind]}#{t} #{n}"

@@ -12,7 +12,7 @@ RSpec.describe Parlour::RbsGenerator do
   end
 
   def pa(*a)
-    Parlour::RbiGenerator::Parameter.new(*a)
+    Parlour::RbsGenerator::Parameter.new(*a)
   end
 
   def opts
@@ -20,7 +20,7 @@ RSpec.describe Parlour::RbsGenerator do
   end
 
   it 'has a root namespace' do
-    expect(subject.root).to be_a Parlour::RbiGenerator::Namespace
+    expect(subject.root).to be_a Parlour::RbsGenerator::Namespace
   end
 
   context 'module namespace' do
@@ -91,7 +91,7 @@ RSpec.describe Parlour::RbsGenerator do
           bar.create_extend( 'X')
           bar.create_extend( 'Y')
           bar.create_include( 'Z')
-          bar.create_constant('PI', value: '3.14')
+          bar.create_constant('PI', type: 'Integer')
           bar.create_class('A')
           bar.create_class('B')
           bar.create_class('C')
@@ -104,7 +104,7 @@ RSpec.describe Parlour::RbsGenerator do
             include Z
             extend X
             extend Y
-            PI = 3.14
+            PI: Integer
 
             class A
             end
@@ -143,17 +143,17 @@ RSpec.describe Parlour::RbsGenerator do
       expect(subject.root.create_method('foo')).to eq \
         subject.root.create_method('foo')
 
-      expect(subject.root.create_method('foo', parameters: [
-        pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String')).to eq subject.root.create_method('foo', parameters: [
-        pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String')
+      expect(subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer', required: false)
+      ], 'String')])).to eq subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer', required: false)
+      ], 'String')])
 
-      expect(subject.root.create_method('foo', parameters: [
-        pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String')).not_to eq subject.root.create_method('foo', parameters: [
-        pa('a', type: 'Integer', default: '5')
-      ], return_type: 'String')
+      expect(subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer', required: false)
+      ], 'String')])).not_to eq subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer', required: true)
+      ], 'String')])
     end
 
     it 'can be created blank' do
@@ -165,39 +165,29 @@ RSpec.describe Parlour::RbsGenerator do
     end
 
     it 'can be created with return types' do
-      meth = subject.root.create_method('foo', return_type: 'String')
+      meth = subject.root.create_method('foo',
+        [Parlour::RbsGenerator::MethodSignature.new([], 'String')])
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         def foo: () -> String
       RUBY
     end
-
-    it 'can accept keyword alias for return types' do
-      expect(subject.root.create_method('foo', returns: 'String')).to eq \
-        subject.root.create_method('foo', return_type: 'String')
-    end
-
-    it 'cannot accept both returns: and return_type:' do
-      expect do
-        subject.root.create_method('foo', returns: 'String', return_type: 'String')
-      end.to raise_error(RuntimeError)
-    end
  
     it 'can be created with parameters' do
-      meth = subject.root.create_method('foo', parameters: [
-        pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String')
+      meth = subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer', required: false)
+      ], 'String')])
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         def foo: (?Integer a) -> String
       RUBY
 
-      meth = subject.root.create_method('bar', parameters: [
+      meth = subject.root.create_method('bar', [Parlour::RbsGenerator::MethodSignature.new([
         pa('a'),
         pa('b', type: 'String'),
-        pa('c', default: '3'),
-        pa('d', type: 'Integer', default: '4')
-      ], return_type: nil)
+        pa('c', required: false),
+        pa('d', type: 'Integer', required: false)
+      ])])
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         def bar: (untyped a, String b, ?untyped c, ?Integer d) -> void
@@ -205,9 +195,9 @@ RSpec.describe Parlour::RbsGenerator do
     end
 
     it 'supports class methods' do
-      meth = subject.root.create_method('foo', parameters: [
-        pa('a', type: 'Integer', default: '4')
-      ], return_type: 'String', class_method: true)
+      meth = subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer', required: false)
+      ], 'String')], class_method: true)
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         def self.foo: (?Integer a) -> String
@@ -215,13 +205,12 @@ RSpec.describe Parlour::RbsGenerator do
     end
 
     it 'supports type parameters' do
-      meth = subject.root.create_method('box', type_parameters: [:A], parameters: [
-        pa('a', type: 'T.type_parameter(:A)')
-      ], return_type: 'T::Array[T.type_parameter(:A)]')
+      meth = subject.root.create_method('box', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'A')
+      ], 'A', type_parameters: [:A])])
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
-        sig { type_parameters(:A).params(a: T.type_parameter(:A)).returns(T::Array[T.type_parameter(:A)]) }
-        def box(a); end
+        def box: [A] (A a) -> A
       RUBY
     end
   end
@@ -388,17 +377,17 @@ RSpec.describe Parlour::RbsGenerator do
   end
 
   it 'supports sorting output' do
-    custom_rbi_gen = Parlour::RbiGenerator.new(sort_namespaces: true)
+    custom_rbs_gen = Parlour::RbsGenerator.new(sort_namespaces: true)
     custom_opts = Parlour::Options.new(
       break_params: 4,
       tab_size: 2,
       sort_namespaces: true
     )
 
-    m = custom_rbi_gen.root.create_module('M')
+    m = custom_rbs_gen.root.create_module('M')
     m.create_include('Y')
     m.create_module('B')
-    m.create_method('c', parameters: [], return_type: nil)
+    m.create_method('c')
     m.create_class('A') do |a|
       a.create_method('c')
       a.create_module('A')
@@ -409,7 +398,7 @@ RSpec.describe Parlour::RbsGenerator do
     m.create_arbitrary(code: '"some more"')
     m.create_extend('Z')
 
-    expect(custom_rbi_gen.root.generate_rbs(0, custom_opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+    expect(custom_rbs_gen.root.generate_rbs(0, custom_opts).join("\n")).to eq fix_heredoc(<<-RUBY)
       module M
         include X
         include Y
