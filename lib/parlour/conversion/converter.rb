@@ -22,7 +22,7 @@ module Parlour
         warnings << [msg, node]
 
         return if $VERBOSE.nil?
-        class_name = self.class.name.split('::').last
+        class_name = T.must(self.class.name).split('::').last
         print Rainbow("Parlour warning: ").yellow.dark.bold
         print Rainbow("#{class_name}: ").magenta.bright.bold
         puts msg
