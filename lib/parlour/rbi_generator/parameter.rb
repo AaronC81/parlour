@@ -42,7 +42,7 @@ module Parlour
 
         @kind = :keyword if kind == :normal && name.end_with?(':')
 
-        @type = type || Parlour::Types::Untyped.new
+        @type = type || 'T.untyped'
         @default = default
       end
 
