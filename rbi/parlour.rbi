@@ -1521,12 +1521,12 @@ module Parlour
       sig do
         params(
           name: String,
-          signatures: T::Array[MethodSignature],
+          signatures: T.nilable(T::Array[MethodSignature]),
           class_method: T::Boolean,
           block: T.nilable(T.proc.params(x: Method).void)
         ).returns(Method)
       end
-      def create_method(name, signatures, class_method: false, &block); end
+      def create_method(name, signatures = nil, class_method: false, &block); end
 
       sig do
         params(

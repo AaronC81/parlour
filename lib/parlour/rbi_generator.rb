@@ -17,7 +17,22 @@ module Parlour
     #
     # @return [String] The generated RBI file
     def rbi(strictness = 'strong')
-      "# typed: #{strictness}\n" + root.generate_rbi(0, options).join("\n") + "\n"
+      # TODO: Early test option - convert to RBS if requested
+      # Absolutely remove this later on
+      if ENV['PARLOUR_CONVERT_TO_RBS']
+        # Perform conversion
+        root.generalize_from_rbi!
+        rbs_gen = Parlour::RbsGenerator.new
+        converter = Parlour::Conversion::RbiToRbs.new(root, rbs_gen)
+        root.children.each do |child|
+          converter.convert_object(child, rbs_gen.root)
+        end
+
+        # Write the final RBS
+        rbs_gen.rbs
+      else
+        "# typed: #{strictness}\n" + root.generate_rbi(0, options).join("\n") + "\n"
+      end
     end
   end
 end
