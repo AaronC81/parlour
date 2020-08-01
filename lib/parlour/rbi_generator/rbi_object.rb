@@ -69,8 +69,10 @@ module Parlour
       # @return [void]
       def merge_into_self(others); end
 
-      sig { override.abstract.returns(String) }
-      def describe; end
+      sig { override.overridable.returns(String) }
+      def describe
+        'RBI object'
+      end
 
       sig { abstract.void }
       # Assuming that the types throughout this object and its children have

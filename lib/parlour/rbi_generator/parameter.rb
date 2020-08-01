@@ -1,4 +1,5 @@
 # typed: true
+require 'rainbow'
 module Parlour
   class RbiGenerator < Generator
     # Represents a method parameter with a Sorbet type signature.
@@ -137,7 +138,12 @@ module Parlour
         t = "^#{t}" if Types::Proc === @type
 
         if RBS_KEYWORDS.include? name_without_kind
-          puts "warning: '#{name_without_kind}' is a keyword in RBS, renaming method parameter to '_#{name_without_kind}'"
+          unless $VERBOSE.nil?
+            print Rainbow("Parlour warning: ").yellow.dark.bold
+            print Rainbow("Type generalization: ").magenta.bright.bold
+            puts "'#{name_without_kind}' is a keyword in RBS, renaming method parameter to '_#{name_without_kind}'"
+          end
+
           n = "_#{name_without_kind}"
         else
           n = name_without_kind

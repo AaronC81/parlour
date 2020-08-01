@@ -102,6 +102,9 @@ module Parlour
                 t = block_param_type
                 required = true
                 RbsGenerator::Block.new(t, required)
+              elsif Types::Untyped === block_param_type
+                # Consider there to be no block
+                block = nil
               else
                 add_warning 'block type must be a Types::Proc (or nilable one); dropping block', node
               end

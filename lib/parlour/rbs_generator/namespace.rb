@@ -543,7 +543,13 @@ module Parlour
           next if is_a?(ClassNamespace) || is_a?(ModuleNamespace) # next if this is not root
         
           if child.is_a?(RbsGenerator::Method)
-            puts "warning: RBS does not support top-level method definitions, ignoring #{child.name}"
+            unless $VERBOSE.nil?
+              print Rainbow("Parlour warning: ").yellow.dark.bold
+              print Rainbow("RBS generation: ").magenta.bright.bold
+              puts "RBS does not support top-level method definitions, ignoring #{child.name}"
+              print Rainbow("    └ at object: ").blue.bright.bold
+              puts describe       
+            end  
             next true
           end
 

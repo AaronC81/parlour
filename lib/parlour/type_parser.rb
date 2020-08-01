@@ -733,7 +733,7 @@ module Parlour
             )
           else
             # TODO
-            puts "warning: user-defined generic types not implemented, treating #{names.last} as untyped"
+            warning "user-defined generic types not implemented, treating #{names.last} as untyped", node
             return Types::Untyped.new
           end
         end
@@ -805,7 +805,7 @@ module Parlour
           parse_err 'T.untyped does not accept arguments', node if !args.nil? && !args.empty?
           Types::Untyped.new
         else
-          puts "warning: unknown method T.#{message}, treating as untyped"
+          warning "unknown method T.#{message}, treating as untyped", node
           Types::Untyped.new
         end 
       when :const
@@ -822,7 +822,7 @@ module Parlour
       when :hash
         # Shape/record
         # TODO
-        puts "warning: shapes/records not implemented, treating as untyped"
+        warning "shapes/records not implemented, treating as untyped", node
         Types::Untyped.new
       else
         parse_err "unable to parse type #{node_to_s(node).inspect}", node
@@ -830,6 +830,17 @@ module Parlour
     end
 
     protected
+
+    sig { params(msg: String, node: Parser::AST::Node).void }
+    def warning(msg, node)
+      return if $VERBOSE.nil?
+
+      print Rainbow("Parlour warning: ").yellow.dark.bold
+      print Rainbow("Type generalization: ").magenta.bright.bold
+      puts msg
+      print Rainbow("      └ at code: ").blue.bright.bold
+      puts node_to_s(node)
+    end
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
     # Given a node representing a simple chain of constants (such as A or

@@ -69,8 +69,10 @@ module Parlour
       # @return [void]
       def merge_into_self(others); end
 
-      sig { override.abstract.returns(String) }
-      def describe; end  
+      sig { overridable.override.returns(String) }
+      def describe
+        'RBS object'
+      end  
     end
   end
 end
