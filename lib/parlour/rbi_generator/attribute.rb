@@ -59,24 +59,6 @@ module Parlour
       # The type of this attribute.
       attr_reader :type
 
-      sig do
-        override.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBS lines for this arbitrary code.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBS lines, formatted as specified.
-      def generate_rbs(indent_level, options)
-        [options.indented(
-          indent_level,
-          "attr_#{kind} #{name}: #{String === @type ? @type : @type.generate_rbs}"
-        )]
-      end
-
       sig { override.params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another attribute.
       #

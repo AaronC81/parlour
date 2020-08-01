@@ -300,6 +300,8 @@ module Parlour
       end
     end
 
+    # TODO: Decouple this from relying on an RBI parameter - maybe move
+    # parameter information into Types::Type?
     class Proc < Type
       sig { params(parameters: T::Array[RbiGenerator::Parameter], return_type: T.nilable(TypeLike)).void }
       def initialize(parameters, return_type)

@@ -40,7 +40,6 @@ module Parlour
         override.params(
           indent_level: Integer,
           options: Options,
-          mode: Symbol,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this struct. This consists of
@@ -49,12 +48,7 @@ module Parlour
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
-      def generate_body(indent_level, options, mode)
-        if mode == :generate_rbs
-          puts 'warning: RBS does not support structs'
-          return ['# This was a struct, which are unsupported.']
-        end
-
+      def generate_body(indent_level, options)
         result = []
         props.each do |prop|
           result << options.indented(indent_level, prop.to_prop_call)

@@ -182,7 +182,7 @@ module Parlour
       sig do
         params(
           name: String,
-          signatures: T::Array[MethodSignature],
+          signatures: T.nilable(T::Array[MethodSignature]),
           class_method: T::Boolean,
           block: T.nilable(T.proc.params(x: Method).void)
         ).returns(Method)
@@ -197,11 +197,12 @@ module Parlour
       #   it is defined using +self.+.
       # @param block A block which the new instance yields itself to.
       # @return [Method]
-      def create_method(name, signatures, class_method: false, &block)
+      def create_method(name, signatures = nil, class_method: false, &block)
+        raise 'cannot have a method with no signatures' if signatures&.empty?
         new_method = RbsGenerator::Method.new(
           generator,
           name,
-          signatures,
+          signatures || [MethodSignature.new([], nil)],
           class_method: class_method,
           &block
         )

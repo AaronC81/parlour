@@ -45,25 +45,7 @@ module Parlour
         lines = generate_comments(indent_level, options)
         lines << options.indented(indent_level, "module #{name}")
         lines += [options.indented(indent_level + 1, "interface!"), ""] if interface
-        lines += generate_body(indent_level + 1, options, :generate_rbi)
-        lines << options.indented(indent_level, "end")
-      end
-
-      sig do
-        override.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBS lines for this module.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBS lines, formatted as specified.
-      def generate_rbs(indent_level, options)        
-        lines = generate_comments(indent_level, options)
-        lines << options.indented(indent_level, "module #{name}")
-        lines += generate_body(indent_level + 1, options, :generate_rbs)
+        lines += generate_body(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
       end
 

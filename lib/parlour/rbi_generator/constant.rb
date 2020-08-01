@@ -65,21 +65,6 @@ module Parlour
 
       sig do
         override.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBS lines for this constant.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBS lines, formatted as specified.
-      def generate_rbs(indent_level, options)
-        [options.indented(indent_level, "#{name}: #{String === @value ? @value : @value.generate_rbs}")]
-      end
-
-      sig do
-        override.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end

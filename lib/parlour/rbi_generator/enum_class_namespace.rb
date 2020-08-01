@@ -39,7 +39,6 @@ module Parlour
         override.params(
           indent_level: Integer,
           options: Options,
-          mode: Symbol,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this enum. This consists of
@@ -48,12 +47,7 @@ module Parlour
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines for the body, formatted as specified.
-      def generate_body(indent_level, options, mode)
-        if mode == :generate_rbs
-          puts 'warning: RBS does not support enums'
-          return ['# This was an enum, which are unsupported.']
-        end
-
+      def generate_body(indent_level, options)
         result = [options.indented(indent_level, 'enums do')]
         enums.each do |enum_value|
           case enum_value
@@ -71,21 +65,6 @@ module Parlour
         result << ''
 
         result + super
-      end
-
-      sig do
-        override.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBS lines for this constant.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBS lines, formatted as specified.
-      def generate_rbs(indent_level, options)
-        raise 'RBS does not support enums'
       end
 
       sig do

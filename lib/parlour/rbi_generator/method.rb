@@ -176,39 +176,6 @@ module Parlour
 
       sig do
         override.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBS lines for this method.
-      #
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBS lines, formatted as specified.
-      def generate_rbs(indent_level, options)
-        # TODO: ignores formatting options
-
-        block_param = parameters.find { |x| x.kind == :block }
-        block_type = block_param&.type
-        block_type = String === block_type ? block_type : block_type&.generate_rbs
-
-        rbs_params = parameters.reject { |x| x.kind == :block }.map(&:to_rbs_param)
-        rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
-
-        generate_comments(indent_level, options) + [
-          options.indented(
-            indent_level,
-            "def #{class_method ? 'self.' : ''}#{name}: #{
-              type_parameters.any? ? "[#{type_parameters.join(', ')}] " : '' 
-            }(#{rbs_params.join(', ')}) #{
-              (block_type && block_type != 'untyped') ? "{ #{block_type} } " : ''
-            }-> #{rbs_return_type || 'void'}"
-          )
-        ]
-      end
-
-      sig do
-        override.params(
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end

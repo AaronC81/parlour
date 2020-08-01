@@ -6,7 +6,9 @@ module Parlour
     # {Parameter} is _not_ a subclass because it does not generate lines, only
     # segments of definition and signature lines.)
     # @abstract
-    class RbiObject < TypedObject            
+    class RbiObject < TypedObject
+      abstract!
+      
       sig { params(generator: Generator, name: String).void }
       # Creates a new RBI object.
       # @note Don't call this directly.
@@ -38,21 +40,6 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options); end
-
-      # TODO: will be phased out
-      sig do
-        abstract.params(
-          indent_level: Integer,
-          options: Options
-        ).returns(T::Array[String])
-      end
-      # Generates the RBS lines for this object.
-      #
-      # @abstract
-      # @param indent_level [Integer] The indentation level to generate the lines at.
-      # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBS lines, formatted as specified.
-      def generate_rbs(indent_level, options); end
 
       sig do
         abstract.params(

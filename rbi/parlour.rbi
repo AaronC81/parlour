@@ -66,9 +66,6 @@ module Parlour
     sig { returns(Options) }
     attr_reader :options
 
-    sig { returns(RbiGenerator::Namespace) }
-    attr_reader :root
-
     sig { returns(T.nilable(Plugin)) }
     attr_accessor :current_plugin
   end
@@ -508,7 +505,47 @@ module Parlour
     end
   end
 
+  module Conversion
+    class Converter
+      abstract!
+
+      extend T::Sig
+      extend T::Helpers
+
+      sig { returns(T.untyped) }
+      def initialize; end
+
+      sig { returns(T::Array[[String, TypedObject]]) }
+      attr_reader :warnings
+
+      sig { params(msg: T.untyped, node: T.untyped).returns(T.untyped) }
+      def add_warning(msg, node); end
+    end
+
+    class RbiToRbs < Converter
+      extend T::Sig
+
+      sig { params(rbi: RbiGenerator::RbiObject, rbs_gen: RbsGenerator).void }
+      def initialize(rbi, rbs_gen); end
+
+      sig { returns(RbiGenerator::RbiObject) }
+      attr_reader :rbi
+
+      sig { returns(RbsGenerator) }
+      attr_reader :rbs_gen
+
+      sig { params(node: RbiGenerator::RbiObject, new_parent: RbsGenerator::Namespace).void }
+      def convert_object(node, new_parent); end
+    end
+  end
+
   class RbiGenerator < Generator
+    sig { params(hash: T.untyped).returns(T.untyped) }
+    def initialize(**hash); end
+
+    sig { returns(RbiGenerator::Namespace) }
+    attr_reader :root
+
     sig { overridable.params(strictness: String).returns(String) }
     def rbi(strictness = 'strong'); end
 
@@ -524,9 +561,6 @@ module Parlour
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
-
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -563,9 +597,6 @@ module Parlour
       sig { returns(Types::TypeLike) }
       attr_reader :type
 
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
-
       sig { override.params(other: Object).returns(T::Boolean) }
       def ==(other); end
 
@@ -594,9 +625,6 @@ module Parlour
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
 
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
-
       sig { returns(T.nilable(String)) }
       attr_reader :superclass
 
@@ -614,9 +642,6 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!; end
-
-      sig { params(indent_level: Integer, options: Options, mode: Symbol).returns(T::Array[String]) }
-      def generate(indent_level, options, mode); end
     end
 
     class Constant < RbiObject
@@ -642,9 +667,6 @@ module Parlour
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
-
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -677,11 +699,8 @@ module Parlour
       sig { returns(T::Array[T.any([String, String], String)]) }
       attr_reader :enums
 
-      sig { override.params(indent_level: Integer, options: Options, mode: Symbol).returns(T::Array[String]) }
-      def generate_body(indent_level, options, mode); end
-
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
+      def generate_body(indent_level, options); end
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -702,9 +721,6 @@ module Parlour
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
-
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -728,9 +744,6 @@ module Parlour
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
-
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -799,9 +812,6 @@ module Parlour
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
 
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
-
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
 
@@ -838,9 +848,6 @@ module Parlour
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
 
-      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
-
       sig { returns(T::Boolean) }
       attr_reader :interface
 
@@ -862,9 +869,6 @@ module Parlour
 
       sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
-
-      sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
 
       sig do
         params(
@@ -1039,8 +1043,8 @@ module Parlour
       sig { override.void }
       def generalize_from_rbi!; end
 
-      sig { overridable.params(indent_level: Integer, options: Options, mode: Symbol).returns(T::Array[String]) }
-      def generate_body(indent_level, options, mode); end
+      sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_body(indent_level, options); end
 
       sig { params(object: RbiObject).void }
       def move_next_comments(object); end
@@ -1092,11 +1096,8 @@ module Parlour
       def generalize_from_rbi!; end
     end
 
-    class RbiObject
+    class RbiObject < TypedObject
       abstract!
-
-      extend T::Helpers
-      extend T::Sig
 
       sig { params(generator: Generator, name: String).void }
       def initialize(generator, name); end
@@ -1104,23 +1105,8 @@ module Parlour
       sig { returns(Generator) }
       attr_reader :generator
 
-      sig { returns(T.nilable(Plugin)) }
-      attr_reader :generated_by
-
-      sig { returns(String) }
-      attr_reader :name
-
-      sig { returns(T::Array[String]) }
-      attr_reader :comments
-
-      sig { params(comment: T.any(String, T::Array[String])).void }
-      def add_comment(comment); end
-
       sig { abstract.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
-
-      sig { abstract.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_rbs(indent_level, options); end
 
       sig { abstract.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -1128,14 +1114,11 @@ module Parlour
       sig { abstract.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { abstract.returns(String) }
+      sig { abstract.override.returns(String) }
       def describe; end
 
       sig { abstract.void }
       def generalize_from_rbi!; end
-
-      sig { params(indent_level: Integer, options: Options).returns(T::Array[String]) }
-      def generate_comments(indent_level, options); end
     end
 
     class StructClassNamespace < ClassNamespace
@@ -1156,8 +1139,8 @@ module Parlour
       sig { returns(T::Array[StructProp]) }
       attr_reader :props
 
-      sig { override.params(indent_level: Integer, options: Options, mode: Symbol).returns(T::Array[String]) }
-      def generate_body(indent_level, options, mode); end
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_body(indent_level, options); end
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -1241,14 +1224,404 @@ module Parlour
   end
 
   class RbsGenerator < Generator
-    sig { overridable.params(strictness: String).returns(String) }
-    def rbs(strictness = 'strong'); end
+    sig { params(hash: T.untyped).returns(T.untyped) }
+    def initialize(**hash); end
+
+    sig { returns(RbsGenerator::Namespace) }
+    attr_reader :root
+
+    sig { returns(String) }
+    def rbs; end
+
+    class Arbitrary < RbsObject
+      sig { params(generator: Generator, code: String, block: T.nilable(T.proc.params(x: Arbitrary).void)).void }
+      def initialize(generator, code: '', &block); end
+
+      sig { returns(String) }
+      attr_accessor :code
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Attribute < RbsGenerator::Method
+      extend T::Sig
+
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          kind: Symbol,
+          type: Types::TypeLike,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).void
+      end
+      def initialize(generator, name, kind, type, &block); end
+
+      sig { returns(Symbol) }
+      attr_reader :kind
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+    end
+
+    class Block
+      extend T::Sig
+
+      sig { params(type: Types::Proc, required: T::Boolean).void }
+      def initialize(type, required); end
+
+      sig { overridable.params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Types::Proc) }
+      attr_reader :type
+
+      sig { returns(T::Boolean) }
+      attr_reader :required
+
+      sig { params(options: Options).returns(T::Array[String]) }
+      def generate_rbs(options); end
+    end
+
+    class ClassNamespace < Namespace
+      extend T::Sig
+
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          superclass: T.nilable(Types::TypeLike),
+          block: T.nilable(T.proc.params(x: ClassNamespace).void)
+        ).void
+      end
+      def initialize(generator, name, superclass, &block); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { returns(T.nilable(Types::TypeLike)) }
+      attr_reader :superclass
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Constant < RbsObject
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          type: Types::TypeLike,
+          block: T.nilable(T.proc.params(x: Constant).void)
+        ).void
+      end
+      def initialize(generator, name, type:, &block); end
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Extend < RbsObject
+      sig { params(generator: Generator, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Extend).void)).void }
+      def initialize(generator, type:, &block); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Include < RbsObject
+      sig { params(generator: Generator, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Include).void)).void }
+      def initialize(generator, type:, &block); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Method < RbsObject
+      extend T::Sig
+
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          signatures: T::Array[MethodSignature],
+          class_method: T::Boolean,
+          block: T.nilable(T.proc.params(x: Method).void)
+        ).void
+      end
+      def initialize(generator, name, signatures, class_method: false, &block); end
+
+      sig { overridable.params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(T::Array[MethodSignature]) }
+      attr_reader :signatures
+
+      sig { returns(T::Boolean) }
+      attr_reader :class_method
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class MethodSignature
+      extend T::Sig
+
+      sig do
+        params(
+          parameters: T::Array[Parameter],
+          return_type: T.nilable(Types::TypeLike),
+          block: T.nilable(Block),
+          type_parameters: T.nilable(T::Array[Symbol])
+        ).void
+      end
+      def initialize(parameters, return_type = nil, block: nil, type_parameters: nil); end
+
+      sig { overridable.params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(T::Array[Parameter]) }
+      attr_reader :parameters
+
+      sig { returns(T.nilable(Types::TypeLike)) }
+      attr_reader :return_type
+
+      sig { returns(T::Boolean) }
+      attr_reader :class_method
+
+      sig { returns(T::Array[Symbol]) }
+      attr_reader :type_parameters
+
+      sig { params(options: Options).returns(T::Array[String]) }
+      def generate_rbs(options); end
+    end
+
+    class ModuleNamespace < Namespace
+      extend T::Sig
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Namespace < RbsObject
+      extend T::Sig
+
+      sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { params(generator: Generator, name: T.nilable(String), block: T.nilable(T.proc.params(x: Namespace).void)).void }
+      def initialize(generator, name = nil, &block); end
+
+      sig { returns(T::Array[RbsObject]) }
+      attr_reader :children
+
+      sig { returns(T::Array[RbsGenerator::Extend]) }
+      def extends; end
+
+      sig { returns(T::Array[RbsGenerator::Include]) }
+      def includes; end
+
+      sig { returns(T::Array[RbsGenerator::Constant]) }
+      def constants; end
+
+      sig { params(object: T.untyped, block: T.proc.params(x: Namespace).void).void }
+      def path(object, &block); end
+
+      sig { params(comment: T.any(String, T::Array[String])).void }
+      def add_comment_to_next_child(comment); end
+
+      sig { params(name: String, superclass: T.nilable(Types::TypeLike), block: T.nilable(T.proc.params(x: ClassNamespace).void)).returns(ClassNamespace) }
+      def create_class(name, superclass: nil, &block); end
+
+      sig { params(name: String, block: T.nilable(T.proc.params(x: Namespace).void)).returns(ModuleNamespace) }
+      def create_module(name, &block); end
+
+      sig do
+        params(
+          name: String,
+          signatures: T::Array[MethodSignature],
+          class_method: T::Boolean,
+          block: T.nilable(T.proc.params(x: Method).void)
+        ).returns(Method)
+      end
+      def create_method(name, signatures, class_method: false, &block); end
+
+      sig do
+        params(
+          name: String,
+          kind: Symbol,
+          type: Types::TypeLike,
+          block: T.nilable(T.proc.params(x: Attribute).void)
+        ).returns(Attribute)
+      end
+      def create_attribute(name, kind:, type:, &block); end
+
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Attribute).void)).returns(Attribute) }
+      def create_attr_reader(name, type:, &block); end
+
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Attribute).void)).returns(Attribute) }
+      def create_attr_writer(name, type:, &block); end
+
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Attribute).void)).returns(Attribute) }
+      def create_attr_accessor(name, type:, &block); end
+
+      sig { params(code: T.untyped, block: T.untyped).returns(T.untyped) }
+      def create_arbitrary(code:, &block); end
+
+      sig { params(type: Types::TypeLike, block: T.nilable(T.proc.params(x: Extend).void)).returns(RbsGenerator::Extend) }
+      def create_extend(type, &block); end
+
+      sig { params(extendables: T::Array[Types::TypeLike]).returns(T::Array[Extend]) }
+      def create_extends(extendables); end
+
+      sig { params(type: Types::TypeLike, block: T.nilable(T.proc.params(x: Include).void)).returns(Include) }
+      def create_include(type, &block); end
+
+      sig { params(includables: T::Array[Types::TypeLike]).returns(T::Array[Include]) }
+      def create_includes(includables); end
+
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      def create_constant(name, type:, &block); end
+
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      def create_type_alias(name, type:, &block); end
+
+      sig { override.overridable.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.overridable.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.overridable.returns(String) }
+      def describe; end
+
+      sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_body(indent_level, options); end
+
+      sig { params(object: RbsObject).void }
+      def move_next_comments(object); end
+    end
+
+    class Parameter
+      extend T::Sig
+      RBS_KEYWORDS = [
+        'type', 'interface', 'out', 'in', 'instance'
+      ]
+      PREFIXES = {
+        normal: '',
+        splat: '*',
+        double_splat: '**',
+      }.freeze
+
+      sig { params(name: String, type: T.nilable(Types::TypeLike), required: T::Boolean).void }
+      def initialize(name, type: nil, required: true); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(String) }
+      attr_reader :name
+
+      sig { returns(String) }
+      def name_without_kind; end
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { returns(T::Boolean) }
+      attr_reader :required
+
+      sig { returns(Symbol) }
+      attr_reader :kind
+
+      sig { returns(String) }
+      def to_rbs_param; end
+    end
 
     class RbsObject < TypedObject
       abstract!
-
-      extend T::Helpers
-      extend T::Sig
 
       sig { params(generator: Generator, name: String).void }
       def initialize(generator, name); end

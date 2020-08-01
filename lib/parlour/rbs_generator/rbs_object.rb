@@ -7,6 +7,8 @@ module Parlour
     # segments of definition lines.)
     # @abstract
     class RbsObject < TypedObject
+      abstract!
+      
       sig { params(generator: Generator, name: String).void }
       # Creates a new RBS object.
       # @note Don't call this directly.
