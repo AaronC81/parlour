@@ -6,7 +6,7 @@ module Parlour
     # {Parameter} is _not_ a subclass because it does not generate lines, only
     # segments of definition and signature lines.)
     # @abstract
-    class RbiObject < TypedObject
+    class RbiObject < TypedObject            
       sig { params(generator: Generator, name: String).void }
       # Creates a new RBI object.
       # @note Don't call this directly.

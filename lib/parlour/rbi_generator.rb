@@ -2,6 +2,16 @@
 module Parlour
   # The RBI generator.
   class RbiGenerator < Generator
+    def initialize(**hash)
+      super
+      @root = RbiGenerator::Namespace.new(self)
+    end
+
+    sig { overridable.returns(RbiGenerator::Namespace) }
+    # The root {Namespace} of this generator.
+    # @return [Namespace]
+    attr_reader :root
+
     sig { overridable.params(strictness: String).returns(String) }
     # Returns the complete contents of the generated RBI file as a string.
     #

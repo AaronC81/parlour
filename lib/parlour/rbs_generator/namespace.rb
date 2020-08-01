@@ -169,11 +169,6 @@ module Parlour
       # @example Create a basic module.
       #   namespace.create_module('Foo')
       #
-      # @example Create a module with a method.
-      #   namespace.create_module('Foo') do |foo|
-      #     foo.create_method('method_name', parameters: [], return_type: 'Integer')
-      #   end
-      #
       # @param name [String] The name of this module.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]

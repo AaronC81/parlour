@@ -2,7 +2,9 @@
 module Parlour
   class RbsGenerator < Generator
     # Represents an attribute reader, writer or accessor.
-    class Attribute < Method
+    class Attribute < RbsGenerator::Method
+      extend T::Sig
+
       sig do
         params(
           generator: Generator,
@@ -27,11 +29,11 @@ module Parlour
         @kind = kind
         case kind
         when :accessor, :reader
-          super(generator, name, [], type, &block)
+          super(generator, name, [MethodSignature.new([], type)], &block)
         when :writer
-          super(generator, name, [
+          super(generator, name, [MethodSignature.new([
             Parameter.new(name, type: type)
-          ], type, &block)
+          ], type)], &block)
         else
           raise 'unknown kind'
         end
