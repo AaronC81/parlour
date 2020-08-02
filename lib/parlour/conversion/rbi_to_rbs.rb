@@ -81,7 +81,7 @@ module Parlour
               RbsGenerator::Parameter.new(
                 param.name,
                 type: param.type,
-                required: !param.default.nil?
+                required: param.default.nil?
               )
             end
 

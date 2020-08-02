@@ -149,7 +149,13 @@ module Parlour
           n = name_without_kind
         end
 
-        (default ? '?' : '') + if kind == :keyword
+        if n == "_invoke_for_class_method"
+          p t
+          p default
+          exit
+        end
+
+        ((default.nil? || (kind != :normal && kind != :keyword)) ? '' : '?') + if kind == :keyword
           "#{n}: #{t}"
         else
           "#{PREFIXES[kind]}#{t} #{n}"
