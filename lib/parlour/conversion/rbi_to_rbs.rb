@@ -97,14 +97,23 @@ module Parlour
               if Types::Nilable === block_param_type && Types::Proc === block_param_type.type
                 t = T.cast(block_param_type.type, Types::Proc)
                 required = false
-                RbsGenerator::Block.new(t, required)
+                block = RbsGenerator::Block.new(t, required)
               elsif Types::Proc === block_param_type
                 t = block_param_type
                 required = true
-                RbsGenerator::Block.new(t, required)
+                block = RbsGenerator::Block.new(t, required)
               elsif Types::Untyped === block_param_type
-                # Consider there to be no block
-                block = nil
+                # Consider there to be a block of unknown types
+                block = RbsGenerator::Block.new(
+                  Types::Proc.new(
+                    [
+                      Types::Proc::Parameter.new('*args', Types::Untyped.new),
+                      Types::Proc::Parameter.new('**kwargs', Types::Untyped.new),
+                    ],
+                    Types::Untyped.new,
+                  ),
+                  false,
+                )
               else
                 add_warning 'block type must be a Types::Proc (or nilable one); dropping block', node
               end

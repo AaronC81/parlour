@@ -20,8 +20,6 @@ module Parlour
       #   method's parameters.
       # @param return_type [Types::TypeLike, nil] What this method returns. Passing nil denotes a void return.
       # @param block [Types::TypeLike, nil] The block this method accepts. Passing nil denotes none.
-      # @param class_method [Boolean] Whether this method is a class method; that is, it
-      #   it is defined using +self.+.
       # @param type_parameters [Array<Symbol>, nil] This method's type parameters.
       # @return [void]
       def initialize(parameters, return_type = nil, block: nil, type_parameters: nil)
@@ -41,6 +39,7 @@ module Parlour
         MethodSignature === other &&
           parameters      == other.parameters &&
           return_type     == other.return_type &&
+          block           == other.block &&
           type_parameters == other.type_parameters
       end
 
@@ -54,11 +53,10 @@ module Parlour
       # @return [Types::TypeLike, nil]
       attr_reader :return_type
 
-      sig { returns(T::Boolean) }
-      # Whether this method is a class method; that is, it it is defined using
-      # +self.+.
-      # @return [Boolean]
-      attr_reader :class_method
+      sig { returns(T.nilable(Block)) }
+      # The block this method accepts.
+      # @return [Block, nil]
+      attr_reader :block
 
       sig { returns(T::Array[Symbol]) }
       # This method's type parameters.
@@ -73,9 +71,7 @@ module Parlour
       def generate_rbs(options)
         # TODO: ignores formatting options
 
-        block_param = parameters.find { |x| x.kind == :block }
-        block_type = block_param&.type
-        block_type = String === block_type ? block_type : block_type&.generate_rbs
+        block_type = @block&.generate_rbs(options)
 
         rbs_params = parameters.reject { |x| x.kind == :block }.map(&:to_rbs_param)
         rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
@@ -83,7 +79,7 @@ module Parlour
         ["#{
           type_parameters.any? ? "[#{type_parameters.join(', ')}] " : '' 
         }(#{rbs_params.join(', ')}) #{
-          (block_type && block_type != 'untyped') ? "{ #{block_type} } " : ''
+          (block_type && block_type != 'untyped') ? "{ #{block_type.first} } " : '' # TODO: doesn't support multi-line block types
         }-> #{rbs_return_type || 'void'}"]
       end
     end

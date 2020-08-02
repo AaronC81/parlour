@@ -495,7 +495,7 @@ module Parlour
         extend T::Sig
 
         sig { params(name: String, type: TypeLike, default: T.nilable(String)).void }
-        def initialize(name, type, default); end
+        def initialize(name, type, default = nil); end
 
         sig { returns(String) }
         attr_reader :name
@@ -1484,8 +1484,8 @@ module Parlour
       sig { returns(T.nilable(Types::TypeLike)) }
       attr_reader :return_type
 
-      sig { returns(T::Boolean) }
-      attr_reader :class_method
+      sig { returns(T.nilable(Block)) }
+      attr_reader :block
 
       sig { returns(T::Array[Symbol]) }
       attr_reader :type_parameters

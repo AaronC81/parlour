@@ -310,7 +310,7 @@ module Parlour
         extend T::Sig
 
         sig { params(name: String, type: TypeLike, default: T.nilable(String)).void }
-        def initialize(name, type, default)
+        def initialize(name, type, default = nil)
           @name = name
           @type = Type.to_type(type)
           @default = default
