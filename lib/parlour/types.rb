@@ -18,12 +18,17 @@ module Parlour
       def generate_rbs; end
 
       sig { params(type_like: TypeLike).returns(Type) }
-      def to_type(type_like)
+      def self.to_type(type_like)
         if type_like.is_a?(String)
           Raw.new(type_like)
         else
           type_like
         end
+      end
+
+      sig { params(type_like: TypeLike).returns(Type) }
+      def to_type(type_like)
+        Type.to_type(type_like)
       end
     end
 
@@ -300,10 +305,34 @@ module Parlour
       end
     end
 
-    # TODO: Decouple this from relying on an RBI parameter - maybe move
-    # parameter information into Types::Type?
     class Proc < Type
-      sig { params(parameters: T::Array[RbiGenerator::Parameter], return_type: T.nilable(TypeLike)).void }
+      class Parameter
+        extend T::Sig
+
+        sig { params(name: String, type: TypeLike, default: T.nilable(String)).void }
+        def initialize(name, type, default)
+          @name = name
+          @type = Type.to_type(type)
+          @default = default
+        end
+
+        sig { returns(String) }
+        attr_reader :name
+
+        sig { returns(Type) }
+        attr_reader :type
+
+        sig { returns(T.nilable(String)) }
+        attr_reader :default
+
+        sig { params(other: Object).returns(T::Boolean) }
+        def ==(other)
+          Parameter === other && name == other.name && type == other.type &&
+            default == other.default
+        end  
+      end
+      
+      sig { params(parameters: T::Array[Parameter], return_type: T.nilable(TypeLike)).void }
       def initialize(parameters, return_type)
         @parameters = parameters
         @return_type = return_type && to_type(return_type)
@@ -314,7 +343,7 @@ module Parlour
         Proc === other && parameters == other.parameters && return_type == other.return_type
       end
 
-      sig { returns(T::Array[RbiGenerator::Parameter]) }
+      sig { returns(T::Array[Parameter]) }
       attr_reader :parameters
 
       sig { returns(T.nilable(Type)) }
@@ -322,14 +351,20 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbi
-        "T.proc.params(#{parameters.map(&:to_sig_param).join(', ')}).#{
+        rbi_params = parameters.map do |param|
+          RbiGenerator::Parameter.new(param.name, type: param.type, default: param.default)
+        end
+        "T.proc.params(#{rbi_params.map(&:to_sig_param).join(', ')}).#{
           @return_type ? "returns(#{@return_type.generate_rbi})" : 'void'
         }"
       end
 
       sig { override.returns(String) }
       def generate_rbs
-        "(#{parameters.map(&:to_rbs_param).join(', ')}) -> #{return_type&.generate_rbs || 'void'}"
+        rbs_params = parameters.map do |param|
+          RbsGenerator::Parameter.new(param.name, type: param.type, required: param.default.nil?)
+        end
+        "(#{rbs_params.map(&:to_rbs_param).join(', ')}) -> #{return_type&.generate_rbs || 'void'}"
       end
     end
   end

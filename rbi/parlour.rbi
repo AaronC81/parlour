@@ -219,6 +219,9 @@ module Parlour
     sig { params(node: Parser::AST::Node).returns(Types::Type) }
     def parse_node_to_type(node); end
 
+    sig { params(msg: String, node: Parser::AST::Node).void }
+    def warning(msg, node); end
+
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
     def constant_names(node); end
 
@@ -293,6 +296,9 @@ module Parlour
 
       sig { abstract.returns(String) }
       def generate_rbs; end
+
+      sig { params(type_like: TypeLike).returns(Type) }
+      def self.to_type(type_like); end
 
       sig { params(type_like: TypeLike).returns(Type) }
       def to_type(type_like); end
@@ -485,13 +491,32 @@ module Parlour
     end
 
     class Proc < Type
-      sig { params(parameters: T::Array[RbiGenerator::Parameter], return_type: T.nilable(TypeLike)).void }
+      class Parameter
+        extend T::Sig
+
+        sig { params(name: String, type: TypeLike, default: T.nilable(String)).void }
+        def initialize(name, type, default); end
+
+        sig { returns(String) }
+        attr_reader :name
+
+        sig { returns(Type) }
+        attr_reader :type
+
+        sig { returns(T.nilable(String)) }
+        attr_reader :default
+
+        sig { params(other: Object).returns(T::Boolean) }
+        def ==(other); end
+      end
+
+      sig { params(parameters: T::Array[Parameter], return_type: T.nilable(TypeLike)).void }
       def initialize(parameters, return_type); end
 
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other); end
 
-      sig { returns(T::Array[RbiGenerator::Parameter]) }
+      sig { returns(T::Array[Parameter]) }
       attr_reader :parameters
 
       sig { returns(T.nilable(Type)) }
@@ -518,7 +543,7 @@ module Parlour
       sig { returns(T::Array[[String, TypedObject]]) }
       attr_reader :warnings
 
-      sig { params(msg: T.untyped, node: T.untyped).returns(T.untyped) }
+      sig { params(msg: String, node: RbiGenerator::RbiObject).void }
       def add_warning(msg, node); end
     end
 
@@ -1052,9 +1077,6 @@ module Parlour
 
     class Parameter
       extend T::Sig
-      RBS_KEYWORDS = [
-        'type', 'interface', 'out', 'in', 'instance'
-      ]
       PREFIXES = {
         normal: '',
         splat: '*',
@@ -1089,9 +1111,6 @@ module Parlour
       sig { returns(String) }
       def to_sig_param; end
 
-      sig { returns(String) }
-      def to_rbs_param; end
-
       sig { void }
       def generalize_from_rbi!; end
     end
@@ -1114,7 +1133,7 @@ module Parlour
       sig { abstract.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { abstract.override.returns(String) }
+      sig { override.overridable.returns(String) }
       def describe; end
 
       sig { abstract.void }
@@ -1638,7 +1657,7 @@ module Parlour
       sig { abstract.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { abstract.override.returns(String) }
+      sig { override.overridable.returns(String) }
       def describe; end
     end
   end

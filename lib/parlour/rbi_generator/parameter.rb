@@ -122,46 +122,6 @@ module Parlour
         "#{name_without_kind}: #{String === @type ? @type : @type.generate_rbi}"
       end
 
-      # TODO: probably incomplete
-      RBS_KEYWORDS = [
-        'type', 'interface', 'out', 'in', 'instance'
-      ]
-
-      sig { returns(String) }
-      # A string of how this parameter should be defiend in an RBS signature.
-      #
-      # @return [String]
-      def to_rbs_param
-        raise 'blocks are not parameters in RBS' if kind == :block
-
-        t = String === @type ? @type : @type.generate_rbs
-        t = "^#{t}" if Types::Proc === @type
-
-        if RBS_KEYWORDS.include? name_without_kind
-          unless $VERBOSE.nil?
-            print Rainbow("Parlour warning: ").yellow.dark.bold
-            print Rainbow("Type generalization: ").magenta.bright.bold
-            puts "'#{name_without_kind}' is a keyword in RBS, renaming method parameter to '_#{name_without_kind}'"
-          end
-
-          n = "_#{name_without_kind}"
-        else
-          n = name_without_kind
-        end
-
-        if n == "_invoke_for_class_method"
-          p t
-          p default
-          exit
-        end
-
-        ((default.nil? || (kind != :normal && kind != :keyword)) ? '' : '?') + if kind == :keyword
-          "#{n}: #{t}"
-        else
-          "#{PREFIXES[kind]}#{t} #{n}"
-        end
-      end
-
       # A mapping of {kind} values to the characteristic prefixes each kind has.
       PREFIXES = {
         normal: '',
