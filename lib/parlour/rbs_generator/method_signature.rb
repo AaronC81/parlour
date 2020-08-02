@@ -69,18 +69,35 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS string, formatted as specified.
       def generate_rbs(options)
-        # TODO: ignores formatting options
-
         block_type = @block&.generate_rbs(options)
 
         rbs_params = parameters.reject { |x| x.kind == :block }.map(&:to_rbs_param)
         rbs_return_type = String === @return_type ? @return_type : @return_type&.generate_rbs
 
-        ["#{
+        generated_params = parameters.length >= options.break_params \
+          ? ["("] +
+            (
+              parameters.empty? ? [] : rbs_params.map.with_index do |x, i|
+                options.indented(
+                  1,
+                  # Don't include the comma on the last parameter.
+                  parameters.length == i + 1 ? "#{x}" : "#{x},"
+                )
+              end
+            ) +
+            [")"]
+
+          : ["(#{rbs_params.join(', ')})"]
+
+        generated_params[0] = "#{
           type_parameters.any? ? "[#{type_parameters.join(', ')}] " : '' 
-        }(#{rbs_params.join(', ')}) #{
-          (block_type && block_type != 'untyped') ? "{ #{block_type.first} } " : '' # TODO: doesn't support multi-line block types
-        }-> #{rbs_return_type || 'void'}"]
+        }" + T.must(generated_params[0])
+
+        generated_params[-1] = T.must(generated_params[-1]) + "#{
+          (block_type && block_type != 'untyped') ? "{ #{block_type.first} }" : '' # TODO: doesn't support multi-line block types
+        } -> #{rbs_return_type || 'void'}"
+
+        generated_params
       end
     end
   end

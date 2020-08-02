@@ -190,7 +190,12 @@ RSpec.describe Parlour::RbsGenerator do
       ])])
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
-        def bar: (untyped a, String b, ?untyped c, ?Integer d) -> void
+        def bar: (
+                   untyped a,
+                   String b,
+                   ?untyped c,
+                   ?Integer d
+                 ) -> void
       RUBY
     end
 

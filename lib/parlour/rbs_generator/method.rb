@@ -69,22 +69,33 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS lines, formatted as specified.
       def generate_rbs(indent_level, options)
-        # TODO: ignores formatting options
-        # TODO: only supports one-line signatures
-
         definition = "def #{class_method ? 'self.' : ''}#{name}: "
-
         lines = generate_comments(indent_level, options)
-        first, *rest = *signatures
-        lines << options.indented(
-          indent_level, 
-          "#{definition}#{T.must(first).generate_rbs(options).first}"
-        )
-        rest&.each do |sig|
-          lines << options.indented(
-            indent_level,
-            "#{' ' * (definition.length - 2)}| #{sig.generate_rbs(options).first}"
-          )
+
+        # Handle each signature
+        signatures.each.with_index do |sig, i|
+          this_sig_lines = []
+
+          # Start off the first line of the signature, either with the definition
+          # for the first signature, or a pipe for the rest
+          if i == 0
+            this_sig_lines << options.indented(indent_level, definition)
+          else
+            this_sig_lines << options.indented(indent_level, "#{' ' * (definition.length - 2)}| ")
+          end
+
+          # Generate the signature's lines, we'll append them afterwards
+          partial_sig_lines = sig.generate_rbs(options)
+
+          # Merge the first signature line, and indent & concat the rest
+          first_line, *rest_lines = *partial_sig_lines
+          this_sig_lines[0] += first_line
+          rest_lines&.each do |line|
+            this_sig_lines << ' ' * definition.length + options.indented(indent_level, line)
+          end
+
+          # Add on all this signature's lines to the complete lines
+          lines += this_sig_lines
         end
 
         lines
