@@ -71,17 +71,23 @@ module Parlour
       def generate_rbs(indent_level, options)
         # TODO: ignores formatting options
         # TODO: only supports one-line signatures
-        # TODO: split overloads across lines
 
         definition = "def #{class_method ? 'self.' : ''}#{name}: "
 
-        generate_comments(indent_level, options) + [
-          options.indented(indent_level, "#{definition}#{
-            signatures.map do |s|
-              s.generate_rbs(options).first
-            end.join(' | ')
-          }")
-        ]
+        lines = generate_comments(indent_level, options)
+        first, *rest = *signatures
+        lines << options.indented(
+          indent_level, 
+          "#{definition}#{T.must(first).generate_rbs(options).first}"
+        )
+        rest&.each do |sig|
+          lines << options.indented(
+            indent_level,
+            "#{' ' * (definition.length - 2)}| #{sig.generate_rbs(options).first}"
+          )
+        end
+
+        lines
       end
 
       sig do

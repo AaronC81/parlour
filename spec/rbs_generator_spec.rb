@@ -213,6 +213,21 @@ RSpec.describe Parlour::RbsGenerator do
         def box: [A] (A a) -> A
       RUBY
     end
+
+    it 'can be overloaded' do
+      meth = subject.root.create_method('foo', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'String')
+      ], 'Integer'), Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: Parlour::Types::Boolean.new),
+        pa('b', type: 'Integer')
+      ], 'String'), Parlour::RbsGenerator::MethodSignature.new([], nil)])
+
+      expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        def foo: (String a) -> Integer
+               | (bool a, Integer b) -> String
+               | () -> void
+      RUBY
+    end
   end
 
   context 'attributes' do
