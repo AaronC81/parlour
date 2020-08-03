@@ -23,7 +23,7 @@ module Parlour
         # Perform conversion
         root.generalize_from_rbi!
         rbs_gen = Parlour::RbsGenerator.new
-        converter = Parlour::Conversion::RbiToRbs.new(root, rbs_gen)
+        converter = Parlour::Conversion::RbiToRbs.new(rbs_gen)
         root.children.each do |child|
           converter.convert_object(child, rbs_gen.root)
         end

@@ -550,11 +550,8 @@ module Parlour
     class RbiToRbs < Converter
       extend T::Sig
 
-      sig { params(rbi: RbiGenerator::RbiObject, rbs_gen: RbsGenerator).void }
-      def initialize(rbi, rbs_gen); end
-
-      sig { returns(RbiGenerator::RbiObject) }
-      attr_reader :rbi
+      sig { params(rbs_gen: RbsGenerator).void }
+      def initialize(rbs_gen); end
 
       sig { returns(RbsGenerator) }
       attr_reader :rbs_gen

@@ -5,15 +5,11 @@ module Parlour
     class RbiToRbs < Converter
       extend T::Sig
 
-      sig { params(rbi: RbiGenerator::RbiObject, rbs_gen: RbsGenerator).void }
-      def initialize(rbi, rbs_gen)
+      sig { params(rbs_gen: RbsGenerator).void }
+      def initialize(rbs_gen)
         super()
-        @rbi = rbi
         @rbs_gen = rbs_gen
       end
-
-      sig { returns(RbiGenerator::RbiObject) }
-      attr_reader :rbi
 
       sig { returns(RbsGenerator) }
       attr_reader :rbs_gen
@@ -161,7 +157,7 @@ module Parlour
           return
 
         else
-          raise "missing conversion for #{rbi.describe}"
+          raise "missing conversion for #{node.describe}"
           # TODO: stick a T.absurd here
         end
       end
