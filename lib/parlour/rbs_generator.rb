@@ -12,7 +12,7 @@ module Parlour
     # @return [Namespace]
     attr_reader :root
     
-    sig { returns(String) }
+    sig { overridable.returns(String) }
     # Returns the complete contents of the generated RBS file as a string.
     #
     # @return [String] The generated RBS file

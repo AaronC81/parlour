@@ -45,6 +45,7 @@ require 'parlour/rbs_generator/method_signature'
 require 'parlour/rbs_generator/module_namespace'
 require 'parlour/rbs_generator/parameter'
 require 'parlour/rbs_generator'
+require 'parlour/detached_rbs_generator'
 
 require 'parlour/conversion/converter'
 require 'parlour/conversion/rbi_to_rbs'
