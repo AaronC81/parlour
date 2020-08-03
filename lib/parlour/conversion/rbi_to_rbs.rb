@@ -22,8 +22,19 @@ module Parlour
       end
       def convert_object(node, new_parent)        
         case node
+        when RbiGenerator::StructClassNamespace
+          add_warning 'RBS does not support structs; dropping', node
+          return
+
+        when RbiGenerator::EnumClassNamespace
+          add_warning 'RBS does not support enums; dropping', node
+          return
+
         when RbiGenerator::Arbitrary
-          add_warning 'converting type of Arbitrary is likely to cause syntax errors', node
+          add_warning 'converting type of Arbitrary is likely to cause syntax errors; doing it anyway', node
+          new_parent.create_arbitrary(
+            code: node.code,
+          ).add_comments(node.comments)
 
         when RbiGenerator::Attribute
           if node.class_attribute
@@ -58,10 +69,6 @@ module Parlour
             node.name,
             type: node.value,
           ).add_comments(node.comments)
-
-        when RbiGenerator::EnumClassNamespace
-          add_warning 'RBS does not support enums; dropping', node
-          return
 
         when RbiGenerator::Extend
           new_parent.create_extend(node.name).add_comments(node.comments)
@@ -151,10 +158,6 @@ module Parlour
             convert_object(child, namespace)
           end
           new_parent.children << namespace
-
-        when RbiGenerator::StructClassNamespace
-          add_warning 'RBS does not support structs; dropping', node
-          return
 
         else
           raise "missing conversion for #{node.describe}"
