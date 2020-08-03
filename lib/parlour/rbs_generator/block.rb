@@ -42,7 +42,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS string, formatted as specified.
       def generate_rbs(options)
-        ["#{required ? '' : '?'}#{type.generate_rbs}"]
+        ["#{required ? '' : '?'}{ #{type.generate_rbs} }"]
       end
     end
   end
