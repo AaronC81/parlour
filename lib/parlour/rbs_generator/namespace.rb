@@ -69,6 +69,17 @@ module Parlour
           T::Array[RbsGenerator::Include]
         )
       end
+      
+      sig { returns(T::Array[RbsGenerator::TypeAlias]) }
+      # The {RbsGenerator::TypeAlias} objects from {children}.
+      # @return [Array<RbsGenerator::TypeAlias>]
+      def aliases
+        T.cast(
+          children.select { |c| c.is_a?(RbsGenerator::TypeAlias) },
+          T::Array[RbsGenerator::TypeAlias]
+        )
+      end
+      alias type_aliases aliases
 
       sig { returns(T::Array[RbsGenerator::Constant]) }
       # The {RbsGenerator::Constant} objects from {children}.
@@ -423,7 +434,7 @@ module Parlour
         new_constant
       end
 
-      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: TypeAlias).void)).returns(TypeAlias) }
       # Adds a new type alias, in the form of a constant, to this namespace.
       #
       # @example Add a +MyType+ type alias, to +Integer+, to the class.
@@ -432,10 +443,17 @@ module Parlour
       # @param name [String] The name of the type alias.
       # @param value [Types::TypeLike] The type to alias.
       # @param block A block which the new instance yields itself to.
-      # @return [RbsGenerator::Constant]
+      # @return [RbsGenerator::TypeAlias]
       def create_type_alias(name, type:, &block)
-        # TODO: RBS support
-        raise 'unimplemented'
+        new_type_alias = TypeAlias.new(
+          generator,
+          name: name,
+          type: type,
+          &block
+        )
+        move_next_comments(new_type_alias)
+        children << new_type_alias
+        new_type_alias
       end
 
       sig do
@@ -506,7 +524,7 @@ module Parlour
       def generate_body(indent_level, options)
         result = []
 
-        if includes.any? || extends.any? || constants.any?
+        if includes.any? || extends.any? || aliases.any? || constants.any?
           result += (options.sort_namespaces \
               ? includes.sort_by { |x| t = x.type; String === t ? t : t.generate_rbs }
               : includes)
@@ -515,6 +533,11 @@ module Parlour
           result += (options.sort_namespaces \
               ? extends.sort_by { |x| t = x.type; String === t ? t : t.generate_rbs }
               : extends)
+            .flat_map { |x| x.generate_rbs(indent_level, options) }
+            .reject { |x| x.strip == '' }
+          result += (options.sort_namespaces \
+              ? aliases.sort_by { |x| t = x.type; String === t ? t : t.generate_rbs }
+              : aliases)
             .flat_map { |x| x.generate_rbs(indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces \
@@ -538,7 +561,7 @@ module Parlour
 
         first, *rest = sorted_children.reject do |child|
           # We already processed these kinds of children
-          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
+          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant) || child.is_a?(TypeAlias)
         end.reject do |child|
           next if is_a?(ClassNamespace) || is_a?(ModuleNamespace) # next if this is not root
         

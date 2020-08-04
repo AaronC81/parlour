@@ -92,6 +92,7 @@ RSpec.describe Parlour::RbsGenerator do
           bar.create_extend( 'Y')
           bar.create_include( 'Z')
           bar.create_constant('PI', type: 'Integer')
+          bar.create_type_alias('Text', type: Parlour::Types::Union.new(['String', 'Symbol']))
           bar.create_class('A')
           bar.create_class('B')
           bar.create_class('C')
@@ -104,6 +105,7 @@ RSpec.describe Parlour::RbsGenerator do
             include Z
             extend X
             extend Y
+            type Text = (String | Symbol)
             PI: Integer
 
             class A

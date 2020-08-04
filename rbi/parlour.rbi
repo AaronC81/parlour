@@ -57,6 +57,20 @@ module Parlour
     end
   end
 
+  class DetachedRbsGenerator < RbsGenerator
+    sig { returns(T.untyped) }
+    def detached!; end
+
+    sig { override.returns(Options) }
+    def options; end
+
+    sig { override.returns(T.nilable(Plugin)) }
+    def current_plugin; end
+
+    sig { override.returns(String) }
+    def rbs; end
+  end
+
   class Generator
     extend T::Sig
 
@@ -914,6 +928,9 @@ module Parlour
       sig { returns(T::Array[RbiGenerator::Include]) }
       def includes; end
 
+      sig { returns(T::Array[RbiGenerator::TypeAlias]) }
+      def aliases; end
+
       sig { returns(T::Array[RbiGenerator::Constant]) }
       def constants; end
 
@@ -1050,7 +1067,7 @@ module Parlour
       end
       def create_constant(name, value:, eigen_constant: false, &block); end
 
-      sig { params(name: String, type: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: TypeAlias).void)).returns(TypeAlias) }
       def create_type_alias(name, type:, &block); end
 
       sig { override.overridable.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
@@ -1237,6 +1254,39 @@ module Parlour
       sig { void }
       def generalize_from_rbi!; end
     end
+
+    class TypeAlias < RbiObject
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          type: Types::TypeLike,
+          block: T.nilable(T.proc.params(x: TypeAlias).void)
+        ).void
+      end
+      def initialize(generator, name:, type:, &block); end
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbi(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
+      def describe; end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
+    end
   end
 
   class RbsGenerator < Generator
@@ -1246,7 +1296,7 @@ module Parlour
     sig { returns(RbsGenerator::Namespace) }
     attr_reader :root
 
-    sig { returns(String) }
+    sig { overridable.returns(String) }
     def rbs; end
 
     class Arbitrary < RbsObject
@@ -1581,7 +1631,7 @@ module Parlour
       sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
       def create_constant(name, type:, &block); end
 
-      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: TypeAlias).void)).returns(TypeAlias) }
       def create_type_alias(name, type:, &block); end
 
       sig { override.overridable.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
@@ -1655,6 +1705,36 @@ module Parlour
       def merge_into_self(others); end
 
       sig { override.overridable.returns(String) }
+      def describe; end
+    end
+
+    class TypeAlias < RbsObject
+      sig do
+        params(
+          generator: Generator,
+          name: String,
+          type: Types::TypeLike,
+          block: T.nilable(T.proc.params(x: TypeAlias).void)
+        ).void
+      end
+      def initialize(generator, name:, type:, &block); end
+
+      sig { returns(Types::TypeLike) }
+      attr_reader :type
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.returns(String) }
       def describe; end
     end
   end
