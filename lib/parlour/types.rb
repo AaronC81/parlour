@@ -5,6 +5,8 @@ module Parlour
   module Types
     TypeLike = T.type_alias { T.any(String, Type) }
 
+    # The top-level, abstract class for a generalised type. All of the other
+    # types inherit from this. Do not instantiate.
     class Type
       extend T::Sig
       extend T::Helpers
@@ -32,6 +34,7 @@ module Parlour
       end
     end
 
+    # A basic type as a raw string.
     class Raw < Type
       sig { params(str: String).void }
       def initialize(str)
@@ -57,6 +60,7 @@ module Parlour
       end
     end
 
+    # A type which can be either the wrapped type, or nil.
     class Nilable < Type
       sig { params(type: TypeLike).void }
       def initialize(type)
@@ -82,6 +86,7 @@ module Parlour
       end
     end
 
+    # A type which is (at least) one of the wrapped types.
     class Union < Type
       sig { params(types: T::Array[TypeLike]).void }
       def initialize(types)
@@ -107,6 +112,7 @@ module Parlour
       end
     end
 
+    # A type which matches all of the wrapped types.
     class Intersection < Type
       sig { params(types: T::Array[TypeLike]).void }
       def initialize(types)
@@ -132,6 +138,7 @@ module Parlour
       end
     end
 
+    # A fixed-length array of items, each with a known type.
     class Tuple < Type
       sig { params(types: T::Array[TypeLike]).void }
       def initialize(types)
@@ -182,6 +189,7 @@ module Parlour
       end
     end
 
+    # An array with known element types.
     class Array < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
@@ -194,6 +202,7 @@ module Parlour
       end
     end
 
+    # A set with known element types.
     class Set < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
@@ -206,6 +215,7 @@ module Parlour
       end
     end
 
+    # A range with known element types.
     class Range < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
@@ -218,6 +228,7 @@ module Parlour
       end
     end
 
+    # An enumerable with known element types.
     class Enumerable < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
@@ -230,6 +241,7 @@ module Parlour
       end
     end
 
+    # An enumerator with known element types.
     class Enumerator < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
@@ -242,6 +254,7 @@ module Parlour
       end
     end
 
+    # A hash with known key and value types.
     class Hash < Type
       sig { params(key: TypeLike, value: TypeLike).void }
       def initialize(key, value)
@@ -271,6 +284,7 @@ module Parlour
       end
     end
 
+    # Generic type for a boolean.
     class Boolean < Type
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
@@ -288,6 +302,7 @@ module Parlour
       end
     end
 
+    # The explicit lack of a type. 
     class Untyped < Type
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
@@ -305,7 +320,9 @@ module Parlour
       end
     end
 
+    # A type which can be called as a function.
     class Proc < Type
+      # A parameter to a proc.
       class Parameter
         extend T::Sig
 
