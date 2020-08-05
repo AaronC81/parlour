@@ -16,6 +16,7 @@ jobs:
   include:
     - stage: check RBI
       script: ./ci/check_rbi.sh
+      rvm: 2.7
     - stage: deploy documentation
       script: yard
       deploy:
