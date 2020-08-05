@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [4.0.1] - 2020-08-05
+### Fixed
+- Fixed duplicate includes and extends.
+- Fixed the block return type for `#resolve_conflicts` not being nilable.
+
 ## [4.0.0] - 2020-05-23
 ### Added
 - Parlour now defaults to loading the current project when running its command
