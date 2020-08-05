@@ -19,6 +19,9 @@ module Parlour
 
     sig { params(arr: T::Array[T.untyped]).returns(T::Boolean) }
     def all_eql?(arr); end
+
+    sig { params(namespace: RbiGenerator::Namespace, name: T.nilable(String)).void }
+    def deduplicate_mixins_of_name(namespace, name); end
   end
 
   module Debugging
