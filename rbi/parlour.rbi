@@ -11,7 +11,7 @@ module Parlour
     sig { params(namespace: RbiGenerator::Namespace, resolver: T.proc.params(
           desc: String,
           choices: T::Array[RbiGenerator::RbiObject]
-        ).returns(RbiGenerator::RbiObject)).void }
+        ).returns(T.nilable(RbiGenerator::RbiObject))).void }
     def resolve_conflicts(namespace, &resolver); end
 
     sig { params(arr: T::Array[T.untyped]).returns(T.nilable(Symbol)) }
