@@ -13,7 +13,7 @@ module Parlour
         resolver: T.proc.params(
           desc: String,
           choices: T::Array[RbiGenerator::RbiObject]
-        ).returns(RbiGenerator::RbiObject)
+        ).returns(T.nilable(RbiGenerator::RbiObject))
       ).void
     end
     # Given a namespace, attempts to automatically resolve conflicts in the
