@@ -181,7 +181,8 @@ called `plugin.rb`, then using this `.parlour` file and then running `parlour`
 would save the RBI into `output.rbi`:
 
 ```yaml
-output_file: output.rbi
+output_file:
+  rbi: output.rbi
 
 relative_requires:
   - plugin.rb
@@ -205,7 +206,8 @@ You can also use plugins from gems. If that plugin was published as a gem called
 `parlour-gem`:
 
 ```yaml
-output_file: output.rbi
+output_file:
+  rbi: output.rbi
 
 requires:
   - parlour-gem
@@ -217,7 +219,8 @@ plugins:
 The real power of this is the ability to use many plugins at once:
 
 ```yaml
-output_file: output.rbi
+output_file:
+  rbi: output.rbi
 
 requires:
   - gem1
@@ -228,6 +231,16 @@ plugins:
   Gem1::Plugin: {}
   Gem2::Plugin: {}
   Gem3::Plugin: {}
+```
+
+Currently, only plugins which generate RBI files are supported. However, you can
+use [Parlour's type conversion](#converting-between-formats) to convert the RBI
+types into RBS types:
+
+```yaml
+output_file:
+  rbi: output.rbi
+  rbs: output.rbs
 ```
 
 ## Using Types
