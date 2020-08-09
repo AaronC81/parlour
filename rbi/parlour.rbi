@@ -1569,6 +1569,9 @@ module Parlour
       sig { returns(T::Array[RbsGenerator::Include]) }
       def includes; end
 
+      sig { returns(T::Array[RbsGenerator::TypeAlias]) }
+      def aliases; end
+
       sig { returns(T::Array[RbsGenerator::Constant]) }
       def constants; end
 
