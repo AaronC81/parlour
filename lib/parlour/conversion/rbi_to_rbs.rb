@@ -140,14 +140,17 @@ module Parlour
 
         when RbiGenerator::ModuleNamespace
           if node.interface
-            add_warning 'interfaces not yet implemented', node
+            rbs_node = new_parent.create_interface(
+              node.name,
+            )
+          else
+            rbs_node = new_parent.create_module(
+              node.name,
+            )
           end
-          mod = new_parent.create_module(
-            node.name,
-          )
-          mod.add_comments(node.comments)
+          rbs_node.add_comments(node.comments)
           node.children.each do |child|
-            convert_object(child, mod)
+            convert_object(child, rbs_node)
           end
 
         when RbiGenerator::Namespace

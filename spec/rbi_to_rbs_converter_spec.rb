@@ -31,16 +31,20 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
 
   it 'converts modules' do
     rbi_gen.root.create_module('Foo')
-    rbi_gen.root.create_module('Bar', interface: true)
 
     foo, bar = *convert
     expect(foo).to be_a(Parlour::RbsGenerator::ModuleNamespace) & have_attributes(
       name: 'Foo', children: [],
     )
-    expect(bar).to be_a(Parlour::RbsGenerator::ModuleNamespace) & have_attributes(
-      name: 'Bar', children: [],
+  end
+
+  it 'converts interfaces' do
+    rbi_gen.root.create_module('Foo', interface: true)
+
+    foo, bar = *convert
+    expect(foo).to be_a(Parlour::RbsGenerator::InterfaceNamespace) & have_attributes(
+      name: 'Foo', children: [],
     )
-    expect(converter.warnings.length).to eq 1
   end
 
   it 'converts namespaces' do
