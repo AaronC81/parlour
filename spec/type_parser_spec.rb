@@ -913,6 +913,13 @@ RSpec.describe Parlour::TypeParser do
           ]),
         ])
     end
+
+    it 'parses class types' do
+      expect(t('T.class_of(String)')).to eq \
+        Parlour::Types::Class.new(
+          Parlour::Types::Raw.new('String'),
+        )
+    end
     
     it 'can generalize this project' do
       project_root = Parlour::TypeLoader.load_project('.', exclusions: ['rbi'])

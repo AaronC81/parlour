@@ -284,6 +284,34 @@ module Parlour
       end
     end
 
+    # A type which represents the class of a type, rather than an instance.
+    # For example, "String" means an instance of String, but "Class(String)"
+    # means the actual String class.
+    class Class < Type
+      sig { params(type: TypeLike).void }
+      def initialize(type)
+        @type = to_type(type)
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Class === other && type == other.type
+      end
+
+      sig { returns(Type) }
+      attr_reader :type
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T.class_of(#{type.generate_rbi})"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "singleton(#{type.generate_rbs})"
+      end
+    end
+
     # Generic type for a boolean.
     class Boolean < Type
       sig { params(other: Object).returns(T::Boolean) }
