@@ -193,6 +193,27 @@ module Parlour
       sig do
         params(
           name: String,
+          block: T.nilable(T.proc.params(x: Namespace).void)
+        ).returns(InterfaceNamespace)
+      end
+      # Creates a new interface definition as a child of this namespace.
+      #
+      # @example Create a basic interface.
+      #   namespace.create_interface('Foo')
+      #
+      # @param name [String] The name of this interface.
+      # @param block A block which the new instance yields itself to.
+      # @return [InterfaceNamespace]
+      def create_interface(name, &block)
+        new_interface = InterfaceNamespace.new(generator, name, &block)
+        move_next_comments(new_interface)
+        children << new_interface
+        new_interface
+      end
+
+      sig do
+        params(
+          name: String,
           signatures: T.nilable(T::Array[MethodSignature]),
           class_method: T::Boolean,
           block: T.nilable(T.proc.params(x: Method).void)

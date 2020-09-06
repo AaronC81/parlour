@@ -34,6 +34,17 @@ RSpec.describe Parlour::RbsGenerator do
     end
   end
 
+  context 'interface namespace' do
+    it 'generates an empty interface correctly' do
+      mod = subject.root.create_interface('Foo')
+
+      expect(mod.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        interface Foo
+        end
+      RUBY
+    end
+  end
+
   context 'class namespace' do
     it 'generates an empty class correctly' do
       klass = subject.root.create_class('Foo')

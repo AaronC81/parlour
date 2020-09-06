@@ -1507,6 +1507,16 @@ module Parlour
       def describe; end
     end
 
+    class InterfaceNamespace < Namespace
+      extend T::Sig
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbs(indent_level, options); end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
     class Method < RbsObject
       extend T::Sig
 
@@ -1620,6 +1630,9 @@ module Parlour
 
       sig { params(name: String, block: T.nilable(T.proc.params(x: Namespace).void)).returns(ModuleNamespace) }
       def create_module(name, &block); end
+
+      sig { params(name: String, block: T.nilable(T.proc.params(x: Namespace).void)).returns(InterfaceNamespace) }
+      def create_interface(name, &block); end
 
       sig do
         params(
