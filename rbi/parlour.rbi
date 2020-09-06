@@ -482,6 +482,40 @@ module Parlour
       def generate_rbs; end
     end
 
+    class Record < Type
+      sig { params(keys_to_types: T::Hash[Symbol, TypeLike]).void }
+      def initialize(keys_to_types); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(T::Hash[Symbol, Type]) }
+      attr_reader :keys_to_types
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
+    end
+
+    class Class < Type
+      sig { params(type: TypeLike).void }
+      def initialize(type); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Type) }
+      attr_reader :type
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
+    end
+
     class Boolean < Type
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other); end
