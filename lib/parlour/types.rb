@@ -284,6 +284,34 @@ module Parlour
       end
     end
 
+    # A record/shape; a hash with a fixed set of keys with given types.
+    class Record < Type
+      sig { params(keys_to_types: T::Hash[Symbol, TypeLike]).void }
+      def initialize(keys_to_types)
+        @keys_to_types = keys_to_types.map do |k, v|
+          [k, to_type(v)]
+        end.to_h
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Record === other && keys_to_types == other.keys_to_types
+      end
+
+      sig { returns(T::Hash[Symbol, Type]) }
+      attr_reader :keys_to_types
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "{ #{keys_to_types.map { |k, v| "#{k}: #{v.generate_rbi}" }.join(', ')} }"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "{ #{keys_to_types.map { |k, v| "#{k}: #{v.generate_rbs}" }.join(', ')} }"
+      end
+    end
+
     # A type which represents the class of a type, rather than an instance.
     # For example, "String" means an instance of String, but "Class(String)"
     # means the actual String class.

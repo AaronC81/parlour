@@ -188,7 +188,8 @@ RSpec.describe Parlour::RbsGenerator do
         pa('a'),
         pa('b', type: 'String'),
         pa('c', required: false),
-        pa('d', type: 'Integer', required: false)
+        pa('d', type: 'Integer', required: false),
+        pa('e', type: Parlour::Types::Record.new({a: 'Integer'}))
       ])])
 
       expect(meth.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
@@ -196,7 +197,8 @@ RSpec.describe Parlour::RbsGenerator do
                    untyped a,
                    String b,
                    ?untyped c,
-                   ?Integer d
+                   ?Integer d,
+                   { a: Integer } e
                  ) -> void
       RUBY
     end

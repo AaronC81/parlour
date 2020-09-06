@@ -825,9 +825,13 @@ module Parlour
         Types::Tuple.new(node.to_a.map { |x| parse_node_to_type(T.must(x)) })
       when :hash
         # Shape/record
-        # TODO
-        warning "shapes/records not implemented, treating as untyped", node
-        Types::Untyped.new
+        keys_to_types = node.to_a.map do |pair|
+          key, value = *pair
+          parse_err "all shape keys must be symbols", node unless key.type == :sym
+          [key.to_a[0], parse_node_to_type(value)]
+        end.to_h
+
+        Types::Record.new(keys_to_types)
       else
         parse_err "unable to parse type #{node_to_s(node).inspect}", node
       end

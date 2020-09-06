@@ -921,6 +921,19 @@ RSpec.describe Parlour::TypeParser do
         )
     end
     
+    it 'parses shapes' do
+      expect(t('{ a: String, b: T.any(Integer, T::Boolean) }')).to eq \
+        Parlour::Types::Record.new(
+          {
+            a: Parlour::Types::Raw.new('String'),
+            b: Parlour::Types::Union.new([
+              Parlour::Types::Raw.new('Integer'),
+              Parlour::Types::Boolean.new,
+            ])
+          }
+        )
+    end
+
     it 'can generalize this project' do
       project_root = Parlour::TypeLoader.load_project('.', exclusions: ['rbi'])
       project_root.generalize_from_rbi!
