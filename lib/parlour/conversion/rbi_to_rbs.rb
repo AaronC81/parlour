@@ -23,8 +23,35 @@ module Parlour
       def convert_object(node, new_parent)        
         case node
         when RbiGenerator::StructClassNamespace
-          add_warning 'RBS does not support structs; dropping', node
-          return
+          add_warning 'performing a one-way conversion of an RBI struct to RBS', node
+
+          klass = new_parent.create_class(node.name)
+          klass.add_comments(node.comments)
+
+          # Create a constructor
+          klass.create_method('initialize', [
+            RbsGenerator::MethodSignature.new(
+              node.props.map do |prop|
+                RbsGenerator::Parameter.new(
+                  "#{prop.name}:",
+                  type: prop.type,
+                  required: !prop.optional,
+                )
+              end,
+              nil,
+            )
+          ])
+
+          # Make each prop a getter (and setter, if not immutable) attribute
+          node.props.each do |prop|
+            klass.create_attribute(
+              prop.name,
+              kind: prop.immutable ? :reader : :accessor,
+              type: prop.type,
+            )
+          end
+
+          klass 
 
         when RbiGenerator::EnumClassNamespace
           add_warning 'RBS does not support enums; dropping', node

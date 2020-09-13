@@ -55,12 +55,41 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     expect(converter.warnings.length).to eq 1
   end
 
-  it 'doesn\'t convert enums or structs' do
+  it 'one-way converts structs' do
+    struct = rbi_gen.root.create_struct_class('Foo', props: [
+      Parlour::RbiGenerator::StructProp.new('x', 'String'),
+      Parlour::RbiGenerator::StructProp.new('y', 'Integer', optional: true),
+      Parlour::RbiGenerator::StructProp.new('z', 'Numeric', immutable: true),
+    ])
+
+    foo, = *convert
+    expect(foo).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(
+      name: 'Foo', children: include(have_attributes(
+        name: 'initialize', signatures: [
+          have_attributes(
+            parameters: [
+              have_attributes(name: 'x:', type: 'String'),
+              have_attributes(name: 'y:', type: 'Integer', required: false),
+              have_attributes(name: 'z:', type: 'Numeric'),
+            ],
+            return_type: nil,
+          )
+        ]
+      )) & include(have_attributes(
+        name: 'x', kind: :accessor, type: 'String'
+      )) & include(have_attributes(
+        name: 'y', kind: :accessor, type: 'Integer'
+      )) & include(have_attributes(
+        name: 'z', kind: :reader, type: 'Numeric'
+      ))
+    )
+  end
+
+  it 'doesn\'t convert enums' do
     rbi_gen.root.create_enum_class('Foo')
-    rbi_gen.root.create_struct_class('Bar')
 
     expect(convert.length).to eq 0
-    expect(converter.warnings.length).to eq 2
+    expect(converter.warnings.length).to eq 1
   end
 
   it 'converts constants' do 
