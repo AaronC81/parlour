@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Aaron Christiansen"]
   spec.email         = ["hello@aaronc.cc"]
 
-  spec.summary       = %q{An RBI generator, merger and parser for Sorbet}
+  spec.summary       = %q{A type information generator, merger and parser for Sorbet and Ruby 3/Steep}
   spec.homepage      = "https://github.com/AaronC81/parlour"
   spec.license       = "MIT"
 
