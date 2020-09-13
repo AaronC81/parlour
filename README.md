@@ -42,12 +42,12 @@ started!
 | **GENERATION** |  |  |
 | Classes | ✅ | ⚠️ (missing `extension`) |
 | Modules | ✅ | ⚠️ (missing `extension`) |
-| Interfaces | ✅ | ❌ |
+| Interfaces | ✅ | ✅ |
 | Attributes | ✅ | ✅ |
 | Methods | ✅ | ✅ |
 | Overloaded methods | ❌* | ✅ |
-| Structs | ✅ | ❌† |
-| Enums | ✅ | ❌† |
+| Structs | ✅ | ✅† |
+| Enums | ✅ | ✅† |
 | Generation with plugins | ✅ | ❌ |
 | **MANIPULATION** |  |  |
 | Parsing | ✅ | ❌ |
@@ -58,7 +58,7 @@ started!
 - ❌ - Not currently supported
 
 - \* Only supported in stdlib types anyway
-- † Not natively supported, but when implemented will be a one-way conversion
+- † Not natively supported; available as a one-way conversion from RBI
 
 ## Creating Type Information
 
@@ -365,6 +365,8 @@ in your `.parlour` file.
 
 ## Converting Between Formats
 
+_For more information, see the [wiki page](https://github.com/AaronC81/parlour/wiki/Converting-between-RBI-and-RBS)._
+
 Currently, only RBI to RBS conversion is supported, and if you've used string
 types (or are using a freshly-loaded project) you
 **must [generalize them](#generalizing-string-types) first**.
@@ -383,9 +385,7 @@ rbs_gen = Parlour::RbsGenerator.new
 converter = Parlour::Conversion::RbiToRbs.new(rbs_gen)
 
 # Convert each item at the root of the RbiGenerator and it to the root of the RbsGenerator
-rbi_gen.root.children.each do |child|
-  converter.convert_object(child, rbs_gen.root)
-end
+converter.convert_all(rbi_gen.root, rbs_gen.root)
 ```
 
 ## Parlour Plugins
