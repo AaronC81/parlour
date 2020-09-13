@@ -2,6 +2,10 @@
 module Parlour
   # The RBI generator.
   class RbiGenerator < Generator
+    # For backwards compatibility.
+    # Before Parlour 5.0, Parlour::Options was Parlour::RbiGenerator::Options.
+    Options = Parlour::Options
+
     def initialize(**hash)
       super
       @root = RbiGenerator::Namespace.new(self)
