@@ -54,8 +54,25 @@ module Parlour
           klass 
 
         when RbiGenerator::EnumClassNamespace
-          add_warning 'RBS does not support enums; dropping', node
-          return
+          add_warning 'performing a one-way conversion of an RBI enum to RBS', node
+
+          klass = new_parent.create_class(node.name)
+          klass.add_comments(node.comments)
+
+          # Define .values
+          klass.create_method('values', [
+            RbsGenerator::MethodSignature.new([], Types::Array.new(node.name))
+          ], class_method: true)
+
+          # Define each enum variant
+          node.enums.each do |variant|
+            # We don't care about any extra value
+            variant = variant[0] if Array === variant
+
+            klass.create_constant(variant, type: node.name)
+          end
+
+          klass
 
         when RbiGenerator::Arbitrary
           add_warning 'converting type of Arbitrary is likely to cause syntax errors; doing it anyway', node

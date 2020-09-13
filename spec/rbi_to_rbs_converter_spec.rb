@@ -85,11 +85,27 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     )
   end
 
-  it 'doesn\'t convert enums' do
-    rbi_gen.root.create_enum_class('Foo')
+  it 'one-way converts enums' do
+    enum = rbi_gen.root.create_enum_class('Foo', enums: [
+      "A",
+      ["B", "2"],
+      "C",
+    ])
 
-    expect(convert.length).to eq 0
-    expect(converter.warnings.length).to eq 1
+    foo, = *convert
+    expect(foo).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(
+      name: 'Foo', children: include(have_attributes(
+        name: 'values', class_method: true, signatures: [
+          have_attributes(parameters: [], return_type: Parlour::Types::Array.new('Foo'))
+        ]
+      )) & include(have_attributes(
+        name: 'A', type: 'Foo'
+      )) & include(have_attributes(
+        name: 'B', type: 'Foo'
+      )) & include(have_attributes(
+        name: 'C', type: 'Foo'
+      ))
+    )
   end
 
   it 'converts constants' do 
