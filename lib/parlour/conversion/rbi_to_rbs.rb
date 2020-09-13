@@ -14,6 +14,13 @@ module Parlour
       sig { returns(RbsGenerator) }
       attr_reader :rbs_gen
 
+      sig { params(from: RbiGenerator::Namespace, to: RbsGenerator::Namespace).void }
+      def convert_all(from, to)
+        from.children.each do |child|
+          convert_object(child, to)
+        end        
+      end
+
       sig do
         params(
           node: RbiGenerator::RbiObject,
