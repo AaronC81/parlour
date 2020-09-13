@@ -3,7 +3,7 @@ module Kernel
 end
 
 module Parlour
-  VERSION = '4.0.1'
+  VERSION = '5.0.0.beta.1'
 
   class ConflictResolver
     extend T::Sig
@@ -607,12 +607,17 @@ module Parlour
       sig { returns(RbsGenerator) }
       attr_reader :rbs_gen
 
+      sig { params(from: RbiGenerator::Namespace, to: RbsGenerator::Namespace).void }
+      def convert_all(from, to); end
+
       sig { params(node: RbiGenerator::RbiObject, new_parent: RbsGenerator::Namespace).void }
       def convert_object(node, new_parent); end
     end
   end
 
   class RbiGenerator < Generator
+    Options = Parlour::Options
+
     sig { params(hash: T.untyped).returns(T.untyped) }
     def initialize(**hash); end
 

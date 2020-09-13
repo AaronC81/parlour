@@ -3,6 +3,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.0.0.beta.1] - 2020-09-13
+### Added
+- Added RBS generation support! This includes:
+  - The new `RbsGenerator` class
+  - `RbsObject` and a set of subclasses representing different RBS components
+- Added the `Types` module, which is used to describe types agnostic of the
+  underlying type system
+  - Added `RbiGenerator::Namespace#generalize_from_rbi!` to convert RBI string
+    types into `Types` types
+  - **Specifying types as strings is still currently supported, but may be
+    phased out in future, and should be avoided in new projects**.
+- Added conversion from RBI to RBS type trees
+- Added a couple of classes to deduplicate functionality between type systems:
+  - `TypedObject`, which `RbiObject` and `RbsObject` both inherit from
+  - `Generator`, which `RbiGenerator` and `RbsGenerator` both inherit from
+- Added RBI type aliases
+
+### Changed
+- `Parlour::RbiGenerator::Options` is now `Parlour::Options`. An alias exists
+  for now, but **`Parlour::RbiGenerator::Options` is deprecated** and could be
+  removed in future versions.
+- Updated README and gem metadata to refer to Parlour as a type information
+  generator, rather than just an RBI generator
+
 ## [4.0.1] - 2020-08-05
 ### Fixed
 - Fixed duplicate includes and extends.
