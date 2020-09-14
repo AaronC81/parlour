@@ -344,7 +344,7 @@ module Parlour
       end
     end
 
-    # Generic type for a boolean.
+    # Type for a boolean.
     class Boolean < Type
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
