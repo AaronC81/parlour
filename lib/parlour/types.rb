@@ -32,6 +32,10 @@ module Parlour
       def to_type(type_like)
         Type.to_type(type_like)
       end
+
+      def hash
+        [self.class, *instance_variables.map { |x| instance_variable_get(x).hash }].hash
+      end
     end
 
     # A basic type as a raw string.
