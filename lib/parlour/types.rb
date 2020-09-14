@@ -36,6 +36,9 @@ module Parlour
       def hash
         [self.class, *instance_variables.map { |x| instance_variable_get(x).hash }].hash
       end
+
+      sig { abstract.returns(String) }
+      def describe; end
     end
 
     # A basic type as a raw string.
@@ -60,6 +63,11 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs
+        str
+      end
+
+      sig { override.returns(String) }
+      def describe
         str
       end
     end
@@ -88,6 +96,11 @@ module Parlour
       def generate_rbs
         "#{type.generate_rbs}?"
       end
+
+      sig { override.returns(String) }
+      def describe
+        "Nilable<#{type.describe}>"
+      end
     end
 
     # A type which is (at least) one of the wrapped types.
@@ -113,6 +126,11 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbs
         "(#{types.map(&:generate_rbs).join(' | ')})"
+      end
+
+      sig { override.returns(String) }
+      def describe
+        "Union<#{types.map(&:describe).join(', ')}>"
       end
     end
 
@@ -140,6 +158,11 @@ module Parlour
       def generate_rbs
         "(#{types.map(&:generate_rbs).join(' & ')})"
       end
+
+      sig { override.returns(String) }
+      def describe
+        "Intersection<#{types.map(&:describe).join(', ')}>"
+      end
     end
 
     # A fixed-length array of items, each with a known type.
@@ -166,6 +189,11 @@ module Parlour
       def generate_rbs
         "[#{types.map(&:generate_rbs).join(', ')}]"
       end
+
+      sig { override.returns(String) }
+      def describe
+        "[#{types.map(&:describe).join(', ')}]"
+      end
     end
 
     class SingleElementCollection < Type
@@ -190,6 +218,11 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbs
         "#{collection_name}[#{element.generate_rbs}]"
+      end
+
+      sig { override.returns(String) }
+      def describe
+        "#{collection_name}<#{element.describe}>"
       end
     end
 
@@ -286,6 +319,11 @@ module Parlour
       def generate_rbs
         "Hash[#{key.generate_rbs}, #{value.generate_rbs}]"
       end
+
+      sig { override.returns(String) }
+      def describe
+        "Hash<#{key.describe}, #{value.describe}>"
+      end
     end
 
     # A record/shape; a hash with a fixed set of keys with given types.
@@ -313,6 +351,11 @@ module Parlour
       sig { override.returns(String) }
       def generate_rbs
         "{ #{keys_to_types.map { |k, v| "#{k}: #{v.generate_rbs}" }.join(', ')} }"
+      end
+
+      sig { override.returns(String) }
+      def describe
+        "{ #{keys_to_types.map { |k, v| "#{k}: #{v.describe}" }.join(', ')} }"
       end
     end
 
@@ -342,6 +385,11 @@ module Parlour
       def generate_rbs
         "singleton(#{type.generate_rbs})"
       end
+
+      sig { override.returns(String) }
+      def describe
+        "Class<#{type.describe}>"
+      end
     end
 
     # Type for a boolean.
@@ -358,6 +406,11 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs
+        "bool"
+      end
+
+      sig { override.returns(String) }
+      def describe
         "bool"
       end
     end
@@ -378,6 +431,11 @@ module Parlour
       def generate_rbs
         "self"
       end
+
+      sig { override.returns(String) }
+      def describe
+        "self"
+      end
     end    
 
     # The explicit lack of a type. 
@@ -394,6 +452,11 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs
+        "untyped"
+      end
+
+      sig { override.returns(String) }
+      def describe
         "untyped"
       end
     end
@@ -460,6 +523,15 @@ module Parlour
           RbsGenerator::Parameter.new(param.name, type: param.type, required: param.default.nil?)
         end
         "(#{rbs_params.map(&:to_rbs_param).join(', ')}) -> #{return_type&.generate_rbs || 'void'}"
+      end
+
+      sig { override.returns(String) }
+      def describe
+        # For simplicity, use RBS with pre-described parameter types
+        rbs_params = parameters.map do |param|
+          RbsGenerator::Parameter.new(param.name, type: param.type.describe, required: param.default.nil?)
+        end
+        "(#{rbs_params.map(&:to_rbs_param).join(', ')}) -> #{return_type&.describe || 'void'}"
       end
     end
   end
