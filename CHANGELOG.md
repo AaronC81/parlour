@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.0.0.beta.2] - 2020-09-14
+### Added
+- Added `Types::Type#describe` for simple text descriptions of types
+- Added `Types::Self` for RBI's `T.self_type` or RBS' `self`
+
+### Fixed
+- Fixed `RbiGenerator::Namespace#create_method`'s `returns:` kwarg only
+  accepting String types
+- Fixed lack of spacing between argument lists and blocks in RBS
+- Fixed RBS attributes not having comments
+
 ## [5.0.0.beta.1] - 2020-09-13
 ### Added
 - Added RBS generation support! This includes:
