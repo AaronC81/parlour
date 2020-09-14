@@ -319,6 +319,12 @@ module Parlour
 
       sig { params(type_like: TypeLike).returns(Type) }
       def to_type(type_like); end
+
+      sig { returns(T.untyped) }
+      def hash; end
+
+      sig { abstract.returns(String) }
+      def describe; end
     end
 
     class Raw < Type
@@ -336,6 +342,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Nilable < Type
@@ -353,6 +362,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Union < Type
@@ -370,6 +382,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Intersection < Type
@@ -387,6 +402,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Tuple < Type
@@ -404,6 +422,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class SingleElementCollection < Type
@@ -423,6 +444,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Array < SingleElementCollection
@@ -483,6 +507,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Record < Type
@@ -500,6 +527,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Class < Type
@@ -517,6 +547,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Boolean < Type
@@ -528,6 +561,23 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
+    class Self < Type
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Untyped < Type
@@ -539,6 +589,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
 
     class Proc < Type
@@ -578,6 +631,9 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
     end
   end
 
@@ -1030,7 +1086,7 @@ module Parlour
           name: String,
           parameters: T.nilable(T::Array[Parameter]),
           return_type: T.nilable(Types::TypeLike),
-          returns: T.nilable(String),
+          returns: T.nilable(Types::TypeLike),
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
