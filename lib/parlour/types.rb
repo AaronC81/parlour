@@ -362,6 +362,24 @@ module Parlour
       end
     end
 
+    # Type equivalent to the receiver.
+    class Self < Type
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Self === other
+      end
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T.self_type"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "self"
+      end
+    end    
+
     # The explicit lack of a type. 
     class Untyped < Type
       sig { params(other: Object).returns(T::Boolean) }
