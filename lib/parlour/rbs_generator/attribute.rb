@@ -60,7 +60,7 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS lines, formatted as specified.
       def generate_rbs(indent_level, options)
-        [options.indented(
+        generate_comments(indent_level, options) + [options.indented(
           indent_level,
           "attr_#{kind} #{name}: #{String === @type ? @type : @type.generate_rbs}"
         )]
