@@ -272,7 +272,7 @@ module Parlour
           name: String,
           parameters: T.nilable(T::Array[Parameter]),
           return_type: T.nilable(Types::TypeLike),
-          returns: T.nilable(String),
+          returns: T.nilable(Types::TypeLike),
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
