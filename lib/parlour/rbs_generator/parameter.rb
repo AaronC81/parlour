@@ -124,7 +124,7 @@ module Parlour
         if RBS_KEYWORDS.include? name_without_kind
           unless $VERBOSE.nil?
             print Rainbow("Parlour warning: ").yellow.dark.bold
-            print Rainbow("Type generalization: ").magenta.bright.bold
+            print Rainbow("RBS generation: ").magenta.bright.bold
             puts "'#{name_without_kind}' is a keyword in RBS, renaming method parameter to '_#{name_without_kind}'"
           end
           
