@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.0.0.beta.3] - 2020-09-15
+### Changed
+- Changed the RBS keyword warning to come from "RBS generation" rather than
+  "Type generalization"
+- Added many more of RBS' keywords which are detected and prefixed with an
+  underscore to avoid syntax errors
+
 ## [5.0.0.beta.2] - 2020-09-14
 ### Added
 - Added `Types::Type#describe` for simple text descriptions of types

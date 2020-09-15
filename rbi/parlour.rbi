@@ -3,7 +3,7 @@ module Kernel
 end
 
 module Parlour
-  VERSION = '5.0.0.beta.2'
+  VERSION = '5.0.0.beta.3'
 
   class ConflictResolver
     extend T::Sig
@@ -1767,7 +1767,8 @@ module Parlour
     class Parameter
       extend T::Sig
       RBS_KEYWORDS = [
-        'type', 'interface', 'out', 'in', 'instance'
+        'type', 'interface', 'out', 'in', 'instance', 'extension', 'top', 'bot',
+        'self', 'nil', 'void'
       ]
       PREFIXES = {
         normal: '',
