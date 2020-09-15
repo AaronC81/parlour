@@ -101,7 +101,8 @@ module Parlour
       # names in standard Ruby.
       # TODO: probably incomplete
       RBS_KEYWORDS = [
-        'type', 'interface', 'out', 'in', 'instance', 'extension'
+        'type', 'interface', 'out', 'in', 'instance', 'extension', 'top', 'bot',
+        'self', 'nil', 'void'
       ]
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.
