@@ -122,12 +122,12 @@ module Parlour
       end#
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.
-      PREFIXES = {
+      PREFIXES = T.let({
         normal: '',
         splat: '*',
         double_splat: '**',
         block: '&'
-      }.freeze
+      }.freeze, T::Hash[Symbol, String])
     end
   end
 end
