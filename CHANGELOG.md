@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.0.0.beta.4] - 2020-09-22
+### Added
+- Added support for parsing type aliases from RBI
+- Added conversion from RBI to RBS type aliases
+
 ## [5.0.0.beta.3] - 2020-09-15
 ### Changed
 - Changed the RBS keyword warning to come from "RBS generation" rather than
