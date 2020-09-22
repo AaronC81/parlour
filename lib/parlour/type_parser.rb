@@ -345,11 +345,28 @@ module Parlour
         end.flatten
       when :casgn
         _, name, body = *node
-        [Parlour::RbiGenerator::Constant.new(
-          generator,
-          name: T.must(name).to_s,
-          value: T.must(node_to_s(body)),
-        )]
+
+        # Determine whether this is a constant or a type alias
+        # A type alias looks like:
+        #   (block (send (const nil :T) :type_alias) (args) (type_to_alias))
+        if body.type == :block &&
+          body.to_a[0].type == :send &&
+          body.to_a[0].to_a[0].type == :const &&
+          body.to_a[0].to_a[0].to_a == [nil, :T] &&
+          body.to_a[0].to_a[1] == :type_alias
+
+          [Parlour::RbiGenerator::TypeAlias.new(
+            generator,
+            name: T.must(name).to_s,
+            type: T.must(node_to_s(body.to_a[2])),
+          )]
+        else
+          [Parlour::RbiGenerator::Constant.new(
+            generator,
+            name: T.must(name).to_s,
+            value: T.must(node_to_s(body)),
+          )]
+        end
       else
         if unknown_node_errors
           parse_err "don't understand node type #{node.type}", node

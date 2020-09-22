@@ -21,7 +21,7 @@ module Parlour
         yield_self(&block) if block
       end
 
-      # @return [String] The type to alias to.
+      # @return [Types::TypeLike] The type to alias to.
       sig { returns(Types::TypeLike) }
       attr_reader :type
 

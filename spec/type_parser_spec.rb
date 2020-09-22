@@ -858,6 +858,26 @@ RSpec.describe Parlour::TypeParser do
     expect(bar).to have_attributes(name: "BAR", value: "'Hey'.freeze")
   end
 
+  it 'parses type aliases' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      class A
+        Foo = T.type_alias { String }
+      end
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children.length).to eq 1
+
+    a = root.children.first
+    expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+    expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
+    expect(a.children.length).to eq 1
+
+    foo, = a.children
+    expect(foo).to be_a Parlour::RbiGenerator::TypeAlias
+    expect(foo).to have_attributes(name: "Foo", type: "String")
+  end
+
   describe 'parsing of RBI types into Types::Type' do
     def t(s)
       i = described_class.from_source('(test)', s)
