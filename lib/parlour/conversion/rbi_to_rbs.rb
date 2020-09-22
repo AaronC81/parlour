@@ -121,6 +121,12 @@ module Parlour
             type: node.value,
           ).add_comments(node.comments)
 
+        when RbiGenerator::TypeAlias
+          new_parent.create_type_alias(
+            node.name,
+            type: node.type,
+          ).add_comments(node.comments)
+
         when RbiGenerator::Extend
           new_parent.create_extend(node.name).add_comments(node.comments)
 
