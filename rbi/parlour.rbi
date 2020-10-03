@@ -427,6 +427,29 @@ module Parlour
       def describe; end
     end
 
+    class Generic < Type
+      sig { params(type: TypeLike, type_params: T::Array[TypeLike]).void }
+      def initialize(type, type_params); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { returns(Type) }
+      attr_reader :type
+
+      sig { returns(T::Array[Type]) }
+      attr_reader :type_params
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
     class SingleElementCollection < Type
       abstract!
 

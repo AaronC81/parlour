@@ -196,6 +196,45 @@ module Parlour
       end
     end
 
+    # A user-defined generic class with an arbitrary number of type
+    # parameters. This class assumes at least one type_param is
+    # provided, otherwise output will have empty type param lists.
+    class Generic < Type
+      sig { params(type: TypeLike, type_params: T::Array[TypeLike]).void }
+      def initialize(type, type_params)
+        @type = to_type(type)
+        @type_params = type_params.map { |p| to_type(p) }
+      end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        self.class === other &&
+          type == other.type &&
+          type_params == other.type_params
+      end
+
+      sig { returns(Type) }
+      attr_reader :type
+
+      sig { returns(T::Array[Type]) }
+      attr_reader :type_params
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "#{type.generate_rbi}[#{type_params.map(&:generate_rbi).join(', ')}]"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "#{type.generate_rbs}[#{type_params.map(&:generate_rbs).join(', ')}]"
+      end
+
+      sig { override.returns(String) }
+      def describe
+        "#{type.describe}<#{type_params.map(&:describe).join(', ')}>"
+      end
+    end
+
     class SingleElementCollection < Type
       abstract!
 
@@ -436,9 +475,9 @@ module Parlour
       def describe
         "self"
       end
-    end    
+    end
 
-    # The explicit lack of a type. 
+    # The explicit lack of a type.
     class Untyped < Type
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
@@ -487,9 +526,9 @@ module Parlour
         def ==(other)
           Parameter === other && name == other.name && type == other.type &&
             default == other.default
-        end  
+        end
       end
-      
+
       sig { params(parameters: T::Array[Parameter], return_type: T.nilable(TypeLike)).void }
       def initialize(parameters, return_type)
         @parameters = parameters
@@ -536,4 +575,4 @@ module Parlour
     end
   end
 end
-        
+

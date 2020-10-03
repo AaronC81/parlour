@@ -90,7 +90,7 @@ RSpec.describe Parlour::TypeParser do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig do
           params(
-            x: String, 
+            x: String,
             y: T.nilable(T.any(Integer, T::Boolean)),
             z: Numeric,
             blk: T.proc.returns(T::Boolean)
@@ -151,7 +151,7 @@ RSpec.describe Parlour::TypeParser do
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: true)
     end
-    
+
     it 'supports class methods using self.x' do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig { params(x: String).returns(Integer) }
@@ -441,7 +441,7 @@ RSpec.describe Parlour::TypeParser do
 
       root = instance.parse_all
       expect(root.children.length).to eq 1
-      
+
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
@@ -497,7 +497,7 @@ RSpec.describe Parlour::TypeParser do
 
       root = instance.parse_all
       expect(root.children.length).to eq 1
-      
+
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
       expect(a).to have_attributes(name: 'A', final: false, interface: false)
@@ -522,7 +522,7 @@ RSpec.describe Parlour::TypeParser do
       expect(abs_bar).to have_attributes(name: 'bar', abstract: true, return_type: 'Integer')
       expect(abs_bar.parameters.length).to eq 1
       expect(abs_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
-      
+
       impl_foo, impl_bar = *e.children
       expect(impl_foo).to be_a Parlour::RbiGenerator::Method
       expect(impl_bar).to be_a Parlour::RbiGenerator::Method
@@ -556,7 +556,7 @@ RSpec.describe Parlour::TypeParser do
 
       root = instance.parse_all
       expect(root.children.length).to eq 1
-      
+
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(a).to have_attributes(name: 'A', final: false)
@@ -662,7 +662,7 @@ RSpec.describe Parlour::TypeParser do
       d = c.children.first
       expect(d).to be_a Parlour::RbiGenerator::Namespace
       expect(d).to have_attributes(name: 'D', final: false)
-      
+
       e = d.children.first
       expect(e).to be_a Parlour::RbiGenerator::Namespace
       expect(e).to have_attributes(name: 'E', final: false)
@@ -917,6 +917,22 @@ RSpec.describe Parlour::TypeParser do
       )
     end
 
+    it 'parses hashes' do
+      expect(t('T::Hash[String, Integer]')).to eq \
+        Parlour::Types::Hash.new(
+          Parlour::Types::Raw.new('String'),
+          Parlour::Types::Raw.new('Integer'),
+        )
+    end
+
+    it 'parses generics' do
+      expect(t('Wrapper[String]')).to eq \
+        Parlour::Types::Generic.new(
+          Parlour::Types::Raw.new('Wrapper'),
+          [Parlour::Types::Raw.new('String')]
+        )
+    end
+
     it 'parses booleans' do
       expect(t('T::Boolean')).to eq Parlour::Types::Boolean.new
     end
@@ -940,7 +956,7 @@ RSpec.describe Parlour::TypeParser do
           Parlour::Types::Raw.new('String'),
         )
     end
-    
+
     it 'parses shapes' do
       expect(t('{ a: String, b: T.any(Integer, T::Boolean) }')).to eq \
         Parlour::Types::Record.new(
@@ -957,7 +973,7 @@ RSpec.describe Parlour::TypeParser do
     it 'can generalize this project' do
       project_root = Parlour::TypeLoader.load_project('.', exclusions: ['rbi'])
       project_root.generalize_from_rbi!
-      
+
       parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
       expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
 
@@ -976,6 +992,6 @@ RSpec.describe Parlour::TypeParser do
       expect(meth.parameters[2]).to have_attributes(
         name: 'sort_namespaces:', type: Parlour::Types::Boolean.new,
       )
-    end 
+    end
   end
 end
