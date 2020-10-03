@@ -256,7 +256,7 @@ module Parlour
 
       sig { override.returns(String) }
       def generate_rbs
-        "#{collection_name}[#{element.generate_rbs}]"
+        "::#{collection_name}[#{element.generate_rbs}]"
       end
 
       sig { override.returns(String) }
@@ -269,7 +269,7 @@ module Parlour
     class Array < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
-        '::Array'
+        'Array'
       end
 
       sig { params(other: Object).returns(T::Boolean) }
@@ -282,7 +282,7 @@ module Parlour
     class Set < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
-        '::Set'
+        'Set'
       end
 
       sig { params(other: Object).returns(T::Boolean) }
@@ -295,7 +295,7 @@ module Parlour
     class Range < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
-        '::Range'
+        'Range'
       end
 
       sig { params(other: Object).returns(T::Boolean) }
@@ -308,7 +308,7 @@ module Parlour
     class Enumerable < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
-        '::Enumerable'
+        'Enumerable'
       end
 
       sig { params(other: Object).returns(T::Boolean) }
@@ -321,7 +321,7 @@ module Parlour
     class Enumerator < SingleElementCollection
       sig { override.returns(String) }
       def collection_name
-        '::Enumerator'
+        'Enumerator'
       end
 
       sig { params(other: Object).returns(T::Boolean) }
