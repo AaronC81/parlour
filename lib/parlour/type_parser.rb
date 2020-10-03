@@ -721,7 +721,7 @@ module Parlour
     end
 
     sig { params(node: Parser::AST::Node).returns(Types::Type) }
-    # Given an AST node representing an RBI type (such as 'T::Array[String]'),  
+    # Given an AST node representing an RBI type (such as 'T::Array[String]'),
     # parses it into a generic type.
     #
     # @param [Parser::AST::Node] node
@@ -736,9 +736,9 @@ module Parlour
           names = constant_names(target)
           known_single_element_collections = [:Array, :Set, :Range, :Enumerator, :Enumerable]
 
-          if names.length == 2 && names[0] == :T && 
+          if names.length == 2 && names[0] == :T &&
             known_single_element_collections.include?(names[1])
-            
+
             parse_err "no type in T::#{names[1]}[...]", node if args.nil? || args.empty?
             parse_err "too many types in T::#{names[1]}[...]", node unless args.length == 1
             return T.must(Types.const_get(T.must(names[1]))).new(parse_node_to_type(T.must(args.first)))
@@ -749,9 +749,17 @@ module Parlour
               parse_node_to_type(args[0]), parse_node_to_type(args[1])
             )
           else
-            # TODO
-            warning "user-defined generic types not implemented, treating #{names.last} as untyped", node
-            return Types::Untyped.new
+            type = names.join('::')
+            if args.nil?
+              parse_err(
+                "user defined generic '#{type}' requires at least one type parameter",
+                node
+              )
+            end
+            return Types::Generic.new(
+              type,
+              args.map { |arg| parse_node_to_type(arg) }
+            )
           end
         end
 
@@ -760,7 +768,7 @@ module Parlour
         # something pretty cursed with procs to break this
         # This checks for (send (send (send (const nil :T) :proc) ...) ...)
         # That's the right amount of nesting for T.proc.params(...).returns(...)
-        if node.to_a[0].type == :send && 
+        if node.to_a[0].type == :send &&
           node.to_a[0].to_a[0].type == :send &&
           node.to_a[0].to_a[0].to_a[1] == :proc &&
           node.to_a[0].to_a[0].to_a[0].type == :const &&
@@ -797,7 +805,7 @@ module Parlour
         # The other options for a valid call are all "T.something" methods
         parse_err "unexpected call #{node_to_s(node).inspect} in type", node \
           unless target.type == :const && target.to_a == [nil, :T]
-            
+
         case message
         when :nilable
           parse_err 'no argument to T.nilable', node if args.nil? || args.empty?
@@ -828,7 +836,7 @@ module Parlour
         else
           warning "unknown method T.#{message}, treating as untyped", node
           Types::Untyped.new
-        end 
+        end
       when :const
         # Special case: T::Boolean
         if constant_names(node) == [:T, :Boolean]
