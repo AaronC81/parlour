@@ -3,7 +3,7 @@ module Kernel
 end
 
 module Parlour
-  VERSION = '5.0.0.beta.5'
+  VERSION = '5.0.0.beta.6'
 
   class ConflictResolver
     extend T::Sig
