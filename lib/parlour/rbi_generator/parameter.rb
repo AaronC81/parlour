@@ -38,7 +38,7 @@ module Parlour
         @name = name
 
         prefix = /^(\*\*|\*|\&)?/.match(name)&.captures&.first || ''
-        @kind = PREFIXES.rassoc(prefix).first
+        @kind = T.must(PREFIXES.rassoc(prefix)).first
 
         @kind = :keyword if kind == :normal && name.end_with?(':')
 
