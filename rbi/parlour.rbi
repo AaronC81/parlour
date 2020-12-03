@@ -1212,12 +1212,12 @@ module Parlour
 
     class Parameter
       extend T::Sig
-      PREFIXES = {
+      PREFIXES = T.let({
         normal: '',
         splat: '*',
         double_splat: '**',
         block: '&'
-      }.freeze
+      }.freeze, T::Hash[Symbol, String])
 
       sig { params(name: String, type: T.nilable(Types::TypeLike), default: T.nilable(String)).void }
       def initialize(name, type: nil, default: nil); end
@@ -1308,9 +1308,9 @@ module Parlour
 
     class StructProp
       extend T::Sig
-      EXTRA_PROPERTIES = %i{
+      EXTRA_PROPERTIES = T.let(%i{
         optional enum dont_store foreign default factory immutable array override redaction
-      }
+      }, T::Array[Symbol])
 
       sig do
         params(

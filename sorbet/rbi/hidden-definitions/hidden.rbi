@@ -85,8 +85,6 @@ class Array
   include ::JSON::Ext::Generator::GeneratorMethods::Array
   def abbrev(pattern=T.unsafe(nil)); end
 
-  def deconstruct(); end
-
   def shelljoin(); end
 
   def to_h(); end
@@ -133,7 +131,7 @@ class BigDecimal
 end
 
 class BigDecimal
-  def self.interpret_loosely(_); end
+  def self.new(*args, **kwargs); end
 end
 
 class Binding
@@ -2884,11 +2882,7 @@ class DRb::DRbConn
 end
 
 class DRb::DRbConn
-  def self.make_pool(); end
-
   def self.open(remote_uri); end
-
-  def self.stop_pool(); end
 end
 
 class DRb::DRbMessage
@@ -3037,22 +3031,6 @@ class DRb::DRbUnknownError
   def self._load(s); end
 end
 
-class DRb::ThreadObject
-  include ::MonitorMixin
-  def _execute(); end
-
-  def alive?(); end
-
-  def initialize(&blk); end
-
-  def kill(); end
-
-  def method_missing(msg, *arg, &blk); end
-end
-
-class DRb::ThreadObject
-end
-
 module DRb
   def self.mutex(); end
 end
@@ -3063,22 +3041,8 @@ DRbObject = DRb::DRbObject
 
 DRbUndumped = DRb::DRbUndumped
 
-class Date
-  def infinite?(); end
-end
-
-class Date::Error
-end
-
-class Date::Error
-end
-
 class Date::Infinity
   def initialize(d=T.unsafe(nil)); end
-end
-
-class Delegator
-  RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
 end
 
 class DidYouMean::ClassNameChecker
@@ -3091,13 +3055,6 @@ class DidYouMean::ClassNameChecker
   def initialize(exception); end
 
   def scopes(); end
-end
-
-class DidYouMean::CorrectElement
-  def call(names, element); end
-end
-
-class DidYouMean::CorrectElement
 end
 
 module DidYouMean::Correctable
@@ -3142,8 +3099,6 @@ class DidYouMean::MethodNameChecker
 
   def method_names(); end
 
-  def names_to_exclude(); end
-
   def receiver(); end
   RB_RESERVED_WORDS = ::T.let(nil, ::T.untyped)
 end
@@ -3154,37 +3109,11 @@ class DidYouMean::NullChecker
   def initialize(*_); end
 end
 
-class DidYouMean::ParseDimensions
-  def call(); end
-
-  def initialize(dictionary, separator); end
-end
-
-class DidYouMean::ParseDimensions
-end
-
 class DidYouMean::PlainFormatter
   def message_for(corrections); end
 end
 
 class DidYouMean::PlainFormatter
-end
-
-class DidYouMean::TreeSpellChecker
-  def augment(); end
-
-  def correct(input); end
-
-  def dictionary(); end
-
-  def dimensions(); end
-
-  def initialize(dictionary:, separator: T.unsafe(nil), augment: T.unsafe(nil)); end
-
-  def separator(); end
-end
-
-class DidYouMean::TreeSpellChecker
 end
 
 class DidYouMean::VariableNameChecker
@@ -3205,8 +3134,6 @@ class DidYouMean::VariableNameChecker
 end
 
 module DidYouMean
-  def self.correct_error(error_class, spell_checker); end
-
   def self.formatter(); end
 
   def self.formatter=(formatter); end
@@ -3218,13 +3145,8 @@ class Dir
   def each_child(); end
 end
 
-module Dir::Tmpname
-  UNUSABLE_CHARS = ::T.let(nil, ::T.untyped)
-end
-
 class Dir
   def self.exists?(_); end
-
 end
 
 module Docile
@@ -3241,7 +3163,6 @@ class ERB
   def def_method(mod, methodname, fname=T.unsafe(nil)); end
 
   def def_module(methodname=T.unsafe(nil)); end
-
 end
 
 class ERB::Compiler::Scanner
@@ -3251,7 +3172,6 @@ end
 
 class Encoding
   def _dump(*_); end
-  CESU_8 = ::T.let(nil, ::T.untyped)
 end
 
 class Encoding::Converter
@@ -3265,11 +3185,7 @@ end
 module Enumerable
   def chain(*_); end
 
-  def filter_map(); end
-
   def sum(*_); end
-
-  def tally(); end
 end
 
 class Enumerator
@@ -3305,25 +3221,6 @@ class Enumerator::Generator
   def each(*_, &blk); end
 
   def initialize(*_); end
-end
-
-class Enumerator::Lazy
-  def eager(); end
-end
-
-class Enumerator::Producer
-  def each(&blk); end
-end
-
-class Enumerator::Producer
-end
-
-class Enumerator::Yielder
-  def to_proc(); end
-end
-
-class Enumerator
-  def self.produce(*_); end
 end
 
 Errno::EAUTH = Errno::NOERROR
@@ -3380,10 +3277,6 @@ Errno::EQFULL = Errno::NOERROR
 Errno::ERPCMISMATCH = Errno::NOERROR
 
 Errno::ESHLIBVERS = Errno::NOERROR
-
-module Etc
-  VERSION = ::T.let(nil, ::T.untyped)
-end
 
 class Etc::Group
   def gid(); end
@@ -3449,13 +3342,7 @@ class FalseClass
   include ::JSON::Ext::Generator::GeneratorMethods::FalseClass
 end
 
-class Fiber
-  def initialize(*_); end
-end
-
 class File
-  def self.absolute_path?(_); end
-
   def self.exists?(_); end
 end
 
@@ -3528,25 +3415,30 @@ module Forwardable
   def self.debug=(debug); end
 end
 
-class FrozenError
-  def receiver(); end
+module GC
+  def garbage_collect(*_); end
 end
 
 module GC
-  def garbage_collect(full_mark: T.unsafe(nil), immediate_mark: T.unsafe(nil), immediate_sweep: T.unsafe(nil)); end
-end
-
-module GC
-  def self.verify_compaction_references(*_); end
-
   def self.verify_transient_heap_internal_consistency(); end
 end
 
 module Gem
   ConfigMap = ::T.let(nil, ::T.untyped)
   RbConfigPriorities = ::T.let(nil, ::T.untyped)
+  RubyGemsPackageVersion = ::T.let(nil, ::T.untyped)
   RubyGemsVersion = ::T.let(nil, ::T.untyped)
-  UNTAINT = ::T.let(nil, ::T.untyped)
+  USE_BUNDLER_FOR_GEMDEPS = ::T.let(nil, ::T.untyped)
+end
+
+class Gem::DependencyInstaller
+  def _deprecated_add_found_dependencies(to_do, dependency_list); end
+
+  def _deprecated_gather_dependencies(); end
+
+  def add_found_dependencies(*args, &block); end
+
+  def gather_dependencies(*args, &block); end
 end
 
 class Gem::Exception
@@ -3559,6 +3451,10 @@ end
 class Gem::Ext::BuildError
 end
 
+class Gem::Ext::Builder
+  def self.redirector(); end
+end
+
 class Gem::Ext::ExtConfBuilder
 end
 
@@ -3568,10 +3464,6 @@ class Gem::Ext::ExtConfBuilder
   def self.build(extension, dest_path, results, args=T.unsafe(nil), lib_dir=T.unsafe(nil)); end
 
   def self.get_relative_path(path); end
-end
-
-class Gem::Package
-  def gem(); end
 end
 
 class Gem::Package::DigestIO
@@ -3690,8 +3582,6 @@ end
 class Gem::Package::TarHeader
   def self.from(stream); end
 
-  def self.oct_or_256based(str); end
-
   def self.strict_oct(str); end
 end
 
@@ -3746,8 +3636,6 @@ end
 
 class Gem::Package
   def self.new(gem, security_policy=T.unsafe(nil)); end
-
-  def self.raw_spec(path, security_policy=T.unsafe(nil)); end
 end
 
 class Gem::PathSupport
@@ -3760,8 +3648,16 @@ class Gem::PathSupport
   def spec_cache_dir(); end
 end
 
+class Gem::RemoteFetcher
+  def correct_for_windows_path(path); end
+
+  def s3_expiration(); end
+
+  def sign_s3_url(uri, expiration=T.unsafe(nil)); end
+  BASE64_URI_TRANSLATE = ::T.let(nil, ::T.untyped)
+end
+
 class Gem::RemoteFetcher::FetchError
-  include ::Gem::UriParsing
   def initialize(message, uri); end
 
   def uri(); end
@@ -3784,11 +3680,17 @@ class Gem::Request
   extend ::Gem::Text
 end
 
+class Gem::Resolver::ActivationRequest
+  def others_possible?(); end
+end
+
 class Gem::Resolver::CurrentSet
 end
 
 class Gem::Resolver::CurrentSet
 end
+
+Gem::Resolver::DependencyConflict = Gem::Resolver::Conflict
 
 class Gem::Resolver::LocalSpecification
 end
@@ -4076,12 +3978,14 @@ end
 class Gem::Specification
   extend ::Gem::Deprecate
   extend ::Enumerable
+  def self.add_spec(spec); end
+
+  def self.add_specs(*specs); end
+
+  def self.remove_spec(spec); end
 end
 
 class Gem::SpecificationPolicy
-  include ::Gem::UserInteraction
-  include ::Gem::DefaultUserInteraction
-  include ::Gem::Text
   def initialize(specification); end
 
   def packaging(); end
@@ -4158,16 +4062,17 @@ Gem::UnsatisfiableDepedencyError = Gem::UnsatisfiableDependencyError
 
 Gem::Version::Requirement = Gem::Requirement
 
-class Hash
-  include ::JSON::Ext::Generator::GeneratorMethods::Hash
-  def deconstruct_keys(_); end
+module Gem
+  def self.default_gems_use_full_paths?(); end
+
+  def self.remove_unresolved_default_spec(spec); end
 end
 
 class Hash
-  def self.ruby2_keywords_hash(_); end
+  include ::JSON::Ext::Generator::GeneratorMethods::Hash
+end
 
-  def self.ruby2_keywords_hash?(_); end
-
+class Hash
   def self.try_convert(_); end
 end
 
@@ -5292,45 +5197,23 @@ end
 class IO
   def beep(); end
 
-  def check_winsize_changed(); end
-
-  def clear_screen(); end
-
-  def console_mode(); end
-
-  def console_mode=(console_mode); end
-
   def cooked(); end
 
   def cooked!(); end
 
   def cursor(); end
 
-  def cursor=(cursor); end
-
-  def cursor_down(_); end
-
-  def cursor_left(_); end
-
-  def cursor_right(_); end
-
-  def cursor_up(_); end
+  def cursor=(); end
 
   def echo=(echo); end
 
   def echo?(); end
 
-  def erase_line(_); end
-
-  def erase_screen(_); end
-
   def getch(*_); end
 
   def getpass(*_); end
 
-  def goto(_, _1); end
-
-  def goto_column(_); end
+  def goto(); end
 
   def iflush(); end
 
@@ -5358,12 +5241,6 @@ class IO
 
   def ready?(); end
 
-  def scroll_backward(_); end
-
-  def scroll_forward(_); end
-
-  def set_encoding_by_bom(); end
-
   def wait(*_); end
 
   def wait_readable(*_); end
@@ -5373,17 +5250,6 @@ class IO
   def winsize(); end
 
   def winsize=(winsize); end
-end
-
-class IO::ConsoleMode
-  def echo=(echo); end
-
-  def raw(*_); end
-
-  def raw!(*_); end
-end
-
-class IO::ConsoleMode
 end
 
 IO::EWOULDBLOCKWaitReadable = IO::EAGAINWaitReadable
@@ -5445,67 +5311,18 @@ class KeyError
   include ::DidYouMean::Correctable
 end
 
-class Logger
-  def debug!(); end
-
-  def error!(); end
-
-  def fatal!(); end
-
-  def info!(); end
-
-  def warn!(); end
-  SEV_LABEL = ::T.let(nil, ::T.untyped)
-end
-
-class Logger::Formatter
-  Format = ::T.let(nil, ::T.untyped)
-end
-
-class Logger::LogDevice
-  include ::MonitorMixin
-end
-
-module Logger::Period
-  SiD = ::T.let(nil, ::T.untyped)
-end
-
-class Module
-  def const_source_location(*_); end
-end
-
 class Monitor
   def enter(); end
 
   def exit(); end
 
-  def mon_check_owner(); end
-
-  def mon_enter(); end
-
-  def mon_exit(); end
-
-  def mon_locked?(); end
-
-  def mon_owned?(); end
-
-  def mon_synchronize(); end
-
-  def mon_try_enter(); end
-
-  def new_cond(); end
-
-  def synchronize(); end
-
   def try_enter(); end
-
-  def try_mon_enter(); end
-
-  def wait_for_cond(_, _1); end
 end
 
 module MonitorMixin
   def initialize(*args); end
+  EXCEPTION_IMMEDIATE = ::T.let(nil, ::T.untyped)
+  EXCEPTION_NEVER = ::T.let(nil, ::T.untyped)
 end
 
 class MonitorMixin::ConditionVariable
@@ -5518,12 +5335,6 @@ end
 
 class NilClass
   include ::JSON::Ext::Generator::GeneratorMethods::NilClass
-end
-
-class NoMatchingPatternError
-end
-
-class NoMatchingPatternError
 end
 
 class Object
@@ -5551,26 +5362,14 @@ class Object
   TOPLEVEL_BINDING = ::T.let(nil, ::T.untyped)
 end
 
-class OpenStruct
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
-class OptionParser
-  def additional_message(typ, opt); end
-end
-
-class OptionParser::List
-  def get_candidates(id); end
-end
-
-class OptionParser::ParseError
-  def additional(); end
-
-  def additional=(additional); end
-
-end
-
 class Parlour::ConflictResolver
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Parlour::Conversion::Converter
+  extend ::T::Private::Abstract::Hooks
+  extend ::T::InterfaceWrapper::Helpers
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
 end
@@ -5612,14 +5411,22 @@ class Parlour::RbiGenerator::Parameter
   extend ::T::Private::Methods::SingletonMethodHooks
 end
 
-class Parlour::RbiGenerator::RbiObject
-  extend ::T::Private::Abstract::Hooks
-  extend ::T::InterfaceWrapper::Helpers
+class Parlour::RbiGenerator::StructProp
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
 end
 
-class Parlour::RbiGenerator::StructProp
+class Parlour::RbsGenerator::Block
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Parlour::RbsGenerator::MethodSignature
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Parlour::RbsGenerator::Parameter
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
 end
@@ -5646,6 +5453,11 @@ end
 class Parlour::TypedObject
   extend ::T::Private::Abstract::Hooks
   extend ::T::InterfaceWrapper::Helpers
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Parlour::Types::Proc::Parameter
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
 end
@@ -5727,13 +5539,9 @@ class Parser::AST::Processor
 
   def on_def(node); end
 
-  def on_def_e(node); end
-
   def on_defined?(node); end
 
   def on_defs(node); end
-
-  def on_defs_e(node); end
 
   def on_dstr(node); end
 
@@ -5815,8 +5623,6 @@ class Parser::AST::Processor
 
   def on_module(node); end
 
-  def on_mrasgn(node); end
-
   def on_next(node); end
 
   def on_not(node); end
@@ -5842,8 +5648,6 @@ class Parser::AST::Processor
   def on_preexe(node); end
 
   def on_procarg0(node); end
-
-  def on_rasgn(node); end
 
   def on_redo(node); end
 
@@ -7616,7 +7420,7 @@ end
 class Parser::Ruby24
 end
 
-class Parser::Ruby27
+class Parser::Ruby26
   def _reduce_10(val, _values, result); end
 
   def _reduce_100(val, _values, result); end
@@ -7645,27 +7449,21 @@ class Parser::Ruby27
 
   def _reduce_111(val, _values, result); end
 
-  def _reduce_112(val, _values, result); end
-
   def _reduce_113(val, _values, result); end
 
   def _reduce_114(val, _values, result); end
 
-  def _reduce_116(val, _values, result); end
-
-  def _reduce_117(val, _values, result); end
-
-  def _reduce_118(val, _values, result); end
+  def _reduce_115(val, _values, result); end
 
   def _reduce_12(val, _values, result); end
 
-  def _reduce_124(val, _values, result); end
+  def _reduce_121(val, _values, result); end
+
+  def _reduce_125(val, _values, result); end
 
   def _reduce_126(val, _values, result); end
 
   def _reduce_127(val, _values, result); end
-
-  def _reduce_128(val, _values, result); end
 
   def _reduce_13(val, _values, result); end
 
@@ -7678,6 +7476,8 @@ class Parser::Ruby27
   def _reduce_18(val, _values, result); end
 
   def _reduce_19(val, _values, result); end
+
+  def _reduce_199(val, _values, result); end
 
   def _reduce_2(val, _values, result); end
 
@@ -7737,11 +7537,11 @@ class Parser::Ruby27
 
   def _reduce_224(val, _values, result); end
 
-  def _reduce_225(val, _values, result); end
-
   def _reduce_226(val, _values, result); end
 
   def _reduce_227(val, _values, result); end
+
+  def _reduce_228(val, _values, result); end
 
   def _reduce_229(val, _values, result); end
 
@@ -7765,35 +7565,35 @@ class Parser::Ruby27
 
   def _reduce_238(val, _values, result); end
 
-  def _reduce_239(val, _values, result); end
-
   def _reduce_24(val, _values, result); end
 
-  def _reduce_240(val, _values, result); end
+  def _reduce_244(val, _values, result); end
 
-  def _reduce_241(val, _values, result); end
+  def _reduce_245(val, _values, result); end
 
-  def _reduce_247(val, _values, result); end
-
-  def _reduce_248(val, _values, result); end
+  def _reduce_249(val, _values, result); end
 
   def _reduce_25(val, _values, result); end
+
+  def _reduce_250(val, _values, result); end
 
   def _reduce_252(val, _values, result); end
 
   def _reduce_253(val, _values, result); end
 
-  def _reduce_255(val, _values, result); end
+  def _reduce_254(val, _values, result); end
 
   def _reduce_256(val, _values, result); end
 
-  def _reduce_257(val, _values, result); end
-
-  def _reduce_258(val, _values, result); end
+  def _reduce_259(val, _values, result); end
 
   def _reduce_26(val, _values, result); end
 
   def _reduce_260(val, _values, result); end
+
+  def _reduce_261(val, _values, result); end
+
+  def _reduce_262(val, _values, result); end
 
   def _reduce_263(val, _values, result); end
 
@@ -7823,8 +7623,6 @@ class Parser::Ruby27
 
   def _reduce_275(val, _values, result); end
 
-  def _reduce_276(val, _values, result); end
-
   def _reduce_277(val, _values, result); end
 
   def _reduce_278(val, _values, result); end
@@ -7833,13 +7631,15 @@ class Parser::Ruby27
 
   def _reduce_28(val, _values, result); end
 
-  def _reduce_281(val, _values, result); end
-
-  def _reduce_282(val, _values, result); end
-
-  def _reduce_283(val, _values, result); end
-
   def _reduce_29(val, _values, result); end
+
+  def _reduce_290(val, _values, result); end
+
+  def _reduce_291(val, _values, result); end
+
+  def _reduce_292(val, _values, result); end
+
+  def _reduce_293(val, _values, result); end
 
   def _reduce_294(val, _values, result); end
 
@@ -7877,13 +7677,13 @@ class Parser::Ruby27
 
   def _reduce_31(val, _values, result); end
 
-  def _reduce_310(val, _values, result); end
-
   def _reduce_311(val, _values, result); end
 
   def _reduce_312(val, _values, result); end
 
   def _reduce_313(val, _values, result); end
+
+  def _reduce_314(val, _values, result); end
 
   def _reduce_315(val, _values, result); end
 
@@ -7931,25 +7731,23 @@ class Parser::Ruby27
 
   def _reduce_335(val, _values, result); end
 
-  def _reduce_336(val, _values, result); end
-
   def _reduce_337(val, _values, result); end
-
-  def _reduce_338(val, _values, result); end
-
-  def _reduce_339(val, _values, result); end
-
-  def _reduce_34(val, _values, result); end
 
   def _reduce_340(val, _values, result); end
 
-  def _reduce_342(val, _values, result); end
+  def _reduce_344(val, _values, result); end
 
-  def _reduce_345(val, _values, result); end
+  def _reduce_346(val, _values, result); end
 
   def _reduce_349(val, _values, result); end
 
+  def _reduce_35(val, _values, result); end
+
+  def _reduce_350(val, _values, result); end
+
   def _reduce_351(val, _values, result); end
+
+  def _reduce_352(val, _values, result); end
 
   def _reduce_354(val, _values, result); end
 
@@ -7958,6 +7756,8 @@ class Parser::Ruby27
   def _reduce_356(val, _values, result); end
 
   def _reduce_357(val, _values, result); end
+
+  def _reduce_358(val, _values, result); end
 
   def _reduce_359(val, _values, result); end
 
@@ -7991,13 +7791,13 @@ class Parser::Ruby27
 
   def _reduce_372(val, _values, result); end
 
-  def _reduce_373(val, _values, result); end
-
   def _reduce_374(val, _values, result); end
 
   def _reduce_375(val, _values, result); end
 
   def _reduce_376(val, _values, result); end
+
+  def _reduce_377(val, _values, result); end
 
   def _reduce_378(val, _values, result); end
 
@@ -8009,13 +7809,13 @@ class Parser::Ruby27
 
   def _reduce_381(val, _values, result); end
 
-  def _reduce_382(val, _values, result); end
-
   def _reduce_383(val, _values, result); end
 
   def _reduce_384(val, _values, result); end
 
   def _reduce_385(val, _values, result); end
+
+  def _reduce_386(val, _values, result); end
 
   def _reduce_387(val, _values, result); end
 
@@ -8031,11 +7831,11 @@ class Parser::Ruby27
 
   def _reduce_392(val, _values, result); end
 
-  def _reduce_393(val, _values, result); end
-
   def _reduce_394(val, _values, result); end
 
   def _reduce_395(val, _values, result); end
+
+  def _reduce_396(val, _values, result); end
 
   def _reduce_397(val, _values, result); end
 
@@ -8109,27 +7909,17 @@ class Parser::Ruby27
 
   def _reduce_428(val, _values, result); end
 
-  def _reduce_429(val, _values, result); end
-
-  def _reduce_43(val, _values, result); end
-
   def _reduce_430(val, _values, result); end
 
   def _reduce_431(val, _values, result); end
 
-  def _reduce_433(val, _values, result); end
-
-  def _reduce_434(val, _values, result); end
+  def _reduce_432(val, _values, result); end
 
   def _reduce_435(val, _values, result); end
 
-  def _reduce_436(val, _values, result); end
+  def _reduce_437(val, _values, result); end
 
-  def _reduce_438(val, _values, result); end
-
-  def _reduce_439(val, _values, result); end
-
-  def _reduce_440(val, _values, result); end
+  def _reduce_44(val, _values, result); end
 
   def _reduce_442(val, _values, result); end
 
@@ -8139,15 +7929,21 @@ class Parser::Ruby27
 
   def _reduce_445(val, _values, result); end
 
+  def _reduce_446(val, _values, result); end
+
   def _reduce_447(val, _values, result); end
+
+  def _reduce_448(val, _values, result); end
 
   def _reduce_449(val, _values, result); end
 
-  def _reduce_45(val, _values, result); end
+  def _reduce_450(val, _values, result); end
 
   def _reduce_451(val, _values, result); end
 
   def _reduce_452(val, _values, result); end
+
+  def _reduce_453(val, _values, result); end
 
   def _reduce_454(val, _values, result); end
 
@@ -8181,6 +7977,8 @@ class Parser::Ruby27
 
   def _reduce_469(val, _values, result); end
 
+  def _reduce_47(val, _values, result); end
+
   def _reduce_470(val, _values, result); end
 
   def _reduce_471(val, _values, result); end
@@ -8191,9 +7989,9 @@ class Parser::Ruby27
 
   def _reduce_474(val, _values, result); end
 
-  def _reduce_476(val, _values, result); end
+  def _reduce_475(val, _values, result); end
 
-  def _reduce_477(val, _values, result); end
+  def _reduce_476(val, _values, result); end
 
   def _reduce_478(val, _values, result); end
 
@@ -8208,6 +8006,8 @@ class Parser::Ruby27
   def _reduce_482(val, _values, result); end
 
   def _reduce_483(val, _values, result); end
+
+  def _reduce_484(val, _values, result); end
 
   def _reduce_485(val, _values, result); end
 
@@ -8245,6 +8045,8 @@ class Parser::Ruby27
 
   def _reduce_50(val, _values, result); end
 
+  def _reduce_500(val, _values, result); end
+
   def _reduce_501(val, _values, result); end
 
   def _reduce_502(val, _values, result); end
@@ -8253,17 +8055,35 @@ class Parser::Ruby27
 
   def _reduce_504(val, _values, result); end
 
+  def _reduce_505(val, _values, result); end
+
+  def _reduce_506(val, _values, result); end
+
+  def _reduce_507(val, _values, result); end
+
   def _reduce_508(val, _values, result); end
 
   def _reduce_509(val, _values, result); end
 
-  def _reduce_51(val, _values, result); end
+  def _reduce_510(val, _values, result); end
+
+  def _reduce_511(val, _values, result); end
+
+  def _reduce_512(val, _values, result); end
+
+  def _reduce_513(val, _values, result); end
+
+  def _reduce_514(val, _values, result); end
+
+  def _reduce_515(val, _values, result); end
+
+  def _reduce_516(val, _values, result); end
+
+  def _reduce_517(val, _values, result); end
 
   def _reduce_518(val, _values, result); end
 
   def _reduce_519(val, _values, result); end
-
-  def _reduce_52(val, _values, result); end
 
   def _reduce_520(val, _values, result); end
 
@@ -8283,17 +8103,29 @@ class Parser::Ruby27
 
   def _reduce_528(val, _values, result); end
 
+  def _reduce_529(val, _values, result); end
+
   def _reduce_53(val, _values, result); end
+
+  def _reduce_530(val, _values, result); end
 
   def _reduce_531(val, _values, result); end
 
+  def _reduce_532(val, _values, result); end
+
   def _reduce_533(val, _values, result); end
+
+  def _reduce_534(val, _values, result); end
+
+  def _reduce_536(val, _values, result); end
 
   def _reduce_537(val, _values, result); end
 
   def _reduce_538(val, _values, result); end
 
   def _reduce_539(val, _values, result); end
+
+  def _reduce_54(val, _values, result); end
 
   def _reduce_540(val, _values, result); end
 
@@ -8317,10 +8149,6 @@ class Parser::Ruby27
 
   def _reduce_550(val, _values, result); end
 
-  def _reduce_551(val, _values, result); end
-
-  def _reduce_552(val, _values, result); end
-
   def _reduce_553(val, _values, result); end
 
   def _reduce_554(val, _values, result); end
@@ -8335,21 +8163,11 @@ class Parser::Ruby27
 
   def _reduce_559(val, _values, result); end
 
-  def _reduce_56(val, _values, result); end
-
   def _reduce_560(val, _values, result); end
-
-  def _reduce_561(val, _values, result); end
-
-  def _reduce_562(val, _values, result); end
 
   def _reduce_563(val, _values, result); end
 
   def _reduce_564(val, _values, result); end
-
-  def _reduce_565(val, _values, result); end
-
-  def _reduce_566(val, _values, result); end
 
   def _reduce_567(val, _values, result); end
 
@@ -8357,11 +8175,11 @@ class Parser::Ruby27
 
   def _reduce_569(val, _values, result); end
 
-  def _reduce_57(val, _values, result); end
-
-  def _reduce_570(val, _values, result); end
-
   def _reduce_571(val, _values, result); end
+
+  def _reduce_572(val, _values, result); end
+
+  def _reduce_574(val, _values, result); end
 
   def _reduce_575(val, _values, result); end
 
@@ -8373,41 +8191,13 @@ class Parser::Ruby27
 
   def _reduce_579(val, _values, result); end
 
-  def _reduce_580(val, _values, result); end
+  def _reduce_58(val, _values, result); end
 
-  def _reduce_581(val, _values, result); end
-
-  def _reduce_582(val, _values, result); end
-
-  def _reduce_583(val, _values, result); end
-
-  def _reduce_584(val, _values, result); end
-
-  def _reduce_585(val, _values, result); end
-
-  def _reduce_586(val, _values, result); end
-
-  def _reduce_587(val, _values, result); end
-
-  def _reduce_588(val, _values, result); end
-
-  def _reduce_589(val, _values, result); end
-
-  def _reduce_590(val, _values, result); end
-
-  def _reduce_591(val, _values, result); end
+  def _reduce_59(val, _values, result); end
 
   def _reduce_592(val, _values, result); end
 
   def _reduce_593(val, _values, result); end
-
-  def _reduce_594(val, _values, result); end
-
-  def _reduce_595(val, _values, result); end
-
-  def _reduce_596(val, _values, result); end
-
-  def _reduce_597(val, _values, result); end
 
   def _reduce_598(val, _values, result); end
 
@@ -8415,181 +8205,29 @@ class Parser::Ruby27
 
   def _reduce_6(val, _values, result); end
 
-  def _reduce_600(val, _values, result); end
-
-  def _reduce_601(val, _values, result); end
-
-  def _reduce_602(val, _values, result); end
+  def _reduce_60(val, _values, result); end
 
   def _reduce_603(val, _values, result); end
 
-  def _reduce_604(val, _values, result); end
-
-  def _reduce_605(val, _values, result); end
-
-  def _reduce_606(val, _values, result); end
-
   def _reduce_607(val, _values, result); end
-
-  def _reduce_608(val, _values, result); end
-
-  def _reduce_609(val, _values, result); end
-
-  def _reduce_61(val, _values, result); end
-
-  def _reduce_610(val, _values, result); end
-
-  def _reduce_611(val, _values, result); end
-
-  def _reduce_612(val, _values, result); end
-
-  def _reduce_613(val, _values, result); end
-
-  def _reduce_614(val, _values, result); end
-
-  def _reduce_615(val, _values, result); end
-
-  def _reduce_616(val, _values, result); end
-
-  def _reduce_617(val, _values, result); end
-
-  def _reduce_618(val, _values, result); end
-
-  def _reduce_619(val, _values, result); end
 
   def _reduce_62(val, _values, result); end
 
-  def _reduce_620(val, _values, result); end
-
-  def _reduce_621(val, _values, result); end
-
-  def _reduce_622(val, _values, result); end
-
-  def _reduce_623(val, _values, result); end
-
-  def _reduce_624(val, _values, result); end
-
-  def _reduce_625(val, _values, result); end
-
-  def _reduce_626(val, _values, result); end
-
-  def _reduce_627(val, _values, result); end
-
-  def _reduce_628(val, _values, result); end
-
-  def _reduce_629(val, _values, result); end
-
   def _reduce_63(val, _values, result); end
 
-  def _reduce_630(val, _values, result); end
-
-  def _reduce_631(val, _values, result); end
-
-  def _reduce_632(val, _values, result); end
-
-  def _reduce_633(val, _values, result); end
-
-  def _reduce_634(val, _values, result); end
-
-  def _reduce_636(val, _values, result); end
-
-  def _reduce_637(val, _values, result); end
-
-  def _reduce_638(val, _values, result); end
-
-  def _reduce_639(val, _values, result); end
-
-  def _reduce_640(val, _values, result); end
-
-  def _reduce_641(val, _values, result); end
-
-  def _reduce_642(val, _values, result); end
-
-  def _reduce_643(val, _values, result); end
-
-  def _reduce_644(val, _values, result); end
-
-  def _reduce_645(val, _values, result); end
-
-  def _reduce_646(val, _values, result); end
-
-  def _reduce_647(val, _values, result); end
-
-  def _reduce_648(val, _values, result); end
-
-  def _reduce_649(val, _values, result); end
+  def _reduce_64(val, _values, result); end
 
   def _reduce_65(val, _values, result); end
 
-  def _reduce_650(val, _values, result); end
-
-  def _reduce_653(val, _values, result); end
-
-  def _reduce_654(val, _values, result); end
-
-  def _reduce_655(val, _values, result); end
-
-  def _reduce_656(val, _values, result); end
-
-  def _reduce_657(val, _values, result); end
-
-  def _reduce_658(val, _values, result); end
-
-  def _reduce_659(val, _values, result); end
-
   def _reduce_66(val, _values, result); end
-
-  def _reduce_660(val, _values, result); end
-
-  def _reduce_661(val, _values, result); end
-
-  def _reduce_664(val, _values, result); end
-
-  def _reduce_665(val, _values, result); end
-
-  def _reduce_668(val, _values, result); end
-
-  def _reduce_669(val, _values, result); end
 
   def _reduce_67(val, _values, result); end
 
-  def _reduce_670(val, _values, result); end
-
-  def _reduce_672(val, _values, result); end
-
-  def _reduce_673(val, _values, result); end
-
-  def _reduce_675(val, _values, result); end
-
-  def _reduce_676(val, _values, result); end
-
-  def _reduce_677(val, _values, result); end
-
-  def _reduce_678(val, _values, result); end
-
-  def _reduce_679(val, _values, result); end
-
   def _reduce_68(val, _values, result); end
-
-  def _reduce_680(val, _values, result); end
 
   def _reduce_69(val, _values, result); end
 
-  def _reduce_693(val, _values, result); end
-
-  def _reduce_694(val, _values, result); end
-
-  def _reduce_699(val, _values, result); end
-
   def _reduce_70(val, _values, result); end
-
-  def _reduce_700(val, _values, result); end
-
-  def _reduce_701(val, _values, result); end
-
-  def _reduce_705(val, _values, result); end
-
-  def _reduce_709(val, _values, result); end
 
   def _reduce_71(val, _values, result); end
 
@@ -8603,13 +8241,13 @@ class Parser::Ruby27
 
   def _reduce_76(val, _values, result); end
 
-  def _reduce_77(val, _values, result); end
-
   def _reduce_78(val, _values, result); end
 
   def _reduce_79(val, _values, result); end
 
   def _reduce_8(val, _values, result); end
+
+  def _reduce_80(val, _values, result); end
 
   def _reduce_81(val, _values, result); end
 
@@ -8623,13 +8261,13 @@ class Parser::Ruby27
 
   def _reduce_86(val, _values, result); end
 
-  def _reduce_87(val, _values, result); end
-
   def _reduce_88(val, _values, result); end
 
   def _reduce_89(val, _values, result); end
 
   def _reduce_9(val, _values, result); end
+
+  def _reduce_90(val, _values, result); end
 
   def _reduce_91(val, _values, result); end
 
@@ -8659,7 +8297,7 @@ class Parser::Ruby27
   Racc_token_to_s_table = ::T.let(nil, ::T.untyped)
 end
 
-class Parser::Ruby27
+class Parser::Ruby26
 end
 
 class Parser::Source::Buffer
@@ -8824,21 +8462,6 @@ end
 class Parser::Source::Map::Definition
 end
 
-class Parser::Source::Map::EndlessDefinition
-  def assignment(); end
-
-  def initialize(keyword_l, operator_l, name_l, assignment_l, body_l); end
-
-  def keyword(); end
-
-  def name(); end
-
-  def operator(); end
-end
-
-class Parser::Source::Map::EndlessDefinition
-end
-
 class Parser::Source::Map::For
   def begin(); end
 
@@ -8893,6 +8516,23 @@ class Parser::Source::Map::Keyword
 end
 
 class Parser::Source::Map::Keyword
+end
+
+class Parser::Source::Map::MethodDefinition
+  def assignment(); end
+
+  def end(); end
+
+  def initialize(keyword_l, operator_l, name_l, end_l, assignment_l, body_l); end
+
+  def keyword(); end
+
+  def name(); end
+
+  def operator(); end
+end
+
+class Parser::Source::Map::MethodDefinition
 end
 
 class Parser::Source::Map::ObjcKwarg
@@ -9266,2855 +8906,6 @@ class Proc
   def clone(); end
 end
 
-module Process
-  CLOCK_TAI = ::T.let(nil, ::T.untyped)
-end
-
-module RBS
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
-module RBS::AST
-end
-
-class RBS::AST::Annotation
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(string:, location:); end
-
-  def location(); end
-
-  def string(); end
-
-  def to_json(*a); end
-end
-
-class RBS::AST::Annotation
-end
-
-class RBS::AST::Comment
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(string:, location:); end
-
-  def location(); end
-
-  def string(); end
-
-  def to_json(*a); end
-end
-
-class RBS::AST::Comment
-end
-
-module RBS::AST::Declarations
-end
-
-class RBS::AST::Declarations::Alias
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type:, annotations:, location:, comment:); end
-
-  def location(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def type(); end
-end
-
-class RBS::AST::Declarations::Alias
-end
-
-class RBS::AST::Declarations::Base
-end
-
-class RBS::AST::Declarations::Base
-end
-
-class RBS::AST::Declarations::Class
-  include ::RBS::AST::Declarations::NestedDeclarationHelper
-  include ::RBS::AST::Declarations::MixinHelper
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type_params:, super_class:, members:, annotations:, location:, comment:); end
-
-  def location(); end
-
-  def members(); end
-
-  def name(); end
-
-  def super_class(); end
-
-  def to_json(*a); end
-
-  def type_params(); end
-end
-
-class RBS::AST::Declarations::Class::Super
-  def ==(other); end
-
-  def args(); end
-
-  def eql?(other); end
-
-  def initialize(name:, args:); end
-
-  def name(); end
-
-  def to_json(*a); end
-end
-
-class RBS::AST::Declarations::Class::Super
-end
-
-class RBS::AST::Declarations::Class
-end
-
-class RBS::AST::Declarations::Constant
-  def ==(other); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type:, location:, comment:); end
-
-  def location(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def type(); end
-end
-
-class RBS::AST::Declarations::Constant
-end
-
-class RBS::AST::Declarations::Extension
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def extension_name(); end
-
-  def initialize(name:, type_params:, extension_name:, members:, annotations:, location:, comment:); end
-
-  def location(); end
-
-  def members(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def type_params(); end
-end
-
-class RBS::AST::Declarations::Extension
-end
-
-class RBS::AST::Declarations::Global
-  def ==(other); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type:, location:, comment:); end
-
-  def location(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def type(); end
-end
-
-class RBS::AST::Declarations::Global
-end
-
-class RBS::AST::Declarations::Interface
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type_params:, members:, annotations:, location:, comment:); end
-
-  def location(); end
-
-  def members(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def type_params(); end
-end
-
-class RBS::AST::Declarations::Interface
-end
-
-module RBS::AST::Declarations::MixinHelper
-  def each_mixin(&block); end
-end
-
-module RBS::AST::Declarations::MixinHelper
-end
-
-class RBS::AST::Declarations::Module
-  include ::RBS::AST::Declarations::NestedDeclarationHelper
-  include ::RBS::AST::Declarations::MixinHelper
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type_params:, members:, self_types:, annotations:, location:, comment:); end
-
-  def location(); end
-
-  def members(); end
-
-  def name(); end
-
-  def self_types(); end
-
-  def to_json(*a); end
-
-  def type_params(); end
-end
-
-class RBS::AST::Declarations::Module::Self
-  def ==(other); end
-
-  def args(); end
-
-  def eql?(other); end
-
-  def initialize(name:, args:, location:); end
-
-  def location(); end
-
-  def name(); end
-
-  def to_json(*a); end
-end
-
-class RBS::AST::Declarations::Module::Self
-end
-
-class RBS::AST::Declarations::Module
-end
-
-class RBS::AST::Declarations::ModuleTypeParams
-  def ==(other); end
-
-  def [](name); end
-
-  def add(param); end
-
-  def each(&block); end
-
-  def empty?(); end
-
-  def eql?(other); end
-
-  def params(); end
-
-  def rename_to(names); end
-
-  def size(); end
-
-  def skip_validation?(name); end
-
-  def to_json(*a); end
-
-  def variance(name); end
-end
-
-class RBS::AST::Declarations::ModuleTypeParams::TypeParam
-  def name(); end
-
-  def name=(_); end
-
-  def skip_validation(); end
-
-  def skip_validation=(_); end
-
-  def to_json(*a); end
-
-  def variance(); end
-
-  def variance=(_); end
-end
-
-class RBS::AST::Declarations::ModuleTypeParams::TypeParam
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::AST::Declarations::ModuleTypeParams
-  def self.empty(); end
-end
-
-module RBS::AST::Declarations::NestedDeclarationHelper
-  def each_decl(); end
-
-  def each_member(); end
-end
-
-module RBS::AST::Declarations::NestedDeclarationHelper
-end
-
-module RBS::AST::Declarations
-end
-
-module RBS::AST::Members
-end
-
-class RBS::AST::Members::Alias
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(new_name:, old_name:, kind:, annotations:, location:, comment:); end
-
-  def instance?(); end
-
-  def kind(); end
-
-  def location(); end
-
-  def new_name(); end
-
-  def old_name(); end
-
-  def singleton?(); end
-
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::Alias
-end
-
-class RBS::AST::Members::AttrAccessor
-  include ::RBS::AST::Members::Attribute
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::AttrAccessor
-end
-
-class RBS::AST::Members::AttrReader
-  include ::RBS::AST::Members::Attribute
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::AttrReader
-end
-
-class RBS::AST::Members::AttrWriter
-  include ::RBS::AST::Members::Attribute
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::AttrWriter
-end
-
-module RBS::AST::Members::Attribute
-  def ==(other); end
-
-  def annotations(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def hash(); end
-
-  def initialize(name:, type:, ivar_name:, annotations:, location:, comment:); end
-
-  def ivar_name(); end
-
-  def location(); end
-
-  def name(); end
-
-  def type(); end
-end
-
-module RBS::AST::Members::Attribute
-end
-
-class RBS::AST::Members::Base
-end
-
-class RBS::AST::Members::Base
-end
-
-class RBS::AST::Members::ClassInstanceVariable
-  include ::RBS::AST::Members::Var
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::ClassInstanceVariable
-end
-
-class RBS::AST::Members::ClassVariable
-  include ::RBS::AST::Members::Var
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::ClassVariable
-end
-
-class RBS::AST::Members::Extend
-  include ::RBS::AST::Members::Mixin
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::Extend
-end
-
-class RBS::AST::Members::Include
-  include ::RBS::AST::Members::Mixin
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::Include
-end
-
-class RBS::AST::Members::InstanceVariable
-  include ::RBS::AST::Members::Var
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::InstanceVariable
-end
-
-module RBS::AST::Members::LocationOnly
-  def ==(other); end
-
-  def eql?(other); end
-
-  def hash(); end
-
-  def initialize(location:); end
-
-  def location(); end
-end
-
-module RBS::AST::Members::LocationOnly
-end
-
-class RBS::AST::Members::MethodDefinition
-  def ==(other); end
-
-  def annotations(); end
-
-  def attributes(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def initialize(name:, kind:, types:, annotations:, location:, comment:, attributes:, overload:); end
-
-  def instance?(); end
-
-  def kind(); end
-
-  def location(); end
-
-  def name(); end
-
-  def overload(); end
-
-  def overload?(); end
-
-  def singleton?(); end
-
-  def to_json(*a); end
-
-  def types(); end
-
-  def update(name: T.unsafe(nil), kind: T.unsafe(nil), types: T.unsafe(nil), annotations: T.unsafe(nil), location: T.unsafe(nil), comment: T.unsafe(nil), attributes: T.unsafe(nil), overload: T.unsafe(nil)); end
-end
-
-class RBS::AST::Members::MethodDefinition
-end
-
-module RBS::AST::Members::Mixin
-  def ==(other); end
-
-  def annotations(); end
-
-  def args(); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def hash(); end
-
-  def initialize(name:, args:, annotations:, location:, comment:); end
-
-  def location(); end
-
-  def name(); end
-end
-
-module RBS::AST::Members::Mixin
-end
-
-class RBS::AST::Members::Prepend
-  include ::RBS::AST::Members::Mixin
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::Prepend
-end
-
-class RBS::AST::Members::Private
-  include ::RBS::AST::Members::LocationOnly
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::Private
-end
-
-class RBS::AST::Members::Public
-  include ::RBS::AST::Members::LocationOnly
-  def to_json(*a); end
-end
-
-class RBS::AST::Members::Public
-end
-
-module RBS::AST::Members::Var
-  def ==(other); end
-
-  def comment(); end
-
-  def eql?(other); end
-
-  def hash(); end
-
-  def initialize(name:, type:, location:, comment:); end
-
-  def location(); end
-
-  def name(); end
-
-  def type(); end
-end
-
-module RBS::AST::Members::Var
-end
-
-module RBS::AST::Members
-end
-
-module RBS::AST
-end
-
-class RBS::Buffer
-  def content(); end
-
-  def initialize(name:, content:); end
-
-  def last_position(); end
-
-  def lines(); end
-
-  def loc_to_pos(loc); end
-
-  def name(); end
-
-  def pos_to_loc(pos); end
-
-  def ranges(); end
-end
-
-class RBS::Buffer
-end
-
-module RBS::BuiltinNames
-  Array = ::T.let(nil, ::T.untyped)
-  BasicObject = ::T.let(nil, ::T.untyped)
-  Class = ::T.let(nil, ::T.untyped)
-  Comparable = ::T.let(nil, ::T.untyped)
-  Enumerable = ::T.let(nil, ::T.untyped)
-  Enumerator = ::T.let(nil, ::T.untyped)
-  FalseClass = ::T.let(nil, ::T.untyped)
-  Float = ::T.let(nil, ::T.untyped)
-  Hash = ::T.let(nil, ::T.untyped)
-  Integer = ::T.let(nil, ::T.untyped)
-  Kernel = ::T.let(nil, ::T.untyped)
-  Module = ::T.let(nil, ::T.untyped)
-  Object = ::T.let(nil, ::T.untyped)
-  Range = ::T.let(nil, ::T.untyped)
-  Regexp = ::T.let(nil, ::T.untyped)
-  Set = ::T.let(nil, ::T.untyped)
-  String = ::T.let(nil, ::T.untyped)
-  Symbol = ::T.let(nil, ::T.untyped)
-  TrueClass = ::T.let(nil, ::T.untyped)
-end
-
-class RBS::BuiltinNames::Name
-  def initialize(name:); end
-
-  def instance_type(*args); end
-
-  def instance_type?(type); end
-
-  def name(); end
-
-  def singleton_type(); end
-
-  def singleton_type?(type); end
-end
-
-class RBS::BuiltinNames::Name
-  def self.define(name, namespace: T.unsafe(nil)); end
-end
-
-module RBS::BuiltinNames
-end
-
-class RBS::Constant
-  def ==(other); end
-
-  def declaration(); end
-
-  def eql?(other); end
-
-  def initialize(name:, type:, entry:); end
-
-  def name(); end
-
-  def type(); end
-end
-
-class RBS::Constant
-end
-
-class RBS::ConstantTable
-  def absolute_type(type, context:); end
-
-  def absolute_type_name(type_name, context:, location:); end
-
-  def constant_scopes(name); end
-
-  def constant_scopes0(name, scopes: T.unsafe(nil)); end
-
-  def constant_scopes_cache(); end
-
-  def constant_scopes_module(name, scopes:); end
-
-  def definition_builder(); end
-
-  def env(); end
-
-  def initialize(builder:); end
-
-  def name_to_constant(name); end
-
-  def resolve_constant_reference(name, context:); end
-
-  def resolve_constant_reference_context(name, context:); end
-
-  def resolve_constant_reference_inherit(name, scopes:, no_object: T.unsafe(nil)); end
-
-  def resolver(); end
-
-  def split_name(name); end
-end
-
-class RBS::ConstantTable
-end
-
-class RBS::Definition
-  def ancestors(); end
-
-  def class?(); end
-
-  def class_type?(); end
-
-  def class_variables(); end
-
-  def each_type(&block); end
-
-  def entry(); end
-
-  def initialize(type_name:, entry:, self_type:, ancestors:); end
-
-  def instance_type?(); end
-
-  def interface?(); end
-
-  def interface_type?(); end
-
-  def map_method_type(&block); end
-
-  def methods(); end
-
-  def module?(); end
-
-  def self_type(); end
-
-  def sub(s); end
-
-  def type_name(); end
-
-  def type_params(); end
-
-  def type_params_decl(); end
-end
-
-module RBS::Definition::Ancestor
-end
-
-class RBS::Definition::Ancestor::Instance
-  def args(); end
-
-  def args=(_); end
-
-  def name(); end
-
-  def name=(_); end
-end
-
-class RBS::Definition::Ancestor::Instance
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::Definition::Ancestor::Singleton
-  def name(); end
-
-  def name=(_); end
-end
-
-class RBS::Definition::Ancestor::Singleton
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-module RBS::Definition::Ancestor
-end
-
-class RBS::Definition::InstanceAncestors
-  def ancestors(); end
-
-  def apply(args, location:); end
-
-  def initialize(type_name:, params:, ancestors:); end
-
-  def params(); end
-
-  def type_name(); end
-end
-
-class RBS::Definition::InstanceAncestors
-end
-
-class RBS::Definition::Method
-  def accessibility(); end
-
-  def annotations(); end
-
-  def attributes(); end
-
-  def comments(); end
-
-  def defined_in(); end
-
-  def defs(); end
-
-  def implemented_in(); end
-
-  def initialize(super_method:, defs:, accessibility:); end
-
-  def map_method_type(&block); end
-
-  def map_type(&block); end
-
-  def method_types(); end
-
-  def private?(); end
-
-  def public?(); end
-
-  def sub(s); end
-
-  def super_method(); end
-end
-
-class RBS::Definition::Method::TypeDef
-  def annotations(); end
-
-  def comment(); end
-
-  def defined_in(); end
-
-  def implemented_in(); end
-
-  def initialize(type:, member:, defined_in:, implemented_in:); end
-
-  def member(); end
-
-  def type(); end
-
-  def update(type: T.unsafe(nil), member: T.unsafe(nil), defined_in: T.unsafe(nil), implemented_in: T.unsafe(nil)); end
-end
-
-class RBS::Definition::Method::TypeDef
-end
-
-class RBS::Definition::Method
-end
-
-class RBS::Definition::SingletonAncestors
-  def ancestors(); end
-
-  def initialize(type_name:, ancestors:); end
-
-  def type_name(); end
-end
-
-class RBS::Definition::SingletonAncestors
-end
-
-class RBS::Definition::Variable
-  def declared_in(); end
-
-  def initialize(parent_variable:, type:, declared_in:); end
-
-  def parent_variable(); end
-
-  def sub(s); end
-
-  def type(); end
-end
-
-class RBS::Definition::Variable
-end
-
-class RBS::Definition
-end
-
-class RBS::DefinitionBuilder
-  def build_instance(type_name); end
-
-  def build_interface(type_name); end
-
-  def build_one_instance(type_name); end
-
-  def build_one_singleton(type_name); end
-
-  def build_singleton(type_name); end
-
-  def each_member_with_accessibility(members, accessibility: T.unsafe(nil)); end
-
-  def env(); end
-
-  def expand_alias(type_name); end
-
-  def initialize(env:); end
-
-  def instance_ancestors(type_name, building_ancestors: T.unsafe(nil)); end
-
-  def instance_ancestors_cache(); end
-
-  def instance_cache(); end
-
-  def interface_cache(); end
-
-  def merge_definitions(type_name, pairs, entry:, self_type:, ancestors:); end
-
-  def merge_method(methods, name, method, sub); end
-
-  def merge_variable(variables, name, variable); end
-
-  def method_definition_members(type_name, entry, kind:); end
-
-  def mixin_ancestors(entry, included_modules:, extended_modules:, prepended_modules:); end
-
-  def one_instance_ancestors(type_name); end
-
-  def one_instance_ancestors_cache(); end
-
-  def one_instance_cache(); end
-
-  def one_singleton_ancestors(type_name); end
-
-  def one_singleton_ancestors_cache(); end
-
-  def one_singleton_cache(); end
-
-  def singleton_ancestor_cache(); end
-
-  def singleton_ancestors(type_name, building_ancestors: T.unsafe(nil)); end
-
-  def singleton_cache(); end
-
-  def try_cache(type_name, cache:); end
-
-  def type_name_resolver(); end
-
-  def validate_parameter_variance(decl:, methods:); end
-
-  def validate_params_with(type_params, result:); end
-
-  def validate_super_class!(type_name, entry); end
-end
-
-class RBS::DefinitionBuilder::OneAncestors
-  def each_ancestor(&block); end
-
-  def extended_modules(); end
-
-  def included_modules(); end
-
-  def initialize(type_name:, params:, super_class:, self_types:, included_modules:, prepended_modules:, extended_modules:); end
-
-  def params(); end
-
-  def prepended_modules(); end
-
-  def self_types(); end
-
-  def super_class(); end
-
-  def type_name(); end
-end
-
-class RBS::DefinitionBuilder::OneAncestors
-  def self.class_instance(type_name:, params:, super_class:); end
-
-  def self.module_instance(type_name:, params:); end
-
-  def self.singleton(type_name:, super_class:); end
-end
-
-class RBS::DefinitionBuilder
-end
-
-class RBS::DuplicatedDeclarationError
-  def decls(); end
-
-  def initialize(name, *decls); end
-
-  def name(); end
-end
-
-class RBS::DuplicatedDeclarationError
-end
-
-class RBS::DuplicatedMethodDefinitionError
-  def decl(); end
-
-  def initialize(decl:, name:, location:); end
-
-  def location(); end
-end
-
-class RBS::DuplicatedMethodDefinitionError
-  def self.check!(decl:, methods:, name:, location:); end
-end
-
-class RBS::Environment
-  def <<(decl); end
-
-  def absolute_type(resolver, type, context:); end
-
-  def absolute_type_name(resolver, type_name, context:); end
-
-  def alias_decls(); end
-
-  def buffers(); end
-
-  def cache_name(cache, name:, decl:, outer:); end
-
-  def class_decls(); end
-
-  def constant_decls(); end
-
-  def declarations(); end
-
-  def global_decls(); end
-
-  def insert_decl(decl, outer:, namespace:); end
-
-  def interface_decls(); end
-
-  def resolve_declaration(resolver, decl, outer:, prefix:); end
-
-  def resolve_member(resolver, member, context:); end
-
-  def resolve_type_names(); end
-end
-
-class RBS::Environment::ClassEntry
-  def primary(); end
-end
-
-class RBS::Environment::ClassEntry
-end
-
-module RBS::Environment::ContextUtil
-  def context(); end
-end
-
-module RBS::Environment::ContextUtil
-end
-
-class RBS::Environment::ModuleEntry
-  def primary(); end
-
-  def self_types(); end
-end
-
-class RBS::Environment::ModuleEntry
-end
-
-class RBS::Environment::MultiEntry
-  def decls(); end
-
-  def initialize(name:); end
-
-  def insert(decl:, outer:); end
-
-  def name(); end
-
-  def type_params(); end
-
-  def validate_type_params(); end
-end
-
-class RBS::Environment::MultiEntry::D
-  include ::RBS::Environment::ContextUtil
-  def decl(); end
-
-  def decl=(_); end
-
-  def outer(); end
-
-  def outer=(_); end
-end
-
-class RBS::Environment::MultiEntry::D
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::Environment::MultiEntry
-end
-
-class RBS::Environment::SingleEntry
-  include ::RBS::Environment::ContextUtil
-  def decl(); end
-
-  def initialize(name:, decl:, outer:); end
-
-  def name(); end
-
-  def outer(); end
-end
-
-class RBS::Environment::SingleEntry
-end
-
-class RBS::Environment
-  def self.from_loader(loader); end
-end
-
-class RBS::EnvironmentLoader
-  def add(path: T.unsafe(nil), library: T.unsafe(nil)); end
-
-  def each_signature(path=T.unsafe(nil), immediate: T.unsafe(nil), &block); end
-
-  def gem?(name, version); end
-
-  def gem_vendor_path(); end
-
-  def initialize(stdlib_root: T.unsafe(nil), gem_vendor_path: T.unsafe(nil)); end
-
-  def load(env:); end
-
-  def no_builtin!(); end
-
-  def no_builtin?(); end
-
-  def paths(); end
-
-  def stdlib?(name); end
-
-  def stdlib_root(); end
-  STDLIB_ROOT = ::T.let(nil, ::T.untyped)
-end
-
-class RBS::EnvironmentLoader::GemPath
-  def name(); end
-
-  def name=(_); end
-
-  def path(); end
-
-  def path=(_); end
-
-  def version(); end
-
-  def version=(_); end
-end
-
-class RBS::EnvironmentLoader::GemPath
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::EnvironmentLoader::LibraryPath
-  def name(); end
-
-  def name=(_); end
-
-  def path(); end
-
-  def path=(_); end
-end
-
-class RBS::EnvironmentLoader::LibraryPath
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::EnvironmentLoader::UnknownLibraryNameError
-  def initialize(name:); end
-
-  def name(); end
-end
-
-class RBS::EnvironmentLoader::UnknownLibraryNameError
-end
-
-class RBS::EnvironmentLoader
-  def self.gem_sig_path(name, version); end
-
-  def self.parse_library(lib); end
-end
-
-class RBS::EnvironmentWalker
-  include ::TSort
-  def builder(); end
-
-  def each_type_name(type, &block); end
-
-  def env(); end
-
-  def initialize(env:); end
-
-  def only_ancestors!(only=T.unsafe(nil)); end
-
-  def only_ancestors?(); end
-
-  def tsort_each_child(name, &block); end
-
-  def tsort_each_node(&block); end
-end
-
-class RBS::EnvironmentWalker
-end
-
-class RBS::Factory
-  def type_name(string); end
-end
-
-class RBS::Factory
-end
-
-class RBS::GenericParameterMismatchError
-  def decl(); end
-
-  def initialize(name:, decl:); end
-
-  def name(); end
-end
-
-class RBS::GenericParameterMismatchError
-end
-
-class RBS::InconsistentMethodVisibilityError
-  def initialize(type_name:, method_name:, kind:, member_pairs:); end
-
-  def kind(); end
-
-  def member_pairs(); end
-
-  def method_name(); end
-
-  def type_name(); end
-end
-
-class RBS::InconsistentMethodVisibilityError
-end
-
-class RBS::InvalidExtensionParameterError
-  def class_params(); end
-
-  def extension_name(); end
-
-  def extension_params(); end
-
-  def initialize(type_name:, extension_name:, extension_params:, class_params:, location:); end
-
-  def location(); end
-
-  def type_name(); end
-end
-
-class RBS::InvalidExtensionParameterError
-  def self.check!(type_name:, extension_name:, extension_params:, class_params:, location:); end
-end
-
-class RBS::InvalidOverloadMethodError
-  def initialize(type_name:, method_name:, kind:, members:); end
-
-  def kind(); end
-
-  def members(); end
-
-  def method_name(); end
-
-  def type_name(); end
-end
-
-class RBS::InvalidOverloadMethodError
-end
-
-class RBS::InvalidTypeApplicationError
-  def args(); end
-
-  def initialize(type_name:, args:, params:, location:); end
-
-  def location(); end
-
-  def params(); end
-
-  def type_name(); end
-end
-
-class RBS::InvalidTypeApplicationError
-  def self.check!(type_name:, args:, params:, location:); end
-end
-
-class RBS::InvalidVarianceAnnotationError
-  def decl(); end
-
-  def errors(); end
-
-  def initialize(decl:, errors:); end
-end
-
-class RBS::InvalidVarianceAnnotationError::InheritanceError
-  def param(); end
-
-  def param=(_); end
-
-  def super_class(); end
-
-  def super_class=(_); end
-end
-
-class RBS::InvalidVarianceAnnotationError::InheritanceError
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::InvalidVarianceAnnotationError::MethodTypeError
-  def method_name(); end
-
-  def method_name=(_); end
-
-  def method_type(); end
-
-  def method_type=(_); end
-
-  def param(); end
-
-  def param=(_); end
-end
-
-class RBS::InvalidVarianceAnnotationError::MethodTypeError
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::InvalidVarianceAnnotationError::MixinError
-  def include_member(); end
-
-  def include_member=(_); end
-
-  def param(); end
-
-  def param=(_); end
-end
-
-class RBS::InvalidVarianceAnnotationError::MixinError
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::InvalidVarianceAnnotationError
-end
-
-class RBS::Location
-  def +(other); end
-
-  def ==(other); end
-
-  def buffer(); end
-
-  def end_column(); end
-
-  def end_line(); end
-
-  def end_loc(); end
-
-  def end_pos(); end
-
-  def initialize(buffer:, start_pos:, end_pos:); end
-
-  def name(); end
-
-  def pred?(loc); end
-
-  def source(); end
-
-  def start_column(); end
-
-  def start_line(); end
-
-  def start_loc(); end
-
-  def start_pos(); end
-
-  def to_json(*args); end
-end
-
-class RBS::Location
-  def self.concat(*locations); end
-
-  def self.to_string(location, default: T.unsafe(nil)); end
-end
-
-class RBS::MethodDefinitionConflictWithInterfaceMixinError
-  include ::RBS::MethodNameHelper
-  def entries(); end
-
-  def initialize(type_name:, method_name:, kind:, mixin_member:, entries:); end
-
-  def kind(); end
-
-  def method_name(); end
-
-  def mixin_member(); end
-
-  def type_name(); end
-end
-
-class RBS::MethodDefinitionConflictWithInterfaceMixinError
-end
-
-module RBS::MethodNameHelper
-  def method_name_string(); end
-end
-
-module RBS::MethodNameHelper
-end
-
-class RBS::MethodType
-  def ==(other); end
-
-  def block(); end
-
-  def each_type(&block); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(type_params:, type:, block:, location:); end
-
-  def location(); end
-
-  def map_type(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def type(); end
-
-  def type_params(); end
-
-  def update(type_params: T.unsafe(nil), type: T.unsafe(nil), block: T.unsafe(nil), location: T.unsafe(nil)); end
-end
-
-class RBS::MethodType::Block
-  def ==(other); end
-
-  def initialize(type:, required:); end
-
-  def required(); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def type(); end
-end
-
-class RBS::MethodType::Block
-end
-
-class RBS::MethodType
-end
-
-class RBS::Namespace
-  def +(other); end
-
-  def ==(other); end
-
-  def absolute!(); end
-
-  def absolute?(); end
-
-  def append(component); end
-
-  def ascend(); end
-
-  def empty?(); end
-
-  def eql?(other); end
-
-  def initialize(path:, absolute:); end
-
-  def parent(); end
-
-  def path(); end
-
-  def relative!(); end
-
-  def relative?(); end
-
-  def split(); end
-
-  def to_type_name(); end
-end
-
-class RBS::Namespace
-  def self.empty(); end
-
-  def self.parse(string); end
-
-  def self.root(); end
-end
-
-class RBS::NoMixinFoundError
-  def initialize(type_name:, member:); end
-
-  def location(); end
-
-  def member(); end
-
-  def type_name(); end
-end
-
-class RBS::NoMixinFoundError
-  def self.check!(type_name, env:, member:); end
-end
-
-class RBS::NoSelfTypeFoundError
-  def initialize(type_name:, location:); end
-
-  def location(); end
-
-  def type_name(); end
-end
-
-class RBS::NoSelfTypeFoundError
-  def self.check!(self_type, env:); end
-end
-
-class RBS::NoSuperclassFoundError
-  def initialize(type_name:, location:); end
-
-  def location(); end
-
-  def type_name(); end
-end
-
-class RBS::NoSuperclassFoundError
-  def self.check!(type_name, env:, location:); end
-end
-
-class RBS::NoTypeFoundError
-  def initialize(type_name:, location:); end
-
-  def location(); end
-
-  def type_name(); end
-end
-
-class RBS::NoTypeFoundError
-  def self.check!(type_name, env:, location:); end
-end
-
-class RBS::Parser
-  def _reduce_1(val, _values, result); end
-
-  def _reduce_141(val, _values, result); end
-
-  def _reduce_142(val, _values, result); end
-
-  def _reduce_143(val, _values, result); end
-
-  def _reduce_144(val, _values, result); end
-
-  def _reduce_145(val, _values, result); end
-
-  def _reduce_146(val, _values, result); end
-
-  def _reduce_147(val, _values, result); end
-
-  def _reduce_148(val, _values, result); end
-
-  def _reduce_149(val, _values, result); end
-
-  def _reduce_15(val, _values, result); end
-
-  def _reduce_150(val, _values, result); end
-
-  def _reduce_151(val, _values, result); end
-
-  def _reduce_152(val, _values, result); end
-
-  def _reduce_153(val, _values, result); end
-
-  def _reduce_154(val, _values, result); end
-
-  def _reduce_155(val, _values, result); end
-
-  def _reduce_156(val, _values, result); end
-
-  def _reduce_157(val, _values, result); end
-
-  def _reduce_158(val, _values, result); end
-
-  def _reduce_159(val, _values, result); end
-
-  def _reduce_16(val, _values, result); end
-
-  def _reduce_160(val, _values, result); end
-
-  def _reduce_162(val, _values, result); end
-
-  def _reduce_163(val, _values, result); end
-
-  def _reduce_164(val, _values, result); end
-
-  def _reduce_165(val, _values, result); end
-
-  def _reduce_166(val, _values, result); end
-
-  def _reduce_167(val, _values, result); end
-
-  def _reduce_168(val, _values, result); end
-
-  def _reduce_169(val, _values, result); end
-
-  def _reduce_17(val, _values, result); end
-
-  def _reduce_170(val, _values, result); end
-
-  def _reduce_171(val, _values, result); end
-
-  def _reduce_172(val, _values, result); end
-
-  def _reduce_173(val, _values, result); end
-
-  def _reduce_174(val, _values, result); end
-
-  def _reduce_175(val, _values, result); end
-
-  def _reduce_176(val, _values, result); end
-
-  def _reduce_177(val, _values, result); end
-
-  def _reduce_178(val, _values, result); end
-
-  def _reduce_179(val, _values, result); end
-
-  def _reduce_18(val, _values, result); end
-
-  def _reduce_180(val, _values, result); end
-
-  def _reduce_181(val, _values, result); end
-
-  def _reduce_182(val, _values, result); end
-
-  def _reduce_183(val, _values, result); end
-
-  def _reduce_184(val, _values, result); end
-
-  def _reduce_185(val, _values, result); end
-
-  def _reduce_186(val, _values, result); end
-
-  def _reduce_187(val, _values, result); end
-
-  def _reduce_189(val, _values, result); end
-
-  def _reduce_19(val, _values, result); end
-
-  def _reduce_190(val, _values, result); end
-
-  def _reduce_191(val, _values, result); end
-
-  def _reduce_192(val, _values, result); end
-
-  def _reduce_193(val, _values, result); end
-
-  def _reduce_194(val, _values, result); end
-
-  def _reduce_195(val, _values, result); end
-
-  def _reduce_196(val, _values, result); end
-
-  def _reduce_197(val, _values, result); end
-
-  def _reduce_199(val, _values, result); end
-
-  def _reduce_2(val, _values, result); end
-
-  def _reduce_202(val, _values, result); end
-
-  def _reduce_203(val, _values, result); end
-
-  def _reduce_204(val, _values, result); end
-
-  def _reduce_205(val, _values, result); end
-
-  def _reduce_207(val, _values, result); end
-
-  def _reduce_208(val, _values, result); end
-
-  def _reduce_210(val, _values, result); end
-
-  def _reduce_211(val, _values, result); end
-
-  def _reduce_213(val, _values, result); end
-
-  def _reduce_214(val, _values, result); end
-
-  def _reduce_216(val, _values, result); end
-
-  def _reduce_217(val, _values, result); end
-
-  def _reduce_218(val, _values, result); end
-
-  def _reduce_219(val, _values, result); end
-
-  def _reduce_22(val, _values, result); end
-
-  def _reduce_220(val, _values, result); end
-
-  def _reduce_221(val, _values, result); end
-
-  def _reduce_222(val, _values, result); end
-
-  def _reduce_223(val, _values, result); end
-
-  def _reduce_224(val, _values, result); end
-
-  def _reduce_225(val, _values, result); end
-
-  def _reduce_226(val, _values, result); end
-
-  def _reduce_227(val, _values, result); end
-
-  def _reduce_23(val, _values, result); end
-
-  def _reduce_232(val, _values, result); end
-
-  def _reduce_236(val, _values, result); end
-
-  def _reduce_237(val, _values, result); end
-
-  def _reduce_238(val, _values, result); end
-
-  def _reduce_239(val, _values, result); end
-
-  def _reduce_24(val, _values, result); end
-
-  def _reduce_240(val, _values, result); end
-
-  def _reduce_241(val, _values, result); end
-
-  def _reduce_25(val, _values, result); end
-
-  def _reduce_26(val, _values, result); end
-
-  def _reduce_27(val, _values, result); end
-
-  def _reduce_28(val, _values, result); end
-
-  def _reduce_29(val, _values, result); end
-
-  def _reduce_3(val, _values, result); end
-
-  def _reduce_30(val, _values, result); end
-
-  def _reduce_31(val, _values, result); end
-
-  def _reduce_32(val, _values, result); end
-
-  def _reduce_33(val, _values, result); end
-
-  def _reduce_34(val, _values, result); end
-
-  def _reduce_35(val, _values, result); end
-
-  def _reduce_42(val, _values, result); end
-
-  def _reduce_43(val, _values, result); end
-
-  def _reduce_46(val, _values, result); end
-
-  def _reduce_47(val, _values, result); end
-
-  def _reduce_48(val, _values, result); end
-
-  def _reduce_49(val, _values, result); end
-
-  def _reduce_50(val, _values, result); end
-
-  def _reduce_51(val, _values, result); end
-
-  def _reduce_52(val, _values, result); end
-
-  def _reduce_53(val, _values, result); end
-
-  def _reduce_54(val, _values, result); end
-
-  def _reduce_55(val, _values, result); end
-
-  def _reduce_56(val, _values, result); end
-
-  def _reduce_57(val, _values, result); end
-
-  def _reduce_58(val, _values, result); end
-
-  def _reduce_59(val, _values, result); end
-
-  def _reduce_6(val, _values, result); end
-
-  def _reduce_60(val, _values, result); end
-
-  def _reduce_61(val, _values, result); end
-
-  def _reduce_62(val, _values, result); end
-
-  def _reduce_64(val, _values, result); end
-
-  def _reduce_65(val, _values, result); end
-
-  def _reduce_66(val, _values, result); end
-
-  def _reduce_67(val, _values, result); end
-
-  def _reduce_68(val, _values, result); end
-
-  def _reduce_69(val, _values, result); end
-
-  def _reduce_7(val, _values, result); end
-
-  def _reduce_70(val, _values, result); end
-
-  def _reduce_72(val, _values, result); end
-
-  def _reduce_73(val, _values, result); end
-
-  def _reduce_74(val, _values, result); end
-
-  def _reduce_75(val, _values, result); end
-
-  def _reduce_76(val, _values, result); end
-
-  def _reduce_77(val, _values, result); end
-
-  def _reduce_78(val, _values, result); end
-
-  def _reduce_79(val, _values, result); end
-
-  def _reduce_80(val, _values, result); end
-
-  def _reduce_81(val, _values, result); end
-
-  def _reduce_82(val, _values, result); end
-
-  def _reduce_83(val, _values, result); end
-
-  def _reduce_84(val, _values, result); end
-
-  def _reduce_85(val, _values, result); end
-
-  def _reduce_86(val, _values, result); end
-
-  def _reduce_88(val, _values, result); end
-
-  def _reduce_98(val, _values, result); end
-
-  def _reduce_99(val, _values, result); end
-
-  def _reduce_none(val, _values, result); end
-
-  def buffer(); end
-
-  def charpos(scanner); end
-
-  def empty_params_result(); end
-
-  def eof_re(); end
-
-  def initialize(type, buffer:, eof_re:); end
-
-  def input(); end
-
-  def insert_bound_variable(var); end
-
-  def is_bound_variable?(var); end
-
-  def leading_comment(location); end
-
-  def new_token(type, value=T.unsafe(nil)); end
-
-  def on_error(token_id, error_value, value_stack); end
-
-  def push_comment(string, location); end
-
-  def reset_variable_scope(); end
-
-  def start_merged_variables_scope(); end
-
-  def start_new_variables_scope(); end
-  ANNOTATION_RE = ::T.let(nil, ::T.untyped)
-  KEYWORDS = ::T.let(nil, ::T.untyped)
-  KEYWORDS_RE = ::T.let(nil, ::T.untyped)
-  PUNCTS = ::T.let(nil, ::T.untyped)
-  PUNCTS_RE = ::T.let(nil, ::T.untyped)
-  Racc_arg = ::T.let(nil, ::T.untyped)
-  Racc_debug_parser = ::T.let(nil, ::T.untyped)
-  Racc_token_to_s_table = ::T.let(nil, ::T.untyped)
-end
-
-RBS::Parser::Annotation = RBS::AST::Annotation
-
-RBS::Parser::Declarations = RBS::AST::Declarations
-
-class RBS::Parser::LocatedValue
-  def initialize(location:, value:); end
-
-  def location(); end
-
-  def value(); end
-end
-
-class RBS::Parser::LocatedValue
-end
-
-RBS::Parser::Members = RBS::AST::Members
-
-RBS::Parser::MethodType = RBS::MethodType
-
-RBS::Parser::Namespace = RBS::Namespace
-
-class RBS::Parser::SemanticsError
-  def initialize(message, subject:, location:); end
-
-  def location(); end
-
-  def original_message(); end
-
-  def subject(); end
-end
-
-class RBS::Parser::SemanticsError
-end
-
-class RBS::Parser::SyntaxError
-  def error_value(); end
-
-  def initialize(token_str:, error_value:, value_stack: T.unsafe(nil)); end
-
-  def token_str(); end
-
-  def value_stack(); end
-end
-
-class RBS::Parser::SyntaxError
-end
-
-RBS::Parser::TypeName = RBS::TypeName
-
-RBS::Parser::Types = RBS::Types
-
-class RBS::Parser
-  def self.parse_method_type(input, variables: T.unsafe(nil), eof_re: T.unsafe(nil)); end
-
-  def self.parse_signature(input, eof_re: T.unsafe(nil)); end
-
-  def self.parse_type(input, variables: T.unsafe(nil), eof_re: T.unsafe(nil)); end
-end
-
-module RBS::Prototype
-end
-
-class RBS::Prototype::RB
-  def any_node?(node, nodes: T.unsafe(nil), &block); end
-
-  def block_from_body(node); end
-
-  def const_to_name(node); end
-
-  def decls(); end
-
-  def each_child(node, &block); end
-
-  def each_node(nodes); end
-
-  def function_return_type_from_body(node); end
-
-  def function_type_from_body(node); end
-
-  def keyword_hash?(node); end
-
-  def literal_to_type(node); end
-
-  def node_type(node, default: T.unsafe(nil)); end
-
-  def parse(string); end
-
-  def process(node, decls:, comments:, singleton:); end
-
-  def range_element_type(types); end
-
-  def source_decls(); end
-
-  def toplevel_members(); end
-
-  def types_to_union_type(types); end
-
-  def untyped(); end
-end
-
-class RBS::Prototype::RB
-end
-
-class RBS::Prototype::RBI
-  def call_node?(node, name:, receiver: T.unsafe(nil), args: T.unsafe(nil)); end
-
-  def const_to_name(node); end
-
-  def current_module(); end
-
-  def current_namespace(); end
-
-  def decls(); end
-
-  def each_arg(array, &block); end
-
-  def each_child(node); end
-
-  def join_comments(nodes, comments); end
-
-  def last_sig(); end
-
-  def method_type(args_node, type_node, variables:); end
-
-  def modules(); end
-
-  def nested_name(name); end
-
-  def node_to_hash(node); end
-
-  def parse(string); end
-
-  def parse_params(args_node, args, method_type, variables:); end
-
-  def pop_sig(); end
-
-  def proc_type?(type_node); end
-
-  def process(node, comments:, outer: T.unsafe(nil)); end
-
-  def push_class(name, super_class, comment:); end
-
-  def push_module(name, comment:); end
-
-  def push_sig(node); end
-
-  def type_of(type_node, variables:); end
-
-  def type_of0(type_node, variables:); end
-end
-
-class RBS::Prototype::RBI
-end
-
-class RBS::Prototype::Runtime
-  def builder(); end
-
-  def decls(); end
-
-  def each_mixin(mixins, *super_mixes); end
-
-  def env(); end
-
-  def generate_class(mod); end
-
-  def generate_constants(mod); end
-
-  def generate_methods(mod, module_name, members); end
-
-  def generate_module(mod); end
-
-  def initialize(patterns:, env:, merge:, owners_included: T.unsafe(nil)); end
-
-  def merge(); end
-
-  def merge_rbs(module_name, members, instance: T.unsafe(nil), singleton: T.unsafe(nil)); end
-
-  def method_type(method); end
-
-  def owners_included(); end
-
-  def parse(file); end
-
-  def patterns(); end
-
-  def target?(const); end
-
-  def target_method?(mod, instance: T.unsafe(nil), singleton: T.unsafe(nil)); end
-
-  def to_type_name(name); end
-end
-
-class RBS::Prototype::Runtime
-end
-
-module RBS::Prototype
-end
-
-class RBS::RecursiveAncestorError
-  def ancestors(); end
-
-  def initialize(ancestors:, location:); end
-
-  def location(); end
-end
-
-class RBS::RecursiveAncestorError
-  def self.check!(self_ancestor, ancestors:, location:); end
-end
-
-class RBS::Substitution
-  def add(from:, to:); end
-
-  def apply(ty); end
-
-  def instance_type(); end
-
-  def instance_type=(instance_type); end
-
-  def mapping(); end
-
-  def without(*vars); end
-end
-
-class RBS::Substitution
-  def self.build(variables, types, instance_type: T.unsafe(nil), &block); end
-end
-
-class RBS::SuperclassMismatchError
-  def entry(); end
-
-  def initialize(name:, super_classes:, entry:); end
-
-  def name(); end
-end
-
-class RBS::SuperclassMismatchError
-end
-
-class RBS::TypeName
-  def ==(other); end
-
-  def absolute!(); end
-
-  def absolute?(); end
-
-  def alias?(); end
-
-  def class?(); end
-
-  def eql?(other); end
-
-  def initialize(namespace:, name:); end
-
-  def interface?(); end
-
-  def kind(); end
-
-  def name(); end
-
-  def namespace(); end
-
-  def relative!(); end
-
-  def to_json(*a); end
-
-  def to_namespace(); end
-
-  def with_prefix(namespace); end
-end
-
-class RBS::TypeName
-end
-
-class RBS::TypeNameResolver
-  def add_names(names); end
-
-  def all_names(); end
-
-  def cache(); end
-
-  def has_name?(full_name); end
-
-  def resolve(type_name, context:); end
-
-  def try_cache(query); end
-end
-
-class RBS::TypeNameResolver::Query
-  def context(); end
-
-  def context=(_); end
-
-  def type_name(); end
-
-  def type_name=(_); end
-end
-
-class RBS::TypeNameResolver::Query
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class RBS::TypeNameResolver
-  def self.from_env(env); end
-end
-
-module RBS::Types
-end
-
-class RBS::Types::Alias
-  include ::RBS::Types::NoFreeVariables
-  include ::RBS::Types::NoSubst
-  include ::RBS::Types::EmptyEachType
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(name:, location:); end
-
-  def location(); end
-
-  def map_type_name(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-class RBS::Types::Alias
-end
-
-module RBS::Types::Application
-  def ==(other); end
-
-  def args(); end
-
-  def each_type(&block); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def hash(); end
-
-  def name(); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-module RBS::Types::Application
-end
-
-module RBS::Types::Bases
-end
-
-class RBS::Types::Bases::Any
-end
-
-class RBS::Types::Bases::Any
-end
-
-class RBS::Types::Bases::Base
-  include ::RBS::Types::NoFreeVariables
-  include ::RBS::Types::NoSubst
-  include ::RBS::Types::EmptyEachType
-  include ::RBS::Types::NoTypeName
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(location:); end
-
-  def location(); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-class RBS::Types::Bases::Base
-end
-
-class RBS::Types::Bases::Bool
-end
-
-class RBS::Types::Bases::Bool
-end
-
-class RBS::Types::Bases::Bottom
-end
-
-class RBS::Types::Bases::Bottom
-end
-
-class RBS::Types::Bases::Class
-end
-
-class RBS::Types::Bases::Class
-end
-
-class RBS::Types::Bases::Instance
-end
-
-class RBS::Types::Bases::Instance
-end
-
-class RBS::Types::Bases::Nil
-end
-
-class RBS::Types::Bases::Nil
-end
-
-class RBS::Types::Bases::Self
-end
-
-class RBS::Types::Bases::Self
-end
-
-class RBS::Types::Bases::Top
-end
-
-class RBS::Types::Bases::Top
-end
-
-class RBS::Types::Bases::Void
-end
-
-class RBS::Types::Bases::Void
-end
-
-module RBS::Types::Bases
-end
-
-class RBS::Types::ClassInstance
-  include ::RBS::Types::Application
-  def initialize(name:, args:, location:); end
-
-  def location(); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-end
-
-class RBS::Types::ClassInstance
-end
-
-class RBS::Types::ClassSingleton
-  include ::RBS::Types::NoFreeVariables
-  include ::RBS::Types::NoSubst
-  include ::RBS::Types::EmptyEachType
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(name:, location:); end
-
-  def location(); end
-
-  def map_type_name(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-class RBS::Types::ClassSingleton
-end
-
-module RBS::Types::EmptyEachType
-  def each_type(); end
-end
-
-module RBS::Types::EmptyEachType
-end
-
-class RBS::Types::Function
-  def ==(other); end
-
-  def drop_head(); end
-
-  def drop_tail(); end
-
-  def each_param(&block); end
-
-  def each_type(); end
-
-  def empty?(); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def has_keyword?(); end
-
-  def initialize(required_positionals:, optional_positionals:, rest_positionals:, trailing_positionals:, required_keywords:, optional_keywords:, rest_keywords:, return_type:); end
-
-  def map_type(&block); end
-
-  def map_type_name(&block); end
-
-  def optional_keywords(); end
-
-  def optional_positionals(); end
-
-  def param_to_s(); end
-
-  def required_keywords(); end
-
-  def required_positionals(); end
-
-  def rest_keywords(); end
-
-  def rest_positionals(); end
-
-  def return_to_s(); end
-
-  def return_type(); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def trailing_positionals(); end
-
-  def update(required_positionals: T.unsafe(nil), optional_positionals: T.unsafe(nil), rest_positionals: T.unsafe(nil), trailing_positionals: T.unsafe(nil), required_keywords: T.unsafe(nil), optional_keywords: T.unsafe(nil), rest_keywords: T.unsafe(nil), return_type: T.unsafe(nil)); end
-
-  def with_return_type(type); end
-end
-
-class RBS::Types::Function::Param
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(type:, name:); end
-
-  def map_type(); end
-
-  def name(); end
-
-  def to_json(*a); end
-
-  def type(); end
-end
-
-class RBS::Types::Function::Param
-end
-
-class RBS::Types::Function
-  def self.empty(return_type); end
-end
-
-class RBS::Types::Interface
-  include ::RBS::Types::Application
-  def initialize(name:, args:, location:); end
-
-  def location(); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-end
-
-class RBS::Types::Interface
-end
-
-class RBS::Types::Intersection
-  def ==(other); end
-
-  def each_type(&block); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(types:, location:); end
-
-  def location(); end
-
-  def map_type(&block); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-
-  def types(); end
-end
-
-class RBS::Types::Intersection
-end
-
-class RBS::Types::Literal
-  include ::RBS::Types::NoFreeVariables
-  include ::RBS::Types::NoSubst
-  include ::RBS::Types::EmptyEachType
-  include ::RBS::Types::NoTypeName
-  def ==(other); end
-
-  def eql?(other); end
-
-  def initialize(literal:, location:); end
-
-  def literal(); end
-
-  def location(); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-class RBS::Types::Literal
-end
-
-module RBS::Types::NoFreeVariables
-  def free_variables(set=T.unsafe(nil)); end
-end
-
-module RBS::Types::NoFreeVariables
-end
-
-module RBS::Types::NoSubst
-  def sub(s); end
-end
-
-module RBS::Types::NoSubst
-end
-
-module RBS::Types::NoTypeName
-  def map_type_name(); end
-end
-
-module RBS::Types::NoTypeName
-end
-
-class RBS::Types::Optional
-  def ==(other); end
-
-  def each_type(); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(type:, location:); end
-
-  def location(); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-
-  def type(); end
-end
-
-class RBS::Types::Optional
-end
-
-class RBS::Types::Proc
-  def ==(other); end
-
-  def each_type(&block); end
-
-  def eql?(other); end
-
-  def free_variables(set); end
-
-  def initialize(location:, type:); end
-
-  def location(); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-
-  def type(); end
-end
-
-class RBS::Types::Proc
-end
-
-class RBS::Types::Record
-  def ==(other); end
-
-  def each_type(&block); end
-
-  def eql?(other); end
-
-  def fields(); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(fields:, location:); end
-
-  def location(); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-class RBS::Types::Record
-end
-
-class RBS::Types::Tuple
-  def ==(other); end
-
-  def each_type(&block); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(types:, location:); end
-
-  def location(); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-
-  def types(); end
-end
-
-class RBS::Types::Tuple
-end
-
-class RBS::Types::Union
-  def ==(other); end
-
-  def each_type(&block); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(types:, location:); end
-
-  def location(); end
-
-  def map_type(&block); end
-
-  def map_type_name(&block); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-
-  def types(); end
-end
-
-class RBS::Types::Union
-end
-
-class RBS::Types::Variable
-  include ::RBS::Types::NoTypeName
-  include ::RBS::Types::EmptyEachType
-  def ==(other); end
-
-  def eql?(other); end
-
-  def free_variables(set=T.unsafe(nil)); end
-
-  def initialize(name:, location:); end
-
-  def location(); end
-
-  def name(); end
-
-  def sub(s); end
-
-  def to_json(*a); end
-
-  def to_s(level=T.unsafe(nil)); end
-end
-
-class RBS::Types::Variable
-  def self.build(v); end
-
-  def self.fresh(v=T.unsafe(nil)); end
-end
-
-module RBS::Types
-end
-
-class RBS::UnknownMethodAliasError
-  def aliased_name(); end
-
-  def initialize(original_name:, aliased_name:, location:); end
-
-  def location(); end
-
-  def original_name(); end
-end
-
-class RBS::UnknownMethodAliasError
-  def self.check!(methods:, original_name:, aliased_name:, location:); end
-end
-
-class RBS::Validator
-  def absolute_type(type, context:); end
-
-  def env(); end
-
-  def initialize(env:, resolver:); end
-
-  def resolver(); end
-
-  def validate_type(type, context:); end
-end
-
-class RBS::Validator
-end
-
-class RBS::VarianceCalculator
-  def builder(); end
-
-  def env(); end
-
-  def in_inherit(name:, args:, variables:); end
-
-  def in_method_type(method_type:, variables:); end
-
-  def initialize(builder:); end
-
-  def type(type, result:, context:); end
-end
-
-class RBS::VarianceCalculator::Result
-  def compatible?(var, with_annotation:); end
-
-  def contravariant(x); end
-
-  def covariant(x); end
-
-  def each(&block); end
-
-  def include?(name); end
-
-  def initialize(variables:); end
-
-  def invariant(x); end
-
-  def result(); end
-end
-
-class RBS::VarianceCalculator::Result
-end
-
-class RBS::VarianceCalculator
-end
-
-class RBS::Vendorer
-  def clean!(); end
-
-  def ensure_dir(); end
-
-  def gem!(name, version); end
-
-  def initialize(vendor_dir:); end
-
-  def stdlib!(); end
-
-  def vendor_dir(); end
-end
-
-class RBS::Vendorer
-end
-
-class RBS::Writer
-  def attribute(kind, attr); end
-
-  def indent(size=T.unsafe(nil)); end
-
-  def indentation(); end
-
-  def initialize(out:); end
-
-  def method_name(name); end
-
-  def name_and_args(name, args); end
-
-  def name_and_params(name, params); end
-
-  def out(); end
-
-  def prefix(); end
-
-  def preserve_empty_line(prev, decl); end
-
-  def puts(string=T.unsafe(nil)); end
-
-  def write(decls); end
-
-  def write_annotation(annotations); end
-
-  def write_comment(comment); end
-
-  def write_decl(decl); end
-
-  def write_def(member); end
-
-  def write_member(member); end
-end
-
-class RBS::Writer
-end
-
-module RBS
-  def self.logger(); end
-
-  def self.logger_level(); end
-
-  def self.logger_level=(level); end
-
-  def self.logger_output(); end
-
-  def self.logger_output=(val); end
-end
-
 module RSpec
   MODULES_TO_AUTOLOAD = ::T.let(nil, ::T.untyped)
 end
@@ -12186,6 +8977,12 @@ class RSpec::Core::Configuration
   VALID_STATUSES = ::T.let(nil, ::T.untyped)
 end
 
+class RSpec::Core::Configuration
+  def self.define_alias(name, alias_name); end
+
+  def self.define_predicate(name); end
+end
+
 class RSpec::Core::ConfigurationOptions
   OPTIONS_ORDER = ::T.let(nil, ::T.untyped)
   UNFORCED_OPTIONS = ::T.let(nil, ::T.untyped)
@@ -12204,10 +9001,6 @@ class RSpec::Core::DidYouMean
 end
 
 RSpec::Core::Example::AllExceptionsExcludingDangerousOnesOnRubiesThatAllowIt = RSpec::Support::AllExceptionsExceptOnesWeMustNotRescue
-
-class RSpec::Core::Example::Procsy
-  def ruby2_keywords(*a, &b); end
-end
 
 class RSpec::Core::ExampleGroup
   include ::RSpec::Core::MockingAdapters::RSpec
@@ -12491,14 +9284,6 @@ end
 
 RSpec::Core::Formatters::SyntaxHighlighter::WindowsImplementation = RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
 
-module RSpec::Core::HashImitatable
-  def deconstruct_keys(*args, &block); end
-
-  def filter_map(*args, &block); end
-
-  def tally(*args, &block); end
-end
-
 class RSpec::Core::Hooks::HookCollections
   EMPTY_HOOK_ARRAY = ::T.let(nil, ::T.untyped)
   HOOK_TYPES = ::T.let(nil, ::T.untyped)
@@ -12540,14 +9325,6 @@ end
 class RSpec::Core::OutputWrapper
   def beep(*args, &block); end
 
-  def check_winsize_changed(*args, &block); end
-
-  def clear_screen(*args, &block); end
-
-  def console_mode(*args, &block); end
-
-  def console_mode=(*args, &block); end
-
   def cooked(*args, &block); end
 
   def cooked!(*args, &block); end
@@ -12556,29 +9333,15 @@ class RSpec::Core::OutputWrapper
 
   def cursor=(*args, &block); end
 
-  def cursor_down(*args, &block); end
-
-  def cursor_left(*args, &block); end
-
-  def cursor_right(*args, &block); end
-
-  def cursor_up(*args, &block); end
-
   def echo=(*args, &block); end
 
   def echo?(*args, &block); end
-
-  def erase_line(*args, &block); end
-
-  def erase_screen(*args, &block); end
 
   def getch(*args, &block); end
 
   def getpass(*args, &block); end
 
   def goto(*args, &block); end
-
-  def goto_column(*args, &block); end
 
   def iflush(*args, &block); end
 
@@ -12593,12 +9356,6 @@ class RSpec::Core::OutputWrapper
   def raw(*args, &block); end
 
   def raw!(*args, &block); end
-
-  def scroll_backward(*args, &block); end
-
-  def scroll_forward(*args, &block); end
-
-  def set_encoding_by_bom(*args, &block); end
 
   def winsize(*args, &block); end
 
@@ -16289,10 +13046,7 @@ module RSpec::Version
 end
 
 module Racc
-  Copyright = ::T.let(nil, ::T.untyped)
-  Racc_No_Extentions = ::T.let(nil, ::T.untyped)
-  VERSION = ::T.let(nil, ::T.untyped)
-  Version = ::T.let(nil, ::T.untyped)
+  Racc_No_Extensions = ::T.let(nil, ::T.untyped)
 end
 
 class Racc::CparseParams
@@ -16366,14 +13120,6 @@ end
 
 class Rake::FileList
   def abbrev(*args, &block); end
-
-  def deconstruct(*args, &block); end
-
-  def filter_map(*args, &block); end
-
-  def intersection(*args, &block); end
-
-  def tally(*args, &block); end
   ARRAY_METHODS = ::T.let(nil, ::T.untyped)
   DEFAULT_IGNORE_PATTERNS = ::T.let(nil, ::T.untyped)
   DEFAULT_IGNORE_PROCS = ::T.let(nil, ::T.untyped)
@@ -16472,597 +13218,8 @@ module RbConfig
   def self.ruby(); end
 end
 
-class Ripper
-  def column(); end
-
-  def debug_output(); end
-
-  def debug_output=(debug_output); end
-
-  def encoding(); end
-
-  def end_seen?(); end
-
-  def error?(); end
-
-  def filename(); end
-
-  def initialize(*_); end
-
-  def lineno(); end
-
-  def parse(); end
-
-  def state(); end
-
-  def token(); end
-
-  def yydebug(); end
-
-  def yydebug=(yydebug); end
-  EXPR_ARG = ::T.let(nil, ::T.untyped)
-  EXPR_ARG_ANY = ::T.let(nil, ::T.untyped)
-  EXPR_BEG = ::T.let(nil, ::T.untyped)
-  EXPR_BEG_ANY = ::T.let(nil, ::T.untyped)
-  EXPR_CLASS = ::T.let(nil, ::T.untyped)
-  EXPR_CMDARG = ::T.let(nil, ::T.untyped)
-  EXPR_DOT = ::T.let(nil, ::T.untyped)
-  EXPR_END = ::T.let(nil, ::T.untyped)
-  EXPR_ENDARG = ::T.let(nil, ::T.untyped)
-  EXPR_ENDFN = ::T.let(nil, ::T.untyped)
-  EXPR_END_ANY = ::T.let(nil, ::T.untyped)
-  EXPR_FITEM = ::T.let(nil, ::T.untyped)
-  EXPR_FNAME = ::T.let(nil, ::T.untyped)
-  EXPR_LABEL = ::T.let(nil, ::T.untyped)
-  EXPR_LABELED = ::T.let(nil, ::T.untyped)
-  EXPR_MID = ::T.let(nil, ::T.untyped)
-  EXPR_NONE = ::T.let(nil, ::T.untyped)
-  EXPR_VALUE = ::T.let(nil, ::T.untyped)
-  PARSER_EVENT_TABLE = ::T.let(nil, ::T.untyped)
-  SCANNER_EVENT_TABLE = ::T.let(nil, ::T.untyped)
-  Version = ::T.let(nil, ::T.untyped)
-end
-
-class Ripper::Filter
-  def initialize(src, filename=T.unsafe(nil), lineno=T.unsafe(nil)); end
-end
-
-class Ripper::Lexer
-  def errors(); end
-
-  def lex(); end
-
-  def scan(); end
-
-  def tokenize(); end
-end
-
-class Ripper::Lexer::Elem
-  def event(); end
-
-  def event=(_); end
-
-  def initialize(pos, event, tok, state, message=T.unsafe(nil)); end
-
-  def message(); end
-
-  def message=(_); end
-
-  def pos(); end
-
-  def pos=(_); end
-
-  def state(); end
-
-  def state=(_); end
-
-  def tok(); end
-
-  def tok=(_); end
-end
-
-class Ripper::Lexer::Elem
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class Ripper::Lexer::State
-  def &(i); end
-
-  def ==(i); end
-
-  def allbits?(i); end
-
-  def anybits?(i); end
-
-  def initialize(i); end
-
-  def nobits?(i); end
-
-  def to_i(); end
-
-  def to_int(); end
-
-  def to_int=(_); end
-
-  def to_s=(_); end
-
-  def |(i); end
-end
-
-class Ripper::Lexer::State
-  def self.[](*_); end
-
-  def self.members(); end
-end
-
-class Ripper::Lexer
-end
-
-class Ripper::SexpBuilder
-  def on_BEGIN(*args); end
-
-  def on_CHAR(tok); end
-
-  def on_END(*args); end
-
-  def on___end__(tok); end
-
-  def on_alias(*args); end
-
-  def on_alias_error(*args); end
-
-  def on_aref(*args); end
-
-  def on_aref_field(*args); end
-
-  def on_arg_ambiguous(*args); end
-
-  def on_arg_paren(*args); end
-
-  def on_args_add(*args); end
-
-  def on_args_add_block(*args); end
-
-  def on_args_add_star(*args); end
-
-  def on_args_forward(*args); end
-
-  def on_args_new(*args); end
-
-  def on_array(*args); end
-
-  def on_aryptn(*args); end
-
-  def on_assign(*args); end
-
-  def on_assign_error(*args); end
-
-  def on_assoc_new(*args); end
-
-  def on_assoc_splat(*args); end
-
-  def on_assoclist_from_args(*args); end
-
-  def on_backref(tok); end
-
-  def on_backtick(tok); end
-
-  def on_bare_assoc_hash(*args); end
-
-  def on_begin(*args); end
-
-  def on_binary(*args); end
-
-  def on_block_var(*args); end
-
-  def on_blockarg(*args); end
-
-  def on_bodystmt(*args); end
-
-  def on_brace_block(*args); end
-
-  def on_break(*args); end
-
-  def on_call(*args); end
-
-  def on_case(*args); end
-
-  def on_class(*args); end
-
-  def on_class_name_error(*args); end
-
-  def on_comma(tok); end
-
-  def on_command(*args); end
-
-  def on_command_call(*args); end
-
-  def on_comment(tok); end
-
-  def on_const(tok); end
-
-  def on_const_path_field(*args); end
-
-  def on_const_path_ref(*args); end
-
-  def on_const_ref(*args); end
-
-  def on_cvar(tok); end
-
-  def on_def(*args); end
-
-  def on_defined(*args); end
-
-  def on_defs(*args); end
-
-  def on_do_block(*args); end
-
-  def on_dot2(*args); end
-
-  def on_dot3(*args); end
-
-  def on_dyna_symbol(*args); end
-
-  def on_else(*args); end
-
-  def on_elsif(*args); end
-
-  def on_embdoc(tok); end
-
-  def on_embdoc_beg(tok); end
-
-  def on_embdoc_end(tok); end
-
-  def on_embexpr_beg(tok); end
-
-  def on_embexpr_end(tok); end
-
-  def on_embvar(tok); end
-
-  def on_ensure(*args); end
-
-  def on_excessed_comma(*args); end
-
-  def on_fcall(*args); end
-
-  def on_field(*args); end
-
-  def on_float(tok); end
-
-  def on_for(*args); end
-
-  def on_gvar(tok); end
-
-  def on_hash(*args); end
-
-  def on_heredoc_beg(tok); end
-
-  def on_heredoc_end(tok); end
-
-  def on_hshptn(*args); end
-
-  def on_ident(tok); end
-
-  def on_if(*args); end
-
-  def on_if_mod(*args); end
-
-  def on_ifop(*args); end
-
-  def on_ignored_nl(tok); end
-
-  def on_ignored_sp(tok); end
-
-  def on_imaginary(tok); end
-
-  def on_in(*args); end
-
-  def on_int(tok); end
-
-  def on_ivar(tok); end
-
-  def on_kw(tok); end
-
-  def on_kwrest_param(*args); end
-
-  def on_label(tok); end
-
-  def on_label_end(tok); end
-
-  def on_lambda(*args); end
-
-  def on_lbrace(tok); end
-
-  def on_lbracket(tok); end
-
-  def on_lparen(tok); end
-
-  def on_magic_comment(*args); end
-
-  def on_massign(*args); end
-
-  def on_method_add_arg(*args); end
-
-  def on_method_add_block(*args); end
-
-  def on_mlhs_add(*args); end
-
-  def on_mlhs_add_post(*args); end
-
-  def on_mlhs_add_star(*args); end
-
-  def on_mlhs_new(*args); end
-
-  def on_mlhs_paren(*args); end
-
-  def on_module(*args); end
-
-  def on_mrhs_add(*args); end
-
-  def on_mrhs_add_star(*args); end
-
-  def on_mrhs_new(*args); end
-
-  def on_mrhs_new_from_args(*args); end
-
-  def on_next(*args); end
-
-  def on_nl(tok); end
-
-  def on_nokw_param(*args); end
-
-  def on_op(tok); end
-
-  def on_opassign(*args); end
-
-  def on_operator_ambiguous(*args); end
-
-  def on_param_error(*args); end
-
-  def on_params(*args); end
-
-  def on_paren(*args); end
-
-  def on_parse_error(*args); end
-
-  def on_period(tok); end
-
-  def on_program(*args); end
-
-  def on_qsymbols_add(*args); end
-
-  def on_qsymbols_beg(tok); end
-
-  def on_qsymbols_new(*args); end
-
-  def on_qwords_add(*args); end
-
-  def on_qwords_beg(tok); end
-
-  def on_qwords_new(*args); end
-
-  def on_rational(tok); end
-
-  def on_rbrace(tok); end
-
-  def on_rbracket(tok); end
-
-  def on_redo(*args); end
-
-  def on_regexp_add(*args); end
-
-  def on_regexp_beg(tok); end
-
-  def on_regexp_end(tok); end
-
-  def on_regexp_literal(*args); end
-
-  def on_regexp_new(*args); end
-
-  def on_rescue(*args); end
-
-  def on_rescue_mod(*args); end
-
-  def on_rest_param(*args); end
-
-  def on_retry(*args); end
-
-  def on_return(*args); end
-
-  def on_return0(*args); end
-
-  def on_rparen(tok); end
-
-  def on_sclass(*args); end
-
-  def on_semicolon(tok); end
-
-  def on_sp(tok); end
-
-  def on_stmts_add(*args); end
-
-  def on_stmts_new(*args); end
-
-  def on_string_add(*args); end
-
-  def on_string_concat(*args); end
-
-  def on_string_content(*args); end
-
-  def on_string_dvar(*args); end
-
-  def on_string_embexpr(*args); end
-
-  def on_string_literal(*args); end
-
-  def on_super(*args); end
-
-  def on_symbeg(tok); end
-
-  def on_symbol(*args); end
-
-  def on_symbol_literal(*args); end
-
-  def on_symbols_add(*args); end
-
-  def on_symbols_beg(tok); end
-
-  def on_symbols_new(*args); end
-
-  def on_tlambda(tok); end
-
-  def on_tlambeg(tok); end
-
-  def on_top_const_field(*args); end
-
-  def on_top_const_ref(*args); end
-
-  def on_tstring_beg(tok); end
-
-  def on_tstring_content(tok); end
-
-  def on_tstring_end(tok); end
-
-  def on_unary(*args); end
-
-  def on_undef(*args); end
-
-  def on_unless(*args); end
-
-  def on_unless_mod(*args); end
-
-  def on_until(*args); end
-
-  def on_until_mod(*args); end
-
-  def on_var_alias(*args); end
-
-  def on_var_field(*args); end
-
-  def on_var_ref(*args); end
-
-  def on_vcall(*args); end
-
-  def on_void_stmt(*args); end
-
-  def on_when(*args); end
-
-  def on_while(*args); end
-
-  def on_while_mod(*args); end
-
-  def on_word_add(*args); end
-
-  def on_word_new(*args); end
-
-  def on_words_add(*args); end
-
-  def on_words_beg(tok); end
-
-  def on_words_new(*args); end
-
-  def on_words_sep(tok); end
-
-  def on_xstring_add(*args); end
-
-  def on_xstring_literal(*args); end
-
-  def on_xstring_new(*args); end
-
-  def on_yield(*args); end
-
-  def on_yield0(*args); end
-
-  def on_zsuper(*args); end
-end
-
-class Ripper::SexpBuilder
-end
-
-class Ripper::SexpBuilderPP
-end
-
-class Ripper::SexpBuilderPP
-end
-
-class Ripper::TokenPattern
-  def initialize(pattern); end
-
-  def match(str); end
-
-  def match_list(tokens); end
-  MAP = ::T.let(nil, ::T.untyped)
-end
-
-class Ripper::TokenPattern::CompileError
-end
-
-class Ripper::TokenPattern::CompileError
-end
-
-class Ripper::TokenPattern::Error
-end
-
-class Ripper::TokenPattern::Error
-end
-
-class Ripper::TokenPattern::MatchData
-  def initialize(tokens, match); end
-
-  def string(n=T.unsafe(nil)); end
-end
-
-class Ripper::TokenPattern::MatchData
-end
-
-class Ripper::TokenPattern::MatchError
-end
-
-class Ripper::TokenPattern::MatchError
-end
-
-class Ripper::TokenPattern
-  def self.compile(*_); end
-end
-
-class Ripper
-  def self.dedent_string(_, _1); end
-
-  def self.lex_state_name(_); end
-
-  def self.token_match(src, pattern); end
-end
-
-module RubyVM::AbstractSyntaxTree
-end
-
 class RubyVM::AbstractSyntaxTree::Node
-  def children(); end
-
-  def first_column(); end
-
-  def first_lineno(); end
-
-  def last_column(); end
-
-  def last_lineno(); end
-
   def pretty_print_children(q, names=T.unsafe(nil)); end
-
-  def type(); end
-end
-
-class RubyVM::AbstractSyntaxTree::Node
-end
-
-module RubyVM::AbstractSyntaxTree
-  def self.of(body); end
-
-  def self.parse(string); end
-
-  def self.parse_file(pathname); end
 end
 
 module RubyVM::MJIT
@@ -17074,6 +13231,10 @@ module RubyVM::MJIT
   def self.pause(*_); end
 
   def self.resume(); end
+end
+
+class RubyVM
+  def self.resolve_feature_path(_); end
 end
 
 ScanError = StringScanner::Error
@@ -17151,6 +13312,8 @@ module SimpleCov::Combine
 end
 
 module SimpleCov::Configuration
+  def at_fork(&block); end
+
   def branch_coverage?(); end
 
   def branch_coverage_supported?(); end
@@ -17166,6 +13329,10 @@ module SimpleCov::Configuration
   def coverage_start_arguments_supported?(); end
 
   def enable_coverage(criterion); end
+
+  def enable_for_subprocesses(value=T.unsafe(nil)); end
+
+  def enabled_for_subprocesses?(); end
 
   def print_error_status(); end
 
@@ -17197,6 +13364,54 @@ module SimpleCov::ExitCodes
   MAXIMUM_COVERAGE_DROP = ::T.let(nil, ::T.untyped)
   MINIMUM_COVERAGE = ::T.let(nil, ::T.untyped)
   SUCCESS = ::T.let(nil, ::T.untyped)
+end
+
+module SimpleCov::ExitCodes::ExitCodeHandling
+end
+
+module SimpleCov::ExitCodes::ExitCodeHandling
+  def self.call(result, coverage_limits:); end
+
+  def self.coverage_checks(result, coverage_limits); end
+end
+
+class SimpleCov::ExitCodes::MaximumCoverageDropCheck
+  def exit_code(); end
+
+  def failing?(); end
+
+  def initialize(result, maximum_coverage_drop); end
+
+  def report(); end
+end
+
+class SimpleCov::ExitCodes::MaximumCoverageDropCheck
+end
+
+class SimpleCov::ExitCodes::MinimumCoverageByFileCheck
+  def exit_code(); end
+
+  def failing?(); end
+
+  def initialize(result, minimum_coverage_by_file); end
+
+  def report(); end
+end
+
+class SimpleCov::ExitCodes::MinimumCoverageByFileCheck
+end
+
+class SimpleCov::ExitCodes::MinimumOverallCoverageCheck
+  def exit_code(); end
+
+  def failing?(); end
+
+  def initialize(result, minimum_coverage); end
+
+  def report(); end
+end
+
+class SimpleCov::ExitCodes::MinimumOverallCoverageCheck
 end
 
 class SimpleCov::FileList
@@ -17255,6 +13470,8 @@ class SimpleCov::Result
   def covered_branches(*args, &block); end
 
   def missed_branches(*args, &block); end
+
+  def time_since_creation(); end
 
   def total_branches(*args, &block); end
 end
@@ -17340,11 +13557,12 @@ class SimpleCov::SourceFile::Branch
 end
 
 module SimpleCov::UselessResultsRemover
-  ROOT_REGX = ::T.let(nil, ::T.untyped)
 end
 
 module SimpleCov::UselessResultsRemover
   def self.call(coverage_result); end
+
+  def self.root_regx(); end
 end
 
 module SimpleCov
@@ -17352,15 +13570,21 @@ module SimpleCov
 
   def self.collate(result_filenames, profile=T.unsafe(nil), &block); end
 
+  def self.exit_and_report_previous_error(exit_status); end
+
   def self.external_at_exit(); end
 
   def self.external_at_exit=(external_at_exit); end
 
   def self.external_at_exit?(); end
-end
 
-class SimpleDelegator
-  RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
+  def self.previous_error?(error_exit_status); end
+
+  def self.process_results_and_report_error(); end
+
+  def self.ready_to_process_results?(); end
+
+  def self.round_coverage(coverage); end
 end
 
 module Singleton
@@ -17410,15 +13634,8 @@ class String
   def shellsplit(); end
 end
 
-class StringIO
-  def set_encoding_by_bom(); end
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
 class StringScanner
   def bol?(); end
-
-  def fixed_anchor?(); end
 
   def initialize(*_); end
   Id = ::T.let(nil, ::T.untyped)
@@ -17426,10 +13643,6 @@ class StringScanner
 end
 
 class Struct
-  def deconstruct(); end
-
-  def deconstruct_keys(_); end
-
   def filter(*_); end
 end
 
@@ -17443,7 +13656,6 @@ class Tempfile
   def _close(); end
 
   def inspect(); end
-  RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
 end
 
 class Tempfile::Remover
@@ -17456,15 +13668,13 @@ class Tempfile::Remover
 end
 
 class TracePoint
+  def __enable(_, _1); end
+
   def eval_script(); end
 
   def instruction_sequence(); end
 
   def parameters(); end
-end
-
-class TracePoint
-  def self.new(*events); end
 end
 
 class TrueClass
@@ -17560,10 +13770,6 @@ module URI
   def self.get_encoding(label); end
 end
 
-class UnboundMethod
-  def bind_call(*_); end
-end
-
 module UnicodeNormalize
 end
 
@@ -17572,8 +13778,5 @@ end
 
 module Warning
   extend ::Warning
-  def self.[](_); end
-
-  def self.[]=(_, _1); end
 end
 

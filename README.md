@@ -407,6 +407,8 @@ srb rbi gems
 srb rbi sorbet-typed
 ```
 
+You should also regenerate the parlour.rbi file by running `bundle exec parlour`. Don't edit this file manually, as your changes will be overwritten!
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

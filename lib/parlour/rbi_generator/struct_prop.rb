@@ -112,9 +112,9 @@ module Parlour
       attr_reader :redaction
 
       # The optional properties available on instances of this class.
-      EXTRA_PROPERTIES = %i{
+      EXTRA_PROPERTIES = T.let(%i{
         optional enum dont_store foreign default factory immutable array override redaction
-      }
+      }, T::Array[Symbol])
 
       sig { returns(String) }
       # Returns the +prop+ call required to create this property.

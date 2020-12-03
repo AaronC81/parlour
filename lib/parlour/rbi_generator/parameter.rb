@@ -39,7 +39,7 @@ module Parlour
         @name = name
 
         prefix = /^(\*\*|\*|\&)?/.match(name)&.captures&.first || ''
-        @kind = PREFIXES.rassoc(prefix).first
+        @kind = T.must(PREFIXES.rassoc(prefix)).first
 
         @kind = :keyword if kind == :normal && name.end_with?(':')
 
@@ -123,12 +123,12 @@ module Parlour
       end
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.
-      PREFIXES = {
+      PREFIXES = T.let({
         normal: '',
         splat: '*',
         double_splat: '**',
         block: '&'
-      }.freeze
+      }.freeze, T::Hash[Symbol, String])
 
       sig { void }
       def generalize_from_rbi!
