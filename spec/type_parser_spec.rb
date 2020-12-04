@@ -426,6 +426,7 @@ RSpec.describe Parlour::TypeParser do
           class B
             class C
               final!
+              sealed!
               abstract!
             end
 
@@ -444,19 +445,19 @@ RSpec.describe Parlour::TypeParser do
 
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
-      expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
+      expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false, sealed: false)
 
       b = a.children.first
       expect(b).to be_a Parlour::RbiGenerator::ClassNamespace
-      expect(b).to have_attributes(name: 'B', superclass: nil, final: false, abstract: false)
+      expect(b).to have_attributes(name: 'B', superclass: nil, final: false, abstract: false, sealed: false)
 
       c, d, e = *b.children
       expect(c).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(d).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(e).to be_a Parlour::RbiGenerator::ClassNamespace
-      expect(c).to have_attributes(name: 'C', superclass: nil, final: true, abstract: true)
-      expect(d).to have_attributes(name: 'D', superclass: nil, final: false, abstract: true)
-      expect(e).to have_attributes(name: 'E', superclass: 'B::D', final: false, abstract: false)
+      expect(c).to have_attributes(name: 'C', superclass: nil, final: true, abstract: true, sealed: true)
+      expect(d).to have_attributes(name: 'D', superclass: nil, final: false, abstract: true, sealed: false)
+      expect(e).to have_attributes(name: 'E', superclass: 'B::D', final: false, abstract: false, sealed: false)
     end
 
     it 'parses module structures containing methods' do
@@ -465,6 +466,7 @@ RSpec.describe Parlour::TypeParser do
           module B
             module C
               final!
+              sealed!
               interface!
             end
 
@@ -500,19 +502,19 @@ RSpec.describe Parlour::TypeParser do
 
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
-      expect(a).to have_attributes(name: 'A', final: false, interface: false)
+      expect(a).to have_attributes(name: 'A', final: false, interface: false, sealed: false)
 
       b = a.children.first
       expect(b).to be_a Parlour::RbiGenerator::ModuleNamespace
-      expect(b).to have_attributes(name: 'B', final: false, interface: false)
+      expect(b).to have_attributes(name: 'B', final: false, interface: false, sealed: false)
 
       c, d, e = *b.children
       expect(c).to be_a Parlour::RbiGenerator::ModuleNamespace
       expect(d).to be_a Parlour::RbiGenerator::ModuleNamespace
       expect(e).to be_a Parlour::RbiGenerator::ModuleNamespace
-      expect(c).to have_attributes(name: 'C', final: true, interface: true)
-      expect(d).to have_attributes(name: 'D', final: false, interface: true)
-      expect(e).to have_attributes(name: 'E', final: false, interface: false)
+      expect(c).to have_attributes(name: 'C', final: true, interface: true, sealed: true)
+      expect(d).to have_attributes(name: 'D', final: false, interface: true, sealed: false)
+      expect(e).to have_attributes(name: 'E', final: false, interface: false, sealed: false)
       expect(e.includes.map(&:name)).to eq ['D']
 
       abs_foo, abs_bar = *d.children

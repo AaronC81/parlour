@@ -10,6 +10,7 @@ module Parlour
           generator: Generator,
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
@@ -20,12 +21,13 @@ module Parlour
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this module.
       # @param final [Boolean] Whether this namespace is final.
+      # @param sealed [Boolean] Whether this namespace is sealed.
       # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, final, interface, &block)
-        super(generator, name, final, &block)
+      def initialize(generator, name, final, sealed, interface, &block)
+        super(generator, name, final, sealed, &block)
         @name = name
         @interface = interface
       end

@@ -11,6 +11,7 @@ module Parlour
           generator: Generator,
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           props: T::Array[StructProp],
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: StructClassNamespace).void)
@@ -22,12 +23,13 @@ module Parlour
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String] The name of this class.
       # @param final [Boolean] Whether this namespace is final.
+      # @param sealed [Boolean] Whether this namespace is sealed.
       # @param props [Array<StructProp>] The props of the struct.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, final, props, abstract, &block)
-        super(generator, name, final, 'T::Struct', abstract, &block)
+      def initialize(generator, name, final, sealed, props, abstract, &block)
+        super(generator, name, final, sealed, 'T::Struct', abstract, &block)
         @props = props
       end
 

@@ -27,6 +27,7 @@ module Parlour
           generator: Generator,
           name: T.nilable(String),
           final: T::Boolean,
+          sealed: T::Boolean,
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
@@ -37,13 +38,15 @@ module Parlour
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String, nil] The name of this module.
       # @param final [Boolean] Whether this namespace is final.
+      # @param final [Boolean] Whether this namespace is sealed.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name = nil, final = false, &block)
+      def initialize(generator, name = nil, final = false, sealed = false, &block)
         super(generator, name || '<anonymous namespace>')
         @children = []
         @next_comments = []
         @final = final
+        @sealed = sealed
         yield_self(&block) if block
       end
 
@@ -51,6 +54,11 @@ module Parlour
       # Whether this namespace is final.
       # @return [Boolean]
       attr_reader :final
+
+      sig { returns(T::Boolean) }
+      # Whether this namespace is sealed.
+      # @return [Boolean]
+      attr_reader :sealed
 
       sig { returns(T::Array[RbiObject]) }
       # The child {RbiObject} instances inside this namespace.
@@ -151,6 +159,7 @@ module Parlour
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
@@ -168,13 +177,14 @@ module Parlour
       #
       # @param name [String] The name of this class.
       # @param final [Boolean] Whether this namespace is final.
+      # @param sealed [Boolean] Whether this namespace is sealed.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [ClassNamespace]
-      def create_class(name, final: false, superclass: nil, abstract: false, &block)
-        new_class = ClassNamespace.new(generator, name, final, superclass, abstract, &block)
+      def create_class(name, final: false, sealed: false, superclass: nil, abstract: false, &block)
+        new_class = ClassNamespace.new(generator, name, final, sealed, superclass, abstract, &block)
         move_next_comments(new_class)
         children << new_class
         new_class
@@ -184,6 +194,7 @@ module Parlour
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           enums: T.nilable(T::Array[T.any([String, String], String)]),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
@@ -196,12 +207,13 @@ module Parlour
       #
       # @param name [String] The name of this class.
       # @param final [Boolean] Whether this namespace is final.
+      # @param sealed [Boolean] Whether this namespace is sealed.
       # @param enums [Array<(String, String), String>] The values of the enumeration.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [EnumClassNamespace]
-      def create_enum_class(name, final: false, enums: nil, abstract: false, &block)
-        new_enum_class = EnumClassNamespace.new(generator, name, final, enums || [], abstract, &block)
+      def create_enum_class(name, final: false, sealed: false, enums: nil, abstract: false, &block)
+        new_enum_class = EnumClassNamespace.new(generator, name, final, sealed, enums || [], abstract, &block)
         move_next_comments(new_enum_class)
         children << new_enum_class
         new_enum_class
@@ -211,6 +223,7 @@ module Parlour
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           props: T.nilable(T::Array[StructProp]),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: StructClassNamespace).void)
@@ -225,12 +238,13 @@ module Parlour
       #
       # @param name [String] The name of this class.
       # @param final [Boolean] Whether this namespace is final.
+      # @param sealed [Boolean] Whether this namespace is sealed.
       # @param props [Array<StructProp>] The props of the struct.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [EnumClassNamespace]
-      def create_struct_class(name, final: false, props: nil, abstract: false, &block)
-        new_struct_class = StructClassNamespace.new(generator, name, final, props || [], abstract, &block)
+      def create_struct_class(name, final: false, sealed: false, props: nil, abstract: false, &block)
+        new_struct_class = StructClassNamespace.new(generator, name, final, sealed, props || [], abstract, &block)
         move_next_comments(new_struct_class)
         children << new_struct_class
         new_struct_class
@@ -240,6 +254,7 @@ module Parlour
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
@@ -256,12 +271,13 @@ module Parlour
       #
       # @param name [String] The name of this module.
       # @param final [Boolean] Whether this namespace is final.
+      # @param sealed [Boolean] Whether this namespace is sealed.
       # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
-      def create_module(name, final: false, interface: false, &block)
-        new_module = ModuleNamespace.new(generator, name, final, interface, &block)
+      def create_module(name, final: false, sealed: false, interface: false, &block)
+        new_module = ModuleNamespace.new(generator, name, final, sealed, interface, &block)
         move_next_comments(new_module)
         children << new_module
         new_module
@@ -657,6 +673,7 @@ module Parlour
         result = []
 
         result += [options.indented(indent_level, 'final!'), ''] if final
+        result += [options.indented(indent_level, 'sealed!'), ''] if sealed
 
         # Split away the eigen constants; these need to be put in a
         # "class << self" block later

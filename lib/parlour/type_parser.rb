@@ -158,6 +158,7 @@ module Parlour
 
         name, superclass, body = *node
         final = body_has_modifier?(body, :final!)
+        sealed = body_has_modifier?(body, :sealed!)
         abstract = body_has_modifier?(body, :abstract!)
         includes, extends = body ? body_includes_and_extends(body) : [[], []]
 
@@ -169,6 +170,7 @@ module Parlour
           new_obj = RbiGenerator::Namespace.new(
             generator,
             n.to_s,
+            false,
             false,
           )
           target.children << new_obj if target
@@ -233,6 +235,7 @@ module Parlour
             generator,
             this_name.to_s,
             final,
+            sealed,
             props,
             abstract,
           )
@@ -256,6 +259,7 @@ module Parlour
             generator,
             this_name.to_s,
             final,
+            sealed,
             enums,
             abstract,
           )
@@ -264,6 +268,7 @@ module Parlour
             generator,
             this_name.to_s,
             final,
+            sealed,
             node_to_s(superclass),
             abstract,
           )
@@ -284,6 +289,7 @@ module Parlour
 
         name, body = *node
         final = body_has_modifier?(body, :final!)
+        sealed = body_has_modifier?(body, :sealed!)
         interface = body_has_modifier?(body, :interface!)
         includes, extends = body ? body_includes_and_extends(body) : [[], []]
 
@@ -296,6 +302,7 @@ module Parlour
             generator,
             n.to_s,
             false,
+            false,
           )
           target.children << new_obj if target
           target = new_obj
@@ -306,6 +313,7 @@ module Parlour
           generator,
           this_name.to_s,
           final,
+          sealed,
           interface,
         ) do |m|
           m.children.concat(parse_path_to_object(path.child(1))) if body
