@@ -16,7 +16,7 @@ RSpec.describe Parlour::RbiGenerator do
   end
 
   def opts
-    Parlour::RbiGenerator::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
   end
 
   it 'has a root namespace' do
@@ -140,8 +140,8 @@ RSpec.describe Parlour::RbiGenerator do
           bar.create_extend( 'X')
           bar.create_extend( 'Y')
           bar.create_include( 'Z')
-          bar.create_constant('PI', value: '3.14')
           bar.create_type_alias('Text', type: 'T.any(String, Symbol)')
+          bar.create_constant('PI', value: '3.14')
           bar.create_class('A')
           bar.create_class('B')
           bar.create_class('C')
@@ -156,8 +156,8 @@ RSpec.describe Parlour::RbiGenerator do
             include Z
             extend X
             extend Y
-            PI = 3.14
             Text = T.type_alias { T.any(String, Symbol) }
+            PI = 3.14
 
             class A
             end
@@ -551,7 +551,7 @@ RSpec.describe Parlour::RbiGenerator do
 
   it 'supports sorting output' do
     custom_rbi_gen = Parlour::RbiGenerator.new(sort_namespaces: true)
-    custom_opts = Parlour::RbiGenerator::Options.new(
+    custom_opts = Parlour::Options.new(
       break_params: 4,
       tab_size: 2,
       sort_namespaces: true

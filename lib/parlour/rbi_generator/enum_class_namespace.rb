@@ -1,13 +1,13 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents an enum definition; that is, a class with an +enum+ call.
     class EnumClassNamespace < ClassNamespace
       extend T::Sig
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           final: T::Boolean,
           enums: T::Array[T.any([String, String], String)],
@@ -38,7 +38,7 @@ module Parlour
       sig do
         override.params(
           indent_level: Integer,
-          options: Options
+          options: Options,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this enum. This consists of
@@ -106,6 +106,11 @@ module Parlour
 
           @enums = other.enums if enums.empty?
         end
+      end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
       end
     end
   end

@@ -1,6 +1,7 @@
 # typed: true
+require 'rainbow'
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents a method parameter with a Sorbet type signature.
     class Parameter
       extend T::Sig
@@ -8,7 +9,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: T.nilable(String),
+          type: T.nilable(Types::TypeLike),
           default: T.nilable(String)
         ).void
       end
@@ -80,7 +81,7 @@ module Parlour
         T.must(name[prefix.length..-1])
       end
 
-      sig { returns(String) }
+      sig { returns(Types::TypeLike) }
       # A Sorbet string of this parameter's type, such as +"String"+ or
       # +"T.untyped"+.
       # @return [String]
@@ -118,8 +119,8 @@ module Parlour
       #
       # @return [String]
       def to_sig_param
-        "#{name_without_kind}: #{type}"
-      end#
+        "#{name_without_kind}: #{String === @type ? @type : @type.generate_rbi}"
+      end
 
       # A mapping of {kind} values to the characteristic prefixes each kind has.
       PREFIXES = T.let({
@@ -128,6 +129,11 @@ module Parlour
         double_splat: '**',
         block: '&'
       }.freeze, T::Hash[Symbol, String])
+
+      sig { void }
+      def generalize_from_rbi!
+        @type = TypeParser.parse_single_type(@type) if String === @type
+      end
     end
   end
 end

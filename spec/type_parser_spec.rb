@@ -90,7 +90,7 @@ RSpec.describe Parlour::TypeParser do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig do
           params(
-            x: String, 
+            x: String,
             y: T.nilable(T.any(Integer, T::Boolean)),
             z: Numeric,
             blk: T.proc.returns(T::Boolean)
@@ -151,7 +151,7 @@ RSpec.describe Parlour::TypeParser do
       expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
         override: false, final: true)
     end
-    
+
     it 'supports class methods using self.x' do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig { params(x: String).returns(Integer) }
@@ -281,9 +281,9 @@ RSpec.describe Parlour::TypeParser do
 
       expect(meth.parameters.length).to eq 2
       expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
-        type: "T.untyped", default: nil)
+        type: 'T.untyped', default: nil)
       expect(meth.parameters[1]).to have_attributes(name: 'y', kind: :normal,
-        type: "T.untyped", default: 'true')
+        type: 'T.untyped', default: 'true')
     end
 
     it 'works for methods with complex parameters' do
@@ -299,13 +299,13 @@ RSpec.describe Parlour::TypeParser do
 
       expect(meth.parameters.length).to eq 4
       expect(meth.parameters[0]).to have_attributes(name: 'x', kind: :normal,
-        type: "T.untyped", default: nil)
+        type: 'T.untyped', default: nil)
       expect(meth.parameters[1]).to have_attributes(name: 'y:', kind: :keyword,
-        type: "T.untyped", default: nil)
+        type: 'T.untyped', default: nil)
       expect(meth.parameters[2]).to have_attributes(name: 'z:', kind: :keyword,
-        type: "T.untyped", default: '3')
+        type: 'T.untyped', default: '3')
       expect(meth.parameters[3]).to have_attributes(name: '&blk', kind: :block,
-        type: "T.untyped", default: nil)
+        type: 'T.untyped', default: nil)
     end
 
     it 'works with splat-arguments' do
@@ -320,9 +320,9 @@ RSpec.describe Parlour::TypeParser do
         return_type: "T.untyped", override: false)
 
       expect(meth.parameters[0]).to have_attributes(name: '*args', type: :splat,
-        type: "T.untyped")
+        type: 'T.untyped')
       expect(meth.parameters[1]).to have_attributes(name: '**kwargs',
-        type: :double_splat, type: "T.untyped")
+        type: :double_splat, type: 'T.untyped')
     end
 
     it 'supports class methods using self.x' do
@@ -337,7 +337,7 @@ RSpec.describe Parlour::TypeParser do
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
       expect(meth.parameters.first).to have_attributes(name: 'x',
-        type: "T.untyped")
+        type: 'T.untyped')
     end
 
     it 'supports class methods within an eigenclass' do
@@ -348,11 +348,11 @@ RSpec.describe Parlour::TypeParser do
       RUBY
 
       meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([]), is_within_eigenclass: true).only
-      expect(meth).to have_attributes(name: 'foo', return_type: "T.untyped",
+      expect(meth).to have_attributes(name: 'foo', return_type: 'T.untyped',
         override: false, final: false, class_method: true)
       expect(meth.parameters.length).to eq 1
       expect(meth.parameters.first).to have_attributes(name: 'x',
-        type: "T.untyped")
+        type: 'T.untyped')
     end
 
     it 'errors on a self.x method within an eigenclass' do
@@ -441,7 +441,7 @@ RSpec.describe Parlour::TypeParser do
 
       root = instance.parse_all
       expect(root.children.length).to eq 1
-      
+
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
@@ -497,7 +497,7 @@ RSpec.describe Parlour::TypeParser do
 
       root = instance.parse_all
       expect(root.children.length).to eq 1
-      
+
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
       expect(a).to have_attributes(name: 'A', final: false, interface: false)
@@ -522,7 +522,7 @@ RSpec.describe Parlour::TypeParser do
       expect(abs_bar).to have_attributes(name: 'bar', abstract: true, return_type: 'Integer')
       expect(abs_bar.parameters.length).to eq 1
       expect(abs_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
-      
+
       impl_foo, impl_bar = *e.children
       expect(impl_foo).to be_a Parlour::RbiGenerator::Method
       expect(impl_bar).to be_a Parlour::RbiGenerator::Method
@@ -556,7 +556,7 @@ RSpec.describe Parlour::TypeParser do
 
       root = instance.parse_all
       expect(root.children.length).to eq 1
-      
+
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
       expect(a).to have_attributes(name: 'A', final: false)
@@ -662,7 +662,7 @@ RSpec.describe Parlour::TypeParser do
       d = c.children.first
       expect(d).to be_a Parlour::RbiGenerator::Namespace
       expect(d).to have_attributes(name: 'D', final: false)
-      
+
       e = d.children.first
       expect(e).to be_a Parlour::RbiGenerator::Namespace
       expect(e).to have_attributes(name: 'E', final: false)
@@ -856,5 +856,142 @@ RSpec.describe Parlour::TypeParser do
     expect(bar).to be_a Parlour::RbiGenerator::Constant
     expect(foo).to have_attributes(name: "FOO", value: "T.let(nil, T.nilable(String))")
     expect(bar).to have_attributes(name: "BAR", value: "'Hey'.freeze")
+  end
+
+  it 'parses type aliases' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      class A
+        Foo = T.type_alias { String }
+      end
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children.length).to eq 1
+
+    a = root.children.first
+    expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+    expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
+    expect(a.children.length).to eq 1
+
+    foo, = a.children
+    expect(foo).to be_a Parlour::RbiGenerator::TypeAlias
+    expect(foo).to have_attributes(name: "Foo", type: "String")
+  end
+
+  describe 'parsing of RBI types into Types::Type' do
+    def t(s)
+      i = described_class.from_source('(test)', s)
+      i.parse_node_to_type(i.ast)
+    end
+
+    it 'parses raw constants' do
+      expect(t('A')).to eq Parlour::Types::Raw.new('A')
+      expect(t('A::B::C')).to eq Parlour::Types::Raw.new('A::B::C')
+    end
+
+    it 'parses unions' do
+      expect(t('T.any(A, B, C)')).to eq Parlour::Types::Union.new([
+        Parlour::Types::Raw.new('A'),
+        Parlour::Types::Raw.new('B'),
+        Parlour::Types::Raw.new('C'),
+      ])
+    end
+
+    it 'parses intersections' do
+      expect(t('T.all(A, B, C)')).to eq Parlour::Types::Intersection.new([
+        Parlour::Types::Raw.new('A'),
+        Parlour::Types::Raw.new('B'),
+        Parlour::Types::Raw.new('C'),
+      ])
+    end
+
+    it 'parses nilables' do
+      expect(t('T.nilable(A)')).to eq Parlour::Types::Nilable.new(
+        Parlour::Types::Raw.new('A'),
+      )
+    end
+
+    it 'parses arrays' do
+      expect(t('T::Array[String]')).to eq Parlour::Types::Array.new(
+        Parlour::Types::Raw.new('String')
+      )
+    end
+
+    it 'parses hashes' do
+      expect(t('T::Hash[String, Integer]')).to eq \
+        Parlour::Types::Hash.new(
+          Parlour::Types::Raw.new('String'),
+          Parlour::Types::Raw.new('Integer'),
+        )
+    end
+
+    it 'parses generics' do
+      expect(t('Wrapper[String]')).to eq \
+        Parlour::Types::Generic.new(
+          Parlour::Types::Raw.new('Wrapper'),
+          [Parlour::Types::Raw.new('String')]
+        )
+    end
+
+    it 'parses booleans' do
+      expect(t('T::Boolean')).to eq Parlour::Types::Boolean.new
+    end
+
+    it 'parses complex nested types' do
+      expect(t('T.any(String, T.all(Integer, T.nilable(Numeric)))')).to eq \
+        Parlour::Types::Union.new([
+          Parlour::Types::Raw.new('String'),
+          Parlour::Types::Intersection.new([
+            Parlour::Types::Raw.new('Integer'),
+            Parlour::Types::Nilable.new(
+              Parlour::Types::Raw.new('Numeric'),
+            ),
+          ]),
+        ])
+    end
+
+    it 'parses class types' do
+      expect(t('T.class_of(String)')).to eq \
+        Parlour::Types::Class.new(
+          Parlour::Types::Raw.new('String'),
+        )
+    end
+
+    it 'parses shapes' do
+      expect(t('{ a: String, b: T.any(Integer, T::Boolean) }')).to eq \
+        Parlour::Types::Record.new(
+          {
+            a: Parlour::Types::Raw.new('String'),
+            b: Parlour::Types::Union.new([
+              Parlour::Types::Raw.new('Integer'),
+              Parlour::Types::Boolean.new,
+            ])
+          }
+        )
+    end
+
+    it 'can generalize this project' do
+      project_root = Parlour::TypeLoader.load_project('.', exclusions: ['rbi'])
+      project_root.generalize_from_rbi!
+
+      parlour_module = project_root.children.find { |x| x.name == 'Parlour' }
+      expect(parlour_module).to be_a Parlour::RbiGenerator::ModuleNamespace
+
+      generator = parlour_module.children.find { |x| x.name == 'Generator' }
+      expect(generator).to be_a Parlour::RbiGenerator::ClassNamespace
+
+      meth = generator.children.find { |x| x.name == 'initialize' }
+
+      expect(meth.parameters.length).to eq 3
+      expect(meth.parameters[0]).to have_attributes(
+        name: 'break_params:', type: Parlour::Types::Raw.new('Integer'),
+      )
+      expect(meth.parameters[1]).to have_attributes(
+        name: 'tab_size:', type: Parlour::Types::Raw.new('Integer'),
+      )
+      expect(meth.parameters[2]).to have_attributes(
+        name: 'sort_namespaces:', type: Parlour::Types::Boolean.new,
+      )
+    end
   end
 end

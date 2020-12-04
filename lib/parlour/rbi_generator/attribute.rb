@@ -1,14 +1,14 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents an attribute reader, writer or accessor.
     class Attribute < Method
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           kind: Symbol,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).void
@@ -20,8 +20,7 @@ module Parlour
       # @param name [String] The name of this attribute.
       # @param kind [Symbol] The kind of attribute this is; one of :writer, :reader or
       #   :accessor.
-      # @param type [String] A Sorbet string of this attribute's type, such as
-      #   +"String"+ or +"T.untyped"+.
+      # @param type [String, Types::Type] This attribute's type.
       # @param class_attribute [Boolean] Whether this attribute belongs to the
       #   singleton class.
       # @param block A block which the new instance yields itself to.
@@ -32,6 +31,7 @@ module Parlour
         # attr_accessor and attr_reader should have: sig { returns(X) }
         # attr_writer :foo should have: sig { params(foo: X).returns(X) }
 
+        @type = type
         @kind = kind
         @class_attribute = class_attribute
         case kind
@@ -55,6 +55,10 @@ module Parlour
       # Whether this attribute belongs to the singleton class.
       attr_reader :class_attribute
 
+      sig { returns(Types::TypeLike) }
+      # The type of this attribute.
+      attr_reader :type
+
       sig { override.params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another attribute.
       #
@@ -67,6 +71,11 @@ module Parlour
             kind            == other.kind &&
             class_attribute == other.class_attribute
         )
+      end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        @type = TypeParser.parse_single_type(@type) if String === @type
       end
 
       private

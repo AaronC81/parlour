@@ -1,20 +1,21 @@
 # typed: true
 module Parlour
-  class RbiGenerator < Generator
+  class RbsGenerator < Generator
     # Represents an +include+ call.
-    class Include < RbiObject
+    class Include < RbsObject
       sig do
         params(
           generator: Generator,
-          name: String,
+          type: Types::TypeLike,
           block: T.nilable(T.proc.params(x: Include).void)
         ).void
       end
       # Creates a new +include+ call.
       #
-      # @param name [String] The name of the object to be included.
-      def initialize(generator, name: '', &block)
-        super(generator, name)
+      # @param type [Types::TypeLike] The type to include.
+      def initialize(generator, type:, &block)
+        super(generator, '')
+        @type = type
         yield_self(&block) if block
       end
 
@@ -25,8 +26,12 @@ module Parlour
       #   subclass of it), this will always return false.
       # @return [Boolean]
       def ==(other)
-        Include === other && name == other.name
+        Include === other && type == other.type
       end
+
+      sig { returns(Types::TypeLike) }
+      # @return [Types::TypeLike] The type to include.
+      attr_reader :type
 
       sig do
         override.params(
@@ -34,24 +39,24 @@ module Parlour
           options: Options
         ).returns(T::Array[String])
       end
-      # Generates the RBI lines for this include.
+      # Generates the RBS lines for this include.
       #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBI lines, formatted as specified.
-      def generate_rbi(indent_level, options)
-        [options.indented(indent_level, "include #{name}")]
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        [options.indented(indent_level, "include #{String === @type ? @type : @type.generate_rbs}")]
       end
 
       sig do
         override.params(
-          others: T::Array[RbiGenerator::RbiObject]
+          others: T::Array[RbsGenerator::RbsObject]
         ).returns(T::Boolean)
       end
       # Given an array of {Include} instances, returns true if they may be 
       # merged into this instance using {merge_into_self}. This is always false.
       #
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other
+      # @param others [Array<RbsGenerator::RbsObject>] An array of other
       #   {Include} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
@@ -60,7 +65,7 @@ module Parlour
 
       sig do 
         override.params(
-          others: T::Array[RbiGenerator::RbiObject]
+          others: T::Array[RbsGenerator::RbsObject]
         ).void
       end
       # Given an array of {Include} instances, merges them into this one.
@@ -68,7 +73,7 @@ module Parlour
       # are only mergeable if they are indentical.
       # You MUST ensure that {mergeable?} is true for those instances.
       #
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other
+      # @param others [Array<RbsGenerator::RbsObject>] An array of other
       #   {Include} instances.
       # @return [void]
       def merge_into_self(others)
@@ -80,11 +85,8 @@ module Parlour
       #
       # @return [String]
       def describe
-        "Include (#{name})"
+        "Include (#{@type})"
       end
-
-      sig { override.void }
-      def generalize_from_rbi!; end # Nothing to do
     end
   end
 end

@@ -8,7 +8,7 @@ module Parlour
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           final: T::Boolean,
           props: T::Array[StructProp],
@@ -39,7 +39,7 @@ module Parlour
       sig do
         override.params(
           indent_level: Integer,
-          options: Options
+          options: Options,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this struct. This consists of
@@ -97,6 +97,13 @@ module Parlour
 
           @props = other.props if props.empty?
         end
+      end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
+
+        props.each(&:generalize_from_rbi!)
       end
     end
   end

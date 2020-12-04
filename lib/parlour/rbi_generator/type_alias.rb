@@ -1,47 +1,38 @@
 # typed: true
 module Parlour
   class RbiGenerator < Generator
-    # Represents a constant definition.
-    class Constant < RbiObject
+    # Represents a type alias.
+    class TypeAlias < RbiObject
       sig do
         params(
           generator: Generator,
           name: String,
-          value: Types::TypeLike,
-          eigen_constant: T::Boolean,
-          block: T.nilable(T.proc.params(x: Constant).void)
+          type: Types::TypeLike,
+          block: T.nilable(T.proc.params(x: TypeAlias).void)
         ).void
       end
-      # Creates a new constant definition.
+      # Creates a new type alias.
       #
-      # @param name [String] The name of the constant.
-      # @param value [String] The value of the constant, as a Ruby code string.
-      # @param eigen_constant [Boolean] Whether this constant is defined on the
-      #   eigenclass of the current namespace.
-      def initialize(generator, name: '', value: '', eigen_constant: false, &block)
+      # @param name [String] The name of the alias.
+      # @param value [String] The type to alias to.
+      def initialize(generator, name:, type:, &block)
         super(generator, name)
-        @value = value
-        @eigen_constant = eigen_constant
+        @type = type
         yield_self(&block) if block
       end
 
-      # @return [String] The value or type of the constant.
+      # @return [Types::TypeLike] The type to alias to.
       sig { returns(Types::TypeLike) }
-      attr_reader :value
-
-      # @return [Boolean] Whether this constant is defined on the eigenclass
-      #   of the current namespace.
-      attr_reader :eigen_constant
+      attr_reader :type
 
       sig { params(other: Object).returns(T::Boolean) }
-      # Returns true if this instance is equal to another extend.
+      # Returns true if this instance is equal to another type alias.
       #
-      # @param other [Object] The other instance. If this is not a {Extend} (or a
+      # @param other [Object] The other instance. If this is not a {TypeAlias} (or a
       #   subclass of it), this will always return false.
       # @return [Boolean]
       def ==(other)
-        Constant === other && name == other.name && value == other.value \
-          && eigen_constant == other.eigen_constant
+        TypeAlias === other && name == other.name && type == other.type
       end
 
       sig do
@@ -50,17 +41,15 @@ module Parlour
           options: Options
         ).returns(T::Array[String])
       end
-      # Generates the RBI lines for this constant.
+      # Generates the RBI lines for this type alias.
       #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
-        if String === @value
-          [options.indented(indent_level, "#{name} = #{@value}")]
-        else
-          [options.indented(indent_level, "#{name} = T.let(nil, #{@value.generate_rbi})")]
-        end
+        [options.indented(indent_level,
+          "#{name} = T.type_alias { #{String === @type ? @type : @type.generate_rbi} }"
+        )]
       end
 
       sig do
@@ -68,11 +57,11 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
-      # Given an array of {Constant} instances, returns true if they may be 
+      # Given an array of {TypeAlias} instances, returns true if they may be 
       # merged into this instance using {merge_into_self}. This is always false.
       #
       # @param others [Array<RbiGenerator::RbiObject>] An array of other
-      #   {Constant} instances.
+      #   {TypeAlias} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
         others.all? { |other| self == other }
@@ -83,16 +72,16 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).void
       end
-      # Given an array of {Constant} instances, merges them into this one.
+      # Given an array of {TypeAlias} instances, merges them into this one.
       # This particular implementation will simply do nothing, as instances
       # are only mergeable if they are indentical.
       # You MUST ensure that {mergeable?} is true for those instances.
       #
       # @param others [Array<RbiGenerator::RbiObject>] An array of other
-      #   {Extend} instances.
+      #   {TypeAlias} instances.
       # @return [void]
       def merge_into_self(others)
-        # We don't need to change anything! We only merge identical constants
+        # We don't need to change anything! We only merge identical type alias
       end
 
       sig { override.returns(String) }
@@ -100,14 +89,12 @@ module Parlour
       #
       # @return [String]
       def describe
-        "Constant (#{name} = #{value})"
+        "Type Alias (#{name} = #{type})"
       end
 
       sig { override.void }
       def generalize_from_rbi!
-        # There's a good change this is an untyped constant, so rescue
-        # ParseError and use untyped
-        @value = (TypeParser.parse_single_type(@value) if String === @value) rescue Types::Untyped.new
+        @type = TypeParser.parse_single_type(@type) if String === @type
       end
     end
   end

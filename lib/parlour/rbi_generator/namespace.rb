@@ -1,6 +1,6 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # A generic namespace. This shouldn't be used, except as the type of
     # {RbiGenerator#root}.
     class Namespace < RbiObject
@@ -24,7 +24,7 @@ module Parlour
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: T.nilable(String),
           final: T::Boolean,
           block: T.nilable(T.proc.params(x: Namespace).void)
@@ -76,6 +76,17 @@ module Parlour
           T::Array[RbiGenerator::Include]
         )
       end
+
+      sig { returns(T::Array[RbiGenerator::TypeAlias]) }
+      # The {RbiGenerator::TypeAlias} objects from {children}.
+      # @return [Array<RbiGenerator::TypeAlias>]
+      def aliases
+        T.cast(
+          children.select { |c| c.is_a?(RbiGenerator::TypeAlias) },
+          T::Array[RbiGenerator::TypeAlias]
+        )
+      end
+      alias type_aliases aliases
 
       sig { returns(T::Array[RbiGenerator::Constant]) }
       # The {RbiGenerator::Constant} objects from {children}.
@@ -260,8 +271,8 @@ module Parlour
         params(
           name: String,
           parameters: T.nilable(T::Array[Parameter]),
-          return_type: T.nilable(String),
-          returns: T.nilable(String),
+          return_type: T.nilable(Types::TypeLike),
+          returns: T.nilable(Types::TypeLike),
           abstract: T::Boolean,
           implementation: T::Boolean,
           override: T::Boolean,
@@ -320,7 +331,7 @@ module Parlour
         params(
           name: String,
           kind: Symbol,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -376,7 +387,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -397,7 +408,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -418,7 +429,7 @@ module Parlour
       sig do
         params(
           name: String,
-          type: String,
+          type: Types::TypeLike,
           class_attribute: T::Boolean,
           block: T.nilable(T.proc.params(x: Attribute).void)
         ).returns(Attribute)
@@ -552,7 +563,7 @@ module Parlour
         new_constant
       end
 
-      sig { params(name: String, type: String, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: TypeAlias).void)).returns(TypeAlias) }
       # Adds a new type alias, in the form of a constant, to this namespace.
       #
       # @example Add a +MyType+ type alias, to +Integer+, to the class.
@@ -563,7 +574,15 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Constant]
       def create_type_alias(name, type:, &block)
-        create_constant(name, value: "T.type_alias { #{type} }", &block)
+        new_type_alias = RbiGenerator::TypeAlias.new(
+          generator,
+          name: name,
+          type: type,
+          &block
+        )
+        move_next_comments(new_type_alias)
+        children << new_type_alias
+        new_type_alias
       end
 
       sig do
@@ -615,12 +634,17 @@ module Parlour
           "includes, #{extends.length} extends, #{constants.length} constants"
       end
 
+      sig { override.void }
+      def generalize_from_rbi!
+        children.each(&:generalize_from_rbi!)
+      end
+
       private
 
       sig do
         overridable.params(
           indent_level: Integer,
-          options: Options
+          options: Options,
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for the body of this namespace. This consists of
@@ -639,11 +663,14 @@ module Parlour
         eigen_constants, non_eigen_constants = constants.partition(&:eigen_constant)
         eigen_constants.sort_by!(&:name) if options.sort_namespaces
 
-        if includes.any? || extends.any? || non_eigen_constants.any?
+        if includes.any? || extends.any? || aliases.any? || non_eigen_constants.any?
           result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
+            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .reject { |x| x.strip == '' }
+          result += (options.sort_namespaces ? aliases.sort_by(&:name) : aliases)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? non_eigen_constants.sort_by(&:name) : non_eigen_constants)
@@ -695,7 +722,7 @@ module Parlour
 
         first, *rest = remaining_children.reject do |child|
           # We already processed these kinds of children
-          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant)
+          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant) || child.is_a?(TypeAlias)
         end
         unless first
           # Remove any trailing whitespace due to includes or class attributes

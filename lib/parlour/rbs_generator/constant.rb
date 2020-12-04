@@ -1,14 +1,13 @@
 # typed: true
 module Parlour
-  class RbiGenerator < Generator
+  class RbsGenerator < Generator
     # Represents a constant definition.
-    class Constant < RbiObject
+    class Constant < RbsObject
       sig do
         params(
           generator: Generator,
           name: String,
-          value: Types::TypeLike,
-          eigen_constant: T::Boolean,
+          type: Types::TypeLike,
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
       end
@@ -16,22 +15,16 @@ module Parlour
       #
       # @param name [String] The name of the constant.
       # @param value [String] The value of the constant, as a Ruby code string.
-      # @param eigen_constant [Boolean] Whether this constant is defined on the
       #   eigenclass of the current namespace.
-      def initialize(generator, name: '', value: '', eigen_constant: false, &block)
+      def initialize(generator, name, type:, &block)
         super(generator, name)
-        @value = value
-        @eigen_constant = eigen_constant
+        @type = type
         yield_self(&block) if block
       end
 
-      # @return [String] The value or type of the constant.
+      # @return [Types::TypeLike] The type of the constant.
       sig { returns(Types::TypeLike) }
-      attr_reader :value
-
-      # @return [Boolean] Whether this constant is defined on the eigenclass
-      #   of the current namespace.
-      attr_reader :eigen_constant
+      attr_reader :type
 
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another extend.
@@ -40,8 +33,7 @@ module Parlour
       #   subclass of it), this will always return false.
       # @return [Boolean]
       def ==(other)
-        Constant === other && name == other.name && value == other.value \
-          && eigen_constant == other.eigen_constant
+        Constant === other && name == other.name && type == other.type
       end
 
       sig do
@@ -50,28 +42,24 @@ module Parlour
           options: Options
         ).returns(T::Array[String])
       end
-      # Generates the RBI lines for this constant.
+      # Generates the RBS lines for this constant.
       #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBI lines, formatted as specified.
-      def generate_rbi(indent_level, options)
-        if String === @value
-          [options.indented(indent_level, "#{name} = #{@value}")]
-        else
-          [options.indented(indent_level, "#{name} = T.let(nil, #{@value.generate_rbi})")]
-        end
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options)
+        [options.indented(indent_level, "#{name}: #{String === @type ? @type : @type.generate_rbs}")]
       end
 
       sig do
         override.params(
-          others: T::Array[RbiGenerator::RbiObject]
+          others: T::Array[RbsGenerator::RbsObject]
         ).returns(T::Boolean)
       end
       # Given an array of {Constant} instances, returns true if they may be 
       # merged into this instance using {merge_into_self}. This is always false.
       #
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other
+      # @param others [Array<RbsGenerator::RbsObject>] An array of other
       #   {Constant} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others)
@@ -80,7 +68,7 @@ module Parlour
 
       sig do
         override.params(
-          others: T::Array[RbiGenerator::RbiObject]
+          others: T::Array[RbsGenerator::RbsObject]
         ).void
       end
       # Given an array of {Constant} instances, merges them into this one.
@@ -88,7 +76,7 @@ module Parlour
       # are only mergeable if they are indentical.
       # You MUST ensure that {mergeable?} is true for those instances.
       #
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other
+      # @param others [Array<RbsGenerator::RbsObject>] An array of other
       #   {Extend} instances.
       # @return [void]
       def merge_into_self(others)
@@ -100,14 +88,7 @@ module Parlour
       #
       # @return [String]
       def describe
-        "Constant (#{name} = #{value})"
-      end
-
-      sig { override.void }
-      def generalize_from_rbi!
-        # There's a good change this is an untyped constant, so rescue
-        # ParseError and use untyped
-        @value = (TypeParser.parse_single_type(@value) if String === @value) rescue Types::Untyped.new
+        "Constant (#{name} = #{type})"
       end
     end
   end

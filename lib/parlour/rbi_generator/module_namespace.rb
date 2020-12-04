@@ -1,13 +1,13 @@
 # typed: true
 module Parlour
-  class RbiGenerator
+  class RbiGenerator < Generator
     # Represents a module definition.
     class ModuleNamespace < Namespace
       extend T::Sig
 
       sig do
         params(
-          generator: RbiGenerator,
+          generator: Generator,
           name: String,
           final: T::Boolean,
           interface: T::Boolean,
@@ -95,6 +95,11 @@ module Parlour
       def describe
         "Module #{name} - #{"interface, " if interface}#{children.length} " +
           "children, #{includes.length} includes, #{extends.length} extends"
+      end
+
+      sig { override.void }
+      def generalize_from_rbi!
+        super
       end
     end
   end

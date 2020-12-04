@@ -345,11 +345,28 @@ module Parlour
         end.flatten
       when :casgn
         _, name, body = *node
-        [Parlour::RbiGenerator::Constant.new(
-          generator,
-          name: T.must(name).to_s,
-          value: T.must(node_to_s(body)),
-        )]
+
+        # Determine whether this is a constant or a type alias
+        # A type alias looks like:
+        #   (block (send (const nil :T) :type_alias) (args) (type_to_alias))
+        if body.type == :block &&
+          body.to_a[0].type == :send &&
+          body.to_a[0].to_a[0].type == :const &&
+          body.to_a[0].to_a[0].to_a == [nil, :T] &&
+          body.to_a[0].to_a[1] == :type_alias
+
+          [Parlour::RbiGenerator::TypeAlias.new(
+            generator,
+            name: T.must(name).to_s,
+            type: T.must(node_to_s(body.to_a[2])),
+          )]
+        else
+          [Parlour::RbiGenerator::Constant.new(
+            generator,
+            name: T.must(name).to_s,
+            value: T.must(node_to_s(body)),
+          )]
+        end
       else
         if unknown_node_errors
           parse_err "don't understand node type #{node.type}", node
@@ -696,7 +713,167 @@ module Parlour
       end
     end
 
+    sig { params(str: String).returns(Types::Type) }
+    # TODO doc
+    def self.parse_single_type(str)
+      i = TypeParser.from_source('(none)', str)
+      i.parse_node_to_type(i.ast)
+    end
+
+    sig { params(node: Parser::AST::Node).returns(Types::Type) }
+    # Given an AST node representing an RBI type (such as 'T::Array[String]'),
+    # parses it into a generic type.
+    #
+    # @param [Parser::AST::Node] node
+    # @return [Parlour::Types::Type]
+    def parse_node_to_type(node)
+      case node.type
+      when :send
+        target, message, *args = *node
+
+        # Special case: is this a generic type instantiation?
+        if message == :[]
+          names = constant_names(target)
+          known_single_element_collections = [:Array, :Set, :Range, :Enumerator, :Enumerable]
+
+          if names.length == 2 && names[0] == :T &&
+            known_single_element_collections.include?(names[1])
+
+            parse_err "no type in T::#{names[1]}[...]", node if args.nil? || args.empty?
+            parse_err "too many types in T::#{names[1]}[...]", node unless args.length == 1
+            return T.must(Types.const_get(T.must(names[1]))).new(parse_node_to_type(T.must(args.first)))
+          elsif names.length == 2 && names == [:T, :Hash]
+            parse_err "not enough types in T::Hash[...]", node if args.nil? || args.length < 2
+            parse_err "too many types in T::Hash[...]", node unless args.length == 2
+            return Types::Hash.new(
+              parse_node_to_type(args[0]), parse_node_to_type(args[1])
+            )
+          else
+            type = names.join('::')
+            if args.nil?
+              parse_err(
+                "user defined generic '#{type}' requires at least one type parameter",
+                node
+              )
+            end
+            return Types::Generic.new(
+              type,
+              args.map { |arg| parse_node_to_type(arg) }
+            )
+          end
+        end
+
+        # Special case: is this a proc?
+        # This parsing is pretty simplified, but you'd also have to be doing
+        # something pretty cursed with procs to break this
+        # This checks for (send (send (send (const nil :T) :proc) ...) ...)
+        # That's the right amount of nesting for T.proc.params(...).returns(...)
+        if node.to_a[0].type == :send &&
+          node.to_a[0].to_a[0].type == :send &&
+          node.to_a[0].to_a[0].to_a[1] == :proc &&
+          node.to_a[0].to_a[0].to_a[0].type == :const &&
+          node.to_a[0].to_a[0].to_a[0].to_a == [nil, :T] # yuck
+
+          # Get parameters
+          params_send = node.to_a[0]
+          parse_err "expected 'params' to follow 'T.proc'", node unless params_send.to_a[1] == :params
+          parse_err "expected 'params' to have kwargs", node unless params_send.to_a[2].type == :hash
+
+          parameters = params_send.to_a[2].to_a.map do |pair|
+            name, value = *pair
+            parse_err "expected 'params' name to be symbol", node unless name.type == :sym
+            name = name.to_a[0].to_s
+            value = parse_node_to_type(value)
+
+            RbiGenerator::Parameter.new(name, type: value)
+          end
+
+          # Get return value
+          if node.to_a[1] == :void
+            return_type = nil
+          else
+            _, call, *args = *node
+            parse_err 'expected .returns or .void', node unless call == :returns
+            parse_err 'no argument to .returns', node if args.nil? || args.empty?
+            parse_err 'too many arguments to .returns', node unless args.length == 1
+            return_type = parse_node_to_type(T.must(args.first))
+          end
+
+          return Types::Proc.new(parameters, return_type)
+        end
+
+        # The other options for a valid call are all "T.something" methods
+        parse_err "unexpected call #{node_to_s(node).inspect} in type", node \
+          unless target.type == :const && target.to_a == [nil, :T]
+
+        case message
+        when :nilable
+          parse_err 'no argument to T.nilable', node if args.nil? || args.empty?
+          parse_err 'too many arguments to T.nilable', node unless args.length == 1
+          Types::Nilable.new(parse_node_to_type(T.must(args.first)))
+        when :any
+          Types::Union.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
+        when :all
+          Types::Intersection.new((args || []).map { |x| parse_node_to_type(T.must(x)) })
+        when :let
+          # Not really allowed in a type signature, but handy for generalizing
+          # constant types
+          parse_err 'not enough argument to T.let', node if args.nil? || args.length < 2
+          parse_err 'too many arguments to T.nilable', node unless args.length == 2
+          parse_node_to_type(args[1])
+        when :type_parameter
+          parse_err 'no argument to T.type_parameter', node if args.nil? || args.empty?
+          parse_err 'too many arguments to T.type_parameter', node unless args.length == 1
+          parse_err 'expected T.type_parameter to be passed a symbol', node unless T.must(args.first).type == :sym
+          Types::Raw.new(T.must(args.first.to_a[0].to_s))
+        when :class_of
+          parse_err 'no argument to T.class_of', node if args.nil? || args.empty?
+          parse_err 'too many arguments to T.class_of', node unless args.length == 1
+          Types::Class.new(parse_node_to_type(args[0]))
+        when :untyped
+          parse_err 'T.untyped does not accept arguments', node if !args.nil? && !args.empty?
+          Types::Untyped.new
+        else
+          warning "unknown method T.#{message}, treating as untyped", node
+          Types::Untyped.new
+        end
+      when :const
+        # Special case: T::Boolean
+        if constant_names(node) == [:T, :Boolean]
+          return Types::Boolean.new
+        end
+
+        # Otherwise, just a plain old constant
+        Types::Raw.new(constant_names(node).join('::'))
+      when :array
+        # Tuple
+        Types::Tuple.new(node.to_a.map { |x| parse_node_to_type(T.must(x)) })
+      when :hash
+        # Shape/record
+        keys_to_types = node.to_a.map do |pair|
+          key, value = *pair
+          parse_err "all shape keys must be symbols", node unless key.type == :sym
+          [key.to_a[0], parse_node_to_type(value)]
+        end.to_h
+
+        Types::Record.new(keys_to_types)
+      else
+        parse_err "unable to parse type #{node_to_s(node).inspect}", node
+      end
+    end
+
     protected
+
+    sig { params(msg: String, node: Parser::AST::Node).void }
+    def warning(msg, node)
+      return if $VERBOSE.nil?
+
+      print Rainbow("Parlour warning: ").yellow.dark.bold
+      print Rainbow("Type generalization: ").magenta.bright.bold
+      puts msg
+      print Rainbow("      └ at code: ").blue.bright.bold
+      puts node_to_s(node)
+    end
 
     sig { params(node: T.nilable(Parser::AST::Node)).returns(T::Array[Symbol]) }
     # Given a node representing a simple chain of constants (such as A or

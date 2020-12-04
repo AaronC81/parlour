@@ -1,25 +1,25 @@
 # typed: true
 module Parlour
-  class RbiGenerator < Generator
+  class RbsGenerator < Generator
     # An abstract class which is subclassed by any classes which can generate
-    # entire lines of an RBI, such as {Namespace} and {Method}. (As an example,
+    # entire lines of an RBS, such as {Namespace} and {Method}. (As an example,
     # {Parameter} is _not_ a subclass because it does not generate lines, only
-    # segments of definition and signature lines.)
+    # segments of definition lines.)
     # @abstract
-    class RbiObject < TypedObject
+    class RbsObject < TypedObject
       abstract!
       
       sig { params(generator: Generator, name: String).void }
-      # Creates a new RBI object.
+      # Creates a new RBS object.
       # @note Don't call this directly.
       #
-      # @param generator [RbiGenerator] The current RbiGenerator.
+      # @param generator [RbsGenerator] The current RbsGenerator.
       # @param name [String] The name of this module.
       # @return [void]
       def initialize(generator, name)
         super(name)
         @generator = generator
-        @generated_by = RbiGenerator === generator ? generator.current_plugin : nil
+        @generated_by = RbsGenerator === generator ? generator.current_plugin : nil
       end
 
       sig { returns(Generator) }
@@ -33,17 +33,17 @@ module Parlour
           options: Options
         ).returns(T::Array[String])
       end
-      # Generates the RBI lines for this object.
+      # Generates the RBS lines for this object.
       #
       # @abstract
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
-      # @return [Array<String>] The RBI lines, formatted as specified.
-      def generate_rbi(indent_level, options); end
+      # @return [Array<String>] The RBS lines, formatted as specified.
+      def generate_rbs(indent_level, options); end
 
       sig do
         abstract.params(
-          others: T::Array[RbiGenerator::RbiObject]
+          others: T::Array[RbsGenerator::RbsObject]
         ).returns(T::Boolean)
       end
       # Given an array of other objects, returns true if they may be merged
@@ -51,13 +51,13 @@ module Parlour
       # own criteria on what allows objects to be mergeable.
       #
       # @abstract
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other {RbiObject} instances.
+      # @param others [Array<RbsGenerator::RbsObject>] An array of other {RbsObject} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others); end
 
       sig do 
         abstract.params(
-          others: T::Array[RbiGenerator::RbiObject]
+          others: T::Array[RbsGenerator::RbsObject]
         ).void
       end
       # Given an array of other objects, merges them into this one. Each
@@ -65,23 +65,14 @@ module Parlour
       # You MUST ensure that {mergeable?} is true for those instances.
       #
       # @abstract
-      # @param others [Array<RbiGenerator::RbiObject>] An array of other {RbiObject} instances.
+      # @param others [Array<RbsGenerator::RbsObject>] An array of other {RbsObject} instances.
       # @return [void]
       def merge_into_self(others); end
 
-      sig { override.overridable.returns(String) }
+      sig { overridable.override.returns(String) }
       def describe
-        'RBI object'
-      end
-
-      sig { abstract.void }
-      # Assuming that the types throughout this object and its children have
-      # been specified as RBI-style types, generalises them into type instances
-      # from the {Parlour::Types} module.
-      #
-      # @abstract
-      # @return [void]
-      def generalize_from_rbi!; end
+        'RBS object'
+      end  
     end
   end
 end
