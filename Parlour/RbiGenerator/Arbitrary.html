@@ -74,6 +74,8 @@
         <ul class="fullTree">
           <li>Object</li>
           
+            <li class="next"><span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></li>
+          
             <li class="next"><span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></li>
           
             <li class="next">Parlour::RbiGenerator::Arbitrary</li>
@@ -153,7 +155,12 @@
   
   
   <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="RbiObject.html#comments-instance_method" title="Parlour::RbiGenerator::RbiObject#comments (method)">#comments</a></span>, <span class='object_link'><a href="RbiObject.html#generated_by-instance_method" title="Parlour::RbiGenerator::RbiObject#generated_by (method)">#generated_by</a></span>, <span class='object_link'><a href="RbiObject.html#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span>, <span class='object_link'><a href="RbiObject.html#name-instance_method" title="Parlour::RbiGenerator::RbiObject#name (method)">#name</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="RbiObject.html#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span></p>
+
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#comments-instance_method" title="Parlour::TypedObject#comments (method)">#comments</a></span>, <span class='object_link'><a href="../TypedObject.html#generated_by-instance_method" title="Parlour::TypedObject#generated_by (method)">#generated_by</a></span>, <span class='object_link'><a href="../TypedObject.html#name-instance_method" title="Parlour::TypedObject#name (method)">#name</a></span></p>
 
 
   
@@ -207,6 +214,30 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns a human-readable brief string description of this code.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#generalize_from_rbi!-instance_method" title="#generalize_from_rbi! (instance method)">#<strong>generalize_from_rbi!</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Nothing to do.</p>
 </div></span>
   
 </li>
@@ -323,8 +354,14 @@ merged into this instance using <span class='object_link'><a href="#merge_into_s
   
   
   
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="RbiObject.html#add_comment-instance_method" title="Parlour::RbiGenerator::RbiObject#add_comment (method)">#add_comment</a></span></p>
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#add_comment-instance_method" title="Parlour::TypedObject#add_comment (method)">#add_comment</a></span></p>
 
   
   <div id="constructor_details" class="method_details_list">
@@ -583,6 +620,43 @@ this will always return false.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="generalize_from_rbi!-instance_method">
+  
+    #<strong>generalize_from_rbi!</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Nothing to do</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+92</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/arbitrary.rb', line 92</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="generate_rbi-instance_method">
   
     #<strong>generate_rbi</strong>(indent_level, options)  &#x21d2; <tt>Array&lt;String&gt;</tt> 
@@ -624,7 +698,7 @@ this will always return false.</p>
         <span class='name'>options</span>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="Options.html" title="Parlour::RbiGenerator::Options (class)">Options</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../RbiGenerator.html#Options-constant" title="Parlour::RbiGenerator::Options (constant)">Options</a></span></tt>)</span>
       
       
       
@@ -825,7 +899,7 @@ merged into this instance using <span class='object_link'><a href="#merge_into_s
 </div>
 
       <div id="footer">
-  Generated on Wed Oct 21 10:09:48 2020 by
+  Generated on Sat Dec  5 03:56:53 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>

@@ -74,6 +74,8 @@
         <ul class="fullTree">
           <li>Object</li>
           
+            <li class="next"><span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></li>
+          
             <li class="next"><span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></li>
           
             <li class="next"><span class='object_link'><a href="Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span></li>
@@ -180,6 +182,35 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#type-instance_method" title="#type (instance method)">#<strong>type</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The type of this attribute.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -192,7 +223,12 @@
   
   
   <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="RbiObject.html#comments-instance_method" title="Parlour::RbiGenerator::RbiObject#comments (method)">#comments</a></span>, <span class='object_link'><a href="RbiObject.html#generated_by-instance_method" title="Parlour::RbiGenerator::RbiObject#generated_by (method)">#generated_by</a></span>, <span class='object_link'><a href="RbiObject.html#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span>, <span class='object_link'><a href="RbiObject.html#name-instance_method" title="Parlour::RbiGenerator::RbiObject#name (method)">#name</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="RbiObject.html#generator-instance_method" title="Parlour::RbiGenerator::RbiObject#generator (method)">#generator</a></span></p>
+
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#comments-instance_method" title="Parlour::TypedObject#comments (method)">#comments</a></span>, <span class='object_link'><a href="../TypedObject.html#generated_by-instance_method" title="Parlour::TypedObject#generated_by (method)">#generated_by</a></span>, <span class='object_link'><a href="../TypedObject.html#name-instance_method" title="Parlour::TypedObject#name (method)">#name</a></span></p>
 
 
   
@@ -223,6 +259,28 @@
     <span class="summary_desc"><div class='inline'>
 <p>Returns true if this instance is equal to another attribute.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#generalize_from_rbi!-instance_method" title="#generalize_from_rbi! (instance method)">#<strong>generalize_from_rbi!</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -278,7 +336,18 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="RbiObject.html#add_comment-instance_method" title="Parlour::RbiGenerator::RbiObject#add_comment (method)">#add_comment</a></span>, <span class='object_link'><a href="RbiObject.html#describe-instance_method" title="Parlour::RbiGenerator::RbiObject#describe (method)">#describe</a></span>, <span class='object_link'><a href="RbiObject.html#generate_rbi-instance_method" title="Parlour::RbiGenerator::RbiObject#generate_rbi (method)">#generate_rbi</a></span>, <span class='object_link'><a href="RbiObject.html#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>, <span class='object_link'><a href="RbiObject.html#mergeable%3F-instance_method" title="Parlour::RbiGenerator::RbiObject#mergeable? (method)">#mergeable?</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="RbiObject.html#describe-instance_method" title="Parlour::RbiGenerator::RbiObject#describe (method)">#describe</a></span>, <span class='object_link'><a href="RbiObject.html#generate_rbi-instance_method" title="Parlour::RbiGenerator::RbiObject#generate_rbi (method)">#generate_rbi</a></span>, <span class='object_link'><a href="RbiObject.html#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>, <span class='object_link'><a href="RbiObject.html#mergeable%3F-instance_method" title="Parlour::RbiGenerator::RbiObject#mergeable? (method)">#mergeable?</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#add_comment-instance_method" title="Parlour::TypedObject#add_comment (method)">#add_comment</a></span>, <span class='object_link'><a href="../TypedObject.html#describe-instance_method" title="Parlour::TypedObject#describe (method)">#describe</a></span></p>
 
   
   <div id="constructor_details" class="method_details_list">
@@ -366,14 +435,13 @@
         <span class='name'>type</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String</tt>, <tt><span class='object_link'><a href="../Types/Type.html" title="Parlour::Types::Type (class)">Types::Type</a></span></tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>A Sorbet string of this attribute&#39;s type, such as <tt>“String”</tt> or
-<tt>“T.untyped”</tt>.</p>
+<p>This attribute&#39;s type.</p>
 </div>
       
     </li>
@@ -421,6 +489,7 @@
       <pre class="lines">
 
 
+28
 29
 30
 31
@@ -442,7 +511,7 @@
 47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/attribute.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/attribute.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_kind'>kind</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='comment'># According to this source: 
@@ -450,6 +519,7 @@
 </span>  <span class='comment'># attr_accessor and attr_reader should have: sig { returns(X) }
 </span>  <span class='comment'># attr_writer :foo should have: sig { params(foo: X).returns(X) }
 </span>
+  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='id identifier rubyid_type'>type</span>
   <span class='ivar'>@kind</span> <span class='op'>=</span> <span class='id identifier rubyid_kind'>kind</span>
   <span class='ivar'>@class_attribute</span> <span class='op'>=</span> <span class='id identifier rubyid_class_attribute'>class_attribute</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_kind'>kind</span>
@@ -573,6 +643,49 @@
 </table>
 </div>
     
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="type-instance_method">
+  
+    #<strong>type</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The type of this attribute.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+60
+61
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/attribute.rb', line 60</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
+  <span class='ivar'>@type</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 
@@ -640,16 +753,16 @@ this will always return false.</p>
       <pre class="lines">
 
 
-64
-65
-66
-67
 68
 69
-70</pre>
+70
+71
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/attribute.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/attribute.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_other'>other</span><span class='rparen'>)</span>
   <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_must'>must</span><span class='lparen'>(</span>
@@ -663,12 +776,42 @@ this will always return false.</p>
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="generalize_from_rbi!-instance_method">
+  
+    #<strong>generalize_from_rbi!</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+77
+78
+79</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/attribute.rb', line 77</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
+  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'>TypeParser</span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'>parse_single_type</span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Wed Oct 21 10:09:49 2020 by
+  Generated on Sat Dec  5 03:56:53 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>

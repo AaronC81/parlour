@@ -69,10 +69,12 @@
   <dl>
     <dt>Inherits:</dt>
     <dd>
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Generator.html" title="Parlour::Generator (class)">Generator</a></span></span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Generator.html" title="Parlour::Generator (class)">Generator</a></span></li>
           
             <li class="next">Parlour::RbiGenerator</li>
           
@@ -85,11 +87,6 @@
 
   
   
-  <dl>
-      <dt>Extended by:</dt>
-      <dd>T::Sig</dd>
-  </dl>
-  
   
   
   
@@ -100,7 +97,7 @@
   <dl>
     <dt>Defined in:</dt>
     <dd>lib/parlour/rbi_generator.rb<span class="defines">,<br />
-  lib/parlour/rbi_generator/extend.rb,<br /> lib/parlour/rbi_generator/method.rb,<br /> lib/parlour/rbi_generator/include.rb,<br /> lib/parlour/rbi_generator/options.rb,<br /> lib/parlour/rbi_generator/constant.rb,<br /> lib/parlour/rbi_generator/arbitrary.rb,<br /> lib/parlour/rbi_generator/attribute.rb,<br /> lib/parlour/rbi_generator/namespace.rb,<br /> lib/parlour/rbi_generator/parameter.rb,<br /> lib/parlour/rbi_generator/rbi_object.rb,<br /> lib/parlour/rbi_generator/struct_prop.rb,<br /> lib/parlour/rbi_generator/class_namespace.rb,<br /> lib/parlour/rbi_generator/module_namespace.rb,<br /> lib/parlour/rbi_generator/enum_class_namespace.rb,<br /> lib/parlour/rbi_generator/struct_class_namespace.rb</span>
+  lib/parlour/rbi_generator/extend.rb,<br /> lib/parlour/rbi_generator/method.rb,<br /> lib/parlour/rbi_generator/include.rb,<br /> lib/parlour/rbi_generator/constant.rb,<br /> lib/parlour/rbi_generator/arbitrary.rb,<br /> lib/parlour/rbi_generator/attribute.rb,<br /> lib/parlour/rbi_generator/namespace.rb,<br /> lib/parlour/rbi_generator/parameter.rb,<br /> lib/parlour/rbi_generator/rbi_object.rb,<br /> lib/parlour/rbi_generator/type_alias.rb,<br /> lib/parlour/rbi_generator/struct_prop.rb,<br /> lib/parlour/rbi_generator/class_namespace.rb,<br /> lib/parlour/rbi_generator/module_namespace.rb,<br /> lib/parlour/rbi_generator/enum_class_namespace.rb,<br /> lib/parlour/rbi_generator/struct_class_namespace.rb</span>
 </dd>
   </dl>
   
@@ -127,72 +124,44 @@
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="RbiGenerator/Arbitrary.html" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span>, <span class='object_link'><a href="RbiGenerator/Attribute.html" title="Parlour::RbiGenerator::Attribute (class)">Attribute</a></span>, <span class='object_link'><a href="RbiGenerator/ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/Constant.html" title="Parlour::RbiGenerator::Constant (class)">Constant</a></span>, <span class='object_link'><a href="RbiGenerator/EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/Extend.html" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span>, <span class='object_link'><a href="RbiGenerator/Include.html" title="Parlour::RbiGenerator::Include (class)">Include</a></span>, <span class='object_link'><a href="RbiGenerator/Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span>, <span class='object_link'><a href="RbiGenerator/ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span>, <span class='object_link'><a href="RbiGenerator/Options.html" title="Parlour::RbiGenerator::Options (class)">Options</a></span>, <span class='object_link'><a href="RbiGenerator/Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span>, <span class='object_link'><a href="RbiGenerator/RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span>, <span class='object_link'><a href="RbiGenerator/StructClassNamespace.html" title="Parlour::RbiGenerator::StructClassNamespace (class)">StructClassNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/StructProp.html" title="Parlour::RbiGenerator::StructProp (class)">StructProp</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="RbiGenerator/Arbitrary.html" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span>, <span class='object_link'><a href="RbiGenerator/Attribute.html" title="Parlour::RbiGenerator::Attribute (class)">Attribute</a></span>, <span class='object_link'><a href="RbiGenerator/ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/Constant.html" title="Parlour::RbiGenerator::Constant (class)">Constant</a></span>, <span class='object_link'><a href="RbiGenerator/EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/Extend.html" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span>, <span class='object_link'><a href="RbiGenerator/Include.html" title="Parlour::RbiGenerator::Include (class)">Include</a></span>, <span class='object_link'><a href="RbiGenerator/Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span>, <span class='object_link'><a href="RbiGenerator/ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span>, <span class='object_link'><a href="RbiGenerator/Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span>, <span class='object_link'><a href="RbiGenerator/RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span>, <span class='object_link'><a href="RbiGenerator/StructClassNamespace.html" title="Parlour::RbiGenerator::StructClassNamespace (class)">StructClassNamespace</a></span>, <span class='object_link'><a href="RbiGenerator/StructProp.html" title="Parlour::RbiGenerator::StructProp (class)">StructProp</a></span>, <span class='object_link'><a href="RbiGenerator/TypeAlias.html" title="Parlour::RbiGenerator::TypeAlias (class)">TypeAlias</a></span>
     
   
 </p>
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="Options-constant" class="">Options =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>For backwards compatibility. Before Parlour 5.0, Parlour::Options was
+Parlour::RbiGenerator::Options.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Options.html" title="Parlour::Options (class)">Options</a></span></span></pre></dd>
+      
+    </dl>
+  
 
 
 
 
   <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#current_plugin-instance_method" title="#current_plugin (instance method)">#<strong>current_plugin</strong>  &#x21d2; Plugin<sup>?</sup> </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>The plugin which is currently generating new definitions.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#options-instance_method" title="#options (instance method)">#<strong>options</strong>  &#x21d2; Options </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>The formatting options for this generator.</p>
-</div></span>
-  
-</li>
-
     
       <li class="public ">
   <span class="summary_signature">
@@ -227,6 +196,11 @@
 
 
 
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Generator.html" title="Parlour::Generator (class)">Generator</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Generator.html#current_plugin-instance_method" title="Parlour::Generator#current_plugin (method)">#current_plugin</a></span>, <span class='object_link'><a href="Generator.html#options-instance_method" title="Parlour::Generator#options (method)">#options</a></span></p>
+
 
   
     <h2>
@@ -239,7 +213,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(break_params: 4, tab_size: 2, sort_namespaces: false)  &#x21d2; void </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(**hash)  &#x21d2; RbiGenerator </a>
     
 
     
@@ -256,7 +230,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates a new RBI generator.</p>
+<p>A new instance of RbiGenerator.</p>
 </div></span>
   
 </li>
@@ -290,13 +264,19 @@
   
 
 
+  
+  
+  
+  
+  
+  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(break_params: 4, tab_size: 2, sort_namespaces: false)  &#x21d2; <tt>void</tt> 
+    #<strong>initialize</strong>(**hash)  &#x21d2; <tt><span class='object_link'><a href="" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></tt> 
   
 
   
@@ -305,91 +285,13 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates a new RBI generator.</p>
+<p>Returns a new instance of RbiGenerator.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Create a default generator.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_generator'>generator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span></code></pre>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Create a generator with a custom <code>tab_size</code> of 3.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_generator'>generator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>tab_size:</span> <span class='int'>3</span><span class='rparen'>)</span></code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>break_params</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>4</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>If there are at least this many parameters in a  Sorbet <code>sig</code>,
-then it is broken onto separate lines.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>tab_size</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>2</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The number of spaces to use per indent.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>sort_namespaces</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>false</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Whether to sort all items within a namespace alphabetically.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
 
 </div><table class="source_code">
   <tr>
@@ -397,25 +299,17 @@ then it is broken onto separate lines.</p>
       <pre class="lines">
 
 
-22
-23
-24
-25
-26
-27
-28
-29</pre>
+9
+10
+11
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 9</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>break_params:</span> <span class='int'>4</span><span class='comma'>,</span> <span class='label'>tab_size:</span> <span class='int'>2</span><span class='comma'>,</span> <span class='label'>sort_namespaces:</span> <span class='kw'>false</span><span class='rparen'>)</span>
-  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="RbiGenerator/Options.html" title="Parlour::RbiGenerator::Options (class)">Options</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="RbiGenerator/Options.html#initialize-instance_method" title="Parlour::RbiGenerator::Options#initialize (method)">new</a></span></span><span class='lparen'>(</span>
-    <span class='label'>break_params:</span> <span class='id identifier rubyid_break_params'>break_params</span><span class='comma'>,</span>
-    <span class='label'>tab_size:</span> <span class='id identifier rubyid_tab_size'>tab_size</span><span class='comma'>,</span>
-    <span class='label'>sort_namespaces:</span> <span class='id identifier rubyid_sort_namespaces'>sort_namespaces</span>
-  <span class='rparen'>)</span>
-  <span class='ivar'>@root</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="RbiGenerator/Namespace.html#initialize-instance_method" title="Parlour::RbiGenerator::Namespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>super</span>
+  <span class='ivar'>@root</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="RbiGenerator/Namespace.html#initialize-instance_method" title="Parlour::RbiGenerator::Namespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -428,122 +322,9 @@ then it is broken onto separate lines.</p>
     <h2>Instance Attribute Details</h2>
     
       
-      <span id="current_plugin=-instance_method"></span>
+      <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="current_plugin-instance_method">
-  
-    #<strong>current_plugin</strong>  &#x21d2; <tt><span class='object_link'><a href="Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span></tt><sup>?</sup> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>The plugin which is currently generating new definitions.
-<span class='object_link'><a href="Plugin.html#run_plugins-class_method" title="Parlour::Plugin.run_plugins (method)">Plugin.run_plugins</a></span> controls this value.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="Plugin.html" title="Parlour::Plugin (class)">Plugin</a></span></tt>, <tt>nil</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-45
-46
-47</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 45</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_current_plugin'>current_plugin</span>
-  <span class='ivar'>@current_plugin</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="options-instance_method">
-  
-    #<strong>options</strong>  &#x21d2; <tt><span class='object_link'><a href="RbiGenerator/Options.html" title="Parlour::RbiGenerator::Options (class)">Options</a></span></tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>The formatting options for this generator.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="RbiGenerator/Options.html" title="Parlour::RbiGenerator::Options (class)">Options</a></span></tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-34
-35
-36</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 34</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_options'>options</span>
-  <span class='ivar'>@options</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="root-instance_method">
+  <h3 class="signature first" id="root-instance_method">
   
     #<strong>root</strong>  &#x21d2; <tt><span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></tt>  <span class="extras">(readonly)</span>
   
@@ -581,12 +362,12 @@ then it is broken onto separate lines.</p>
       <pre class="lines">
 
 
-39
-40
-41</pre>
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span>
   <span class='ivar'>@root</span>
@@ -647,15 +428,45 @@ then it is broken onto separate lines.</p>
       <pre class="lines">
 
 
-51
-52
-53</pre>
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rbi'>rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_strictness'>strictness</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>strong</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'># typed: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_strictness'>strictness</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='period'>.</span><span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='int'>0</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='comment'># TODO: Early test option - convert to RBS if requested
+</span>  <span class='comment'># Absolutely remove this later on
+</span>  <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PARLOUR_CONVERT_TO_RBS</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+    <span class='comment'># Perform conversion
+</span>    <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='period'>.</span><span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
+    <span class='id identifier rubyid_rbs_gen'>rbs_gen</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbsGenerator.html" title="Parlour::RbsGenerator (class)">RbsGenerator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="RbsGenerator.html#initialize-instance_method" title="Parlour::RbsGenerator#initialize (method)">new</a></span></span>
+    <span class='id identifier rubyid_converter'>converter</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Conversion.html" title="Parlour::Conversion (module)">Conversion</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Conversion/RbiToRbs.html" title="Parlour::Conversion::RbiToRbs (class)">RbiToRbs</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Conversion/RbiToRbs.html#initialize-instance_method" title="Parlour::Conversion::RbiToRbs#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_rbs_gen'>rbs_gen</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_child'>child</span><span class='op'>|</span>
+      <span class='id identifier rubyid_converter'>converter</span><span class='period'>.</span><span class='id identifier rubyid_convert_object'>convert_object</span><span class='lparen'>(</span><span class='id identifier rubyid_child'>child</span><span class='comma'>,</span> <span class='id identifier rubyid_rbs_gen'>rbs_gen</span><span class='period'>.</span><span class='id identifier rubyid_root'>root</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+
+    <span class='comment'># Write the final RBS
+</span>    <span class='id identifier rubyid_rbs_gen'>rbs_gen</span><span class='period'>.</span><span class='id identifier rubyid_rbs'>rbs</span>
+  <span class='kw'>else</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'># typed: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_strictness'>strictness</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='period'>.</span><span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='int'>0</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -667,7 +478,7 @@ then it is broken onto separate lines.</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Oct 21 10:09:48 2020 by
+  Generated on Sat Dec  5 03:56:51 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>
