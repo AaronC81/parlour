@@ -772,12 +772,13 @@ module Parlour
           generator: Generator,
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      def initialize(generator, name, final, superclass, abstract, &block); end
+      def initialize(generator, name, final, sealed, superclass, abstract, &block); end
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
@@ -846,12 +847,13 @@ module Parlour
           generator: Generator,
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           enums: T::Array[T.any([String, String], String)],
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
         ).void
       end
-      def initialize(generator, name, final, enums, abstract, &block); end
+      def initialize(generator, name, final, sealed, enums, abstract, &block); end
 
       sig { returns(T::Array[T.any([String, String], String)]) }
       attr_reader :enums
@@ -996,11 +998,12 @@ module Parlour
           generator: Generator,
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      def initialize(generator, name, final, interface, &block); end
+      def initialize(generator, name, final, sealed, interface, &block); end
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
@@ -1032,13 +1035,17 @@ module Parlour
           generator: Generator,
           name: T.nilable(String),
           final: T::Boolean,
+          sealed: T::Boolean,
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
-      def initialize(generator, name = nil, final = false, &block); end
+      def initialize(generator, name = nil, final = false, sealed = false, &block); end
 
       sig { returns(T::Boolean) }
       attr_reader :final
+
+      sig { returns(T::Boolean) }
+      attr_reader :sealed
 
       sig { returns(T::Array[RbiObject]) }
       attr_reader :children
@@ -1065,44 +1072,48 @@ module Parlour
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           superclass: T.nilable(String),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ClassNamespace)
       end
-      def create_class(name, final: false, superclass: nil, abstract: false, &block); end
+      def create_class(name, final: false, sealed: false, superclass: nil, abstract: false, &block); end
 
       sig do
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           enums: T.nilable(T::Array[T.any([String, String], String)]),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
         ).returns(EnumClassNamespace)
       end
-      def create_enum_class(name, final: false, enums: nil, abstract: false, &block); end
+      def create_enum_class(name, final: false, sealed: false, enums: nil, abstract: false, &block); end
 
       sig do
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           props: T.nilable(T::Array[StructProp]),
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: StructClassNamespace).void)
         ).returns(StructClassNamespace)
       end
-      def create_struct_class(name, final: false, props: nil, abstract: false, &block); end
+      def create_struct_class(name, final: false, sealed: false, props: nil, abstract: false, &block); end
 
       sig do
         params(
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           interface: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
       end
-      def create_module(name, final: false, interface: false, &block); end
+      def create_module(name, final: false, sealed: false, interface: false, &block); end
 
       sig do
         params(
@@ -1283,12 +1294,13 @@ module Parlour
           generator: Generator,
           name: String,
           final: T::Boolean,
+          sealed: T::Boolean,
           props: T::Array[StructProp],
           abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: StructClassNamespace).void)
         ).void
       end
-      def initialize(generator, name, final, props, abstract, &block); end
+      def initialize(generator, name, final, sealed, props, abstract, &block); end
 
       sig { returns(T::Array[StructProp]) }
       attr_reader :props

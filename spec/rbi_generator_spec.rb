@@ -42,6 +42,16 @@ RSpec.describe Parlour::RbiGenerator do
         end
       RUBY
     end
+
+    it 'can be sealed' do
+      mod = subject.root.create_module('Foo', sealed: true)
+
+      expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module Foo
+          sealed!
+        end
+      RUBY
+    end
   end
 
   context 'class namespace' do
@@ -60,6 +70,16 @@ RSpec.describe Parlour::RbiGenerator do
       expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         class Foo
           final!
+        end
+      RUBY
+    end
+
+    it 'can be sealed' do
+      klass = subject.root.create_class('Foo', sealed: true)
+
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Foo
+          sealed!
         end
       RUBY
     end
