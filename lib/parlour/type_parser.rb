@@ -288,6 +288,7 @@ module Parlour
         parse_err 'cannot declare modules in an eigenclass', node if is_within_eigenclass
 
         name, body = *node
+        abstract = body_has_modifier?(body, :abstract!)
         final = body_has_modifier?(body, :final!)
         sealed = body_has_modifier?(body, :sealed!)
         interface = body_has_modifier?(body, :interface!)
@@ -315,6 +316,7 @@ module Parlour
           final,
           sealed,
           interface,
+          abstract,
         ) do |m|
           m.children.concat(parse_path_to_object(path.child(1))) if body
           m.create_includes(includes)

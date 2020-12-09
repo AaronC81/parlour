@@ -256,6 +256,7 @@ module Parlour
           final: T::Boolean,
           sealed: T::Boolean,
           interface: T::Boolean,
+          abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
       end
@@ -274,10 +275,12 @@ module Parlour
       # @param sealed [Boolean] Whether this namespace is sealed.
       # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
+      # @param abstract [Boolean] A boolean indicating whether this module is
+      #   abstract.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
-      def create_module(name, final: false, sealed: false, interface: false, &block)
-        new_module = ModuleNamespace.new(generator, name, final, sealed, interface, &block)
+      def create_module(name, final: false, sealed: false, interface: false, abstract: false, &block)
+        new_module = ModuleNamespace.new(generator, name, final, sealed, interface, abstract, &block)
         move_next_comments(new_module)
         children << new_module
         new_module
