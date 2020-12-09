@@ -189,6 +189,35 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sealed-instance_method" title="#sealed (instance method)">#<strong>sealed</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether this namespace is sealed.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -411,7 +440,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_class-instance_method" title="#create_class (instance method)">#<strong>create_class</strong>(name, final: false, superclass: nil, abstract: false, &amp;block)  &#x21d2; ClassNamespace </a>
+      <a href="#create_class-instance_method" title="#create_class (instance method)">#<strong>create_class</strong>(name, final: false, sealed: false, superclass: nil, abstract: false, &amp;block)  &#x21d2; ClassNamespace </a>
     
 
     
@@ -459,7 +488,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_enum_class-instance_method" title="#create_enum_class (instance method)">#<strong>create_enum_class</strong>(name, final: false, enums: nil, abstract: false, &amp;block)  &#x21d2; EnumClassNamespace </a>
+      <a href="#create_enum_class-instance_method" title="#create_enum_class (instance method)">#<strong>create_enum_class</strong>(name, final: false, sealed: false, enums: nil, abstract: false, &amp;block)  &#x21d2; EnumClassNamespace </a>
     
 
     
@@ -603,7 +632,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_module-instance_method" title="#create_module (instance method)">#<strong>create_module</strong>(name, final: false, interface: false, &amp;block)  &#x21d2; ModuleNamespace </a>
+      <a href="#create_module-instance_method" title="#create_module (instance method)">#<strong>create_module</strong>(name, final: false, sealed: false, interface: false, &amp;block)  &#x21d2; ModuleNamespace </a>
     
 
     
@@ -627,7 +656,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_struct_class-instance_method" title="#create_struct_class (instance method)">#<strong>create_struct_class</strong>(name, final: false, props: nil, abstract: false, &amp;block)  &#x21d2; EnumClassNamespace </a>
+      <a href="#create_struct_class-instance_method" title="#create_struct_class (instance method)">#<strong>create_struct_class</strong>(name, final: false, sealed: false, props: nil, abstract: false, &amp;block)  &#x21d2; EnumClassNamespace </a>
     
 
     
@@ -793,7 +822,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name = nil, final = false, &amp;block)  &#x21d2; void </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name = nil, final = false, sealed = false, &amp;block)  &#x21d2; void </a>
     
 
     
@@ -919,7 +948,7 @@ path to that object, then executes the given block on the last <span class='obje
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(generator, name = nil, final = false, &amp;block)  &#x21d2; <tt>void</tt> 
+    #<strong>initialize</strong>(generator, name = nil, final = false, sealed = false, &amp;block)  &#x21d2; <tt>void</tt> 
   
 
   
@@ -1000,6 +1029,24 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
   
     <li>
       
+        <span class='name'>final</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this namespace is sealed.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>block</span>
       
       
@@ -1023,22 +1070,24 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-42
-43
 44
 45
 46
 47
-48</pre>
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 44</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span> <span class='op'>=</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span> <span class='op'>=</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span> <span class='op'>=</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&lt;anonymous namespace&gt;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='ivar'>@children</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='ivar'>@next_comments</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='ivar'>@final</span> <span class='op'>=</span> <span class='id identifier rubyid_final'>final</span>
+  <span class='ivar'>@sealed</span> <span class='op'>=</span> <span class='id identifier rubyid_sealed'>sealed</span>
   <span class='id identifier rubyid_yield_self'>yield_self</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_block'>block</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1092,12 +1141,12 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-58
-59
-60</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_children'>children</span>
   <span class='ivar'>@children</span>
@@ -1148,15 +1197,71 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-53
-54
-55</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_final'>final</span>
   <span class='ivar'>@final</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="sealed-instance_method">
+  
+    #<strong>sealed</strong>  &#x21d2; <tt>Boolean</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Whether this namespace is sealed.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 61</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sealed'>sealed</span>
+  <span class='ivar'>@sealed</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1237,16 +1342,16 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-142
-143
-144
-145
-146
-147
-148</pre>
+150
+151
+152
+153
+154
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 142</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 150</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_comment_to_next_child'>add_comment_to_next_child</span><span class='lparen'>(</span><span class='id identifier rubyid_comment'>comment</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_comment'>comment</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
@@ -1303,15 +1408,15 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-83
-84
-85
-86
-87
-88</pre>
+91
+92
+93
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 91</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_aliases'>aliases</span>
   <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span>
@@ -1363,15 +1468,15 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-94
-95
-96
-97
-98
-99</pre>
+102
+103
+104
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_constants'>constants</span>
   <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span>
@@ -1459,19 +1564,19 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-456
-457
-458
-459
-460
-461
-462
-463
-464
-465</pre>
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 456</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 472</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_arbitrary'>create_arbitrary</span><span class='lparen'>(</span><span class='label'>code:</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_arbitrary'>new_arbitrary</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Arbitrary.html" title="Parlour::RbiGenerator::Arbitrary (class)">Arbitrary</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Arbitrary.html#initialize-instance_method" title="Parlour::RbiGenerator::Arbitrary#initialize (method)">new</a></span></span><span class='lparen'>(</span>
@@ -1598,12 +1703,12 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-446
-447
-448</pre>
+462
+463
+464</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 446</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 462</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_attr_accessor'>create_attr_accessor</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>type:</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_create_attribute'>create_attribute</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>kind:</span> <span class='symbol'>:accessor</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='id identifier rubyid_class_attribute'>class_attribute</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1723,12 +1828,12 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-404
-405
-406</pre>
+420
+421
+422</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 404</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 420</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_attr_reader'>create_attr_reader</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>type:</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_create_attribute'>create_attribute</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>kind:</span> <span class='symbol'>:reader</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='id identifier rubyid_class_attribute'>class_attribute</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -1848,12 +1953,12 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-425
-426
-427</pre>
+441
+442
+443</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 425</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 441</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_attr_writer'>create_attr_writer</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>type:</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_create_attribute'>create_attribute</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>kind:</span> <span class='symbol'>:writer</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='id identifier rubyid_class_attribute'>class_attribute</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
@@ -2037,22 +2142,22 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384</pre>
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 372</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 388</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_attribute'>create_attribute</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>kind:</span><span class='comma'>,</span> <span class='label'>type:</span><span class='comma'>,</span> <span class='label'>class_attribute:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_attribute'>new_attribute</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Attribute.html" title="Parlour::RbiGenerator::Attribute (class)">Attribute</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Attribute.html#initialize-instance_method" title="Parlour::RbiGenerator::Attribute#initialize (method)">new</a></span></span><span class='lparen'>(</span>
@@ -2075,7 +2180,7 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <div class="method_details ">
   <h3 class="signature " id="create_class-instance_method">
   
-    #<strong>create_class</strong>(name, final: false, superclass: nil, abstract: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span></tt> 
+    #<strong>create_class</strong>(name, final: false, sealed: false, superclass: nil, abstract: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span></tt> 
   
 
   
@@ -2144,6 +2249,24 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
         &mdash;
         <div class='inline'>
 <p>Whether this namespace is final.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sealed</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this namespace is sealed.</p>
 </div>
       
     </li>
@@ -2222,18 +2345,18 @@ invoked outside of <span class='object_link'><a href="../RbiGenerator.html#initi
       <pre class="lines">
 
 
-176
-177
-178
-179
-180
-181</pre>
+186
+187
+188
+189
+190
+191</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 186</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_create_class'>create_class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>superclass:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_new_class'>new_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="ClassNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::ClassNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_superclass'>superclass</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_create_class'>create_class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>sealed:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>superclass:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_new_class'>new_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="ClassNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::ClassNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_superclass'>superclass</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_move_next_comments'>move_next_comments</span><span class='lparen'>(</span><span class='id identifier rubyid_new_class'>new_class</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_children'>children</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_new_class'>new_class</span>
   <span class='id identifier rubyid_new_class'>new_class</span>
@@ -2365,21 +2488,21 @@ namespace.</p>
       <pre class="lines">
 
 
-553
-554
-555
-556
-557
-558
-559
-560
-561
-562
-563
-564</pre>
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 553</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 569</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_constant'>create_constant</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>value:</span><span class='comma'>,</span> <span class='label'>eigen_constant:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_constant'>new_constant</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Constant.html" title="Parlour::RbiGenerator::Constant (class)">Constant</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Constant.html#initialize-instance_method" title="Parlour::RbiGenerator::Constant#initialize (method)">new</a></span></span><span class='lparen'>(</span>
@@ -2401,7 +2524,7 @@ namespace.</p>
       <div class="method_details ">
   <h3 class="signature " id="create_enum_class-instance_method">
   
-    #<strong>create_enum_class</strong>(name, final: false, enums: nil, abstract: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></tt> 
+    #<strong>create_enum_class</strong>(name, final: false, sealed: false, enums: nil, abstract: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></tt> 
   
 
   
@@ -2461,6 +2584,24 @@ namespace.</p>
         &mdash;
         <div class='inline'>
 <p>Whether this namespace is final.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sealed</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this namespace is sealed.</p>
 </div>
       
     </li>
@@ -2539,18 +2680,18 @@ namespace.</p>
       <pre class="lines">
 
 
-203
-204
-205
-206
-207
-208</pre>
+215
+216
+217
+218
+219
+220</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 203</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 215</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_create_enum_class'>create_enum_class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>enums:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_new_enum_class'>new_enum_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="EnumClassNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::EnumClassNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_enums'>enums</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_create_enum_class'>create_enum_class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>sealed:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>enums:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_new_enum_class'>new_enum_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="EnumClassNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::EnumClassNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_enums'>enums</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_move_next_comments'>move_next_comments</span><span class='lparen'>(</span><span class='id identifier rubyid_new_enum_class'>new_enum_class</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_children'>children</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_new_enum_class'>new_enum_class</span>
   <span class='id identifier rubyid_new_enum_class'>new_enum_class</span>
@@ -2647,19 +2788,19 @@ namespace.</p>
       <pre class="lines">
 
 
-477
-478
-479
-480
-481
-482
-483
-484
-485
-486</pre>
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 477</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 493</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_extend'>create_extend</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_extend'>new_extend</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Extend.html" title="Parlour::RbiGenerator::Extend (class)">Extend</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Extend.html#initialize-instance_method" title="Parlour::RbiGenerator::Extend#initialize (method)">new</a></span></span><span class='lparen'>(</span>
@@ -2747,16 +2888,16 @@ namespace.</p>
       <pre class="lines">
 
 
-496
-497
-498
-499
-500
-501
-502</pre>
+512
+513
+514
+515
+516
+517
+518</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 496</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 512</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_extends'>create_extends</span><span class='lparen'>(</span><span class='id identifier rubyid_extendables'>extendables</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_returned_extendables'>returned_extendables</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -2857,19 +2998,19 @@ namespace.</p>
       <pre class="lines">
 
 
-514
-515
-516
-517
-518
-519
-520
-521
-522
-523</pre>
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 514</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 530</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_include'>create_include</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_include'>new_include</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Include.html" title="Parlour::RbiGenerator::Include (class)">Include</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Include.html#initialize-instance_method" title="Parlour::RbiGenerator::Include#initialize (method)">new</a></span></span><span class='lparen'>(</span>
@@ -2957,16 +3098,16 @@ namespace.</p>
       <pre class="lines">
 
 
-533
-534
-535
-536
-537
-538
-539</pre>
+549
+550
+551
+552
+553
+554
+555</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 533</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 549</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_includes'>create_includes</span><span class='lparen'>(</span><span class='id identifier rubyid_includables'>includables</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_returned_includables'>returned_includables</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -3241,31 +3382,31 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-307
-308
-309
-310
-311
-312
-313
-314
-315
-316
-317
-318
-319
-320
-321
-322
 323
 324
 325
 326
 327
-328</pre>
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 307</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 323</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_method'>create_method</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>parameters:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>return_type:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>returns:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>implementation:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>override:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>overridable:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>class_method:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>type_parameters:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_parameters'>parameters</span> <span class='op'>=</span> <span class='id identifier rubyid_parameters'>parameters</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -3297,7 +3438,7 @@ implementing a parent abstract method.</p>
       <div class="method_details ">
   <h3 class="signature " id="create_module-instance_method">
   
-    #<strong>create_module</strong>(name, final: false, interface: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span></tt> 
+    #<strong>create_module</strong>(name, final: false, sealed: false, interface: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span></tt> 
   
 
   
@@ -3372,6 +3513,24 @@ implementing a parent abstract method.</p>
   
     <li>
       
+        <span class='name'>sealed</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this namespace is sealed.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>interface</span>
       
       
@@ -3426,18 +3585,18 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-263
-264
-265
-266
-267
-268</pre>
+279
+280
+281
+282
+283
+284</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 263</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 279</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_create_module'>create_module</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>interface:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_new_module'>new_module</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="ModuleNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::ModuleNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_interface'>interface</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_create_module'>create_module</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>sealed:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>interface:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_new_module'>new_module</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="ModuleNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::ModuleNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_interface'>interface</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_move_next_comments'>move_next_comments</span><span class='lparen'>(</span><span class='id identifier rubyid_new_module'>new_module</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_children'>children</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_new_module'>new_module</span>
   <span class='id identifier rubyid_new_module'>new_module</span>
@@ -3450,7 +3609,7 @@ implementing a parent abstract method.</p>
       <div class="method_details ">
   <h3 class="signature " id="create_struct_class-instance_method">
   
-    #<strong>create_struct_class</strong>(name, final: false, props: nil, abstract: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></tt> 
+    #<strong>create_struct_class</strong>(name, final: false, sealed: false, props: nil, abstract: false, &amp;block)  &#x21d2; <tt><span class='object_link'><a href="EnumClassNamespace.html" title="Parlour::RbiGenerator::EnumClassNamespace (class)">EnumClassNamespace</a></span></tt> 
   
 
   
@@ -3512,6 +3671,24 @@ implementing a parent abstract method.</p>
         &mdash;
         <div class='inline'>
 <p>Whether this namespace is final.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sealed</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this namespace is sealed.</p>
 </div>
       
     </li>
@@ -3590,18 +3767,18 @@ implementing a parent abstract method.</p>
       <pre class="lines">
 
 
-232
-233
-234
-235
-236
-237</pre>
+246
+247
+248
+249
+250
+251</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 232</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 246</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_create_struct_class'>create_struct_class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>props:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_new_struct_class'>new_struct_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="StructClassNamespace.html" title="Parlour::RbiGenerator::StructClassNamespace (class)">StructClassNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="StructClassNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::StructClassNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_props'>props</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_create_struct_class'>create_struct_class</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>final:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>sealed:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>props:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>abstract:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_new_struct_class'>new_struct_class</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="StructClassNamespace.html" title="Parlour::RbiGenerator::StructClassNamespace (class)">StructClassNamespace</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="StructClassNamespace.html#initialize-instance_method" title="Parlour::RbiGenerator::StructClassNamespace#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_props'>props</span> <span class='op'>||</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_move_next_comments'>move_next_comments</span><span class='lparen'>(</span><span class='id identifier rubyid_new_struct_class'>new_struct_class</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_children'>children</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_new_struct_class'>new_struct_class</span>
   <span class='id identifier rubyid_new_struct_class'>new_struct_class</span>
@@ -3715,20 +3892,20 @@ class.</p>
       <pre class="lines">
 
 
-576
-577
-578
-579
-580
-581
-582
-583
-584
-585
-586</pre>
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 576</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 592</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_type_alias'>create_type_alias</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>type:</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_type_alias'>new_type_alias</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TypeAlias.html" title="Parlour::RbiGenerator::TypeAlias (class)">TypeAlias</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="TypeAlias.html#initialize-instance_method" title="Parlour::RbiGenerator::TypeAlias#initialize (method)">new</a></span></span><span class='lparen'>(</span>
@@ -3785,13 +3962,13 @@ class.</p>
       <pre class="lines">
 
 
-632
-633
-634
-635</pre>
+648
+649
+650
+651</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 632</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 648</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Namespace </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> children, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_includes'>includes</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
@@ -3841,15 +4018,15 @@ class.</p>
       <pre class="lines">
 
 
-63
-64
-65
-66
-67
-68</pre>
+71
+72
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extends'>extends</span>
   <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span>
@@ -3877,12 +4054,12 @@ class.</p>
       <pre class="lines">
 
 
-638
-639
-640</pre>
+654
+655
+656</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 638</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 654</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
   <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:generalize_from_rbi!</span><span class='rparen'>)</span>
@@ -4028,15 +4205,15 @@ class.</p>
       <pre class="lines">
 
 
-73
-74
-75
-76
-77
-78</pre>
+81
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_includes'>includes</span>
   <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span>
@@ -4099,17 +4276,17 @@ ignored.</p>
       <pre class="lines">
 
 
-619
-620
-621
-622
-623
-624
-625
-626</pre>
+635
+636
+637
+638
+639
+640
+641
+642</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 619</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 635</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_other'>other</span><span class='op'>|</span>
@@ -4192,12 +4369,12 @@ is nothing to conflict. (This isn&#39;t the case for subclasses such as
       <pre class="lines">
 
 
-601
-602
-603</pre>
+617
+618
+619</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 601</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 617</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='kw'>true</span>
@@ -4266,14 +4443,6 @@ This should only be executed on the root namespace.</p>
       <pre class="lines">
 
 
-107
-108
-109
-110
-111
-112
-113
-114
 115
 116
 117
@@ -4286,10 +4455,18 @@ This should only be executed on the root namespace.</p>
 124
 125
 126
-127</pre>
+127
+128
+129
+130
+131
+132
+133
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 107</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/namespace.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>only call #path on root</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="ClassNamespace.html" title="Parlour::RbiGenerator::ClassNamespace (class)">ClassNamespace</a></span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="ModuleNamespace.html" title="Parlour::RbiGenerator::ModuleNamespace (class)">ModuleNamespace</a></span></span><span class='rparen'>)</span>
@@ -4322,7 +4499,7 @@ This should only be executed on the root namespace.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec  5 03:56:54 2020 by
+  Generated on Wed Dec  9 01:28:11 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>

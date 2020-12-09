@@ -172,7 +172,7 @@ call.</p>
   
   
   <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Namespace.html#children-instance_method" title="Parlour::RbiGenerator::Namespace#children (method)">#children</a></span>, <span class='object_link'><a href="Namespace.html#final-instance_method" title="Parlour::RbiGenerator::Namespace#final (method)">#final</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Namespace.html#children-instance_method" title="Parlour::RbiGenerator::Namespace#children (method)">#children</a></span>, <span class='object_link'><a href="Namespace.html#final-instance_method" title="Parlour::RbiGenerator::Namespace#final (method)">#final</a></span>, <span class='object_link'><a href="Namespace.html#sealed-instance_method" title="Parlour::RbiGenerator::Namespace#sealed (method)">#sealed</a></span></p>
 
   
   
@@ -242,7 +242,7 @@ call.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, final, enums, abstract, &amp;block)  &#x21d2; void </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, final, sealed, enums, abstract, &amp;block)  &#x21d2; void </a>
     
 
     
@@ -373,7 +373,7 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(generator, name, final, enums, abstract, &amp;block)  &#x21d2; <tt>void</tt> 
+    #<strong>initialize</strong>(generator, name, final, sealed, enums, abstract, &amp;block)  &#x21d2; <tt>void</tt> 
   
 
   
@@ -449,6 +449,22 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
   
     <li>
       
+        <span class='name'>sealed</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether this namespace is sealed.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>enums</span>
       
       
@@ -504,16 +520,16 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
       <pre class="lines">
 
 
-28
-29
 30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 30</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_enums'>enums</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T::Enum</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_enums'>enums</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T::Enum</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@enums</span> <span class='op'>=</span> <span class='id identifier rubyid_enums'>enums</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -567,12 +583,12 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
       <pre class="lines">
 
 
-36
-37
-38</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_enums'>enums</span>
   <span class='ivar'>@enums</span>
@@ -604,12 +620,12 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
       <pre class="lines">
 
 
-112
-113
-114</pre>
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
   <span class='kw'>super</span>
@@ -700,8 +716,6 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
       <pre class="lines">
 
 
-50
-51
 52
 53
 54
@@ -718,10 +732,12 @@ be merged into this instance using <span class='object_link'><a href="#merge_int
 65
 66
 67
-68</pre>
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 52</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_body'>generate_body</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>enums do</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbracket'>]</span>
@@ -794,8 +810,6 @@ one. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-insta
       <pre class="lines">
 
 
-100
-101
 102
 103
 104
@@ -803,10 +817,12 @@ one. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-insta
 106
 107
 108
-109</pre>
+109
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
@@ -890,16 +906,16 @@ they must define the same superclass (or none at all).</p>
       <pre class="lines">
 
 
-82
-83
 84
 85
 86
 87
-88</pre>
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/enum_class_namespace.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='comma'>,</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='lparen'>(</span><span class='kw'>return</span> <span class='kw'>false</span><span class='rparen'>)</span>
@@ -918,7 +934,7 @@ they must define the same superclass (or none at all).</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec  5 03:56:57 2020 by
+  Generated on Wed Dec  9 01:28:14 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>
