@@ -1000,16 +1000,20 @@ module Parlour
           final: T::Boolean,
           sealed: T::Boolean,
           interface: T::Boolean,
+          abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      def initialize(generator, name, final, sealed, interface, &block); end
+      def initialize(generator, name, final, sealed, interface, abstract, &block); end
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
 
       sig { returns(T::Boolean) }
       attr_reader :interface
+
+      sig { returns(T::Boolean) }
+      attr_reader :abstract
 
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -1110,10 +1114,11 @@ module Parlour
           final: T::Boolean,
           sealed: T::Boolean,
           interface: T::Boolean,
+          abstract: T::Boolean,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ModuleNamespace)
       end
-      def create_module(name, final: false, sealed: false, interface: false, &block); end
+      def create_module(name, final: false, sealed: false, interface: false, abstract: false, &block); end
 
       sig do
         params(

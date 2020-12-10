@@ -494,6 +494,9 @@ RSpec.describe Parlour::TypeParser do
               end
             end
           end
+          module F
+            abstract!
+          end
         end
       RUBY
 
@@ -502,19 +505,19 @@ RSpec.describe Parlour::TypeParser do
 
       a = root.children.first
       expect(a).to be_a Parlour::RbiGenerator::ModuleNamespace
-      expect(a).to have_attributes(name: 'A', final: false, interface: false, sealed: false)
+      expect(a).to have_attributes(name: 'A', final: false, interface: false, sealed: false, abstract: false)
 
-      b = a.children.first
+      b, f = *a.children
       expect(b).to be_a Parlour::RbiGenerator::ModuleNamespace
-      expect(b).to have_attributes(name: 'B', final: false, interface: false, sealed: false)
+      expect(b).to have_attributes(name: 'B', final: false, interface: false, sealed: false, abstract: false)
 
       c, d, e = *b.children
       expect(c).to be_a Parlour::RbiGenerator::ModuleNamespace
       expect(d).to be_a Parlour::RbiGenerator::ModuleNamespace
       expect(e).to be_a Parlour::RbiGenerator::ModuleNamespace
-      expect(c).to have_attributes(name: 'C', final: true, interface: true, sealed: true)
-      expect(d).to have_attributes(name: 'D', final: false, interface: true, sealed: false)
-      expect(e).to have_attributes(name: 'E', final: false, interface: false, sealed: false)
+      expect(c).to have_attributes(name: 'C', final: true, interface: true, sealed: true, abstract: false)
+      expect(d).to have_attributes(name: 'D', final: false, interface: true, sealed: false, abstract: false)
+      expect(e).to have_attributes(name: 'E', final: false, interface: false, sealed: false, abstract: false)
       expect(e.includes.map(&:name)).to eq ['D']
 
       abs_foo, abs_bar = *d.children
@@ -532,6 +535,8 @@ RSpec.describe Parlour::TypeParser do
       expect(impl_bar).to have_attributes(name: 'bar', abstract: false, override: true, return_type: 'Integer')
       expect(impl_bar.parameters.length).to eq 1
       expect(impl_bar.parameters.first).to have_attributes(name: 'x', type: 'Integer')
+
+      expect(f).to have_attributes(name: 'F', final: false, interface: false, sealed: false, abstract: true)
     end
 
     it 'supports eigenclasses and class methods' do
