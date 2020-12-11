@@ -131,6 +131,35 @@
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#abstract-instance_method" title="#abstract (instance method)">#<strong>abstract</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A boolean indicating whether this module is abstract or not.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#interface-instance_method" title="#interface (instance method)">#<strong>interface</strong>  &#x21d2; Boolean </a>
     
 
@@ -258,7 +287,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, final, sealed, interface, &amp;block)  &#x21d2; void </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(generator, name, final, sealed, interface, abstract, &amp;block)  &#x21d2; void </a>
     
 
     
@@ -371,7 +400,7 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(generator, name, final, sealed, interface, &amp;block)  &#x21d2; <tt>void</tt> 
+    #<strong>initialize</strong>(generator, name, final, sealed, interface, abstract, &amp;block)  &#x21d2; <tt>void</tt> 
   
 
   
@@ -479,6 +508,22 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
   
     <li>
       
+        <span class='name'>abstract</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A boolean indicating whether this module is abstract.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>block</span>
       
       
@@ -502,19 +547,21 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
       <pre class="lines">
 
 
-29
-30
 31
 32
-33</pre>
+33
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 31</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_interface'>interface</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='id identifier rubyid_interface'>interface</span><span class='comma'>,</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_final'>final</span><span class='comma'>,</span> <span class='id identifier rubyid_sealed'>sealed</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@name</span> <span class='op'>=</span> <span class='id identifier rubyid_name'>name</span>
   <span class='ivar'>@interface</span> <span class='op'>=</span> <span class='id identifier rubyid_interface'>interface</span>
+  <span class='ivar'>@abstract</span> <span class='op'>=</span> <span class='id identifier rubyid_abstract'>abstract</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -529,7 +576,63 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="interface-instance_method">
+  <h3 class="signature first" id="abstract-instance_method">
+  
+    #<strong>abstract</strong>  &#x21d2; <tt>Boolean</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A boolean indicating whether this module is abstract or not.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+66
+67
+68</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 66</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_abstract'>abstract</span>
+  <span class='ivar'>@abstract</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="interface-instance_method">
   
     #<strong>interface</strong>  &#x21d2; <tt>Boolean</tt>  <span class="extras">(readonly)</span>
   
@@ -567,12 +670,12 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
       <pre class="lines">
 
 
-57
-58
-59</pre>
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_interface'>interface</span>
   <span class='ivar'>@interface</span>
@@ -628,16 +731,18 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
       <pre class="lines">
 
 
-97
-98
-99
-100</pre>
+106
+107
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Module </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>interface, </span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_interface'>interface</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Module </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>interface, </span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_interface'>interface</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>abstract, </span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_abstract'>abstract</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
     <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>children, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_includes'>includes</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> includes, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_extends'>extends</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> extends</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
@@ -660,12 +765,12 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
       <pre class="lines">
 
 
-103
-104
-105</pre>
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 113</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
   <span class='kw'>super</span>
@@ -755,21 +860,23 @@ into this instance using <span class='object_link'><a href="#merge_into_self-ins
       <pre class="lines">
 
 
-46
-47
-48
 49
 50
 51
-52</pre>
+52
+53
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 49</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>        
+<span class='kw'>def</span> <span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_lines'>lines</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_comments'>generate_comments</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_lines'>lines</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>module </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_lines'>lines</span> <span class='op'>+=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span> <span class='op'>+</span> <span class='int'>1</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>interface!</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_interface'>interface</span>
+  <span class='id identifier rubyid_lines'>lines</span> <span class='op'>+=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span> <span class='op'>+</span> <span class='int'>1</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>abstract!</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_abstract'>abstract</span>
   <span class='id identifier rubyid_lines'>lines</span> <span class='op'>+=</span> <span class='id identifier rubyid_generate_body'>generate_body</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span> <span class='op'>+</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_lines'>lines</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>end</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -825,12 +932,12 @@ You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_m
       <pre class="lines">
 
 
-90
-91
-92</pre>
+99
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
@@ -854,7 +961,7 @@ You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_m
     
 <p>Given an array of <span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span> instances, returns true if they may be merged
 into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::ModuleNamespace#merge_into_self (method)">#merge_into_self</a></span>. For instances to be mergeable,
-they must either all be interfaces or all not be  interfaces.</p>
+they must either all be interfaces or all not be interfaces.</p>
 
 
   </div>
@@ -906,17 +1013,17 @@ they must either all be interfaces or all not be  interfaces.</p>
       <pre class="lines">
 
 
-71
-72
-73
-74
-75
-76
-77
-78</pre>
+80
+81
+82
+83
+84
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/module_namespace.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_others'>others</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_cast'>cast</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='comma'>,</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='lparen'>(</span><span class='kw'>return</span> <span class='kw'>false</span><span class='rparen'>)</span>
@@ -936,7 +1043,7 @@ they must either all be interfaces or all not be  interfaces.</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Dec  9 01:28:13 2020 by
+  Generated on Fri Dec 11 03:54:46 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.3.8).
 </div>
