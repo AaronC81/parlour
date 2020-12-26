@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 <details>
   <summary>5.0.0 pre-releases</summary>
+  
   ## [5.0.0.beta.6] - 2020-10-04
   ### Fixed
   - Fixed collection types sometimes generating as `T::::Array`
