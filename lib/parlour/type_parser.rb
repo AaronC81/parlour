@@ -280,7 +280,7 @@ module Parlour
 
         if target
           target.children << final_obj
-          [top_level]
+          [T.must(top_level)]
         else
           [final_obj]
         end
@@ -325,7 +325,7 @@ module Parlour
 
         if target
           target.children << final_obj
-          [top_level]
+          [T.must(top_level)]
         else
           [final_obj]
         end

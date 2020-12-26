@@ -89,7 +89,7 @@ module Parlour
 
           # Merge the first signature line, and indent & concat the rest
           first_line, *rest_lines = *partial_sig_lines
-          this_sig_lines[0] += first_line
+          this_sig_lines[0] = T.unsafe(this_sig_lines[0]) + first_line
           rest_lines&.each do |line|
             this_sig_lines << ' ' * definition.length + options.indented(indent_level, line)
           end
