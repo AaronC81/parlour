@@ -3,8 +3,8 @@ RSpec.describe Parlour::ConflictResolver do
     Parlour::RbiGenerator.new
   end
 
-  def pa(*a)
-    Parlour::RbiGenerator::Parameter.new(*a)
+  def pa(*a, **kw)
+    Parlour::RbiGenerator::Parameter.new(*a, **kw)
   end
 
   it 'does not merge different kinds of definition' do

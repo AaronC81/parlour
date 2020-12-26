@@ -11,8 +11,8 @@ RSpec.describe Parlour::RbsGenerator do
     end.join.rstrip
   end
 
-  def pa(*a)
-    Parlour::RbsGenerator::Parameter.new(*a)
+  def pa(*a, **kw)
+    Parlour::RbsGenerator::Parameter.new(*a, **kw)
   end
 
   def opts

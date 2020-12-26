@@ -1,6 +1,6 @@
 RSpec.describe Parlour::RbiGenerator::Parameter do
-  def pa(*a)
-    described_class.new(*a)
+  def pa(*a, **kw)
+    described_class.new(*a, **kw)
   end
 
   it 'determines kinds properly' do
