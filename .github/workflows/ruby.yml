@@ -24,7 +24,7 @@ jobs:
 
   # Deploy documentation to GitHub Pages, if this is a push to master and the tests passed
   deploy-docs:
-    if: ${{ github.event_name == "push" && github.base_ref == "refs/heads/master" }}
+    if: ${{ github.event_name == 'push' && github.base_ref == 'refs/heads/master' }}
     needs: [test]
     
     runs-on: ubuntu-latest
