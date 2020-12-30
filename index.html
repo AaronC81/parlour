@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -60,55 +60,33 @@
       <div id="content"><div id='filecontents'>
 <h1 id="label-Parlour">Parlour</h1>
 
-<p><a href="https://travis-ci.org/AaronC81/parlour"><img
-src="https://travis-ci.org/AaronC81/parlour.svg?branch=master"></a> <img
-src="https://img.shields.io/gem/v/parlour.svg"></p>
+<p><a href="https://travis-ci.org/AaronC81/parlour"><img src="https://travis-ci.org/AaronC81/parlour.svg?branch=master"></a> <img src="https://img.shields.io/gem/v/parlour.svg"></p>
 
-<p>Parlour is a Ruby type information generator, merger and parser, supporting
-both <strong>Sorbet RBI files and Ruby 3/Steep RBS files</strong>. It
-consists of three key parts:</p>
+<p>Parlour is a Ruby type information generator, merger and parser, supporting both <strong>Sorbet RBI files and Ruby 3/Steep RBS files</strong>. It consists of three key parts:</p>
 <ul><li>
-<p>The generator, which outputs beautifully formatted RBI/RBS files, created
-using an intuitive DSL.</p>
+<p>The generator, which outputs beautifully formatted RBI/RBS files, created using an intuitive DSL.</p>
 </li><li>
-<p>The plugin/build system, which allows multiple Parlour plugins to generate
-RBIs for the same codebase. These are combined automatically as much as
-possible, but any other conflicts can be resolved manually through prompts.</p>
+<p>The plugin/build system, which allows multiple Parlour plugins to generate RBIs for the same codebase. These are combined automatically as much as possible, but any other conflicts can be resolved manually through prompts.</p>
 </li><li>
-<p>The parser (currently RBI-only), which can read an RBI and convert it back
-into a tree of generator objects.</p>
+<p>The parser (currently RBI-only), which can read an RBI and convert it back into a tree of generator objects.</p>
 </li></ul>
 
 <h2 id="label-Why+should+I+use+this-3F">Why should I use this?</h2>
 <ul><li>
-<p>Parlour enables <strong>much easier creation of RBI/RBS
-generators</strong>, as formatting is all handled for you, and you
-don&#39;t need to write your own CLI.</p>
+<p>Parlour enables <strong>much easier creation of RBI/RBS generators</strong>, as formatting is all handled for you, and you don&#39;t need to write your own CLI.</p>
 </li><li>
-<p>You can <strong>use many plugins together seamlessly</strong>, running them
-all with a single command and consolidating all of their definitions into a
-single output file.</p>
+<p>You can <strong>use many plugins together seamlessly</strong>, running them all with a single command and consolidating all of their definitions into a single output file.</p>
 </li><li>
-<p>You can <strong>effortlessly build tools which need to access types within
-an RBI</strong>; no need to write your own parser!</p>
+<p>You can <strong>effortlessly build tools which need to access types within an RBI</strong>; no need to write your own parser!</p>
 </li><li>
-<p>You can <strong>generate RBI/RBS to ship with your gem</strong> for
-consuming projects to use (<a
-href="https://sorbet.org/docs/rbi#rbis-within-gems">see "RBIs within gems"
-in Sorbet's docs</a>).</p>
+<p>You can <strong>generate RBI/RBS to ship with your gem</strong> for consuming projects to use (<a href="https://sorbet.org/docs/rbi#rbis-within-gems">see "RBIs within gems" in Sorbet's docs</a>).</p>
 </li></ul>
 
-<p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a>
-to get started!</p>
+<p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a> to get started!</p>
 
 <h2 id="label-Feature+Support">Feature Support</h2>
 
-<p>| Feature | RBI | RBS | |———|—–|—–| | <strong>GENERATION</strong> | | | |
-Classes | ✅ | ⚠️ (missing <code>extension</code>) | | Modules | ✅ | ⚠️
-(missing <code>extension</code>) | | Interfaces | ✅ | ✅ | | Attributes | ✅
-| ✅ | | Methods | ✅ | ✅ | | Overloaded methods | ❌* | ✅ | | Structs | ✅ |
-✅† | | Enums | ✅ | ✅† | | Generation with plugins | ✅ | ❌ | |
-<strong>MANIPULATION</strong> | | | | Parsing | ✅ | ❌ | | Merging | ✅ | ❌ |</p>
+<p>| Feature | RBI | RBS | |———|—–|—–| | <strong>GENERATION</strong> | | | | Classes | ✅ | ⚠️ (missing <code>extension</code>) | | Modules | ✅ | ⚠️ (missing <code>extension</code>) | | Interfaces | ✅ | ✅ | | Attributes | ✅ | ✅ | | Methods | ✅ | ✅ | | Overloaded methods | ❌* | ✅ | | Structs | ✅ | ✅† | | Enums | ✅ | ✅† | | Generation with plugins | ✅ | ❌ | | <strong>MANIPULATION</strong> | | | | Parsing | ✅ | ❌ | | Merging | ✅ | ❌ |</p>
 <ul><li>
 <p>✅ - Well supported</p>
 </li><li>
@@ -123,19 +101,13 @@ Classes | ✅ | ⚠️ (missing <code>extension</code>) | | Modules | ✅ | ⚠�
 
 <h2 id="label-Creating+Type+Information">Creating Type Information</h2>
 
-<p>Each file format has its own type information generator class, so there are
-two different generators you can use: <code>RbiGenerator</code> and
-<code>RbsGenerator</code>. Both generators are similar to use, however they
-provide different object types and parameters to match the functionality of
-their underlying type systems.</p>
+<p>Each file format has its own type information generator class, so there are two different generators you can use: <code>RbiGenerator</code> and <code>RbsGenerator</code>. Both generators are similar to use, however they provide different object types and parameters to match the functionality of their underlying type systems.</p>
 
-<p>You can also convert your type information between formats; see <a
-href="#converting-between-formats">converting between formats</a>.</p>
+<p>You can also convert your type information between formats; see <a href="#converting-between-formats">converting between formats</a>.</p>
 
 <h3 id="label-Using+Just+the+Generator">Using Just the Generator</h3>
 
-<p>Here&#39;s a quick example of how you can generate some type information.
-Here we&#39;ll generate an RBI using the <code>RbiGenerator</code> classes:</p>
+<p>Here&#39;s a quick example of how you can generate some type information. Here we&#39;ll generate an RBI using the <code>RbiGenerator</code> classes:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 
@@ -167,8 +139,7 @@ Here we&#39;ll generate an RBI using the <code>RbiGenerator</code> classes:</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<p>Using the RBS generator looks similar, but has an intermediary
-<code>MethodSignature</code> class to support RBS&#39; method overloading:</p>
+<p>Using the RBS generator looks similar, but has an intermediary <code>MethodSignature</code> class to support RBS&#39; method overloading:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 
@@ -206,8 +177,7 @@ end
 
 <h3 id="label-Writing+a+Plugin">Writing a Plugin</h3>
 
-<p>Plugins are better than using the generator alone, as your plugin can be
-combined with others to produce larger files without conflicts.</p>
+<p>Plugins are better than using the generator alone, as your plugin can be combined with others to produce larger files without conflicts.</p>
 
 <p>We could write the above example as an RBI plugin like this:</p>
 
@@ -229,15 +199,9 @@ combined with others to produce larger files without conflicts.</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<p>(Obviously, your plugin will probably examine a codebase somehow, to be
-more useful!)</p>
+<p>(Obviously, your plugin will probably examine a codebase somehow, to be more useful!)</p>
 
-<p>You can then run several plugins, combining their output and saving it into
-one RBI file, using the command-line tool. The command line tool is
-configurated using a <code>.parlour</code> YAML file. For example, if that
-code was in a file called <code>plugin.rb</code>, then using this
-<code>.parlour</code> file and then running <code>parlour</code> would save
-the RBI into <code>output.rbi</code>:</p>
+<p>You can then run several plugins, combining their output and saving it into one RBI file, using the command-line tool. The command line tool is configurated using a <code>.parlour</code> YAML file. For example, if that code was in a file called <code>plugin.rb</code>, then using this <code>.parlour</code> file and then running <code>parlour</code> would save the RBI into <code>output.rbi</code>:</p>
 
 <pre class="code ruby"><code class="ruby">output_file:
   rbi: output.rbi
@@ -247,19 +211,18 @@ relative_requires:
   - app/models/*.rb
 
 plugins:
-  MyPlugin: {}</code></pre>
+  MyPlugin: {}
+</code></pre>
 
-<p>The <code>{}</code> indicates that this plugin needs no extra
-configuration. If it did need configuration, this could be specified like
-so:</p>
+<p>The <code>{}</code> indicates that this plugin needs no extra configuration. If it did need configuration, this could be specified like so:</p>
 
 <pre class="code ruby"><code class="ruby">plugins:
   MyPlugin:
     foo: something
-    bar: something else</code></pre>
+    bar: something else
+</code></pre>
 
-<p>You can also use plugins from gems. If that plugin was published as a gem
-called <code>parlour-gem</code>:</p>
+<p>You can also use plugins from gems. If that plugin was published as a gem called <code>parlour-gem</code>:</p>
 
 <pre class="code ruby"><code class="ruby">output_file:
   rbi: output.rbi
@@ -268,7 +231,8 @@ requires:
   - parlour-gem
 
 plugins:
-  MyPlugin: {}</code></pre>
+  MyPlugin: {}
+</code></pre>
 
 <p>The real power of this is the ability to use many plugins at once:</p>
 
@@ -283,43 +247,28 @@ requires:
 plugins:
   Gem1::Plugin: {}
   Gem2::Plugin: {}
-  Gem3::Plugin: {}</code></pre>
+  Gem3::Plugin: {}
+</code></pre>
 
-<p>Currently, only plugins which generate RBI files are supported. However,
-you can use <a href="#converting-between-formats">Parlour’s type
-conversion</a> to convert the RBI types into RBS types:</p>
+<p>Currently, only plugins which generate RBI files are supported. However, you can use <a href="#converting-between-formats">Parlour’s type conversion</a> to convert the RBI types into RBS types:</p>
 
 <pre class="code ruby"><code class="ruby">output_file:
   rbi: output.rbi
-  rbs: output.rbs</code></pre>
+  rbs: output.rbs
+</code></pre>
 
 <h2 id="label-Using+Types">Using Types</h2>
 
-<p>The most important part of your type information is the types themselves,
-which you&#39;ll be specifying for method parameters, method returns, and
-attributes. These include simple types like <code>String</code>, up to more
-complex types like “an array of elements which are one of
-<code>Integer</code>, <code>String</code>, or nil”.</p>
+<p>The most important part of your type information is the types themselves, which you&#39;ll be specifying for method parameters, method returns, and attributes. These include simple types like <code>String</code>, up to more complex types like “an array of elements which are one of <code>Integer</code>, <code>String</code>, or nil”.</p>
 
 <p>There are two ways to represent these types in Parlour:</p>
 <ol><li>
-<p>As <strong>generalized types</strong>; that is, instances of classes in the
-<code>Parlour::Types</code> namespace. This is the <strong>recommended
-way</strong>, as it is  format-agnostic and can be compiled to RBI or RBS.
-For more information  about these types and how to use them, see  <a
-href="https://github.com/AaronC81/parlour/wiki/The-Types-namespace">this
-wiki page</a>.</p>
+<p>As <strong>generalized types</strong>; that is, instances of classes in the  <code>Parlour::Types</code> namespace. This is the <strong>recommended way</strong>, as it is  format-agnostic and can be compiled to RBI or RBS. For more information  about these types and how to use them, see  <a href="https://github.com/AaronC81/parlour/wiki/The-Types-namespace">this wiki page</a>.</p>
 </li><li>
-<p>As <strong>strings of code</strong> written in the format that your type
-system expects.  The given strings are directly inserted into the final
-type file. These types  are <strong>not portable across formats</strong>,
-and as such are  <strong>not recommended and may be phased out</strong> in
-the future.</p>
+<p>As <strong>strings of code</strong> written in the format that your type system expects.  The given strings are directly inserted into the final type file. These types  are <strong>not portable across formats</strong>, and as such are  <strong>not recommended and may be phased out</strong> in the future.</p>
 </li></ol>
 
-<p>Currently most type values within Parlour are typed as
-<code>Types::TypeLike</code>, which accepts a <code>String</code> or a
-<code>Types::Type</code> subclass.</p>
+<p>Currently most type values within Parlour are typed as <code>Types::TypeLike</code>, which accepts a <code>String</code> or a <code>Types::Type</code> subclass.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span>
 
@@ -348,10 +297,7 @@ the future.</p>
 
 <h3 id="label-Generalizing+String+Types">Generalizing String Types</h3>
 
-<p>If you have loaded an RBI project or created a structure of nodes on an
-<code>RbiGenerator</code>, you can use <code>#generalize_from_rbi!</code>
-on your root namespace to attempt to permanently convert the RBI string
-types into generalized types:</p>
+<p>If you have loaded an RBI project or created a structure of nodes on an <code>RbiGenerator</code>, you can use <code>#generalize_from_rbi!</code> on your root namespace to attempt to permanently convert the RBI string types into generalized types:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='comment'># Build up an RBI tree with string types
 </span><span class='id identifier rubyid_root'>root</span><span class='period'>.</span><span class='id identifier rubyid_create_attr_accessor'>create_attr_accessor</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>example</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span>
@@ -375,11 +321,9 @@ types into generalized types:</p>
 
 <h2 id="label-Parsing+RBIs">Parsing RBIs</h2>
 
-<p>You can either parse individual RBI files, or point Parlour to the root of
-a project and it will locate, parse and merge all RBI files.</p>
+<p>You can either parse individual RBI files, or point Parlour to the root of a project and it will locate, parse and merge all RBI files.</p>
 
-<p>Note that Parlour isn&#39;t limited to just RBIs; it can parse inline
-<code>sigs</code> out of your Ruby source too!</p>
+<p>Note that Parlour isn&#39;t limited to just RBIs; it can parse inline <code>sigs</code> out of your Ruby source too!</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 
@@ -390,14 +334,11 @@ a project and it will locate, parse and merge all RBI files.</p>
 </span><span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/TypeLoader.html" title="Parlour::TypeLoader (module)">TypeLoader</a></span></span><span class='period'>.</span><span class='id identifier rubyid_load_project'><span class='object_link'><a href="Parlour/TypeLoader.html#load_project-class_method" title="Parlour::TypeLoader.load_project (method)">load_project</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>root/of/the/project</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<p>The structure of the returned object trees is identical to those you would
-create when generating an RBI, built of instances of <code>RbiObject</code>
-subclasses.</p>
+<p>The structure of the returned object trees is identical to those you would create when generating an RBI, built of instances of <code>RbiObject</code> subclasses.</p>
 
 <h2 id="label-Generating+RBI+for+a+Gem">Generating RBI for a Gem</h2>
 
-<p>Include <code>parlour</code> as a development_dependency in your
-<code>.gemspec</code>:</p>
+<p>Include <code>parlour</code> as a development_dependency in your <code>.gemspec</code>:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_spec'>spec</span><span class='period'>.</span><span class='id identifier rubyid_add_development_dependency'>add_development_dependency</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 </code></pre>
@@ -407,30 +348,17 @@ subclasses.</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_parlour'>parlour</span>
 </code></pre>
 
-<p>Parlour is configured to use sane defaults assuming a standard gem
-structure to generate an RBI that Sorbet will automatically find when your
-gem is included as a dependency. If you require more advanced configuration
-you can add a <code>.parlour</code> YAML file in the root of your project
-(see this project&#39;s <code>.parlour</code> file as an example).</p>
+<p>Parlour is configured to use sane defaults assuming a standard gem structure to generate an RBI that Sorbet will automatically find when your gem is included as a dependency. If you require more advanced configuration you can add a <code>.parlour</code> YAML file in the root of your project (see this project&#39;s <code>.parlour</code> file as an example).</p>
 
-<p>To disable the parsing step entire and just run plugins you can set
-<code>parser: false</code> in your <code>.parlour</code> file.</p>
+<p>To disable the parsing step entire and just run plugins you can set <code>parser: false</code> in your <code>.parlour</code> file.</p>
 
 <h2 id="label-Converting+Between+Formats">Converting Between Formats</h2>
 
-<p><em>For more information, see the <a
-href="https://github.com/AaronC81/parlour/wiki/Converting-between-RBI-and-RBS">wiki
-page</a>.</em></p>
+<p><em>For more information, see the <a href="https://github.com/AaronC81/parlour/wiki/Converting-between-RBI-and-RBS">wiki page</a>.</em></p>
 
-<p>Currently, only RBI to RBS conversion is supported, and if you&#39;ve used
-string types (or are using a freshly-loaded project) you <strong>must <a
-href="#generalizing-string-types">generalize them</a> first</strong>.</p>
+<p>Currently, only RBI to RBS conversion is supported, and if you&#39;ve used string types (or are using a freshly-loaded project) you <strong>must <a href="#generalizing-string-types">generalize them</a> first</strong>.</p>
 
-<p>Then, all you need to do is create an <code>RbsGenerator</code> (which the
-converter will add your converted types to) and a
-<code>Conversion::RbiToRbs</code> instance (which performs the conversion).
-Then you can convert each object at your <code>RbiGenerator</code>&#39;s
-root namespace:</p>
+<p>Then, all you need to do is create an <code>RbsGenerator</code> (which the converter will add your converted types to) and a <code>Conversion::RbiToRbs</code> instance (which performs the conversion). Then you can convert each object at your <code>RbiGenerator</code>&#39;s root namespace:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rbi_gen'>rbi_gen</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator.html#initialize-instance_method" title="Parlour::RbiGenerator#initialize (method)">new</a></span></span>
 <span class='comment'># Then, after populating the RbiGenerator with types...
@@ -445,57 +373,40 @@ root namespace:</p>
 
 <h2 id="label-Parlour+Plugins">Parlour Plugins</h2>
 
-<p><em>Have you written an awesome Parlour plugin? Please submit a PR to add
-it to this list!</em></p>
+<p><em>Have you written an awesome Parlour plugin? Please submit a PR to add it to this list!</em></p>
 <ul><li>
-<p><a href="https://github.com/AaronC81/sord">Sord</a> - Generate RBIs from
-YARD documentation</p>
+<p><a href="https://github.com/AaronC81/sord">Sord</a> - Generate RBIs from YARD documentation</p>
 </li><li>
-<p><a
-href="https://github.com/AaronC81/parlour-datamapper">parlour-datamapper</a>
-- Simple plugin for generating DataMapper model types</p>
+<p><a href="https://github.com/AaronC81/parlour-datamapper">parlour-datamapper</a> - Simple plugin for generating DataMapper model types</p>
 </li><li>
-<p><a href="https://github.com/chanzuckerberg/sorbet-rails">sorbet-rails</a> -
-Generate RBIs for Rails models, routes, mailers, etc.</p>
+<p><a href="https://github.com/chanzuckerberg/sorbet-rails">sorbet-rails</a> - Generate RBIs for Rails models, routes, mailers, etc.</p>
 </li></ul>
 
 <h2 id="label-Contributing">Contributing</h2>
 
-<p>Bug reports and pull requests are welcome on GitHub at <a
-href="https://github.com/AaronC81/parlour">github.com/AaronC81/parlour</a>.
-This project is intended to be a safe, welcoming space for collaboration,
-and contributors are expected to adhere to the <a
-href="http://contributor-covenant.org">Contributor Covenant</a> code of
-conduct.</p>
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/AaronC81/parlour">github.com/AaronC81/parlour</a>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the <a href="http://contributor-covenant.org">Contributor Covenant</a> code of conduct.</p>
 
-<p>After making changes, you may wish to regenerate the RBI definitions in the
-<code>sorbet</code> folder by running these <code>srb rbi</code> commands:</p>
+<p>After making changes, you may wish to regenerate the RBI definitions in the <code>sorbet</code> folder by running these <code>srb rbi</code> commands:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_srb'>srb</span> <span class='id identifier rubyid_rbi'>rbi</span> <span class='id identifier rubyid_gems'>gems</span>
 <span class='id identifier rubyid_srb'>srb</span> <span class='id identifier rubyid_rbi'>rbi</span> <span class='id identifier rubyid_sorbet'>sorbet</span><span class='op'>-</span><span class='id identifier rubyid_typed'>typed</span>
 </code></pre>
 
-<p>You should also regenerate the parlour.rbi file by running <code>bundle
-exec parlour</code>. Don&#39;t edit this file manually, as your changes
-will be overwritten!</p>
+<p>You should also regenerate the parlour.rbi file by running <code>bundle exec parlour</code>. Don&#39;t edit this file manually, as your changes will be overwritten!</p>
 
 <h2 id="label-License">License</h2>
 
-<p>The gem is available as open source under the terms of the <a
-href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
 
 <h2 id="label-Code+of+Conduct">Code of Conduct</h2>
 
-<p>Everyone interacting in the Parlour project’s codebases, issue trackers,
-chat rooms and mailing lists is expected to follow the <a
-href="https://github.com/AaronC81/parlour/blob/master/CODE_OF_CONDUCT.md">code
-of conduct</a>.</p>
+<p>Everyone interacting in the Parlour project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the <a href="https://github.com/AaronC81/parlour/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Sat Dec 26 12:45:45 2020 by
+  Generated on Wed Dec 30 20:01:34 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.3.8).
+  0.9.26 (ruby-2.7.2).
 </div>
 
     </div>

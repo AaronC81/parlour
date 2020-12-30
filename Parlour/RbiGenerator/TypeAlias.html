@@ -6,7 +6,7 @@
 <title>
   Class: Parlour::RbiGenerator::TypeAlias
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -335,8 +335,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">TypeAlias</a></span> instances, returns true if they may be 
-merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::TypeAlias#merge_into_self (method)">#merge_into_self</a></span>.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">TypeAlias</a></span> instances, returns true if they may be  merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::TypeAlias#merge_into_self (method)">#merge_into_self</a></span>.</p>
 </div></span>
   
 </li>
@@ -535,8 +534,7 @@ merged into this instance using <span class='object_link'><a href="#merge_into_s
       
         &mdash;
         <div class='inline'>
-<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">Parlour::RbiGenerator::TypeAlias</a></span> (or a subclass of it),
-this will always return false.</p>
+<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">Parlour::RbiGenerator::TypeAlias</a></span> (or a subclass of it), this will always return false.</p>
 </div>
       
     </li>
@@ -655,7 +653,7 @@ this will always return false.</p>
       <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/type_alias.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
-  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'>TypeParser</span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'>parse_single_type</span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
+  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../TypeParser.html" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'><span class='object_link'><a href="../TypeParser.html#parse_single_type-class_method" title="Parlour::TypeParser.parse_single_type (method)">parse_single_type</a></span></span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -773,10 +771,7 @@ this will always return false.</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">Parlour::RbiGenerator::TypeAlias</a></span> instances, merges them into this one. This
-particular implementation will simply do nothing, as instances are only
-mergeable if they are indentical. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::TypeAlias#mergeable? (method)">#mergeable?</a></span> is true
-for those instances.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">Parlour::RbiGenerator::TypeAlias</a></span> instances, merges them into this one. This particular implementation will simply do nothing, as instances are only mergeable if they are indentical. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::TypeAlias#mergeable? (method)">#mergeable?</a></span> is true for those instances.</p>
 
 
   </div>
@@ -837,8 +832,7 @@ for those instances.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">Parlour::RbiGenerator::TypeAlias</a></span> instances, returns true if they may be 
-merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::TypeAlias#merge_into_self (method)">#merge_into_self</a></span>. This is always false.</p>
+<p>Given an array of <span class='object_link'><a href="" title="Parlour::RbiGenerator::TypeAlias (class)">Parlour::RbiGenerator::TypeAlias</a></span> instances, returns true if they may be  merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::TypeAlias#merge_into_self (method)">#merge_into_self</a></span>. This is always false.</p>
 
 
   </div>
@@ -910,9 +904,9 @@ merged into this instance using <span class='object_link'><a href="#merge_into_s
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 26 12:45:52 2020 by
+  Generated on Wed Dec 30 20:01:39 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.3.8).
+  0.9.26 (ruby-2.7.2).
 </div>
 
     </div>

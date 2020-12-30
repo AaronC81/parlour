@@ -6,7 +6,7 @@
 <title>
   Class: Parlour::RbiGenerator::Parameter
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -264,8 +264,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A Sorbet string of this parameter&#39;s type, such as <tt>“String”</tt> or
-<tt>“T.untyped”</tt>.</p>
+<p>A Sorbet string of this parameter&#39;s type, such as <tt>“String”</tt> or <tt>“T.untyped”</tt>.</p>
 </div></span>
   
 </li>
@@ -422,8 +421,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A string of how this parameter should be defined in a Sorbet
-<code>sig</code>.</p>
+<p>A string of how this parameter should be defined in a Sorbet <code>sig</code>.</p>
 </div></span>
   
 </li>
@@ -501,9 +499,7 @@
       
         &mdash;
         <div class='inline'>
-<p>The name of this parameter. This may start with <tt>*</tt>, <tt>**</tt>, or <tt>&amp;</tt>, or
-end with <code>:</code>, which will infer the <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> of this parameter. (If
-it contains none of those, <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> will be <code>:normal</code>.)</p>
+<p>The name of this parameter. This may start with <tt>*</tt>, <tt>**</tt>, or <tt>&amp;</tt>, or end with <code>:</code>, which will infer the <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> of this parameter. (If it contains none of those, <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> will be <code>:normal</code>.)</p>
 </div>
       
     </li>
@@ -521,8 +517,7 @@ it contains none of those, <span class='object_link'><a href="#kind-instance_met
       
         &mdash;
         <div class='inline'>
-<p>A Sorbet string of this parameter&#39;s type, such as <tt>“String”</tt> or
-<tt>“T.untyped”</tt>.</p>
+<p>A Sorbet string of this parameter&#39;s type, such as <tt>“String”</tt> or <tt>“T.untyped”</tt>.</p>
 </div>
       
     </li>
@@ -540,10 +535,7 @@ it contains none of those, <span class='object_link'><a href="#kind-instance_met
       
         &mdash;
         <div class='inline'>
-<p>A string of Ruby code for this parameter&#39;s default value. For example,
-the default value of an empty string would be represented as
-<tt>“&quot;&quot;”</tt> (or <tt>&#39;“”&#39;</tt>). The default value of the decimal
-<code>3.14</code> would be <tt>“3.14”</tt>.</p>
+<p>A string of Ruby code for this parameter&#39;s default value. For example, the default value of an empty string would be represented as <tt>“&quot;&quot;”</tt> (or <tt>&#39;“”&#39;</tt>). The default value of the decimal <code>3.14</code> would be <tt>“3.14”</tt>.</p>
 </div>
       
     </li>
@@ -609,10 +601,7 @@ the default value of an empty string would be represented as
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A string of Ruby code for this parameter&#39;s default value. For example,
-the default value of an empty string would be represented as
-<tt>“&quot;&quot;”</tt> (or <tt>&#39;“”&#39;</tt>). The default value of the decimal
-<code>3.14</code> would be <tt>“3.14”</tt>.</p>
+<p>A string of Ruby code for this parameter&#39;s default value. For example, the default value of an empty string would be represented as <tt>“&quot;&quot;”</tt> (or <tt>&#39;“”&#39;</tt>). The default value of the decimal <code>3.14</code> would be <tt>“3.14”</tt>.</p>
 
 
   </div>
@@ -668,9 +657,7 @@ the default value of an empty string would be represented as
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>The kind of parameter that this is. This will be one of
-<code>:normal</code>,  <code>:splat</code>, <code>:double_splat</code>,
-<code>:block</code> or <code>:keyword</code>.</p>
+<p>The kind of parameter that this is. This will be one of <code>:normal</code>,  <code>:splat</code>, <code>:double_splat</code>, <code>:block</code> or <code>:keyword</code>.</p>
 
 
   </div>
@@ -782,8 +769,7 @@ the default value of an empty string would be represented as
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A Sorbet string of this parameter&#39;s type, such as <tt>“String”</tt> or
-<tt>“T.untyped”</tt>.</p>
+<p>A Sorbet string of this parameter&#39;s type, such as <tt>“String”</tt> or <tt>“T.untyped”</tt>.</p>
 
 
   </div>
@@ -864,8 +850,7 @@ the default value of an empty string would be represented as
       
         &mdash;
         <div class='inline'>
-<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parlour::RbiGenerator::Parameter</a></span> (or a subclass of it),
-this will always return false.</p>
+<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parlour::RbiGenerator::Parameter</a></span> (or a subclass of it), this will always return false.</p>
 </div>
       
     </li>
@@ -938,7 +923,7 @@ this will always return false.</p>
       <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/parameter.rb', line 134</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
-  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'>TypeParser</span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'>parse_single_type</span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
+  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../TypeParser.html" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'><span class='object_link'><a href="../TypeParser.html#parse_single_type-class_method" title="Parlour::TypeParser.parse_single_type (method)">parse_single_type</a></span></span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -957,9 +942,7 @@ this will always return false.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>The name of this parameter, stripped of any prefixes or suffixes. For
-example, <tt>*rest</tt> would become <code>rest</code>, or <code>foo:</code> would
-become <code>foo</code>.</p>
+<p>The name of this parameter, stripped of any prefixes or suffixes. For example, <tt>*rest</tt> would become <code>rest</code>, or <code>foo:</code> would become <code>foo</code>.</p>
 
 
   </div>
@@ -1089,8 +1072,7 @@ become <code>foo</code>.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A string of how this parameter should be defined in a Sorbet
-<code>sig</code>.</p>
+<p>A string of how this parameter should be defined in a Sorbet <code>sig</code>.</p>
 
 
   </div>
@@ -1137,9 +1119,9 @@ become <code>foo</code>.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 26 12:45:50 2020 by
+  Generated on Wed Dec 30 20:01:38 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.3.8).
+  0.9.26 (ruby-2.7.2).
 </div>
 
     </div>

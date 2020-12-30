@@ -6,7 +6,7 @@
 <title>
   Class: Parlour::RbiGenerator::StructProp
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -138,8 +138,8 @@
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_let'>let</span><span class='lparen'>(</span><span class='qsymbols_beg'>%i{
-</span><span class='tstring_content'>  optional</span><span class='words_sep'> </span><span class='tstring_content'>enum</span><span class='words_sep'> </span><span class='tstring_content'>dont_store</span><span class='words_sep'> </span><span class='tstring_content'>foreign</span><span class='words_sep'> </span><span class='tstring_content'>default</span><span class='words_sep'> </span><span class='tstring_content'>factory</span><span class='words_sep'> </span><span class='tstring_content'>immutable</span><span class='words_sep'> </span><span class='tstring_content'>array</span><span class='words_sep'> </span><span class='tstring_content'>override</span><span class='words_sep'> </span><span class='tstring_content'>redaction</span><span class='words_sep'>
+        <dd><pre class="code"><span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_let'>let</span><span class='lparen'>(</span><span class='qsymbols_beg'>%i{</span><span class='words_sep'>
+  </span><span class='tstring_content'>optional</span><span class='words_sep'> </span><span class='tstring_content'>enum</span><span class='words_sep'> </span><span class='tstring_content'>dont_store</span><span class='words_sep'> </span><span class='tstring_content'>foreign</span><span class='words_sep'> </span><span class='tstring_content'>default</span><span class='words_sep'> </span><span class='tstring_content'>factory</span><span class='words_sep'> </span><span class='tstring_content'>immutable</span><span class='words_sep'> </span><span class='tstring_content'>array</span><span class='words_sep'> </span><span class='tstring_content'>override</span><span class='words_sep'> </span><span class='tstring_content'>redaction</span><span class='words_sep'>
 </span><span class='tstring_end'>}</span></span><span class='comma'>,</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lbracket'>[</span><span class='const'>Symbol</span><span class='rbracket'>]</span><span class='rparen'>)</span></pre></dd>
       
     </dl>
@@ -629,9 +629,7 @@
     
 <p>Create a new struct property.</p>
 
-<p>For documentation on all optional properties, please refer to the
-documentation for T::Struct within the sorbet-runtime gem: <a
-href="https://github.com/sorbet/sorbet/blob/master/gems/sorbet-runtime/lib/types/props/_props.rb#L31-L106">github.com/sorbet/sorbet/blob/master/gems/sorbet-runtime/lib/types/props/_props.rb#L31-L106</a></p>
+<p>For documentation on all optional properties, please refer to the documentation for T::Struct within the sorbet-runtime gem: <a href="https://github.com/sorbet/sorbet/blob/master/gems/sorbet-runtime/lib/types/props/_props.rb#L31-L106">github.com/sorbet/sorbet/blob/master/gems/sorbet-runtime/lib/types/props/_props.rb#L31-L106</a></p>
 
 
   </div>
@@ -1310,8 +1308,7 @@ href="https://github.com/sorbet/sorbet/blob/master/gems/sorbet-runtime/lib/types
       
         &mdash;
         <div class='inline'>
-<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::StructProp (class)">Parlour::RbiGenerator::StructProp</a></span> (or a subclass of it),
-this will always return false.</p>
+<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::StructProp (class)">Parlour::RbiGenerator::StructProp</a></span> (or a subclass of it), this will always return false.</p>
 </div>
       
     </li>
@@ -1400,7 +1397,7 @@ this will always return false.</p>
       <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/struct_prop.rb', line 134</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
-  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'>TypeParser</span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'>parse_single_type</span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
+  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../TypeParser.html" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'><span class='object_link'><a href="../TypeParser.html#parse_single_type-class_method" title="Parlour::TypeParser.parse_single_type (method)">parse_single_type</a></span></span><span class='lparen'>(</span><span class='ivar'>@type</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@type</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1480,9 +1477,9 @@ this will always return false.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 26 12:45:52 2020 by
+  Generated on Wed Dec 30 20:01:40 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.3.8).
+  0.9.26 (ruby-2.7.2).
 </div>
 
     </div>

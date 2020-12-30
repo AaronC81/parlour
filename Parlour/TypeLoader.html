@@ -6,7 +6,7 @@
 <title>
   Module: Parlour::TypeLoader
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -145,8 +145,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Loads an entire Sorbet project using Sorbet&#39;s file table, obeying any
-“typed: ignore” sigils, into a tree of objects.</p>
+<p>Loads an entire Sorbet project using Sorbet&#39;s file table, obeying any “typed: ignore” sigils, into a tree of objects.</p>
 </div></span>
   
 </li>
@@ -277,11 +276,9 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Loads an entire Sorbet project using Sorbet&#39;s file table, obeying any
-“typed: ignore” sigils, into a tree of objects.</p>
+<p>Loads an entire Sorbet project using Sorbet&#39;s file table, obeying any “typed: ignore” sigils, into a tree of objects.</p>
 
-<p>Files within sorbet/rbi/hidden-definitions are excluded, as they cause
-merging issues with abstract classes due to sorbet/sorbet#1653.</p>
+<p>Files within sorbet/rbi/hidden-definitions are excluded, as they cause merging issues with abstract classes due to sorbet/sorbet#1653.</p>
 
 
   </div>
@@ -301,8 +298,7 @@ merging issues with abstract classes due to sorbet/sorbet#1653.</p>
       
         &mdash;
         <div class='inline'>
-<p>The root of the project; where the “sorbet” directory and “Gemfile” are
-located.</p>
+<p>The root of the project; where the “sorbet” directory and “Gemfile” are located.</p>
 </div>
       
     </li>
@@ -320,8 +316,7 @@ located.</p>
       
         &mdash;
         <div class='inline'>
-<p>A list of files to include when loading the project, relative to the given
-root.</p>
+<p>A list of files to include when loading the project, relative to the given root.</p>
 </div>
       
     </li>
@@ -339,8 +334,7 @@ root.</p>
       
         &mdash;
         <div class='inline'>
-<p>A list of files to exclude when loading the project, relative to the given
-root.</p>
+<p>A list of files to exclude when loading the project, relative to the given root.</p>
 </div>
       
     </li>
@@ -529,8 +523,7 @@ root.</p>
       
         &mdash;
         <div class='inline'>
-<p>The filename to use when parsing this code. This may be used in error
-messages, but is optional.</p>
+<p>The filename to use when parsing this code. This may be used in error messages, but is optional.</p>
 </div>
       
     </li>
@@ -570,7 +563,7 @@ messages, but is optional.</p>
       <pre class="code"><span class="info file"># File 'lib/parlour/type_loader.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load_source'>load_source</span><span class='lparen'>(</span><span class='id identifier rubyid_source'>source</span><span class='comma'>,</span> <span class='id identifier rubyid_filename'>filename</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>generator:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='const'>TypeParser</span><span class='period'>.</span><span class='id identifier rubyid_from_source'>from_source</span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(source)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_source'>source</span><span class='comma'>,</span> <span class='label'>generator:</span> <span class='id identifier rubyid_generator'>generator</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_parse_all'>parse_all</span>
+  <span class='const'><span class='object_link'><a href="TypeParser.html" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_source'><span class='object_link'><a href="TypeParser.html#from_source-class_method" title="Parlour::TypeParser.from_source (method)">from_source</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(source)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_source'>source</span><span class='comma'>,</span> <span class='label'>generator:</span> <span class='id identifier rubyid_generator'>generator</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_parse_all'><span class='object_link'><a href="TypeParser.html#parse_all-instance_method" title="Parlour::TypeParser#parse_all (method)">parse_all</a></span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -582,9 +575,9 @@ messages, but is optional.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Dec 26 12:45:47 2020 by
+  Generated on Wed Dec 30 20:01:35 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.3.8).
+  0.9.26 (ruby-2.7.2).
 </div>
 
     </div>
