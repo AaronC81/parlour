@@ -7,6 +7,7 @@ jobs:
     strategy:
       matrix:
         ruby: [2.4, 2.5, 2.6, 2.7, 3.0]
+    continue-on-error: false
       
     runs-on: ubuntu-latest    
     steps:
@@ -23,7 +24,9 @@ jobs:
       run: ./ci/check_rbi.sh
 
   # Deploy documentation to GitHub Pages, if this is a push to master and the tests passed
-  deploy-docs:    
+  deploy-docs:
+    if: ${{ github.event_name == 'push' && github.base_ref == 'refs/heads/master' }}
+    
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
