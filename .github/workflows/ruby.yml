@@ -8,7 +8,7 @@ jobs:
       matrix:
         ruby: [2.4, 2.5, 2.6, 2.7, 3.0]
       
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -19,3 +19,28 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec rake
+    - name: Check RBI is up-to-date
+      run: ./ci/check_rbi.sh
+
+  # Deploy documentation to GitHub Pages, if this is a push to master and the tests passed
+  deploy-docs:
+    if: ${{ github.event_name == "push" && github.base_ref == "refs/heads/master" }}
+    needs: [test]
+    
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Install dependencies
+      run: bundle install
+    - name: Build documentation
+      run: bundle exec yard
+    - name: Deploy to GitHub Actions
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        folder: doc
