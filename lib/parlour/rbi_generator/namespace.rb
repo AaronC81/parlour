@@ -106,18 +106,25 @@ module Parlour
         )
       end
 
-      sig { params(object: T.untyped, block: T.proc.params(x: Namespace).void).void }
-      # Given a Class or Module object, generates all classes and modules in the
-      # path to that object, then executes the given block on the last
-      # {Namespace}. This should only be executed on the root namespace.
-      # @param [Class, Module] object
+      sig { params(constant: Module, block: T.proc.params(x: Namespace).void).void }
+      # Given a constant (i.e. a Module instance), generates all classes
+      # and modules in the path to that object, then executes the given
+      # block on the last {Namespace}. This should only be executed on
+      # the root namespace.
+      # @param [Module] constant
       # @param block A block which the new {Namespace} yields itself to.
-      def path(object, &block)
+      def path(constant, &block)
         raise 'only call #path on root' if is_a?(ClassNamespace) || is_a?(ModuleNamespace)
 
-        parts = object.to_s.split('::')
+        constant_name = T.let(Module.instance_method(:name).bind(constant).call, T.nilable(String))
+        raise 'given constant does not have a name' unless constant_name
+
+        parts = constant_name.split('::')
         parts_with_types = parts.size.times.map do |i|
-          [parts[i], Module.const_get(parts[0..i].join('::')).class]
+          [
+            T.must(parts[i]),
+            Module.const_get(T.must(parts[0..i]).join('::')).class
+          ]
         end
 
         current_part = self

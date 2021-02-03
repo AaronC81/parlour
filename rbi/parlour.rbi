@@ -1066,8 +1066,8 @@ module Parlour
       sig { returns(T::Array[RbiGenerator::Constant]) }
       def constants; end
 
-      sig { params(object: T.untyped, block: T.proc.params(x: Namespace).void).void }
-      def path(object, &block); end
+      sig { params(constant: Module, block: T.proc.params(x: Namespace).void).void }
+      def path(constant, &block); end
 
       sig { params(comment: T.any(String, T::Array[String])).void }
       def add_comment_to_next_child(comment); end

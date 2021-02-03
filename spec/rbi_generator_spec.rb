@@ -540,6 +540,15 @@ RSpec.describe Parlour::RbiGenerator do
       ::PathA = Module.new
       ::PathA::B = Module.new
       ::PathA::B::C = Class.new
+      ::PathB = Class.new do
+        def self.name
+          "Foo"
+        end
+
+        def self.to_s
+          name
+        end
+      end
     end
 
     it 'generates correctly' do
@@ -561,6 +570,25 @@ RSpec.describe Parlour::RbiGenerator do
 
     it 'throws on a non-root namespace' do
       expect { subject.root.create_module('X').path(::PathA::B::C) { |*| } }.to raise_error(RuntimeError)
+    end
+
+    it 'uses the actual constant name' do
+      subject.root.path(::PathB) do |c|
+        c.create_method('foo')
+      end
+
+      expect(subject.root.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class PathB
+          sig { void }
+          def foo; end
+        end
+      RUBY
+    end
+
+    it 'fails on constants that do not have a name' do
+      constant = Module.new
+
+      expect { subject.root.path(constant) { |*| } }.to raise_error(RuntimeError)
     end
   end
 
