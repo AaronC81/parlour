@@ -257,7 +257,7 @@ RSpec.describe Parlour::RbiGenerator do
         subject.root.create_method('foo', returns: 'String', return_type: 'String')
       end.to raise_error(RuntimeError)
     end
- 
+
     it 'can be created with parameters' do
       meth = subject.root.create_method('foo', parameters: [
         pa('a', type: 'Integer', default: '4')
@@ -549,6 +549,11 @@ RSpec.describe Parlour::RbiGenerator do
           name
         end
       end
+      ::PathC = Class.new do
+        def self.class
+          Module
+        end
+      end
     end
 
     it 'generates correctly' do
@@ -589,6 +594,19 @@ RSpec.describe Parlour::RbiGenerator do
       constant = Module.new
 
       expect { subject.root.path(constant) { |*| } }.to raise_error(RuntimeError)
+    end
+
+    it 'works properly on constants that lie about their class' do
+      subject.root.path(::PathC) do |c|
+        c.create_method('foo')
+      end
+
+      expect(subject.root.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class PathC
+          sig { void }
+          def foo; end
+        end
+      RUBY
     end
   end
 
