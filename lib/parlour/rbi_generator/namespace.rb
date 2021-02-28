@@ -119,22 +119,18 @@ module Parlour
         constant_name = T.let(Module.instance_method(:name).bind(constant).call, T.nilable(String))
         raise 'given constant does not have a name' unless constant_name
 
-        parts = constant_name.split('::')
-        parts_with_types = parts.size.times.map do |i|
-          [
-            T.must(parts[i]),
-            Module.const_get(T.must(parts[0..i]).join('::')).class
-          ]
-        end
-
         current_part = self
-        parts_with_types.each do |(name, type)|
-          if type == Class
+        constant_name.split('::').each_with_object([]) do |name, namespace|
+          namespace << name
+          instance = Module.const_get(namespace.join("::"))
+
+          case instance
+          when Class
             current_part = current_part.create_class(name)
-          elsif type == Module
+          when Module
             current_part = current_part.create_module(name)
           else
-            raise "unexpected type: path part #{name} is a #{type}"
+            raise "unexpected type: path part #{name} is a #{instance.class}"
           end
         end
 
