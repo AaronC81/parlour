@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [6.0.0] - 2021-02-28
+### Changed
+- The RBI previously included with the Parlour gem has been removed,
+  as it was causing issues with Sorbet. **If you were relying on Parlour's
+  bundled RBI while type-checking your project, you will now need to use the
+  RBI from sorbet-typed or the Parlour repo.**
+- `Namespace#path` will now work much more reliably for classes and
+  modules which replace methods from `Module` and `Class`, such as
+  `#name`.
+
 ## [5.0.0] - 2020-12-26
 ### Added
 - Added RBS generation support! This includes:
