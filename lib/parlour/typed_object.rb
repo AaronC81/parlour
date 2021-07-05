@@ -20,7 +20,7 @@ module Parlour
     # @return [Plugin, nil]
     attr_reader :generated_by
 
-    sig { returns(String) }
+    sig { returns(String).checked(:never) }
     # The name of this object.
     # @return [String]
     attr_reader :name
