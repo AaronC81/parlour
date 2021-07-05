@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [6.0.1] - 2021-02-28
+### Changed
+- Disabled runtime type checking for `TypedObject#name`, resulting in a
+  significant decrease in the time taken to run the conflict resolver.
+
 ## [6.0.0] - 2021-02-28
 ### Changed
 - The RBI previously included with the Parlour gem has been removed,
