@@ -1,7 +1,4 @@
 # typed: strong
-module Kernel
-end
-
 module Parlour
   VERSION = '6.0.1'
 
@@ -58,20 +55,6 @@ module Parlour
       sig { returns(T.untyped) }
       def self.text_prefix; end
     end
-  end
-
-  class DetachedRbsGenerator < RbsGenerator
-    sig { returns(T.untyped) }
-    def detached!; end
-
-    sig { override.returns(Options) }
-    def options; end
-
-    sig { override.returns(T.nilable(Plugin)) }
-    def current_plugin; end
-
-    sig { override.returns(String) }
-    def rbs; end
   end
 
   class Generator
