@@ -1,0 +1,17 @@
+success: true
+files:
+  rbi/supports_styles.rbi: |
+    # typed: strong
+    module A
+            extend T::Sig
+
+            sig { returns(Integer) }
+            def a; end
+    end
+
+    module B
+            extend T::Sig
+
+            sig { returns(String) }
+            def b; end
+    end
