@@ -710,7 +710,6 @@ RSpec.describe Parlour::ConflictResolver do
   it 'resolves conflicts where all but one copy of the method is untyped' do
     x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
       class A
-        sig { params(i: T.untyped).returns(T.untyped) }
         def int_to_str(i); end
 
         sig { params(i: Integer).returns(String) }
