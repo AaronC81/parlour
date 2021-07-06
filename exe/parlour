@@ -11,9 +11,8 @@ program :description, 'An RBI generator and plugin system'
 
 default_command :run
 command :run do |c|
-  # TODO: re-add support for flags and figure out how to merge them with .parlour
-  c.syntax = 'parlour run <plugins...> <output-file> [options]'
-  c.description = 'Generates an RBI file from your .parlour file'
+  c.syntax = 'parlour run'
+  c.description = 'Generates a signature file from your .parlour file'
 
   c.action do |args, options|
     working_dir = Dir.pwd
