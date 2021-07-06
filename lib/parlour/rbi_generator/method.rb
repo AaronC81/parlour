@@ -204,6 +204,9 @@ module Parlour
       # @return [void]
       def merge_into_self(others)
         # We don't need to change anything! We only merge identical methods
+        # (That's not strictly true, we also sometimes merge typed methods and
+        # untyped methods. This is handled by a special case within the conflict
+        # resolver itself.)
       end
 
       sig { override.returns(String) }
