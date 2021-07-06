@@ -31,13 +31,19 @@ RSpec.describe 'command-line interface' do
             # Load the expected result
             expected = YAML.load_file(File.join(tmp_dir, "expect.yaml"))
 
-            # Check result
+            # Check exit code
             expect(expected['success']).to eq wait.value.success?
+
+            # Check files
             expected['files']&.each do |name, contents|
               expect(File.read(File.join(tmp_dir, name))).to eq contents
             end
 
-            # TODO: check cli output
+            # Check command output
+            actual_output = output.read
+            expected['output']&.each do |output_include|
+              expect(actual_output).to include output_include
+            end
           end
         end
       end
