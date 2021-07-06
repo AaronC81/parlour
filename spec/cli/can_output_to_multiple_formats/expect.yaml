@@ -1,0 +1,30 @@
+success: true
+files:
+  sig/out.rbi: |
+    # typed: strong
+    module A
+      extend T::Sig
+
+      sig { returns(Integer) }
+      def a; end
+    end
+
+    module B
+      extend T::Sig
+
+      sig { returns(String) }
+      def b; end
+    end
+
+  sig/out.rbs: |
+    module A
+      extend T::Sig
+
+      def a: () -> Integer
+    end
+
+    module B
+      extend T::Sig
+
+      def b: () -> String
+    end
