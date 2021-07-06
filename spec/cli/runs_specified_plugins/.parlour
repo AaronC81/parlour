@@ -1,0 +1,8 @@
+plugins:
+  Plugin:
+    class_name: D
+
+relative_requires:
+  - plugin.rb
+
+sort_namespaces: true

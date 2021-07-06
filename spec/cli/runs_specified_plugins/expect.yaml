@@ -1,0 +1,23 @@
+success: true
+files:
+  rbi/runs_specified_plugins.rbi: |
+    # typed: strong
+    module A
+      extend T::Sig
+
+      sig { returns(Integer) }
+      def a; end
+    end
+
+    module B
+      extend T::Sig
+
+      sig { returns(String) }
+      def b; end
+    end
+
+    module C
+      class D
+      end
+    end
+
