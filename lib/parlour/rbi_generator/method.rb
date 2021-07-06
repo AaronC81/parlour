@@ -223,6 +223,16 @@ module Parlour
         parameters.each(&:generalize_from_rbi!)
       end
 
+      sig { returns(T::Boolean) }
+      # Returns true if this method is completely untyped; that is, all
+      # parameters are untyped and the return type is untyped.
+      #
+      # @return [bool]
+      def untyped?
+        is_untyped = ->x{ x.is_a?(Types::Untyped) || x == 'T.untyped' }
+        parameters.map(&:type).all?(&is_untyped) && is_untyped.(return_type)
+      end
+
       private
 
       sig do

@@ -248,6 +248,22 @@ RSpec.describe Parlour::RbsGenerator do
                | () -> void
       RUBY
     end
+
+    it 'return the correct value for #untyped?' do
+      meth_a = subject.root.create_method('a', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'Integer')
+      ], 'untyped')])
+      meth_b = subject.root.create_method('b', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'untyped')
+      ], 'Integer')])
+      meth_c = subject.root.create_method('c', [Parlour::RbsGenerator::MethodSignature.new([
+        pa('a', type: 'untyped')
+      ], Parlour::Types::Untyped.new)])
+
+      expect(meth_a.untyped?).to eq false
+      expect(meth_b.untyped?).to eq false
+      expect(meth_c.untyped?).to eq true
+    end
   end
 
   context 'attributes' do

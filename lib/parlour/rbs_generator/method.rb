@@ -141,6 +141,18 @@ module Parlour
         # TODO: more info
         "Method #{name} - #{signatures.length} signatures"
       end
+
+      sig { returns(T::Boolean) }
+      # Returns true if this method is completely untyped; that is, all
+      # parameters are untyped and the return type is untyped.
+      #
+      # @return [bool]
+      def untyped?
+        is_untyped = ->x{ x.is_a?(Types::Untyped) || x == 'untyped' }
+        signatures.all? do |sig|
+          sig.parameters.map(&:type).all?(&is_untyped) && is_untyped.(sig.return_type)
+        end
+      end
     end
   end
 end
