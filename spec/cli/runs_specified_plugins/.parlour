@@ -4,5 +4,3 @@ plugins:
 
 relative_requires:
   - plugin.rb
-
-sort_namespaces: true
