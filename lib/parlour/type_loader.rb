@@ -60,7 +60,12 @@ module Parlour
         chdir: root
       )
 
-      file_table_hash = JSON.parse(T.must(stdout.read))
+      stdout = T.must(stdout.read)
+      if stdout == ''
+        raise 'unable to get Sorbet file table; the project may be empty or not have Sorbet initialised'
+      end
+
+      file_table_hash = JSON.parse(stdout)
       file_table_entries = file_table_hash['files']
 
       namespaces = T.let([], T::Array[Parlour::RbiGenerator::Namespace])
