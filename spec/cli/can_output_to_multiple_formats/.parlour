@@ -1,0 +1,3 @@
+output_file:
+  rbi: sig/out.rbi
+  rbs: sig/out.rbs

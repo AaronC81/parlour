@@ -1,0 +1,3 @@
+mkdir -p sig
+bundle exec parlour sig/out.rbi
+bundle exec parlour sig/out.rbs
