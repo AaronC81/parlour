@@ -706,4 +706,69 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(x.children.length).to be 2
   end
+
+  it 'resolves conflicts where all but one copy of the method is untyped' do
+    x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
+      class A
+        def int_to_str(i); end
+
+        sig { params(i: Integer).returns(String) }
+        def int_to_str(i); end
+
+        sig { params(i: Integer).returns(String) }
+        def int_to_str(i); end
+
+        sig { params(i: T.untyped).returns(T.untyped) }
+        def int_to_str(i); end
+      end
+    RUBY
+
+    expect(x.children.length).to be 4
+
+    subject.resolve_conflicts(x) { |*| raise 'unable to resolve automatically' }
+
+    expect(x.children.length).to be 1
+    expect(x.children.first.return_type).to eq "String"
+  end
+
+  it 'keeps an untyped copy of a method if there is no typed copy' do
+    x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
+      class A
+        sig { params(i: T.untyped).returns(T.untyped) }
+        def int_to_str(i); end
+
+        sig { params(i: T.untyped).returns(T.untyped) }
+        def int_to_str(i); end
+      end
+    RUBY
+
+    expect(x.children.length).to be 2
+
+    subject.resolve_conflicts(x) { |*| raise 'unable to resolve automatically' }
+
+    expect(x.children.length).to be 1
+  end
+
+  it 'does not resolve untyped copies with different parameters' do
+    x = Parlour::TypeLoader.load_source(<<-RUBY).children.first
+      class A
+        sig { params(i: Integer).returns(String) }
+        def int_to_str(i); end
+
+        sig { params(i: Integer).returns(String) }
+        def int_to_str(i); end
+
+        sig { params(x: T.untyped).returns(T.untyped) }
+        def int_to_str(x); end
+      end
+    RUBY
+
+    expect(x.children.length).to be 3
+
+    invocations = 0
+    subject.resolve_conflicts(x) { |*| invocations += 1; nil }
+
+    expect(invocations).to be 1
+    expect(x.children.length).to be 0
+  end
 end

@@ -94,6 +94,53 @@ module Parlour
             next
           end
 
+          # Special case:
+          #   - The candidates are methods
+          #   - There is at least one candidate which is typed
+          #   - All of the typed methods are mergeable with each other
+          #   - All of the untyped methods are mergeable with each other
+          #   - The typed methods and untyped methods have the same parameter
+          #     set except the types (i.e. same name and kind)
+          # This covers the case of merging a definition in Ruby source with its
+          # definition in an RBI. 
+          # Discard the untyped methods and merge the typed methods.
+          if children.all? { |c| c.is_a?(RbiGenerator::Method) }
+            children = T.cast(children, T::Array[Parlour::RbiGenerator::Method])
+
+            # Check the parameter names and kinds are the same
+            names_and_kinds = children.map do |meth|
+              meth.parameters.map { |param| [param.name, param.kind] }
+            end
+
+            if names_and_kinds.uniq.length == 1
+              # Separately check that all the untyped candidates and typed
+              # candidates are the same. (We checked the parameters, but untyped
+              # candidates could still differ, e.g. `abstract` or other
+              # modifiers)
+              untyped_candidates, typed_candidates = children.partition(&:untyped?)
+
+              if typed_candidates.any? &&
+                all_eql?(untyped_candidates) &&
+                all_eql?(typed_candidates)
+                
+                # All criteria met!
+                # Discard the untyped candidates, add a typed one
+                children.each do |c|
+                  namespace.children.delete(c)
+                end
+
+                # Re-add one typed, merged child
+                first, *rest = typed_candidates
+                first = T.must(first)
+                rest = T.must(rest)
+                first.merge_into_self(rest)
+                namespace.children << first
+
+                next
+              end
+            end
+          end
+
           # Optimization for Special case: are they all clearly equal? If so, remove all but one
           if all_eql?(children)
             Debugging.debug_puts(self, Debugging::Tree.end("All children are identical"))

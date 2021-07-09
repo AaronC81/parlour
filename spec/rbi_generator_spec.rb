@@ -341,6 +341,22 @@ RSpec.describe Parlour::RbiGenerator do
         def box(a); end
       RUBY
     end
+
+    it 'return the correct value for #untyped?' do
+      meth_a = subject.root.create_method('a', parameters: [
+        pa('a', type: 'Integer')
+      ], return_type: 'T.untyped')
+      meth_b = subject.root.create_method('b', parameters: [
+        pa('a', type: 'T.untyped')
+      ], return_type: 'Integer')
+      meth_c = subject.root.create_method('c', parameters: [
+        pa('a', type: 'T.untyped')
+      ], return_type: Parlour::Types::Untyped.new)
+
+      expect(meth_a.untyped?).to eq false
+      expect(meth_b.untyped?).to eq false
+      expect(meth_c.untyped?).to eq true
+    end
   end
 
   context 'attributes' do
