@@ -5,6 +5,8 @@ module Parlour
     class ModuleNamespace < Namespace
       extend T::Sig
 
+      Child = type_member(fixed: RbsObject)
+
       sig do
         override.params(
           indent_level: Integer,

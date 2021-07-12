@@ -14,6 +14,8 @@ require 'parlour/types'
 require 'parlour/options'
 require 'parlour/typed_object'
 require 'parlour/generator'
+require 'parlour/mixin/searchable'
+
 require 'parlour/rbi_generator/parameter'
 require 'parlour/rbi_generator/rbi_object'
 require 'parlour/rbi_generator/type_alias'

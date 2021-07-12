@@ -5,6 +5,8 @@ module Parlour
     class EnumClassNamespace < ClassNamespace
       extend T::Sig
 
+      Child = type_member(fixed: RbiObject)
+
       sig do
         params(
           generator: Generator,

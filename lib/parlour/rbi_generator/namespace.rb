@@ -5,6 +5,7 @@ module Parlour
     # {RbiGenerator#root}.
     class Namespace < RbiObject
       extend T::Sig
+      extend T::Generic
 
       sig do
         override.overridable.params(
@@ -60,10 +61,13 @@ module Parlour
       # @return [Boolean]
       attr_reader :sealed
 
-      sig { returns(T::Array[RbiObject]) }
+      sig { override.returns(T::Array[RbiObject]).checked(:never) }
       # The child {RbiObject} instances inside this namespace.
       # @return [Array<RbiObject>]
       attr_reader :children
+
+      include Mixin::Searchable
+      Child = type_member(fixed: RbiObject)
 
       sig { returns(T::Array[RbiGenerator::Extend]) }
       # The {RbiGenerator::Extend} objects from {children}.
