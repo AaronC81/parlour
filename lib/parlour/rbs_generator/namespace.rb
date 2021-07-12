@@ -5,6 +5,7 @@ module Parlour
     # {RbsGenerator#root}.
     class Namespace < RbsObject
       extend T::Sig
+      extend T::Generic
 
       sig do
         override.overridable.params(
@@ -45,10 +46,13 @@ module Parlour
         yield_self(&block) if block
       end
 
-      sig { returns(T::Array[RbsObject]) }
+      sig { override.returns(T::Array[RbsObject]).checked(:never) }
       # The child {RbsObject} instances inside this namespace.
       # @return [Array<RbsObject>]
       attr_reader :children
+
+      include Mixin::Searchable
+      Child = type_member(fixed: RbsObject)
 
       sig { returns(T::Array[RbsGenerator::Extend]) }
       # The {RbsGenerator::Extend} objects from {children}.
