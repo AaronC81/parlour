@@ -63,23 +63,31 @@ module Parlour
 
     # A module for generating a globally-consistent, nicely-formatted tree of
     # output using Unicode block characters.
-    module Tree
+    class Tree
       extend T::Sig
 
       # The number of spaces to indent each layer of the tree by. Should be at
       # least 1.
       INDENT_SPACES = 2
 
-      # The current indent level of the tree.
-      @indent_level = 0
+      # Whether to colour output or not.
+      sig { returns(T::Boolean) }
+      attr_reader :colour
+
+      sig { params(colour: T::Boolean).void }
+      def initialize(colour: false)
+        @colour = colour
+        @indent_level = 0
+      end
 
       # Returns a new heading, and then decents the tree one level into it. 
       # (That is, future output will go under the new heading.)
       # @param [String] message The heading.
       # @return [String] The line of this tree which should be printed.
       sig { params(message: String).returns(String) }
-      def self.begin(message)
-        result = line_prefix + '├' + text_prefix + Rainbow(message).green.bright.bold
+      def begin(message)
+        result = line_prefix + '├' + text_prefix +
+          (colour ? Rainbow(message).green.bright.bold : message)
         @indent_level += 1
         result
       end
@@ -88,7 +96,7 @@ module Parlour
       # @param [String] message The element.
       # @return [String] The line of this tree which should be printed.
       sig { params(message: String).returns(String) }
-      def self.here(message)
+      def here(message)
         line_prefix + '├' + text_prefix + message
       end
 
@@ -97,7 +105,7 @@ module Parlour
       # @param [String] message The element.
       # @return [String] The line of this tree which should be printed.
       sig { params(message: String).returns(String) }
-      def self.end(message)
+      def end(message)
         result = line_prefix + '└' + text_prefix + message
         @indent_level = [0, @indent_level - 1].max
         result
@@ -106,7 +114,7 @@ module Parlour
       # The prefix which should be printed before anything else on this line of
       # the tree, based on the current indent level.
       # @return [String]
-      def self.line_prefix
+      def line_prefix
         @indent_level.times.map { '│' + ' ' * INDENT_SPACES }.join
       end
 
@@ -114,7 +122,7 @@ module Parlour
       # the current element and its text, based on the specified number of
       # spaces to use for indents.
       # @return [String]
-      def self.text_prefix
+      def text_prefix
         '─' * (INDENT_SPACES - 1) + " "
       end
     end

@@ -5,6 +5,9 @@ module Parlour
   class ConflictResolver
     extend T::Sig
 
+    sig { returns(T.untyped) }
+    def initialize; end
+
     sig { params(namespace: RbiGenerator::Namespace, resolver: T.proc.params(
           desc: String,
           choices: T::Array[RbiGenerator::RbiObject]
@@ -36,24 +39,30 @@ module Parlour
     sig { params(object: T.untyped).returns(String) }
     def self.name_for_debug_caller(object); end
 
-    module Tree
+    class Tree
       extend T::Sig
       INDENT_SPACES = 2
 
-      sig { params(message: String).returns(String) }
-      def self.begin(message); end
+      sig { returns(T::Boolean) }
+      attr_reader :colour
+
+      sig { params(colour: T::Boolean).void }
+      def initialize(colour: false); end
 
       sig { params(message: String).returns(String) }
-      def self.here(message); end
+      def begin(message); end
 
       sig { params(message: String).returns(String) }
-      def self.end(message); end
+      def here(message); end
+
+      sig { params(message: String).returns(String) }
+      def end(message); end
 
       sig { returns(T.untyped) }
-      def self.line_prefix; end
+      def line_prefix; end
 
       sig { returns(T.untyped) }
-      def self.text_prefix; end
+      def text_prefix; end
     end
   end
 
