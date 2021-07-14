@@ -80,7 +80,7 @@ module Parlour
         raise 'arbitrary code is never mergeable'
       end
 
-      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
         [:code]
       end

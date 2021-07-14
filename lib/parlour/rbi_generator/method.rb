@@ -213,7 +213,7 @@ module Parlour
         parameters.each(&:generalize_from_rbi!)
       end
 
-      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
         (type_parameters.any? ? [{ type_parameters: type_parameters.join(", ")}] : []) \
           + [

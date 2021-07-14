@@ -78,7 +78,7 @@ module Parlour
       sig { override.void }
       def generalize_from_rbi!; end # Nothing to do
 
-      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
         []
       end

@@ -108,7 +108,7 @@ module Parlour
         props.each(&:generalize_from_rbi!)
       end
 
-      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
         super + [{props: "(#{props.map(&:name)})"}]
       end

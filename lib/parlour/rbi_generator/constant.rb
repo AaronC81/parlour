@@ -95,7 +95,7 @@ module Parlour
         # We don't need to change anything! We only merge identical constants
       end
 
-      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
         [:value, :eigen_constant]
       end

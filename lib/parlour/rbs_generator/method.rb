@@ -133,7 +133,7 @@ module Parlour
         # TODO: merge signatures of different definitions
       end
 
-      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
           [
             {signatures: "(#{signatures.map(&:describe_in_method).join(", ")})"},
