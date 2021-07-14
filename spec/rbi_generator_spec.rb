@@ -725,4 +725,23 @@ RSpec.describe Parlour::RbiGenerator do
       end
     RUBY
   end
+
+  it 'generates sensible descriptions for its objects' do
+    foo = nil
+    a = nil
+
+    m = subject.root.create_module('M', interface: true) do |m|
+      foo = m.create_method('foo', parameters: [
+        pa('a', type: 'String', default: "\"hello\""),
+        pa('b', type: Parlour::Types::Union.new(["Integer", "String"]))
+      ], overridable: true, returns: "Numeric")
+
+      a = m.create_class('A')
+    end
+
+    expect(m.describe).to eq '<RBI:ModuleNamespace:M children=2 interface>'
+    expect(a.describe).to eq '<RBI:ClassNamespace:A>'
+    expect(foo.describe).to eq \
+      '<RBI:Method:foo parameters=(a: String = "hello", b: Union<Integer, String>) return_type=Numeric overridable>'
+  end
 end

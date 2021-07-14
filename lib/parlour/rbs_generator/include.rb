@@ -80,12 +80,9 @@ module Parlour
         # We don't need to change anything! We only merge identical includes
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this code.
-      #
-      # @return [String]
-      def describe
-        "Include (#{@type})"
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        [{type: type}] # avoid quotes
       end
     end
   end

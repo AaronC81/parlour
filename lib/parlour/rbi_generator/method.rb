@@ -206,21 +206,26 @@ module Parlour
         # We don't need to change anything! We only merge identical methods
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this method.
-      #
-      # @return [String]
-      def describe
-        # TODO: more info
-        "Method #{name} - #{parameters.length} parameters, " +
-          " returns #{return_type}"
-      end
-
       sig { override.void }
       def generalize_from_rbi!
         @return_type = TypeParser.parse_single_type(@return_type) if String === @return_type
 
         parameters.each(&:generalize_from_rbi!)
+      end
+
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        (type_parameters.any? ? [{ type_parameters: type_parameters.join(", ")}] : []) \
+          + [
+            {parameters: "(#{parameters.map(&:describe_in_method).join(", ")})"},
+            {return_type: return_type}, # avoid quotes
+            :class_method,
+            :abstract,
+            :implementation,
+            :override,
+            :overridable,
+            :final,
+          ]
       end
 
       private

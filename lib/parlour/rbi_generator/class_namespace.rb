@@ -110,13 +110,10 @@ module Parlour
         end
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this class.
-      # @return [String]
-      def describe
-        "Class #{name} - #{"superclass #{superclass}, " if superclass}" +
-          "#{"abstract, " if abstract}#{children.length} children, " +
-          "#{includes.length} includes, #{extends.length} extends"
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        (superclass ? [:superclass] : []) \
+          + [:children, :abstract, :final, :sealed]
       end
 
       sig { override.void }

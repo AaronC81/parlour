@@ -84,17 +84,14 @@ module Parlour
         # We don't need to change anything! We only merge identical type alias
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this code.
-      #
-      # @return [String]
-      def describe
-        "Type Alias (#{name} = #{type})"
-      end
-
       sig { override.void }
       def generalize_from_rbi!
         @type = TypeParser.parse_single_type(@type) if String === @type
+      end
+
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        [{type: type}] # avoid quotes
       end
     end
   end

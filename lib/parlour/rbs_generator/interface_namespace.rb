@@ -23,11 +23,9 @@ module Parlour
         lines << options.indented(indent_level, "end")
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this interface.
-      # @return [String]
-      def describe
-        "Interface #{name} - #{children.length}"
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        [:children]
       end
     end
   end

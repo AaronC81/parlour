@@ -114,6 +114,11 @@ module Parlour
       def generalize_from_rbi!
         super
       end
+
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        super + [{enums: enums.inspect}]
+      end
     end
   end
 end

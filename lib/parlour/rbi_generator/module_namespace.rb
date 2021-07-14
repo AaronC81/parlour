@@ -100,18 +100,14 @@ module Parlour
         super
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this module.
-      # @return [String]
-      def describe
-        "Module #{name} - #{"interface, " if interface}" +
-          "#{"abstract, " if abstract}#{children.length} " +
-          "children, #{includes.length} includes, #{extends.length} extends"
-      end
-
       sig { override.void }
       def generalize_from_rbi!
         super
+      end
+
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        [:children, :abstract, :interface, :final, :sealed]
       end
     end
   end

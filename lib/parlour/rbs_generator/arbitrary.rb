@@ -80,12 +80,9 @@ module Parlour
         raise 'arbitrary code is never mergeable'
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this code.
-      #
-      # @return [String]
-      def describe
-        "Arbitrary code (#{code})"
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        [:code]
       end
     end
   end

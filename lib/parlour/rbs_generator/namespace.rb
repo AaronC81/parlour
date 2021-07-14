@@ -517,13 +517,9 @@ module Parlour
         end
       end
 
-      sig { override.overridable.returns(String) }
-      # Returns a human-readable brief string description of this namespace.
-      #
-      # @return [String]
-      def describe
-        "Namespace #{name} - #{children.length} children, #{includes.length} " +
-          "includes, #{extends.length} extends, #{constants.length} constants"
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+        [:children]
       end
 
       private

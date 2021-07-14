@@ -133,13 +133,12 @@ module Parlour
         # TODO: merge signatures of different definitions
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this method.
-      #
-      # @return [String]
-      def describe
-        # TODO: more info
-        "Method #{name} - #{signatures.length} signatures"
+      sig { override.returns(T::Array[T.any(Symbol, Hash)]) }
+      def describe_attrs
+          [
+            {signatures: "(#{signatures.map(&:describe_in_method).join(", ")})"},
+            :class_method,
+          ]
       end
     end
   end
