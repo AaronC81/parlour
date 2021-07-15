@@ -70,6 +70,28 @@ module Parlour
     attr_accessor :current_plugin
   end
 
+  module Mixin
+    module Searchable
+      abstract!
+
+      extend T::Sig
+      extend T::Generic
+      Child = type_member
+
+      sig { abstract.returns(T::Array[Child]) }
+      def children; end
+
+      sig { params(name: T.nilable(String), type: T.nilable(Class)).returns(Child) }
+      def find(name: nil, type: nil); end
+
+      sig { params(name: T.nilable(String), type: T.nilable(Class)).returns(T::Array[Child]) }
+      def find_all(name: nil, type: nil); end
+
+      sig { params(child: Child, name: T.nilable(String), type: T.nilable(Class)).returns(T::Boolean) }
+      def searchable_child_matches(child, name, type); end
+    end
+  end
+
   class Options
     extend T::Sig
 
@@ -749,6 +771,7 @@ module Parlour
 
     class ClassNamespace < Namespace
       extend T::Sig
+      Child = type_member(fixed: RbiObject)
 
       sig do
         params(
@@ -824,6 +847,7 @@ module Parlour
 
     class EnumClassNamespace < ClassNamespace
       extend T::Sig
+      Child = type_member(fixed: RbiObject)
 
       sig do
         params(
@@ -975,6 +999,7 @@ module Parlour
 
     class ModuleNamespace < Namespace
       extend T::Sig
+      Child = type_member(fixed: RbiObject)
 
       sig do
         params(
@@ -1012,7 +1037,10 @@ module Parlour
     end
 
     class Namespace < RbiObject
+      include Mixin::Searchable
       extend T::Sig
+      extend T::Generic
+      Child = type_member(fixed: RbiObject)
 
       sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
@@ -1276,6 +1304,7 @@ module Parlour
 
     class StructClassNamespace < ClassNamespace
       extend T::Sig
+      Child = type_member(fixed: RbiObject)
 
       sig do
         params(
@@ -1491,6 +1520,7 @@ module Parlour
 
     class ClassNamespace < Namespace
       extend T::Sig
+      Child = type_member(fixed: RbsObject)
 
       sig do
         params(
@@ -1596,6 +1626,7 @@ module Parlour
 
     class InterfaceNamespace < Namespace
       extend T::Sig
+      Child = type_member(fixed: RbsObject)
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
@@ -1674,6 +1705,7 @@ module Parlour
 
     class ModuleNamespace < Namespace
       extend T::Sig
+      Child = type_member(fixed: RbsObject)
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
@@ -1683,7 +1715,10 @@ module Parlour
     end
 
     class Namespace < RbsObject
+      include Mixin::Searchable
       extend T::Sig
+      extend T::Generic
+      Child = type_member(fixed: RbsObject)
 
       sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
