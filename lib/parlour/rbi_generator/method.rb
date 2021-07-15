@@ -218,7 +218,7 @@ module Parlour
         (type_parameters.any? ? [{ type_parameters: type_parameters.join(", ")}] : []) \
           + [
             {parameters: "(#{parameters.map(&:describe_in_method).join(", ")})"},
-            {return_type: return_type}, # avoid quotes
+            {return_type: return_type || '(void)'}, # avoid quotes
             :class_method,
             :abstract,
             :implementation,
