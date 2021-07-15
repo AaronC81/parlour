@@ -107,6 +107,32 @@ module Parlour
         "<#{type_system}:#{class_name}:#{name} #{attr_strings.join(" ")}>"
       end
     end
+
+    sig { params(tree: T.nilable(Debugging::Tree)).returns(String) }
+    # Returns a human-readable multi-line string description of this object and
+    # its children recursively.
+    #
+    # @return [String]
+    def describe_tree(tree: nil)
+      if tree.nil?
+        tree = Debugging::Tree.new
+        result = "#{describe}\n"
+      else
+        result = ""
+      end
+
+      if is_a?(RbiGenerator::Namespace) || is_a?(RbsGenerator::Namespace)
+        children.each do |child|
+          result += "#{tree.begin(child.describe)}\n"
+          result += child.describe_tree(tree: tree)
+          tree.indent!(-1)
+        end
+      else
+        "#{describe}\n"
+      end
+
+      result
+    end
     
     protected
 

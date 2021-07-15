@@ -483,5 +483,11 @@ RSpec.describe Parlour::RbsGenerator do
     expect(a.describe).to eq '<RBS:ClassNamespace:A>'
     expect(foo.describe).to eq \
       '<RBS:Method:foo signatures=((String a, (Integer | String) b) -> Numeric, (String a) -> Integer) class_method>'
+
+    expect(m.describe_tree).to eq <<~END
+      <RBS:ModuleNamespace:M children=2>
+      ├─ <RBS:Method:foo signatures=((String a, (Integer | String) b) -> Numeric, (String a) -> Integer) class_method>
+      ├─ <RBS:ClassNamespace:A>
+    END
   end
 end

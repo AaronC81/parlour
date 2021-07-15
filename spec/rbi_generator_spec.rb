@@ -747,5 +747,12 @@ RSpec.describe Parlour::RbiGenerator do
     expect(foo.describe).to eq \
       '<RBI:Method:foo parameters=(a: String = "hello", b: Union<Integer, String>) return_type=Numeric overridable>'
     expect(bar.describe).to eq '<RBI:Method:bar parameters=() return_type=(void)>'
+
+    expect(m.describe_tree).to eq <<~END
+      <RBI:ModuleNamespace:M children=3 interface>
+      ├─ <RBI:Method:foo parameters=(a: String = "hello", b: Union<Integer, String>) return_type=Numeric overridable>
+      ├─ <RBI:Method:bar parameters=() return_type=(void)>
+      ├─ <RBI:ClassNamespace:A>
+    END
   end
 end
