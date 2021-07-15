@@ -63,6 +63,9 @@ module Parlour
 
       sig { returns(T.untyped) }
       def text_prefix; end
+
+      sig { params(offset: T.untyped).returns(T.untyped) }
+      def indent!(offset); end
     end
   end
 
@@ -286,6 +289,9 @@ module Parlour
 
     sig { returns(String) }
     def describe; end
+
+    sig { params(tree: T.nilable(Debugging::Tree)).returns(String) }
+    def describe_tree(tree: nil); end
 
     sig { abstract.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
     def describe_attrs; end
