@@ -88,7 +88,7 @@ module Parlour
       def begin(message)
         result = line_prefix + '├' + text_prefix +
           (colour ? Rainbow(message).green.bright.bold : message)
-        @indent_level += 1
+        indent!(1)
         result
       end
 
@@ -107,7 +107,7 @@ module Parlour
       sig { params(message: String).returns(String) }
       def end(message)
         result = line_prefix + '└' + text_prefix + message
-        @indent_level = [0, @indent_level - 1].max
+        indent!(-1)
         result
       end
 
@@ -124,6 +124,11 @@ module Parlour
       # @return [String]
       def text_prefix
         '─' * (INDENT_SPACES - 1) + " "
+      end
+
+      # Modifies the current indent level by the given offset.
+      def indent!(offset)
+        @indent_level = [0, @indent_level + offset].max
       end
     end
   end
