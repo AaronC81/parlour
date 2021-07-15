@@ -5681,7 +5681,7 @@ class Parlour::Conversion::Converter
   extend ::T::Private::Methods::SingletonMethodHooks
 end
 
-module Parlour::Debugging::Tree
+class Parlour::Debugging::Tree
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
 end
