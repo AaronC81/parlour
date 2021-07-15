@@ -133,6 +133,9 @@ module Parlour
 
       result
     end
+
+    alias inspect describe
+    alias to_s describe
     
     protected
 
