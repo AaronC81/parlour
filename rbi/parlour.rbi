@@ -990,6 +990,9 @@ module Parlour
       sig { override.void }
       def generalize_from_rbi!; end
 
+      sig { returns(T::Boolean) }
+      def untyped?; end
+
       sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_definition(indent_level, options); end
 
@@ -1669,6 +1672,9 @@ module Parlour
 
       sig { override.returns(String) }
       def describe; end
+
+      sig { returns(T::Boolean) }
+      def untyped?; end
     end
 
     class MethodSignature

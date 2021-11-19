@@ -204,6 +204,9 @@ module Parlour
       # @return [void]
       def merge_into_self(others)
         # We don't need to change anything! We only merge identical methods
+        # (That's not strictly true, we also sometimes merge typed methods and
+        # untyped methods. This is handled by a special case within the conflict
+        # resolver itself.)
       end
 
       sig { override.returns(String) }
@@ -221,6 +224,16 @@ module Parlour
         @return_type = TypeParser.parse_single_type(@return_type) if String === @return_type
 
         parameters.each(&:generalize_from_rbi!)
+      end
+
+      sig { returns(T::Boolean) }
+      # Returns true if this method is completely untyped; that is, all
+      # parameters are untyped and the return type is untyped.
+      #
+      # @return [bool]
+      def untyped?
+        is_untyped = ->x{ x.is_a?(Types::Untyped) || x == 'T.untyped' }
+        parameters.map(&:type).all?(&is_untyped) && is_untyped.(return_type)
       end
 
       private
