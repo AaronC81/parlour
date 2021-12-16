@@ -6,7 +6,7 @@
 <title>
   Class: Parlour::RbsGenerator::ModuleNamespace
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -170,7 +170,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#describe-instance_method" title="#describe (instance method)">#<strong>describe</strong>  &#x21d2; String </a>
+      <a href="#describe_attrs-instance_method" title="#describe_attrs (instance method)">#<strong>describe_attrs</strong>  &#x21d2; Object </a>
     
 
     
@@ -184,9 +184,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns a human-readable brief string description of this module.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -266,7 +264,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#add_comment-instance_method" title="Parlour::TypedObject#add_comment (method)">#add_comment</a></span>, <span class='object_link'><a href="../TypedObject.html#initialize-instance_method" title="Parlour::TypedObject#initialize (method)">#initialize</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#add_comment-instance_method" title="Parlour::TypedObject#add_comment (method)">#add_comment</a></span>, <span class='object_link'><a href="../TypedObject.html#describe-instance_method" title="Parlour::TypedObject#describe (method)">#describe</a></span>, <span class='object_link'><a href="../TypedObject.html#describe_tree-instance_method" title="Parlour::TypedObject#describe_tree (method)">#describe_tree</a></span>, <span class='object_link'><a href="../TypedObject.html#initialize-instance_method" title="Parlour::TypedObject#initialize (method)">#initialize</a></span></p>
 
   
   <div id="constructor_details" class="method_details_list">
@@ -282,55 +280,29 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="describe-instance_method">
+  <h3 class="signature first" id="describe_attrs-instance_method">
   
-    #<strong>describe</strong>  &#x21d2; <tt>String</tt> 
-  
-
+    #<strong>describe_attrs</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a human-readable brief string description of this module.</p>
 
-
-  </div>
-</div>
-<div class="tags">
   
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-31
-32
-33
-34</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbs_generator/module_namespace.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbs_generator/module_namespace.rb', line 29</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Module </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>children, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_includes'>includes</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> includes, </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_extends'>extends</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_content'> extends</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>def</span> <span class='id identifier rubyid_describe_attrs'>describe_attrs</span>
+  <span class='lbracket'>[</span><span class='symbol'>:children</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -443,9 +415,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Sep  4 16:40:40 2021 by
+  Generated on Thu Dec 16 21:43:45 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.26 (ruby-2.7.4).
+  0.9.27 (ruby-2.7.5).
 </div>
 
     </div>

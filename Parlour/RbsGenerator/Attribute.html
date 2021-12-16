@@ -6,7 +6,7 @@
 <title>
   Class: Parlour::RbsGenerator::Attribute
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -241,6 +241,28 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#describe_attrs-instance_method" title="#describe_attrs (instance method)">#<strong>describe_attrs</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#generate_rbs-instance_method" title="#generate_rbs (instance method)">#<strong>generate_rbs</strong>(indent_level, options)  &#x21d2; Array&lt;String&gt; </a>
     
 
@@ -302,7 +324,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Method.html" title="Parlour::RbsGenerator::Method (class)">Method</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Method.html#describe-instance_method" title="Parlour::RbsGenerator::Method#describe (method)">#describe</a></span>, <span class='object_link'><a href="Method.html#merge_into_self-instance_method" title="Parlour::RbsGenerator::Method#merge_into_self (method)">#merge_into_self</a></span>, <span class='object_link'><a href="Method.html#mergeable%3F-instance_method" title="Parlour::RbsGenerator::Method#mergeable? (method)">#mergeable?</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Method.html#merge_into_self-instance_method" title="Parlour::RbsGenerator::Method#merge_into_self (method)">#merge_into_self</a></span>, <span class='object_link'><a href="Method.html#mergeable%3F-instance_method" title="Parlour::RbsGenerator::Method#mergeable? (method)">#mergeable?</a></span></p>
 
   
   
@@ -314,7 +336,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="RbsObject.html" title="Parlour::RbsGenerator::RbsObject (class)">RbsObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="RbsObject.html#describe-instance_method" title="Parlour::RbsGenerator::RbsObject#describe (method)">#describe</a></span>, <span class='object_link'><a href="RbsObject.html#merge_into_self-instance_method" title="Parlour::RbsGenerator::RbsObject#merge_into_self (method)">#merge_into_self</a></span>, <span class='object_link'><a href="RbsObject.html#mergeable%3F-instance_method" title="Parlour::RbsGenerator::RbsObject#mergeable? (method)">#mergeable?</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="RbsObject.html#merge_into_self-instance_method" title="Parlour::RbsGenerator::RbsObject#merge_into_self (method)">#merge_into_self</a></span>, <span class='object_link'><a href="RbsObject.html#mergeable%3F-instance_method" title="Parlour::RbsGenerator::RbsObject#mergeable? (method)">#mergeable?</a></span></p>
 
   
   
@@ -325,7 +347,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../TypedObject.html" title="Parlour::TypedObject (class)">TypedObject</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#add_comment-instance_method" title="Parlour::TypedObject#add_comment (method)">#add_comment</a></span>, <span class='object_link'><a href="../TypedObject.html#describe-instance_method" title="Parlour::TypedObject#describe (method)">#describe</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../TypedObject.html#add_comment-instance_method" title="Parlour::TypedObject#add_comment (method)">#add_comment</a></span>, <span class='object_link'><a href="../TypedObject.html#describe-instance_method" title="Parlour::TypedObject#describe (method)">#describe</a></span>, <span class='object_link'><a href="../TypedObject.html#describe_tree-instance_method" title="Parlour::TypedObject#describe_tree (method)">#describe_tree</a></span></p>
 
   
   <div id="constructor_details" class="method_details_list">
@@ -676,6 +698,42 @@
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="describe_attrs-instance_method">
+  
+    #<strong>describe_attrs</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+82
+83
+84
+85
+86
+87</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbs_generator/attribute.rb', line 82</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_describe_attrs'>describe_attrs</span>
+  <span class='lbracket'>[</span>
+    <span class='symbol'>:kind</span><span class='comma'>,</span>
+    <span class='symbol'>:class_attribute</span>
+  <span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="generate_rbs-instance_method">
   
     #<strong>generate_rbs</strong>(indent_level, options)  &#x21d2; <tt>Array&lt;String&gt;</tt> 
@@ -781,9 +839,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Sep  4 16:40:36 2021 by
+  Generated on Thu Dec 16 21:43:41 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.26 (ruby-2.7.4).
+  0.9.27 (ruby-2.7.5).
 </div>
 
     </div>

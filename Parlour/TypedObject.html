@@ -6,7 +6,7 @@
 <title>
   Class: Parlour::TypedObject
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -259,18 +259,44 @@
     
 
     
+      (also: #inspect, #to_s)
+    
   </span>
   
   
   
   
-  <span class="abstract note title">abstract</span>
+  
   
   
 
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns a human-readable brief string description of this object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#describe_tree-instance_method" title="#describe_tree (instance method)">#<strong>describe_tree</strong>(tree: nil)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a human-readable multi-line string description of this object and its children recursively.</p>
 </div></span>
   
 </li>
@@ -636,15 +662,15 @@
   
 
   
+    <span class="aliases">Also known as:
+    <span class="names"><span id='inspect-instance_method'>inspect</span>, <span id='to_s-instance_method'>to_s</span></span>
+    </span>
+  
 
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This method is abstract.</strong>
-  <div class='inline'></div>
-</div>
-
+    
 <p>Returns a human-readable brief string description of this object. This is displayed during manual conflict resolution with the <code>parlour</code> CLI.</p>
 
 
@@ -672,12 +698,188 @@
       <pre class="lines">
 
 
-66</pre>
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/typed_object.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/typed_object.rb', line 65</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
+<span class='kw'>def</span> <span class='id identifier rubyid_describe'>describe</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/RbiObject.html" title="Parlour::RbiGenerator::RbiObject (class)">RbiObject</a></span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_type_system'>type_system</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>RBI</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbsGenerator.html" title="Parlour::RbsGenerator (class)">RbsGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbsGenerator/RbsObject.html" title="Parlour::RbsGenerator::RbsObject (class)">RbsObject</a></span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_type_system'>type_system</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>RBS</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unknown type system</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_attr_strings'>attr_strings</span> <span class='op'>=</span> <span class='id identifier rubyid_describe_attrs'>describe_attrs</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span>
+    <span class='kw'>case</span> <span class='id identifier rubyid_a'>a</span>
+    <span class='kw'>when</span> <span class='const'>Symbol</span>
+      <span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='id identifier rubyid_a'>a</span>
+      <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='rparen'>)</span>
+
+      <span class='kw'>case</span> <span class='id identifier rubyid_value'>value</span>
+      <span class='kw'>when</span> <span class='const'>Array</span><span class='comma'>,</span> <span class='const'>Hash</span>
+        <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
+        <span class='kw'>next</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>==</span> <span class='int'>0</span>
+      <span class='kw'>when</span> <span class='const'>String</span>
+        <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span>
+      <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Types.html" title="Parlour::Types (module)">Types</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Types/Type.html" title="Parlour::Types::Type (class)">Type</a></span></span>
+        <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_describe'>describe</span>
+      <span class='kw'>when</span> <span class='kw'>true</span>
+        <span class='kw'>next</span> <span class='id identifier rubyid_key'>key</span>
+      <span class='kw'>when</span> <span class='kw'>false</span>
+        <span class='kw'>next</span> <span class='kw'>nil</span>
+      <span class='kw'>end</span>
+    <span class='kw'>when</span> <span class='const'>Hash</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>describe_attrs Hash must have one key</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>1</span>
+
+      <span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
+    <span class='kw'>end</span>
+
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_key'>key</span><span class='embexpr_end'>}</span><span class='tstring_content'>=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_value'>value</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
+
+  <span class='id identifier rubyid_class_name'>class_name</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_must'>must</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>::</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_attr_strings'>attr_strings</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_type_system'>type_system</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_class_name'>class_name</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_type_system'>type_system</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_class_name'>class_name</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attr_strings'>attr_strings</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="describe_tree-instance_method">
+  
+    #<strong>describe_tree</strong>(tree: nil)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a human-readable multi-line string description of this object and its children recursively.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/parlour/typed_object.rb', line 116</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_describe_tree'>describe_tree</span><span class='lparen'>(</span><span class='label'>tree:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_tree'>tree</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+    <span class='id identifier rubyid_tree'>tree</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Debugging.html" title="Parlour::Debugging (module)">Debugging</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Debugging/Tree.html" title="Parlour::Debugging::Tree (class)">Tree</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Debugging/Tree.html#initialize-instance_method" title="Parlour::Debugging::Tree#initialize (method)">new</a></span></span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_describe'>describe</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="RbsGenerator.html" title="Parlour::RbsGenerator (class)">RbsGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RbsGenerator/Namespace.html" title="Parlour::RbsGenerator::Namespace (class)">Namespace</a></span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_child'>child</span><span class='op'>|</span>
+      <span class='id identifier rubyid_result'>result</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tree'>tree</span><span class='period'>.</span><span class='id identifier rubyid_begin'>begin</span><span class='lparen'>(</span><span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_describe'>describe</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_result'>result</span> <span class='op'>+=</span> <span class='id identifier rubyid_child'>child</span><span class='period'>.</span><span class='id identifier rubyid_describe_tree'>describe_tree</span><span class='lparen'>(</span><span class='label'>tree:</span> <span class='id identifier rubyid_tree'>tree</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_tree'>tree</span><span class='period'>.</span><span class='id identifier rubyid_indent!'>indent!</span><span class='lparen'>(</span><span class='op'>-</span><span class='int'>1</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_describe'>describe</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_result'>result</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -688,9 +890,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Sep  4 16:40:31 2021 by
+  Generated on Thu Dec 16 21:43:38 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.26 (ruby-2.7.4).
+  0.9.27 (ruby-2.7.5).
 </div>
 
     </div>
