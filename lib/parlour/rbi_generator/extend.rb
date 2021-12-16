@@ -75,16 +75,13 @@ module Parlour
         # We don't need to change anything! We only merge identical extends
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this code.
-      #
-      # @return [String]
-      def describe
-        "Extend (#{name})"
-      end
-
       sig { override.void }
       def generalize_from_rbi!; end # Nothing to do
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs
+        []
+      end
     end
   end
 end

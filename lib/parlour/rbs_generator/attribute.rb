@@ -77,6 +77,14 @@ module Parlour
           super(other) && Attribute === other && kind == other.kind
         )
       end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs
+        [
+          :kind,
+          :class_attribute
+        ]
+      end
     end
   end
 end

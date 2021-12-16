@@ -5,6 +5,9 @@ module Parlour
   class ConflictResolver
     extend T::Sig
 
+    sig { returns(T.untyped) }
+    def initialize; end
+
     sig { params(namespace: RbiGenerator::Namespace, resolver: T.proc.params(
           desc: String,
           choices: T::Array[RbiGenerator::RbiObject]
@@ -36,24 +39,33 @@ module Parlour
     sig { params(object: T.untyped).returns(String) }
     def self.name_for_debug_caller(object); end
 
-    module Tree
+    class Tree
       extend T::Sig
       INDENT_SPACES = 2
 
-      sig { params(message: String).returns(String) }
-      def self.begin(message); end
+      sig { returns(T::Boolean) }
+      attr_reader :colour
+
+      sig { params(colour: T::Boolean).void }
+      def initialize(colour: false); end
 
       sig { params(message: String).returns(String) }
-      def self.here(message); end
+      def begin(message); end
 
       sig { params(message: String).returns(String) }
-      def self.end(message); end
+      def here(message); end
+
+      sig { params(message: String).returns(String) }
+      def end(message); end
 
       sig { returns(T.untyped) }
-      def self.line_prefix; end
+      def line_prefix; end
 
       sig { returns(T.untyped) }
-      def self.text_prefix; end
+      def text_prefix; end
+
+      sig { params(offset: T.untyped).returns(T.untyped) }
+      def indent!(offset); end
     end
   end
 
@@ -297,8 +309,14 @@ module Parlour
     sig { params(comment: T.any(String, T::Array[String])).void }
     def add_comment(comment); end
 
-    sig { abstract.returns(String) }
+    sig { returns(String) }
     def describe; end
+
+    sig { params(tree: T.nilable(Debugging::Tree)).returns(String) }
+    def describe_tree(tree: nil); end
+
+    sig { abstract.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+    def describe_attrs; end
 
     sig { params(indent_level: Integer, options: Options).returns(T::Array[String]) }
     def generate_comments(indent_level, options); end
@@ -730,8 +748,8 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { override.void }
       def generalize_from_rbi!; end
@@ -764,6 +782,9 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_definition(indent_level, options); end
@@ -801,8 +822,8 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { override.void }
       def generalize_from_rbi!; end
@@ -838,8 +859,8 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { override.void }
       def generalize_from_rbi!; end
@@ -876,6 +897,9 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Extend < RbiObject
@@ -894,11 +918,11 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
-
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Include < RbiObject
@@ -917,11 +941,11 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
-
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Method < RbiObject
@@ -984,11 +1008,11 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
-
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_definition(indent_level, options); end
@@ -1029,11 +1053,11 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
-
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Namespace < RbiObject
@@ -1224,11 +1248,11 @@ module Parlour
       sig { override.overridable.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.overridable.returns(String) }
-      def describe; end
-
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_body(indent_level, options); end
@@ -1275,6 +1299,9 @@ module Parlour
 
       sig { void }
       def generalize_from_rbi!; end
+
+      sig { returns(String) }
+      def describe_in_method; end
     end
 
     class RbiObject < TypedObject
@@ -1294,9 +1321,6 @@ module Parlour
 
       sig { abstract.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
-
-      sig { override.overridable.returns(String) }
-      def describe; end
 
       sig { abstract.void }
       def generalize_from_rbi!; end
@@ -1333,6 +1357,9 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class StructProp
@@ -1431,11 +1458,11 @@ module Parlour
       sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
-
       sig { override.void }
       def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
   end
 
@@ -1468,8 +1495,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Attribute < RbsGenerator::Method
@@ -1497,6 +1524,9 @@ module Parlour
 
       sig { override.params(other: Object).returns(T::Boolean) }
       def ==(other); end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Block
@@ -1544,8 +1574,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Constant < RbsObject
@@ -1574,8 +1604,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Extend < RbsObject
@@ -1597,8 +1627,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Include < RbsObject
@@ -1620,8 +1650,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class InterfaceNamespace < Namespace
@@ -1631,8 +1661,8 @@ module Parlour
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Method < RbsObject
@@ -1667,8 +1697,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class MethodSignature
@@ -1701,6 +1731,9 @@ module Parlour
 
       sig { params(options: Options).returns(T::Array[String]) }
       def generate_rbs(options); end
+
+      sig { returns(String) }
+      def describe_in_method; end
     end
 
     class ModuleNamespace < Namespace
@@ -1710,8 +1743,8 @@ module Parlour
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
 
     class Namespace < RbsObject
@@ -1812,8 +1845,8 @@ module Parlour
       sig { override.overridable.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.overridable.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
 
       sig { overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_body(indent_level, options); end
@@ -1876,9 +1909,6 @@ module Parlour
 
       sig { abstract.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
-
-      sig { override.overridable.returns(String) }
-      def describe; end
     end
 
     class TypeAlias < RbsObject
@@ -1907,8 +1937,8 @@ module Parlour
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).void }
       def merge_into_self(others); end
 
-      sig { override.returns(String) }
-      def describe; end
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
     end
   end
 end

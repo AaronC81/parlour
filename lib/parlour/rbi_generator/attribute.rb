@@ -78,6 +78,15 @@ module Parlour
         @type = TypeParser.parse_single_type(@type) if String === @type
       end
 
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs
+        [
+          :kind,
+          {type: type}, # avoid quotes
+          :class_attribute
+        ]
+      end
+
       private
 
       sig do

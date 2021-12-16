@@ -68,11 +68,6 @@ module Parlour
       # @param others [Array<RbsGenerator::RbsObject>] An array of other {RbsObject} instances.
       # @return [void]
       def merge_into_self(others); end
-
-      sig { overridable.override.returns(String) }
-      def describe
-        'RBS object'
-      end  
     end
   end
 end

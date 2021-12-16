@@ -20,10 +20,8 @@ module Parlour
       #
       # @param generator [RbsGenerator] The current RbsGenerator.
       # @param name [String] The name of this class.
-      # @param final [Boolean] Whether this namespace is final.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
-      # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [void]
       def initialize(generator, name, superclass, &block)
@@ -95,13 +93,9 @@ module Parlour
         end
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this class.
-      # @return [String]
-      def describe
-        "Class #{name} - #{"superclass #{superclass}, " if superclass}" +
-          "#{children.length} children, " +
-          "#{includes.length} includes, #{extends.length} extends"
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs
+        (superclass ? [:superclass] : []) + [:children]
       end
     end
   end

@@ -461,6 +461,36 @@ RSpec.describe Parlour::RbsGenerator do
     RUBY
   end
 
+  it 'generates sensible descriptions for its objects' do
+    foo = nil
+    a = nil
+
+    m = subject.root.create_module('M') do |m|
+      foo = m.create_method('foo', [
+        Parlour::RbsGenerator::MethodSignature.new([
+          pa('a', type: 'String'),
+          pa('b', type: Parlour::Types::Union.new(["Integer", "String"]))
+        ], "Numeric"),
+        Parlour::RbsGenerator::MethodSignature.new([
+          pa('a', type: 'String'),
+        ], "Integer"),
+      ], class_method: true)
+
+      a = m.create_class('A')
+    end
+
+    expect(m.describe).to eq '<RBS:ModuleNamespace:M children=2>'
+    expect(a.describe).to eq '<RBS:ClassNamespace:A>'
+    expect(foo.describe).to eq \
+      '<RBS:Method:foo signatures=((String a, (Integer | String) b) -> Numeric, (String a) -> Integer) class_method>'
+
+    expect(m.describe_tree).to eq <<~END
+      <RBS:ModuleNamespace:M children=2>
+      ├─ <RBS:Method:foo signatures=((String a, (Integer | String) b) -> Numeric, (String a) -> Integer) class_method>
+      ├─ <RBS:ClassNamespace:A>
+    END
+  end
+
   it 'implements the Searchable mixin' do
     mod = subject.root.create_module('M') do |m|
       m.create_class('A') do |a|

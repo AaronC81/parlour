@@ -134,6 +134,18 @@ module Parlour
       def generalize_from_rbi!
         @type = TypeParser.parse_single_type(@type) if String === @type
       end
+
+      sig { returns(String) }
+      def describe_in_method
+        t = type
+        t = t.is_a?(String) ? t : t.describe
+
+        if default
+          "#{name}: #{t} = #{default}"
+        else
+          "#{name}: #{t}"
+        end
+      end
     end
   end
 end

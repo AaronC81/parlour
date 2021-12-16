@@ -509,16 +509,16 @@ class Resolv
       sig { params(arg: T.any(String, Resolv::LOC::Coord)).returns(Resolv::LOC::Coord) }
       def self.create(arg); end
 
-      sig { params(coordinates: String, orientation: T.enum(%w[lat lon])).void }
+      sig { params(coordinates: String, orientation: T.deprecated_enum(%w[lat lon])).void }
       def initialize(coordinates, orientation)
         @coordinates = T.let(T.unsafe(nil), String)
-        @orientation = T.let(T.unsafe(nil), T.enum(%w[lat lon]))
+        @orientation = T.let(T.unsafe(nil), T.deprecated_enum(%w[lat lon]))
       end
 
       sig { returns(String) }
       attr_reader :coordinates
 
-      sig { returns(T.enum(%w[lat lon])) }
+      sig { returns(T.deprecated_enum(%w[lat lon])) }
       attr_reader :orientation
     end
 

@@ -99,6 +99,19 @@ module Parlour
 
         generated_params
       end
+
+      sig { returns(String) }
+      def describe_in_method
+        # RBS is terse enough that just describing using the RBS is probably
+        # fine. (Unfortunately, this doesn't allow any differentiation between 
+        # string types and Parlour::Types types.)
+        # (#describe is supposed to be one line, but this will break if you
+        # have than 10000 parameters. Honestly, if you do have more than 10000
+        # parameters, you deserve this...)
+        generate_rbs(Parlour::Options.new(
+          break_params: 10000, tab_size: 2, sort_namespaces: false
+        )).join("\n")
+      end
     end
   end
 end

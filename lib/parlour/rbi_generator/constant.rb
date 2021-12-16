@@ -95,12 +95,9 @@ module Parlour
         # We don't need to change anything! We only merge identical constants
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this code.
-      #
-      # @return [String]
-      def describe
-        "Constant (#{name} = #{value})"
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs
+        [:value, :eigen_constant]
       end
 
       sig { override.void }

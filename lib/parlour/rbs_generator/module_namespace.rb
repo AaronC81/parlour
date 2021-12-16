@@ -25,12 +25,9 @@ module Parlour
         lines << options.indented(indent_level, "end")
       end
 
-      sig { override.returns(String) }
-      # Returns a human-readable brief string description of this module.
-      # @return [String]
-      def describe
-        "Module #{name} - #{children.length} " +
-          "children, #{includes.length} includes, #{extends.length} extends"
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs
+        [:children]
       end
     end
   end

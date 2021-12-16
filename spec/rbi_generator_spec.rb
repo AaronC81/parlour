@@ -726,6 +726,36 @@ RSpec.describe Parlour::RbiGenerator do
     RUBY
   end
 
+  it 'generates sensible descriptions for its objects' do
+    foo = nil
+    bar = nil
+    a = nil
+
+    m = subject.root.create_module('M', interface: true) do |m|
+      foo = m.create_method('foo', parameters: [
+        pa('a', type: 'String', default: "\"hello\""),
+        pa('b', type: Parlour::Types::Union.new(["Integer", "String"]))
+      ], overridable: true, returns: "Numeric")
+
+      bar = m.create_method('bar', parameters: [], returns: nil)
+
+      a = m.create_class('A')
+    end
+
+    expect(m.describe).to eq '<RBI:ModuleNamespace:M children=3 interface>'
+    expect(a.describe).to eq '<RBI:ClassNamespace:A>'
+    expect(foo.describe).to eq \
+      '<RBI:Method:foo parameters=(a: String = "hello", b: Union<Integer, String>) return_type=Numeric overridable>'
+    expect(bar.describe).to eq '<RBI:Method:bar parameters=() return_type=(void)>'
+
+    expect(m.describe_tree).to eq <<~END
+      <RBI:ModuleNamespace:M children=3 interface>
+      ├─ <RBI:Method:foo parameters=(a: String = "hello", b: Union<Integer, String>) return_type=Numeric overridable>
+      ├─ <RBI:Method:bar parameters=() return_type=(void)>
+      ├─ <RBI:ClassNamespace:A>
+    END
+  end
+
   it 'implements the Searchable mixin' do
     mod = subject.root.create_module('M') do |m|
       m.create_class('A') do |a|
