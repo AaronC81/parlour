@@ -5,6 +5,8 @@ module Parlour
     class ClassNamespace < Namespace
       extend T::Sig
 
+      Child = type_member(fixed: RbsObject)
+
       sig do
         params(
           generator: Generator,

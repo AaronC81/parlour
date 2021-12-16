@@ -490,4 +490,22 @@ RSpec.describe Parlour::RbsGenerator do
       ├─ <RBS:ClassNamespace:A>
     END
   end
+
+  it 'implements the Searchable mixin' do
+    mod = subject.root.create_module('M') do |m|
+      m.create_class('A') do |a|
+        a.create_class('B')
+      end
+      m.create_module('C')
+      m.create_class('D')
+    end
+
+    expect(mod.find(name: 'A').name).to eq 'A'
+    expect(mod.find(name: 'A').find(name: 'B').name).to eq 'B'
+    expect(mod.find(name: 'C').name).to eq 'C'
+    expect(mod.find(type: Parlour::RbsGenerator::ModuleNamespace).name).to eq 'C'
+
+    expect(mod.find_all(name: 'A').map(&:name)).to eq ['A']
+    expect(mod.find_all(type: Parlour::RbsGenerator::ClassNamespace).map(&:name)).to eq ['A', 'D']
+  end
 end

@@ -17,7 +17,7 @@ module Parlour
       @debug_mode = value
     end
 
-    # Whether debug messages sent by {#debug_puts} should be printed.
+    # Whether debug messages sent by {.debug_puts} should be printed.
     # Defaults to true if the PARLOUR_DEBUG environment variable is set.
     # @return [Boolean] True if debug messages will be printed, false otherwise.
     sig { returns(T::Boolean) }
@@ -25,11 +25,11 @@ module Parlour
       @debug_mode
     end
 
-    # Prints a message with a debugging prefix to STDOUT if {#debug_mode?} is
+    # Prints a message with a debugging prefix to STDOUT if {.debug_mode?} is
     # true.
-    # @params [Object] object The object which is printing this debug message. 
+    # @param [Object] object The object which is printing this debug message.
     #   Callers should pass +self+.
-    # @params [String] message The message to print. It should not contain
+    # @param [String] message The message to print. It should not contain
     #   newlines.
     # @return [void]
     sig { params(object: T.untyped, message: String).void }
@@ -45,7 +45,7 @@ module Parlour
     # "conflict resolver". If the object type is unknown, this returns its class
     # name.
     # @param [Object] object The object to convert.
-    # @return [String] A string describing the object for {#debug_puts}. 
+    # @return [String] A string describing the object for {.debug_puts}.
     sig { params(object: T.untyped).returns(String) }
     def self.name_for_debug_caller(object)
       case object
