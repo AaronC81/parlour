@@ -1,6 +1,6 @@
 # typed: strong
 module Parlour
-  VERSION = '6.0.1'
+  VERSION = '7.0.0'
 
   class ConflictResolver
     extend T::Sig

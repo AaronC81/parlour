@@ -1,5 +1,5 @@
 # typed: strong
 module Parlour
   # The library version.
-  VERSION = '6.0.1'
+  VERSION = '7.0.0'
 end
