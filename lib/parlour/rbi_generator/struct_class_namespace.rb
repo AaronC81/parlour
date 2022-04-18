@@ -6,7 +6,7 @@ module Parlour
     class StructClassNamespace < ClassNamespace
       extend T::Sig
 
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig do
         params(

@@ -67,7 +67,7 @@ module Parlour
       attr_reader :children
 
       include Mixin::Searchable
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig { returns(T::Array[RbiGenerator::Extend]) }
       # The {RbiGenerator::Extend} objects from {children}.

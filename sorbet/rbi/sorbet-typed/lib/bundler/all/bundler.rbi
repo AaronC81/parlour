@@ -3377,7 +3377,7 @@ end
 
 class Bundler::GemHelpers::PlatformMatch < Struct
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   EXACT_MATCH = ::T.let(nil, T.untyped)
   WORST_MATCH = ::T.let(nil, T.untyped)
@@ -3828,7 +3828,7 @@ class Bundler::LazySpecification::Identifier < Struct
   include ::Comparable
   extend ::T::Generic
 
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig do
     params(
@@ -4495,7 +4495,7 @@ end
 
 class Bundler::Molinillo::DependencyGraph::Edge < Struct
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig {returns(T.untyped)}
   def destination(); end
@@ -4873,7 +4873,7 @@ end
 
 class Bundler::Molinillo::DependencyState < Bundler::Molinillo::ResolutionState
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig {returns(T.untyped)}
   def pop_possibility_state(); end
@@ -4917,12 +4917,12 @@ end
 
 class Bundler::Molinillo::PossibilityState < Bundler::Molinillo::ResolutionState
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 end
 
 class Bundler::Molinillo::ResolutionState < Struct
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig {returns(T.untyped)}
   def activated(); end
@@ -5117,7 +5117,7 @@ end
 
 class Bundler::Molinillo::Resolver::Resolution::Conflict < Struct
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig {returns(T.untyped)}
   def activated_by_name(); end
@@ -5232,7 +5232,7 @@ end
 
 class Bundler::Molinillo::Resolver::Resolution::PossibilitySet < Struct
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig {returns(T.untyped)}
   def dependencies(); end
@@ -5285,7 +5285,7 @@ end
 class Bundler::Molinillo::Resolver::Resolution::UnwindDetails < Struct
   include ::Comparable
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig do
     params(
@@ -7103,7 +7103,7 @@ end
 
 class Bundler::Settings::Path < Struct
   extend T::Generic
-  Elem = type_member(fixed: T.untyped)
+  Elem = type_member {{ fixed: T.untyped }}
 
   sig {returns(T.untyped)}
   def append_ruby_scope(); end

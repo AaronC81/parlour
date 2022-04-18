@@ -792,7 +792,7 @@ module Parlour
 
     class ClassNamespace < Namespace
       extend T::Sig
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig do
         params(
@@ -868,7 +868,7 @@ module Parlour
 
     class EnumClassNamespace < ClassNamespace
       extend T::Sig
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig do
         params(
@@ -1023,7 +1023,7 @@ module Parlour
 
     class ModuleNamespace < Namespace
       extend T::Sig
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig do
         params(
@@ -1064,7 +1064,7 @@ module Parlour
       include Mixin::Searchable
       extend T::Sig
       extend T::Generic
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbi(indent_level, options); end
@@ -1328,7 +1328,7 @@ module Parlour
 
     class StructClassNamespace < ClassNamespace
       extend T::Sig
-      Child = type_member(fixed: RbiObject)
+      Child = type_member {{ fixed: RbiObject }}
 
       sig do
         params(
@@ -1550,7 +1550,7 @@ module Parlour
 
     class ClassNamespace < Namespace
       extend T::Sig
-      Child = type_member(fixed: RbsObject)
+      Child = type_member {{ fixed: RbsObject }}
 
       sig do
         params(
@@ -1656,7 +1656,7 @@ module Parlour
 
     class InterfaceNamespace < Namespace
       extend T::Sig
-      Child = type_member(fixed: RbsObject)
+      Child = type_member {{ fixed: RbsObject }}
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
@@ -1738,7 +1738,7 @@ module Parlour
 
     class ModuleNamespace < Namespace
       extend T::Sig
-      Child = type_member(fixed: RbsObject)
+      Child = type_member {{ fixed: RbsObject }}
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
@@ -1751,7 +1751,7 @@ module Parlour
       include Mixin::Searchable
       extend T::Sig
       extend T::Generic
-      Child = type_member(fixed: RbsObject)
+      Child = type_member {{ fixed: RbsObject }}
 
       sig { override.overridable.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
