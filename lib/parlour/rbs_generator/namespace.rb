@@ -52,7 +52,7 @@ module Parlour
       attr_reader :children
 
       include Mixin::Searchable
-      Child = type_member(fixed: RbsObject)
+      Child = type_member {{ fixed: RbsObject }}
 
       sig { returns(T::Array[RbsGenerator::Extend]) }
       # The {RbsGenerator::Extend} objects from {children}.

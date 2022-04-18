@@ -5,7 +5,7 @@ module Parlour
     class InterfaceNamespace < Namespace
       extend T::Sig
 
-      Child = type_member(fixed: RbsObject)
+      Child = type_member {{ fixed: RbsObject }}
 
       sig do
         override.params(
