@@ -3,6 +3,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [7.0.0] - 2022-04-18
+### Added
+- `#describe` now uses a new, clearer format.
+- Added `#describe_tree`, which produces `#describe` output for a node and all
+  of its children.
+- Added `#find` and `#find_all` for retrieving a node's children based on
+  criteria.
+
+### Changed
+- Parlour now uses the new block-based `type_member` syntax internally.
+  **Potentially breaking** if you pin an older version of Sorbet which doesn't
+  support this syntax!
+- Improved error message when unable to retrieve the file table from Sorbet.
+- `#inspect` and `#to_s` now call `#describe`.
+
+## Fixed
+- Fixed some incorrect YARD documentation tags.
+
 ## [6.0.1] - 2021-02-28
 ### Changed
 - Disabled runtime type checking for `TypedObject#name`, resulting in a
