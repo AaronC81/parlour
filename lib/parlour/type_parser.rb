@@ -361,8 +361,8 @@ module Parlour
         #   (block (send (const nil :T) :type_alias) (args) (type_to_alias))
         if body.type == :block &&
           body.to_a[0].type == :send &&
-          body.to_a[0].to_a[0].type == :const &&
-          body.to_a[0].to_a[0].to_a == [nil, :T] &&
+          body.to_a[0].to_a[0]&.type == :const &&
+          body.to_a[0].to_a[0]&.to_a == [nil, :T] &&
           body.to_a[0].to_a[1] == :type_alias
 
           [Parlour::RbiGenerator::TypeAlias.new(
