@@ -367,6 +367,19 @@ RSpec.describe Parlour::TypeParser do
       end.to raise_error Parlour::ParseError
     end
 
+    it 'marks initialize methods as returning void' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        def initialize(x, y)
+          @x = x
+          @y = y
+        end
+      RUBY
+
+      meth = instance.parse_method_into_methods(Parlour::TypeParser::NodePath.new([])).only
+      expect(meth.return_type).to eq nil
+      expect(meth.name).to eq 'initialize'
+    end
+
     context 'attributes' do
       it 'supports attr_accessor' do
         instance = described_class.from_source('(test)', <<-RUBY)

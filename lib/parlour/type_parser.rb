@@ -672,7 +672,9 @@ module Parlour
         class_method = true
       end
 
-      return_type = "T.untyped"
+      return_type = unless def_names == ["initialize"]
+        "T.untyped"
+      end
 
       if kind == :def
         parameters = def_params.map do |def_param|
