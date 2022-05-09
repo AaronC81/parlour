@@ -706,7 +706,7 @@ module Parlour
       elsif kind == :attr
         case attr_direction
         when :reader, :accessor, :writer
-          attr_type = return_type
+          attr_type = return_type || "T.untyped"
         else
           raise "unknown attribute direction #{attr_direction}"
         end
