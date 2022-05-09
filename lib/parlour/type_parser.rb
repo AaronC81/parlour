@@ -672,7 +672,9 @@ module Parlour
         class_method = true
       end
 
-      return_type = "T.untyped"
+      return_type = unless def_names == ["initialize"]
+        "T.untyped"
+      end
 
       if kind == :def
         parameters = def_params.map do |def_param|
@@ -704,7 +706,7 @@ module Parlour
       elsif kind == :attr
         case attr_direction
         when :reader, :accessor, :writer
-          attr_type = return_type
+          attr_type = return_type || "T.untyped"
         else
           raise "unknown attribute direction #{attr_direction}"
         end
