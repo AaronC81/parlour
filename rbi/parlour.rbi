@@ -88,7 +88,7 @@ module Parlour
 
       extend T::Sig
       extend T::Generic
-      Child = type_member
+      Child = type_member {{ upper: TypedObject }}
 
       sig { abstract.returns(T::Array[Child]) }
       def children; end
