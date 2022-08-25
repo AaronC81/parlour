@@ -3436,10 +3436,6 @@ module DidYouMean
   def self.formatter=(formatter); end
 end
 
-module Digest
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
 class Dir
   def children(); end
 
@@ -3492,10 +3488,6 @@ end
 
 class Encoding
   def self._load(arg); end
-end
-
-module Enumerable
-  def sum(*arg); end
 end
 
 class Enumerator
@@ -6257,6 +6249,8 @@ class OpenStruct
   def extend!(mod, *args); end
 
   def freeze!(); end
+
+  def gem!(dep, *reqs); end
 
   def hash!(); end
 
