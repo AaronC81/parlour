@@ -490,6 +490,10 @@ module Parlour
       # A :def node represents a definition like "def x; end"
       # A :defs node represents a definition like "def self.x; end"
       def_node = path.sibling(1).traverse(ast)
+      if def_node.type == :send && [:def, :defs].include?(def_node.children.last.type)
+        # bypass inline modifier (e.g. "private")
+        def_node = def_node.children.last
+      end
       case def_node.type
       when :def
         class_method = false
