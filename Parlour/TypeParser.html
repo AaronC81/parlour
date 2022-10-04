@@ -862,13 +862,13 @@
       <pre class="lines">
 
 
-730
-731
-732
-733</pre>
+734
+735
+736
+737</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 730</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 734</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'>parse_single_type</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_i'>i</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_source'><span class='object_link'><a href="#from_source-class_method" title="Parlour::TypeParser.from_source (method)">from_source</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(none)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
@@ -1001,10 +1001,6 @@
       <pre class="lines">
 
 
-636
-637
-638
-639
 640
 641
 642
@@ -1091,10 +1087,14 @@
 723
 724
 725
-726</pre>
+726
+727
+728
+729
+730</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 636</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 640</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_method_into_methods'>parse_method_into_methods</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='label'>is_within_eigenclass:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='comment'># A :def node represents a definition like &quot;def x; end&quot;
@@ -1246,10 +1246,6 @@
       <pre class="lines">
 
 
-741
-742
-743
-744
 745
 746
 747
@@ -1380,10 +1376,14 @@
 872
 873
 874
-875</pre>
+875
+876
+877
+878
+879</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 741</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 745</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_parse_node_to_type'>parse_node_to_type</span><span class='lparen'>(</span><span class='id identifier rubyid_node'>node</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_node'>node</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span>
@@ -2236,7 +2236,11 @@
 617
 618
 619
-620</pre>
+620
+621
+622
+623
+624</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/parlour/type_parser.rb', line 487</span>
@@ -2247,6 +2251,10 @@
   <span class='comment'># A :def node represents a definition like &quot;def x; end&quot;
 </span>  <span class='comment'># A :defs node represents a definition like &quot;def self.x; end&quot;
 </span>  <span class='id identifier rubyid_def_node'>def_node</span> <span class='op'>=</span> <span class='id identifier rubyid_path'>path</span><span class='period'>.</span><span class='id identifier rubyid_sibling'>sibling</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_traverse'>traverse</span><span class='lparen'>(</span><span class='id identifier rubyid_ast'>ast</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_def_node'>def_node</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='symbol'>:send</span> <span class='op'>&amp;&amp;</span> <span class='lbracket'>[</span><span class='symbol'>:def</span><span class='comma'>,</span> <span class='symbol'>:defs</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_def_node'>def_node</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+    <span class='comment'># bypass inline modifier (e.g. &quot;private&quot;)
+</span>    <span class='id identifier rubyid_def_node'>def_node</span> <span class='op'>=</span> <span class='id identifier rubyid_def_node'>def_node</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span>
+  <span class='kw'>end</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_def_node'>def_node</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span>
   <span class='kw'>when</span> <span class='symbol'>:def</span>
     <span class='id identifier rubyid_class_method'>class_method</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -2582,7 +2590,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Oct  4 18:26:46 2022 by
+  Generated on Tue Oct  4 22:26:59 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-2.7.6).
 </div>
