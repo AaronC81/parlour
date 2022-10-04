@@ -245,7 +245,16 @@ module Parlour
             (body.type == :begin ? body.to_a : [body]).find { |x| x.type == :block && x.to_a[0].type == :send && x.to_a[0].to_a[1] == :enums }
 
           # Find the constant assigments within this block
-          constant_nodes = enums_node.to_a[2].to_a
+          # (If there's only one constant assignment, then that `casgn` node
+          # will be a direct child, not wrapped in a body)
+          enum_inner = enums_node.to_a[2]
+          if enum_inner.nil?
+            constant_nodes = []
+          elsif enum_inner.type == :begin
+            constant_nodes = enum_inner.to_a
+          else
+            constant_nodes = [enum_inner]
+          end
 
           # Convert this to an array to enums as EnumClassNamespace expects
           enums = constant_nodes.map do |constant_node|

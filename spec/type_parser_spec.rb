@@ -845,30 +845,64 @@ RSpec.describe Parlour::TypeParser do
     expect(root.children).to be_empty
   end
 
-  it 'parses enums' do
-    instance = described_class.from_source('(test)', <<-RUBY)
-      class Directions < T::Enum
-        enums do
-          North = new
-          South = new
-          West = new
-          East = new("Some custom serialization")
+  context 'parses enums' do
+    it 'with multiple variants' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Directions < T::Enum
+          enums do
+            North = new
+            South = new
+            West = new
+            East = new("Some custom serialization")
+          end
+
+          sig { returns(String) }
+          def self.mnemonic; end
         end
+      RUBY
 
-        sig { returns(String) }
-        def self.mnemonic; end
-      end
-    RUBY
+      root = instance.parse_all
+      directions = root.children.first
 
-    root = instance.parse_all
-    directions = root.children.first
+      expect(directions).to be_a Parlour::RbiGenerator::EnumClassNamespace
+      expect(directions.enums.length).to eq 4
+      expect(directions.enums.first).to eq 'North'
+      expect(directions.enums.last).to eq ['East', '"Some custom serialization"']
 
-    expect(directions).to be_a Parlour::RbiGenerator::EnumClassNamespace
-    expect(directions.enums.length).to eq 4
-    expect(directions.enums.first).to eq 'North'
-    expect(directions.enums.last).to eq ['East', '"Some custom serialization"']
+      expect(directions.children.find { |x| x.name == 'mnemonic' }).to be_a Parlour::RbiGenerator::Method
+    end
 
-    expect(directions.children.find { |x| x.name == 'mnemonic' }).to be_a Parlour::RbiGenerator::Method
+    it 'with one variant' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class BestProgrammingLanguages < T::Enum
+          enums do
+            Ruby = new
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      directions = root.children.first
+
+      expect(directions).to be_a Parlour::RbiGenerator::EnumClassNamespace
+      expect(directions.enums.length).to eq 1
+      expect(directions.enums.first).to eq 'Ruby'
+    end
+
+    it 'with no variants' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class Never < T::Enum
+          enums do
+          end
+        end
+      RUBY
+
+      root = instance.parse_all
+      directions = root.children.first
+
+      expect(directions).to be_a Parlour::RbiGenerator::EnumClassNamespace
+      expect(directions.enums.length).to eq 0
+    end
   end
 
   it 'parses constants' do
