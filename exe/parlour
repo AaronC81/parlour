@@ -18,7 +18,7 @@ command :run do |c|
     working_dir = Dir.pwd
     config_filename = File.join(working_dir, '.parlour')
 
-    if File.exists?(config_filename)
+    if File.exist?(config_filename)
       configuration = keys_to_symbols(YAML.load_file(config_filename))
     else
       configuration = {}
