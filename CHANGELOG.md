@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [8.1.0] - 2023-01-01
+### Added
+- Parsed method definitions can now have a modifier before the `def` keyword.
+
+### Fixed
+- Use `File#exist?` instead of `File#exists?` in CLI, fixing an exception on
+  Ruby 3.2.0.
+- Resolved incorrect code generation for `T::Enum`s with only one variant.
+
 ## [8.0.0] - 2022-05-10
 ### Changed
 - The parser now loads untyped methods named `initialize` as returning `void`, rather than
