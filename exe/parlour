@@ -113,7 +113,7 @@ command :run do |c|
         generator: gen,
       )
     end
-    Parlour::Plugin.run_plugins(plugin_instances, gen)
+    Parlour::Plugin.run_plugins(plugin_instances, gen, allow_failure: !!options.trace)
 
     # Run a pass of the conflict resolver
     Parlour::ConflictResolver.new.resolve_conflicts(gen.root) do |msg, candidates|
