@@ -15,6 +15,7 @@ module Parlour
           sealed: T::Boolean,
           enums: T::Array[T.any([String, String], String)],
           abstract: T::Boolean,
+          path: String,
           block: T.nilable(T.proc.params(x: EnumClassNamespace).void)
         ).void
       end
@@ -27,10 +28,11 @@ module Parlour
       # @param sealed [Boolean] Whether this namespace is sealed.
       # @param enums [Array<(String, String), String>] The values of the enumeration.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
+      # @param path [String] the fully resolved path to this constant.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, final, sealed, enums, abstract, &block)
-        super(generator, name, final, sealed, 'T::Enum', abstract, &block)
+      def initialize(generator, name, final, sealed, enums, abstract, path: '', &block)
+        super(generator, name, final, sealed, 'T::Enum', abstract, path: path, &block)
         @enums = enums
       end
 

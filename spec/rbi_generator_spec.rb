@@ -100,29 +100,31 @@ RSpec.describe Parlour::RbiGenerator do
 
       expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         class Foo
-          class Bar
-            class A
-            end
-
-            class B
-            end
-
-            class C
-            end
-          end
-
-          class Baz
-            final!
-
-            class A
-            end
-
-            class B
-            end
-
-            class C
-            end
-          end
+        end
+        
+        class Foo::Bar
+        end
+        
+        class Foo::Bar::A
+        end
+        
+        class Foo::Bar::B
+        end
+        
+        class Foo::Bar::C
+        end
+        
+        class Foo::Baz
+          final!
+        end
+        
+        class Foo::Baz::A
+        end
+        
+        class Foo::Baz::B
+        end
+        
+        class Foo::Baz::C
         end
       RUBY
     end
@@ -138,18 +140,20 @@ RSpec.describe Parlour::RbiGenerator do
 
       expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         class Foo
-          class Bar
-            abstract!
-
-            class A
-            end
-
-            class B
-            end
-
-            class C
-            end
-          end
+        end
+        
+        class Foo::Bar
+          abstract!
+        
+        end
+        
+        class Foo::Bar::A
+        end
+        
+        class Foo::Bar::B
+        end
+        
+        class Foo::Bar::C
         end
       RUBY
     end
@@ -170,24 +174,25 @@ RSpec.describe Parlour::RbiGenerator do
 
       expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         class Foo
-          class Bar
-            abstract!
-
-            include Z
-            extend X
-            extend Y
-            Text = T.type_alias { T.any(String, Symbol) }
-            PI = 3.14
-
-            class A
-            end
-
-            class B
-            end
-
-            class C
-            end
-          end
+        end
+        
+        class Foo::Bar
+          abstract!
+        
+          include Z
+          extend X
+          extend Y
+          Text = T.type_alias { T.any(String, Symbol) }
+          PI = 3.14
+        end
+        
+        class Foo::Bar::A
+        end
+        
+        class Foo::Bar::B
+        end
+        
+        class Foo::Bar::C
         end
       RUBY
     end
@@ -420,17 +425,18 @@ RSpec.describe Parlour::RbiGenerator do
 
       expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         module M
-          class Directions < T::Enum
-            enums do
-              North = new
-              South = new
-              West = new
-              East = new("Some custom serialization")
-            end
-
-            sig { returns(String) }
-            def self.mnemonic; end
+        end
+        
+        class M::Directions < T::Enum
+          enums do
+            North = new
+            South = new
+            West = new
+            East = new("Some custom serialization")
           end
+        
+          sig { returns(String) }
+          def self.mnemonic; end
         end
       RUBY
     end
@@ -486,12 +492,13 @@ RSpec.describe Parlour::RbiGenerator do
     expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
       # This is a module
       module M
-        # This is a class
-        class A
-          # This is a method
-          sig { void }
-          def foo; end
-        end
+      end
+      
+      # This is a class
+      class M::A
+        # This is a method
+        sig { void }
+        def foo; end
       end
     RUBY
   end
@@ -525,12 +532,13 @@ RSpec.describe Parlour::RbiGenerator do
       # This is a module
       # This was added internally
       module M
-        # This is a class
-        class A
-          # This is a method
-          sig { void }
-          def foo; end
-        end
+      end
+      
+      # This is a class
+      class M::A
+        # This is a method
+        sig { void }
+        def foo; end
       end
     RUBY
   end
@@ -561,16 +569,20 @@ RSpec.describe Parlour::RbiGenerator do
         c.create_method('foo')
       end
 
+      puts subject.root.generate_rbi(0, opts).join("\n")
+
       expect(subject.root.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         module PathA
-          module B
-            class C
-              sig { void }
-              def foo; end
-            end
-          end
         end
-      RUBY
+        
+        module PathA::B
+        end
+        
+        class PathA::B::C
+          sig { void }
+          def foo; end
+        end
+RUBY
     end
 
     it 'throws on a non-root namespace' do
@@ -640,31 +652,31 @@ RSpec.describe Parlour::RbiGenerator do
     expect(custom_rbi_gen.root.generate_rbi(0, custom_opts).join("\n")).to eq fix_heredoc(<<-RUBY)
       module M
         interface!
-
+      
         include X
         include Y
         extend Z
-
+      
         "some arbitrary code"
-
+      
         "some more"
-
-        class A
-          module A
-          end
-
-          class B
-          end
-
-          sig { void }
-          def c; end
-        end
-
-        module B
-        end
-
+      
         sig { void }
         def c; end
+      end
+      
+      module M::B
+      end
+      
+      class M::A
+        sig { void }
+        def c; end
+      end
+      
+      module M::A::A
+      end
+      
+      class M::A::B
       end
     RUBY
   end
@@ -682,14 +694,15 @@ RSpec.describe Parlour::RbiGenerator do
 
     expect(mod.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
       module M
-        class Person < T::Struct
-          prop :name, String
-          prop :age, Integer, optional: true
-          prop :prefers_light_theme, T::Boolean, default: false
-
-          sig { returns(String) }
-          def theme; end
-        end
+      end
+      
+      class M::Person < T::Struct
+        prop :name, String
+        prop :age, Integer, optional: true
+        prop :prefers_light_theme, T::Boolean, default: false
+      
+        sig { returns(String) }
+        def theme; end
       end
     RUBY
   end

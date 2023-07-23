@@ -16,6 +16,7 @@ module Parlour
           sealed: T::Boolean,
           props: T::Array[StructProp],
           abstract: T::Boolean,
+          path: String,
           block: T.nilable(T.proc.params(x: StructClassNamespace).void)
         ).void
       end
@@ -28,10 +29,11 @@ module Parlour
       # @param sealed [Boolean] Whether this namespace is sealed.
       # @param props [Array<StructProp>] The props of the struct.
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
+      # @param path [String] the fully resolved path to this constant.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, final, sealed, props, abstract, &block)
-        super(generator, name, final, sealed, 'T::Struct', abstract, &block)
+      def initialize(generator, name, final, sealed, props, abstract, path: '', &block)
+        super(generator, name, final, sealed, 'T::Struct', abstract, path: path, &block)
         @props = props
       end
 

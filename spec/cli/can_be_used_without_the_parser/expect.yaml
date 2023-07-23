@@ -3,7 +3,7 @@ files:
   rbi/can_be_used_without_the_parser.rbi: |
     # typed: strong
     module C
-      class D
-      end
     end
-
+    
+    class C::D
+    end

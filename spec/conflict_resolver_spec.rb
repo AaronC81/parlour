@@ -517,23 +517,25 @@ RSpec.describe Parlour::ConflictResolver do
 
       expected_rbi = <<~RUBY.strip
         module Outer
-          class A < T::Struct
+        end
+        
+        class Outer::A < T::Struct
 
+        end
+
+        module Outer::B
+        end
+        
+        class Outer::B::D
+        end
+        
+        class Outer::B::C
+        end
+
+        class Outer::Z < T::Enum
+          enums do
           end
 
-          module B
-            class C
-            end
-
-            class D
-            end
-          end
-
-          class Z < T::Enum
-            enums do
-            end
-
-          end
         end
       RUBY
 
