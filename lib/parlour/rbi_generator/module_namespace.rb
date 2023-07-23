@@ -15,6 +15,7 @@ module Parlour
           sealed: T::Boolean,
           interface: T::Boolean,
           abstract: T::Boolean,
+          path: String,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
@@ -28,10 +29,11 @@ module Parlour
       # @param interface [Boolean] A boolean indicating whether this module is an
       #   interface.
       # @param abstract [Boolean] A boolean indicating whether this module is abstract.
+      # @param path [String] the fully resolved path to this constant.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, final, sealed, interface, abstract, &block)
-        super(generator, name, final, sealed, &block)
+      def initialize(generator, name, final, sealed, interface, abstract, path: '', &block)
+        super(generator, name, final, sealed, path: path, &block)
         @name = name
         @interface = interface
         @abstract = abstract
@@ -50,11 +52,15 @@ module Parlour
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         lines = generate_comments(indent_level, options)
-        lines << options.indented(indent_level, "module #{name}")
+        lines << options.indented(indent_level, "module #{full_path}")
         lines += [options.indented(indent_level + 1, "interface!"), ""] if interface
         lines += [options.indented(indent_level + 1, "abstract!"), ""] if abstract
         lines += generate_body(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
+
+        namespace_children = self.children.select { |c| c.is_a?(Namespace) }
+        lines + namespace_children.
+          map { |c| [''] + c.generate_rbi(indent_level, options)}
       end
 
       sig { returns(T::Boolean) }

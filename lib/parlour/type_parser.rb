@@ -133,7 +133,7 @@ module Parlour
     sig { returns(RbiGenerator::Namespace) }
     def parse_all
       root = generator.root
-      root.children.concat(parse_path_to_object(NodePath.new([])))
+      root.add_children(parse_path_to_object(NodePath.new([])))
       root
     end
 
@@ -148,8 +148,13 @@ module Parlour
     #   any of the other parameters to this method in an external call.
     # @return [Array<RbiGenerator::RbiObject>] The objects the node at the path
     #    represents, parsed into an RBI generator object.
-    sig { params(path: NodePath, is_within_eigenclass: T::Boolean).returns(T::Array[RbiGenerator::RbiObject]) }
-    def parse_path_to_object(path, is_within_eigenclass: false)
+    sig do
+      params(path: NodePath,
+             constant_path: String,
+             is_within_eigenclass: T::Boolean).
+      returns(T::Array[RbiGenerator::RbiObject])
+    end
+    def parse_path_to_object(path, constant_path: '', is_within_eigenclass: false)
       node = path.traverse(ast)
 
       case node.type
@@ -172,8 +177,9 @@ module Parlour
             n.to_s,
             false,
             false,
+            path: constant_path
           )
-          target.children << new_obj if target
+          target.add_child(new_obj) if target
           target = new_obj
           top_level ||= new_obj
         end if parent_names
@@ -238,6 +244,7 @@ module Parlour
             sealed,
             props,
             abstract,
+            path: constant_path
           )
         elsif ['T::Enum', '::T::Enum'].include?(node_to_s(superclass))
           # Look for (block (send nil :enums) ...) structure
@@ -271,6 +278,7 @@ module Parlour
             sealed,
             enums,
             abstract,
+            path: constant_path
           )
         else
           final_obj = RbiGenerator::ClassNamespace.new(
@@ -280,15 +288,19 @@ module Parlour
             sealed,
             node_to_s(superclass),
             abstract,
+            path: constant_path
           )
         end
 
-        final_obj.children.concat(parse_path_to_object(path.child(2))) if body
+        if body
+          final_obj.add_children(parse_path_to_object(path.child(2),
+                                                      constant_path: final_obj.full_constant_path))
+        end
         final_obj.create_includes(includes)
         final_obj.create_extends(extends)
 
         if target
-          target.children << final_obj
+          target.add_child(final_obj)
           [T.must(top_level)]
         else
           [final_obj]
@@ -313,8 +325,9 @@ module Parlour
             n.to_s,
             false,
             false,
+            path: constant_path
           )
-          target.children << new_obj if target
+          target.add_child(new_obj) if target
           target = new_obj
           top_level ||= new_obj
         end if parent_names
@@ -326,14 +339,15 @@ module Parlour
           sealed,
           interface,
           abstract,
+            path: constant_path
         ) do |m|
-          m.children.concat(parse_path_to_object(path.child(1))) if body
+          m.add_children(parse_path_to_object(path.child(1), constant_path: m.full_constant_path)) if body
           m.create_includes(includes)
           m.create_extends(extends)
         end
 
         if target
-          target.children << final_obj
+          target.add_child(final_obj)
           [T.must(top_level)]
         else
           [final_obj]
@@ -356,11 +370,11 @@ module Parlour
         end
       when :sclass
         parse_err 'cannot access eigen of non-self object', node unless node.to_a[0].type == :self
-        parse_path_to_object(path.child(1), is_within_eigenclass: true)
+        parse_path_to_object(path.child(1), constant_path: constant_path, is_within_eigenclass: true)
       when :begin
         # Just map over all the things
         node.to_a.length.times.map do |c|
-          parse_path_to_object(path.child(c), is_within_eigenclass: is_within_eigenclass)
+          parse_path_to_object(path.child(c), constant_path: constant_path, is_within_eigenclass: is_within_eigenclass)
         end.flatten
       when :casgn
         _, name, body = *node

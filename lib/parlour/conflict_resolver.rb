@@ -124,7 +124,7 @@ module Parlour
             # The types aren't the same, so ask the resolver what to do, and
             # insert that (if not nil)
             choice = resolver.call("Different kinds of definition for the same name", children)
-            namespace.children << choice if choice
+            namespace.add_child(choice) if choice
             next
           end
 
@@ -149,7 +149,7 @@ module Parlour
             end
 
             non_namespaces.each do |x|
-              namespace.children << x
+              namespace.add_child(x)
             end
 
             # For certain namespace types the order matters. For example, if there's
@@ -173,14 +173,14 @@ module Parlour
           if T.must(first).mergeable?(T.must(rest))
             Debugging.debug_puts(self, @debugging_tree.end("Children are all mergeable; resolving automatically"))
             first.merge_into_self(rest)
-            namespace.children << first
+            namespace.add_child(first)
             next
           end
 
           # I give up! Let it be resolved manually somehow
           Debugging.debug_puts(self, @debugging_tree.end("Unable to resolve automatically; requesting manual resolution"))
           choice = resolver.call("Can't automatically resolve", children)
-          namespace.children << choice if choice
+          namespace.add_child(choice) if choice
         else
           Debugging.debug_puts(self, @debugging_tree.end("No conflicts"))
         end

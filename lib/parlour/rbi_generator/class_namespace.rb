@@ -15,6 +15,7 @@ module Parlour
           sealed: T::Boolean,
           superclass: T.nilable(String),
           abstract: T::Boolean,
+          path: String,
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
@@ -30,8 +31,8 @@ module Parlour
       # @param abstract [Boolean] A boolean indicating whether this class is abstract.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, final, sealed, superclass, abstract, &block)
-        super(generator, name, final, sealed, &block)
+      def initialize(generator, name, final, sealed, superclass, abstract, path: '', &block)
+        super(generator, name, final, sealed, path: path, &block)
         @superclass = superclass
         @abstract = abstract
       end
@@ -43,20 +44,24 @@ module Parlour
         ).returns(T::Array[String])
       end
       # Generates the RBI lines for this class.
-      # 
+      #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         class_definition = superclass.nil? \
-          ? "class #{name}"
-          : "class #{name} < #{superclass}"
-    
+          ? "class #{full_path}"
+          : "class #{full_path} < #{superclass}"
+
         lines = generate_comments(indent_level, options)
         lines << options.indented(indent_level, class_definition)
         lines += [options.indented(indent_level + 1, "abstract!"), ""] if abstract
         lines += generate_body(indent_level + 1, options)
         lines << options.indented(indent_level, "end")
+
+        namespace_children = self.children.select { |c| c.is_a?(Namespace) }
+        lines + namespace_children.
+          map { |c| [''] + c.generate_rbi(indent_level, options)}
       end
 
       sig { returns(T.nilable(String)) }

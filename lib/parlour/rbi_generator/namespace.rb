@@ -19,8 +19,13 @@ module Parlour
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
+        namespace_children = self.children.select { |c| c.is_a?(Namespace) }
+        child_lines =  namespace_children.map { |c| [''] + c.generate_rbi(indent_level, options)}.flatten
+        child_lines = child_lines[1..] if child_lines.any? # remove leading empty line
+
         generate_comments(indent_level, options) +
-          generate_body(indent_level, options)
+          generate_body(indent_level, options) +
+          child_lines
       end
 
       sig do
@@ -29,6 +34,7 @@ module Parlour
           name: T.nilable(String),
           final: T::Boolean,
           sealed: T::Boolean,
+          path: String,
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).void
       end
@@ -39,15 +45,18 @@ module Parlour
       # @param generator [RbiGenerator] The current RbiGenerator.
       # @param name [String, nil] The name of this module.
       # @param final [Boolean] Whether this namespace is final.
-      # @param final [Boolean] Whether this namespace is sealed.
+      # @param sealed [Boolean] Whether this namespace is sealed.
+      # @param path [String] the fully resolved path to this constant.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name = nil, final = false, sealed = false, &block)
+      def initialize(generator, name = nil, final = false, sealed = false, path: '', &block)
+        @is_root = !name
         super(generator, name || '<anonymous namespace>')
         @children = []
         @next_comments = []
         @final = final
         @sealed = sealed
+        @parent_path = path
         yield_self(&block) if block
       end
 
@@ -65,6 +74,10 @@ module Parlour
       # The child {RbiObject} instances inside this namespace.
       # @return [Array<RbiObject>]
       attr_reader :children
+
+      # The namespace (parent) path for this namespace.
+      sig { returns(String) }
+      attr_accessor :parent_path
 
       include Mixin::Searchable
       Child = type_member {{ fixed: RbiObject }}
@@ -111,9 +124,8 @@ module Parlour
       end
 
       sig { params(constant: Module, block: T.proc.params(x: Namespace).void).void }
-      # Given a constant (i.e. a Module instance), generates all classes
-      # and modules in the path to that object, then executes the given
-      # block on the last {Namespace}. This should only be executed on
+      # Given a constant (i.e. a Module instance), executes the given
+      # block on the {Namespace}. This should only be executed on
       # the root namespace.
       # @param [Module] constant
       # @param block A block which the new {Namespace} yields itself to.
@@ -141,6 +153,19 @@ module Parlour
         block.call(current_part)
       end
 
+      sig { params(node: RbiObject).void }
+      # @param node [RbiObject]
+      def add_child(node)
+        node.parent_path = self.full_constant_path if node.respond_to?(:parent_path=)
+        self.children << node
+      end
+
+      sig { params(nodes: T::Array[RbiObject]).void }
+      # @param nodes [Array<RbiObject>]
+      def add_children(nodes)
+        nodes.each { |node| add_child(node) }
+      end
+
       sig { params(comment: T.any(String, T::Array[String])).void }
       # Adds one or more comments to the next child RBI object to be created.
       #
@@ -160,6 +185,15 @@ module Parlour
         elsif comment.is_a?(Array)
           @next_comments.concat(comment)
         end
+      end
+
+      sig { returns(String) }
+      # @return [String]
+      def full_constant_path
+        return '' if @is_root
+        return self.name if parent_path == ''
+
+        [parent_path, self.name].join('::')
       end
 
       sig do
@@ -191,7 +225,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [ClassNamespace]
       def create_class(name, final: false, sealed: false, superclass: nil, abstract: false, &block)
-        new_class = ClassNamespace.new(generator, name, final, sealed, superclass, abstract, &block)
+        new_class = ClassNamespace.new(generator, name, final, sealed, superclass, abstract, path: full_constant_path, &block)
         move_next_comments(new_class)
         children << new_class
         new_class
@@ -220,7 +254,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [EnumClassNamespace]
       def create_enum_class(name, final: false, sealed: false, enums: nil, abstract: false, &block)
-        new_enum_class = EnumClassNamespace.new(generator, name, final, sealed, enums || [], abstract, &block)
+        new_enum_class = EnumClassNamespace.new(generator, name, final, sealed, enums || [], abstract, path: full_constant_path, &block)
         move_next_comments(new_enum_class)
         children << new_enum_class
         new_enum_class
@@ -251,7 +285,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [EnumClassNamespace]
       def create_struct_class(name, final: false, sealed: false, props: nil, abstract: false, &block)
-        new_struct_class = StructClassNamespace.new(generator, name, final, sealed, props || [], abstract, &block)
+        new_struct_class = StructClassNamespace.new(generator, name, final, sealed, props || [], abstract, path: full_constant_path, &block)
         move_next_comments(new_struct_class)
         children << new_struct_class
         new_struct_class
@@ -287,7 +321,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
       def create_module(name, final: false, sealed: false, interface: false, abstract: false, &block)
-        new_module = ModuleNamespace.new(generator, name, final, sealed, interface, abstract, &block)
+        new_module = ModuleNamespace.new(generator, name, final, sealed, interface, abstract, path: full_constant_path, &block)
         move_next_comments(new_module)
         children << new_module
         new_module
@@ -647,7 +681,7 @@ module Parlour
           next if other.is_a?(RbiGenerator::Method)
           other = T.cast(other, Namespace)
 
-          other.children.each { |c| children << c }
+          other.children.each { |c| add_child(c) }
         end
       end
 
@@ -662,6 +696,12 @@ module Parlour
       end
 
       private
+
+      sig { returns(String) }
+      # @return [String]
+      def full_path
+        parent_path == '' ? name : "#{parent_path}::#{name}"
+      end
 
       sig do
         overridable.params(
@@ -745,7 +785,8 @@ module Parlour
 
         first, *rest = remaining_children.reject do |child|
           # We already processed these kinds of children
-          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant) || child.is_a?(TypeAlias)
+          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant) || child.is_a?(TypeAlias) ||
+            child.is_a?(Namespace) # namespaces are handled separately
         end
         unless first
           # Remove any trailing whitespace due to includes or class attributes

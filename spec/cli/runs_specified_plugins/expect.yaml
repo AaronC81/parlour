@@ -17,7 +17,7 @@ files:
     end
 
     module C
-      class D
-      end
     end
-
+    
+    class C::D
+    end
