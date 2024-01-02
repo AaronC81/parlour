@@ -29,11 +29,11 @@ module Parlour
         @kind = kind
         case kind
         when :accessor, :reader
-          super(generator, name, [MethodSignature.new([], type)], &block)
+          super(generator, name, [MethodSignature.new([], type)], &T.cast(block, T.nilable(T.proc.params(x: Method).void)))
         when :writer
           super(generator, name, [MethodSignature.new([
             Parameter.new(name, type: type)
-          ], type)], &block)
+          ], type)], &T.cast(block, T.nilable(T.proc.params(x: Method).void)))
         else
           raise 'unknown kind'
         end

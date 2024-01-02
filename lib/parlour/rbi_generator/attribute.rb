@@ -36,11 +36,11 @@ module Parlour
         @class_attribute = class_attribute
         case kind
         when :accessor, :reader
-          super(generator, name, [], type, &block)
+          super(generator, name, [], type, &T.cast(block, T.nilable(T.proc.params(x: Method).void)))
         when :writer
           super(generator, name, [
             Parameter.new(name, type: type)
-          ], type, &block)
+          ], type, &T.cast(block, T.nilable(T.proc.params(x: Method).void)))
         else
           raise 'unknown kind'
         end

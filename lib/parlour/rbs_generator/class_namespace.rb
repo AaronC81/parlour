@@ -25,7 +25,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [void]
       def initialize(generator, name, superclass, &block)
-        super(generator, name, &block)
+        super(generator, name, &T.cast(block, T.nilable(T.proc.params(x: Namespace).void)))
         @superclass = superclass
       end
 
