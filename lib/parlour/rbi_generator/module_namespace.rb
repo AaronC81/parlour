@@ -31,7 +31,7 @@ module Parlour
       # @param block A block which the new instance yields itself to.
       # @return [void]
       def initialize(generator, name, final, sealed, interface, abstract, &block)
-        super(generator, name, final, sealed, &block)
+        super(generator, name, final, sealed, &T.cast(block, T.nilable(T.proc.params(x: Namespace).void)))
         @name = name
         @interface = interface
         @abstract = abstract
