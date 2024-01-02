@@ -2,4 +2,5 @@
 .
 --typed-override
 sorbet/override.yaml
+--typed-super=false
 --ignore=parlour.rbi
