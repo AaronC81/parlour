@@ -43,8 +43,8 @@ jobs:
     - name: Build documentation
       run: bundle exec yard
     - name: Deploy to GitHub Actions
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+      uses: JamesIves/github-pages-deploy-action@4.6.1
       with:
-        github_token: ${{ secrets.BOT_PAT }}
+        token: ${{ secrets.BOT_PAT }}
         branch: gh-pages
         folder: doc
