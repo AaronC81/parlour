@@ -29,7 +29,7 @@ jobs:
 
   # Deploy documentation to GitHub Pages, if this is a push to master and the tests passed
   deploy-docs:
-    if: ${{ github.ref == 'refs/heads/master' }}
+    # if: ${{ github.ref == 'refs/heads/master' }}
     
     runs-on: ubuntu-latest
     steps:
