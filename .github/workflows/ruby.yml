@@ -45,6 +45,6 @@ jobs:
     - name: Deploy to GitHub Actions
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.BOT_PAT }}
         branch: gh-pages
         folder: doc
