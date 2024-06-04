@@ -73,7 +73,7 @@
 
 <h2 id="label-Why+should+I+use+this-3F">Why should I use this?</h2>
 <ul><li>
-<p>Parlour enables <strong>much easier creation of RBI/RBS generators</strong>, as formatting is all handled for you, and you don&#39;t need to write your own CLI.</p>
+<p>Parlour enables <strong>much easier creation of RBI/RBS generators</strong>, as formatting is all handled for you, and you don't need to write your own CLI.</p>
 </li><li>
 <p>You can <strong>use many plugins together seamlessly</strong>, running them all with a single command and consolidating all of their definitions into a single output file.</p>
 </li><li>
@@ -82,11 +82,86 @@
 <p>You can <strong>generate RBI/RBS to ship with your gem</strong> for consuming projects to use (<a href="https://sorbet.org/docs/rbi#rbis-within-gems">see "RBIs within gems" in Sorbet's docs</a>).</p>
 </li></ul>
 
-<p>Please <a href="https://github.com/AaronC81/parlour/wiki">read the wiki</a> to get started!</p>
+<p>Please the wiki</strong><a href="https://github.com/AaronC81/parlour/wiki"></a> to get started!</p>
 
 <h2 id="label-Feature+Support">Feature Support</h2>
 
-<p>| Feature | RBI | RBS | |———|—–|—–| | <strong>GENERATION</strong> | | | | Classes | ✅ | ⚠️ (missing <code>extension</code>) | | Modules | ✅ | ⚠️ (missing <code>extension</code>) | | Interfaces | ✅ | ✅ | | Attributes | ✅ | ✅ | | Methods | ✅ | ✅ | | Overloaded methods | ❌* | ✅ | | Structs | ✅ | ✅† | | Enums | ✅ | ✅† | | Generation with plugins | ✅ | ❌ | | <strong>MANIPULATION</strong> | | | | Parsing | ✅ | ❌ | | Merging | ✅ | ❌ |</p>
+<table role="table">
+<thead>
+<tr>
+<th>Feature</th>
+<th>RBI</th>
+<th>RBS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GENERATION</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>✅</td>
+<td>⚠️ (missing ‘extension`)</td>
+</tr>
+<tr>
+<td>Modules</td>
+<td>✅</td>
+<td>⚠️ (missing ‘extension`)</td>
+</tr>
+<tr>
+<td>Interfaces</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Attributes</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Methods</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Overloaded methods</td>
+<td>❌*</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Structs</td>
+<td>✅</td>
+<td>✅†</td>
+</tr>
+<tr>
+<td>Enums</td>
+<td>✅</td>
+<td>✅†</td>
+</tr>
+<tr>
+<td>Generation with plugins</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>MANIPULATION</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Parsing</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Merging</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
 <ul><li>
 <p>✅ - Well supported</p>
 </li><li>
@@ -107,7 +182,7 @@
 
 <h3 id="label-Using+Just+the+Generator">Using Just the Generator</h3>
 
-<p>Here&#39;s a quick example of how you can generate some type information. Here we&#39;ll generate an RBI using the <code>RbiGenerator</code> classes:</p>
+<p>Here’s a quick example of how you can generate some type information. Here we’ll generate an RBI using the <code>RbiGenerator</code> classes:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 
@@ -139,7 +214,7 @@
 <span class='kw'>end</span>
 </code></pre>
 
-<p>Using the RBS generator looks similar, but has an intermediary <code>MethodSignature</code> class to support RBS&#39; method overloading:</p>
+<p>Using the RBS generator looks similar, but has an intermediary <code>MethodSignature</code> class to support RBS’ method overloading:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 
@@ -259,13 +334,13 @@ plugins:
 
 <h2 id="label-Using+Types">Using Types</h2>
 
-<p>The most important part of your type information is the types themselves, which you&#39;ll be specifying for method parameters, method returns, and attributes. These include simple types like <code>String</code>, up to more complex types like “an array of elements which are one of <code>Integer</code>, <code>String</code>, or nil”.</p>
+<p>The most important part of your type information is the types themselves, which you’ll be specifying for method parameters, method returns, and attributes. These include simple types like <code>String</code>, up to more complex types like “an array of elements which are one of <code>Integer</code>, <code>String</code>, or nil”.</p>
 
 <p>There are two ways to represent these types in Parlour:</p>
 <ol><li>
-<p>As <strong>generalized types</strong>; that is, instances of classes in the  <code>Parlour::Types</code> namespace. This is the <strong>recommended way</strong>, as it is  format-agnostic and can be compiled to RBI or RBS. For more information  about these types and how to use them, see  <a href="https://github.com/AaronC81/parlour/wiki/The-Types-namespace">this wiki page</a>.</p>
+<p>As <strong>generalized types</strong>; that is, instances of classes in the <code>Parlour::Types</code> namespace. This is the <strong>recommended way</strong>, as it is format-agnostic and can be compiled to RBI or RBS. For more information about these types and how to use them, see <a href="https://github.com/AaronC81/parlour/wiki/The-Types-namespace">this wiki page</a>.</p>
 </li><li>
-<p>As <strong>strings of code</strong> written in the format that your type system expects.  The given strings are directly inserted into the final type file. These types  are <strong>not portable across formats</strong>, and as such are  <strong>not recommended and may be phased out</strong> in the future.</p>
+<p>As <strong>strings of code</strong> written in the format that your type system expects. The given strings are directly inserted into the final type file. These types are <strong>not portable across formats</strong>, and as such are <strong>not recommended and may be phased out</strong> in the future.</p>
 </li></ol>
 
 <p>Currently most type values within Parlour are typed as <code>Types::TypeLike</code>, which accepts a <code>String</code> or a <code>Types::Type</code> subclass.</p>
@@ -323,7 +398,7 @@ plugins:
 
 <p>You can either parse individual RBI files, or point Parlour to the root of a project and it will locate, parse and merge all RBI files.</p>
 
-<p>Note that Parlour isn&#39;t limited to just RBIs; it can parse inline <code>sigs</code> out of your Ruby source too!</p>
+<p>Note that Parlour isn’t limited to just RBIs; it can parse inline <code>sigs</code> out of your Ruby source too!</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>parlour</span><span class='tstring_end'>&#39;</span></span>
 
@@ -348,17 +423,17 @@ plugins:
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_parlour'>parlour</span>
 </code></pre>
 
-<p>Parlour is configured to use sane defaults assuming a standard gem structure to generate an RBI that Sorbet will automatically find when your gem is included as a dependency. If you require more advanced configuration you can add a <code>.parlour</code> YAML file in the root of your project (see this project&#39;s <code>.parlour</code> file as an example).</p>
+<p>Parlour is configured to use sane defaults assuming a standard gem structure to generate an RBI that Sorbet will automatically find when your gem is included as a dependency. If you require more advanced configuration you can add a <code>.parlour</code> YAML file in the root of your project (see this project’s <code>.parlour</code> file as an example).</p>
 
 <p>To disable the parsing step entire and just run plugins you can set <code>parser: false</code> in your <code>.parlour</code> file.</p>
 
 <h2 id="label-Converting+Between+Formats">Converting Between Formats</h2>
 
-<p><em>For more information, see the <a href="https://github.com/AaronC81/parlour/wiki/Converting-between-RBI-and-RBS">wiki page</a>.</em></p>
+<p><em>For more information, see the page[https://github.com/AaronC81/parlour/wiki/Converting-between-RBI-and-RBS].</em></p>
 
-<p>Currently, only RBI to RBS conversion is supported, and if you&#39;ve used string types (or are using a freshly-loaded project) you <strong>must <a href="#generalizing-string-types">generalize them</a> first</strong>.</p>
+<p>Currently, only RBI to RBS conversion is supported, and if you’ve used string types (or are using a freshly-loaded project) you <strong>must them[#generalizing-string-types] first</strong>.</p>
 
-<p>Then, all you need to do is create an <code>RbsGenerator</code> (which the converter will add your converted types to) and a <code>Conversion::RbiToRbs</code> instance (which performs the conversion). Then you can convert each object at your <code>RbiGenerator</code>&#39;s root namespace:</p>
+<p>Then, all you need to do is create an <code>RbsGenerator</code> (which the converter will add your converted types to) and a <code>Conversion::RbiToRbs</code> instance (which performs the conversion). Then you can convert each object at your <code>RbiGenerator</code>‘s root namespace:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_rbi_gen'>rbi_gen</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Parlour/RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Parlour/RbiGenerator.html#initialize-instance_method" title="Parlour::RbiGenerator#initialize (method)">new</a></span></span>
 <span class='comment'># Then, after populating the RbiGenerator with types...
@@ -392,7 +467,7 @@ plugins:
 <span class='id identifier rubyid_srb'>srb</span> <span class='id identifier rubyid_rbi'>rbi</span> <span class='id identifier rubyid_sorbet'>sorbet</span><span class='op'>-</span><span class='id identifier rubyid_typed'>typed</span>
 </code></pre>
 
-<p>You should also regenerate the parlour.rbi file by running <code>bundle exec parlour</code>. Don&#39;t edit this file manually, as your changes will be overwritten!</p>
+<p>You should also regenerate the parlour.rbi file by running <code>bundle exec parlour</code>. Don’t edit this file manually, as your changes will be overwritten!</p>
 
 <h2 id="label-License">License</h2>
 
@@ -404,9 +479,9 @@ plugins:
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jun  4 21:26:09 2024 by
+  Generated on Tue Jun  4 21:38:10 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.36 (ruby-2.7.8).
+  0.9.36 (ruby-3.3.2).
 </div>
 
     </div>
