@@ -153,7 +153,7 @@ end
 class Binding
   def clone(); end
 
-  def irb(); end
+  def irb(show_code: true); end
 end
 
 module Blank
