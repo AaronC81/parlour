@@ -900,7 +900,7 @@
     <span class='comment'># Merge the first signature line, and indent &amp; concat the rest
 </span>    <span class='id identifier rubyid_first_line'>first_line</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_rest_lines'>rest_lines</span> <span class='op'>=</span> <span class='op'>*</span><span class='id identifier rubyid_partial_sig_lines'>partial_sig_lines</span>
     <span class='id identifier rubyid_this_sig_lines'>this_sig_lines</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>T</span><span class='period'>.</span><span class='id identifier rubyid_unsafe'>unsafe</span><span class='lparen'>(</span><span class='id identifier rubyid_this_sig_lines'>this_sig_lines</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_first_line'>first_line</span>
-    <span class='id identifier rubyid_rest_lines'>rest_lines</span><span class='op'>&amp;.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_line'>line</span><span class='op'>|</span>
+    <span class='id identifier rubyid_rest_lines'>rest_lines</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_line'>line</span><span class='op'>|</span>
       <span class='id identifier rubyid_this_sig_lines'>this_sig_lines</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_definition'>definition</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>+</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_indented'>indented</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_line'>line</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
 
@@ -1060,7 +1060,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Jun 18 18:24:53 2024 by
+  Generated on Tue Jun 18 20:08:10 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-3.3.3).
 </div>
