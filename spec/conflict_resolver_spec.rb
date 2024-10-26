@@ -16,7 +16,7 @@ RSpec.describe Parlour::ConflictResolver do
     expect(m.children.length).to be 2
 
     invocations = 0
-    subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+    subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
     expect(invocations).to be 1
     expect(m.children.length).to be 0
@@ -31,7 +31,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(a.children.length).to be 2
 
-      subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(a) { |_| raise 'unable to resolve automatically' }
 
       expect(a.children.length).to be 1
     end
@@ -44,7 +44,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(a.children.length).to be 2
 
-      subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(a) { |_| raise 'unable to resolve automatically' }
 
       expect(a.children.length).to be 1
     end
@@ -57,7 +57,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(a.children.length).to be 2
 
-      subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(a) { |_| raise 'unable to resolve automatically' }
 
       expect(a.children.length).to be 2
     end
@@ -71,7 +71,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(a) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(a) { |_| invocations += 1; nil }
 
       expect(invocations).to be 1
       expect(a.children.length).to be 0
@@ -86,7 +86,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(a) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(a) { |_| invocations += 1; nil }
 
       expect(invocations).to be 1
       expect(a.children.length).to be 0
@@ -102,7 +102,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 2
 
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(m.children.first.name).to eq 'A'
@@ -117,7 +117,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(invocations).to be 1
       expect(m.children.length).to be 0
@@ -139,7 +139,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 2
 
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       a = m.children.first
@@ -157,7 +157,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 3
 
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(m.children.first.name).to eq 'A'
@@ -174,7 +174,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 3
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(m.children.length).to be 0
       expect(invocations).to be 1
@@ -189,7 +189,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(a.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(a) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(a) { |_| invocations += 1; nil }
 
       expect(a.children.length).to be 2
       expect(invocations).to be 0
@@ -206,7 +206,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -221,7 +221,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -236,7 +236,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -253,7 +253,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(m.children.length).to be 0
       expect(invocations).to be 1
@@ -268,7 +268,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -286,7 +286,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 3
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(m.children.length).to be 0
       expect(invocations).to be 1
@@ -303,7 +303,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -322,7 +322,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -337,7 +337,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -354,7 +354,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(m.children.length).to be 0
       expect(invocations).to be 1
@@ -369,7 +369,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(invocations).to be 0
@@ -387,7 +387,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 3
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(m.children.length).to be 0
       expect(invocations).to be 1
@@ -403,7 +403,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 2
 
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       expect(m.children.first.name).to eq 'A'
@@ -418,7 +418,7 @@ RSpec.describe Parlour::ConflictResolver do
       expect(m.children.length).to be 2
 
       invocations = 0
-      subject.resolve_conflicts(m) { |*| invocations += 1; nil }
+      subject.resolve_conflicts(m) { |_| invocations += 1; nil }
 
       expect(invocations).to be 1
       expect(m.children.length).to be 0
@@ -440,7 +440,7 @@ RSpec.describe Parlour::ConflictResolver do
 
       expect(m.children.length).to be 2
 
-      subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+      subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
       expect(m.children.length).to be 1
       a = m.children.first
@@ -560,7 +560,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(m.children.length).to be 2
 
-    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
     expect(m.children.length).to be 1
     expect(m.children.first.children.length).to be 1
@@ -575,7 +575,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(a.children.length).to be 2
 
-    subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(a) { |_| raise 'unable to resolve automatically' }
 
     expect(a.children.length).to be 2
   end
@@ -588,7 +588,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(a.children.length).to be 2
 
-    subject.resolve_conflicts(a) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(a) { |_| raise 'unable to resolve automatically' }
 
     expect(a.children.length).to be 2
   end
@@ -601,7 +601,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(x.children.length).to be 2
 
-    subject.resolve_conflicts(x) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(x) { |_| raise 'unable to resolve automatically' }
 
     expect(x.children.length).to be 2
   end
@@ -617,7 +617,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(m.children.length).to be 5
 
-    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
     expect(m.children.length).to be 2
   end
@@ -633,7 +633,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(m.children.length).to be 5
 
-    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
     expect(m.children.length).to be 2
   end
@@ -651,7 +651,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(m.children.length).to be 7
 
-    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
     expect(m.children.length).to be 3
   end
@@ -669,7 +669,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(m.children.length).to be 7
 
-    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
     expect(m.children.length).to be 3
   end
@@ -687,7 +687,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(m.children.length).to be 7
 
-    subject.resolve_conflicts(m) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(m) { |_| raise 'unable to resolve automatically' }
 
     expect(m.children.length).to be 4
   end
@@ -702,7 +702,7 @@ RSpec.describe Parlour::ConflictResolver do
 
     expect(x.children.length).to be 2
 
-    subject.resolve_conflicts(x) { |*| raise 'unable to resolve automatically' }
+    subject.resolve_conflicts(x) { |_| raise 'unable to resolve automatically' }
 
     expect(x.children.length).to be 2
   end
