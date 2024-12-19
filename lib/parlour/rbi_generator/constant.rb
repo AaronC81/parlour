@@ -102,9 +102,11 @@ module Parlour
 
       sig { override.void }
       def generalize_from_rbi!
-        # There's a good change this is an untyped constant, so rescue
-        # ParseError and use untyped
-        @value = (TypeParser.parse_single_type(@value) if String === @value) rescue Types::Untyped.new
+        if @value.is_a?(String)
+          # There's a good chance this is an untyped constant, so rescue
+          # ParseError and use untyped
+          @value = TypeParser.parse_single_type(@value) rescue Types::Untyped.new
+        end
       end
     end
   end
