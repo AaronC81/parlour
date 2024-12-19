@@ -739,15 +739,19 @@
 105
 106
 107
-108</pre>
+108
+109
+110</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/constant.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span>
-  <span class='comment'># There&#39;s a good change this is an untyped constant, so rescue
-</span>  <span class='comment'># ParseError and use untyped
-</span>  <span class='ivar'>@value</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../TypeParser.html" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'><span class='object_link'><a href="../TypeParser.html#parse_single_type-class_method" title="Parlour::TypeParser.parse_single_type (method)">parse_single_type</a></span></span><span class='lparen'>(</span><span class='ivar'>@value</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='ivar'>@value</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='const'><span class='object_link'><a href="../Types.html" title="Parlour::Types (module)">Types</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Types/Untyped.html" title="Parlour::Types::Untyped (class)">Untyped</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>if</span> <span class='ivar'>@value</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
+    <span class='comment'># There&#39;s a good chance this is an untyped constant, so rescue
+</span>    <span class='comment'># ParseError and use untyped
+</span>    <span class='ivar'>@value</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../TypeParser.html" title="Parlour::TypeParser (class)">TypeParser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_parse_single_type'><span class='object_link'><a href="../TypeParser.html#parse_single_type-class_method" title="Parlour::TypeParser.parse_single_type (method)">parse_single_type</a></span></span><span class='lparen'>(</span><span class='ivar'>@value</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='const'><span class='object_link'><a href="../Types.html" title="Parlour::Types (module)">Types</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Types/Untyped.html" title="Parlour::Types::Untyped (class)">Untyped</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1002,7 +1006,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 19 18:25:33 2024 by
+  Generated on Thu Dec 19 21:24:07 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.6).
 </div>
