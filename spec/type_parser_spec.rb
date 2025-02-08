@@ -928,6 +928,33 @@ RSpec.describe Parlour::TypeParser do
     expect(bar).to have_attributes(name: "BAR", value: "'Hey'.freeze")
   end
 
+  it 'parses constants with heredocs' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      class A
+        FOO = T.let(<<EOF, T.nilable(String))
+abc
+EOF
+        BAR = <<EOF.freeze
+def
+EOF
+      end
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children.length).to eq 1
+
+    a = root.children.first
+    expect(a).to be_a Parlour::RbiGenerator::ClassNamespace
+    expect(a).to have_attributes(name: 'A', superclass: nil, final: false, abstract: false)
+    expect(a.children.length).to eq 2
+
+    foo, bar = a.children
+    expect(foo).to be_a Parlour::RbiGenerator::Constant
+    expect(bar).to be_a Parlour::RbiGenerator::Constant
+    expect(foo).to have_attributes(name: "FOO", value: 'T.let(<<EOF, T.nilable(String))', heredocs: "abc\nEOF\n")
+    expect(bar).to have_attributes(name: "BAR", value: "<\<EOF.freeze", heredocs: "def\nEOF\n")
+  end
+
   it 'parses type aliases' do
     instance = described_class.from_source('(test)', <<-RUBY)
       class A

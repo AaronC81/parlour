@@ -162,6 +162,7 @@ RSpec.describe Parlour::RbiGenerator do
           bar.create_include( 'Z')
           bar.create_type_alias('Text', type: 'T.any(String, Symbol)')
           bar.create_constant('PI', value: '3.14')
+          bar.create_constant('TAU', value: '<<EOF', heredocs: "6.28\nEOF")
           bar.create_class('A')
           bar.create_class('B')
           bar.create_class('C')
@@ -178,6 +179,9 @@ RSpec.describe Parlour::RbiGenerator do
             extend Y
             Text = T.type_alias { T.any(String, Symbol) }
             PI = 3.14
+            TAU = <<EOF
+        6.28
+        EOF
 
             class A
             end

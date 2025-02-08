@@ -380,10 +380,12 @@ module Parlour
             type: T.must(node_to_s(body.to_a[2])),
           )]
         else
+          heredocs = find_heredocs(body)
           [Parlour::RbiGenerator::Constant.new(
             generator,
             name: T.must(name).to_s,
             value: T.must(node_to_s(body)),
+            heredocs: heredocs
           )]
         end
       else
@@ -404,6 +406,43 @@ module Parlour
       prop :final, T::Boolean
       prop :return_type, T.nilable(String)
       prop :params, T.nilable(T::Array[Parser::AST::Node])
+    end
+
+    sig { params(body: T.nilable(Parser::AST::Node)).returns(T.nilable(String)) }
+    # Given a node in the AST, finds all heredoc definitions within it
+    # and return them as a String
+    #
+    # e.g., for the AST for following code:
+    #
+    #  foo = <<~HEREDOC
+    #    bar
+    #  HEREDOC
+    #
+    # this method would return "  bar\nHEREDOC\n"
+    def find_heredocs(body)
+      heredocs = nil
+
+      return heredocs if body.nil?
+
+      loc = body.loc
+
+      if loc.instance_of?(Parser::Source::Map::Heredoc)
+        return body.loc.expression.source_buffer.source[loc.heredoc_body.begin_pos...loc.heredoc_end.end_pos]
+      end
+
+      body.children.map do |child|
+        next unless child.instance_of?(Parser::AST::Node)
+
+        child_heredocs = find_heredocs(child)
+
+        next if child_heredocs.nil?
+
+        heredocs ||= ''
+        heredocs += child_heredocs
+        heredocs += "\n"
+      end
+
+      heredocs
     end
 
     sig { params(path: NodePath).returns(IntermediateSig) }

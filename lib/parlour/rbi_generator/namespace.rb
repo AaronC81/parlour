@@ -564,7 +564,7 @@ module Parlour
         returned_includables
       end
 
-      sig { params(name: String, value: String, eigen_constant: T::Boolean, block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
+      sig { params(name: String, value: String, eigen_constant: T::Boolean, heredocs: T.nilable(String), block: T.nilable(T.proc.params(x: Constant).void)).returns(Constant) }
       # Adds a new constant definition to this namespace.
       #
       # @example Add an +Elem+ constant to the class.
@@ -574,14 +574,16 @@ module Parlour
       # @param value [String] The value of the constant, as a Ruby code string.
       # @param eigen_constant [Boolean] Whether this constant is defined on the
       #   eigenclass of the current namespace.
+      # @param heredocs [String,nil] Values of the heredocs used, in order
       # @param block A block which the new instance yields itself to.
       # @return [RbiGenerator::Constant]
-      def create_constant(name, value:, eigen_constant: false, &block)
+      def create_constant(name, value:, eigen_constant: false, heredocs: nil, &block)
         new_constant = RbiGenerator::Constant.new(
           generator,
           name: name,
           value: value,
           eigen_constant: eigen_constant,
+          heredocs: heredocs,
           &block
         )
         move_next_comments(new_constant)

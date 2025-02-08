@@ -9,6 +9,7 @@ module Parlour
           name: String,
           value: Types::TypeLike,
           eigen_constant: T::Boolean,
+          heredocs: T.nilable(String),
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
       end
@@ -18,9 +19,11 @@ module Parlour
       # @param value [String] The value of the constant, as a Ruby code string.
       # @param eigen_constant [Boolean] Whether this constant is defined on the
       #   eigenclass of the current namespace.
-      def initialize(generator, name: '', value: '', eigen_constant: false, &block)
+      # @param heredocs [String,nil] Definitions of the heredocs used in the value, if any
+      def initialize(generator, name: '', value: '', eigen_constant: false, heredocs: nil, &block)
         super(generator, name)
         @value = value
+        @heredocs = heredocs
         @eigen_constant = eigen_constant
         yield_self(&block) if block
       end
@@ -33,6 +36,9 @@ module Parlour
       #   of the current namespace.
       attr_reader :eigen_constant
 
+      # @return [String,nil] Definitions of the heredocs used in the value, if any
+      attr_reader :heredocs
+
       sig { params(other: Object).returns(T::Boolean) }
       # Returns true if this instance is equal to another extend.
       #
@@ -41,7 +47,7 @@ module Parlour
       # @return [Boolean]
       def ==(other)
         Constant === other && name == other.name && value == other.value \
-          && eigen_constant == other.eigen_constant
+          && eigen_constant == other.eigen_constant && heredocs == other.heredocs
       end
 
       sig do
@@ -57,9 +63,13 @@ module Parlour
       # @return [Array<String>] The RBI lines, formatted as specified.
       def generate_rbi(indent_level, options)
         if String === @value
-          [options.indented(indent_level, "#{name} = #{@value}")]
+          [
+            options.indented(indent_level, "#{name} = #{@value}"),
+          ] + [heredocs].compact
         else
-          [options.indented(indent_level, "#{name} = T.let(nil, #{@value.generate_rbi})")]
+          [
+            options.indented(indent_level, "#{name} = T.let(nil, #{@value.generate_rbi})"),
+          ] + [heredocs].compact
         end
       end
 
@@ -68,7 +78,7 @@ module Parlour
           others: T::Array[RbiGenerator::RbiObject]
         ).returns(T::Boolean)
       end
-      # Given an array of {Constant} instances, returns true if they may be 
+      # Given an array of {Constant} instances, returns true if they may be
       # merged into this instance using {merge_into_self}. This is always false.
       #
       # @param others [Array<RbiGenerator::RbiObject>] An array of other
@@ -97,7 +107,7 @@ module Parlour
 
       sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
-        [:value, :eigen_constant]
+        [:value, :eigen_constant, :heredocs]
       end
 
       sig { override.void }
