@@ -551,9 +551,9 @@ module Parlour
         rbi_params = parameters.map do |param|
           RbiGenerator::Parameter.new(param.name, type: param.type, default: param.default)
         end
-        "T.proc.params(#{rbi_params.map(&:to_sig_param).join(', ')}).#{
-          @return_type ? "returns(#{@return_type.generate_rbi})" : 'void'
-        }"
+        "T.proc." +
+          (rbi_params.empty? ? "" : "params(#{rbi_params.map(&:to_sig_param).join(', ')}).") +
+          (@return_type ? "returns(#{@return_type.generate_rbi})" : 'void')
       end
 
       sig { override.returns(String) }
@@ -575,4 +575,3 @@ module Parlour
     end
   end
 end
-
