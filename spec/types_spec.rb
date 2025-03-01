@@ -94,7 +94,7 @@ RSpec.describe Parlour::Types do
       Parlour::Types::Proc.new([], 'void')
     }
 
-    it { expect(type.generate_rbi).to eq('T.proc.returns(void)]') }
+    it { expect(type.generate_rbi).to eq('T.proc.returns(void)') }
     it { expect(type.generate_rbs).to eq('() -> void') }
     it { expect(type.describe).to eq('() -> void') }
   end
