@@ -420,7 +420,7 @@ module Parlour
     #
     # this method would return "  bar\nHEREDOC\n"
     def find_heredocs(body)
-      heredocs = nil
+      heredocs = T.let(nil, T.nilable(String))
 
       return heredocs if body.nil?
 
