@@ -89,6 +89,16 @@ RSpec.describe Parlour::Types do
     it { expect(type.describe).to eq('Set<String>') }
   end
 
+  describe 'Proc' do
+    subject(:type) {
+      Parlour::Types::Proc.new([], 'void')
+    }
+
+    it { expect(type.generate_rbi).to eq('T.proc.returns(void)') }
+    it { expect(type.generate_rbs).to eq('() -> void') }
+    it { expect(type.describe).to eq('() -> void') }
+  end
+
   describe 'Range' do
     subject(:type) {
       Parlour::Types::Range.new('String')
