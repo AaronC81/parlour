@@ -238,6 +238,9 @@ module Parlour
 
     end
 
+    sig { params(body: T.nilable(Parser::AST::Node)).returns(T.nilable(String)) }
+    def find_heredocs(body); end
+
     sig { params(path: NodePath).returns(IntermediateSig) }
     def parse_sig_into_sig(path); end
 
@@ -836,16 +839,20 @@ module Parlour
           name: String,
           value: Types::TypeLike,
           eigen_constant: T::Boolean,
+          heredocs: T.nilable(String),
           block: T.nilable(T.proc.params(x: Constant).void)
         ).void
       end
-      def initialize(generator, name: '', value: '', eigen_constant: false, &block); end
+      def initialize(generator, name: '', value: '', eigen_constant: false, heredocs: nil, &block); end
 
       sig { returns(Types::TypeLike) }
       attr_reader :value
 
       sig { returns(T.untyped) }
       attr_reader :eigen_constant
+
+      sig { returns(T.untyped) }
+      attr_reader :heredocs
 
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other); end
@@ -1234,10 +1241,11 @@ module Parlour
           name: String,
           value: String,
           eigen_constant: T::Boolean,
+          heredocs: T.nilable(String),
           block: T.nilable(T.proc.params(x: Constant).void)
         ).returns(Constant)
       end
-      def create_constant(name, value:, eigen_constant: false, &block); end
+      def create_constant(name, value:, eigen_constant: false, heredocs: nil, &block); end
 
       sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: TypeAlias).void)).returns(TypeAlias) }
       def create_type_alias(name, type:, &block); end
