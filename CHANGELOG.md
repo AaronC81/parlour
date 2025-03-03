@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [9.1.0] - 2025-03-03
+### Added
+- Constants can now be generated or parsed with heredoc strings. (Thanks @apiology)
+
+### Fixed
+- `T.proc` types with no parameters are now emitted correctly. Previously, they emitted an invalid
+  call to `params()` - now they emit no usage of `params`. (Thanks @apiology)
+
 ## [9.0.0] - 2024-06-04
 ### Changed
 - Updated Commander dependency to 5.0, to remove `abbrev` deprecation warning. 
