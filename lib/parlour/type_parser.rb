@@ -568,6 +568,12 @@ module Parlour
         attr_direction = method_name.to_s.gsub('attr_', '').to_sym
         def_names = T.must(parameters).map { |param| param.to_a[0].to_s }
         class_method = false
+      when :block
+        # handle multiple sigs for the same method
+        if def_node.to_a[0].type == :send &&
+          def_node.to_a[0].to_a[1] == :sig
+          return parse_sig_into_methods(path.sibling(1), is_within_eigenclass: is_within_eigenclass)
+        end
       else
         parse_err 'node after a sig must be a method definition', def_node
       end
