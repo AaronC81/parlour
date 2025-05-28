@@ -5,7 +5,8 @@ module Parlour
     # entire lines of an RBS, such as {Namespace} and {Method}. (As an example,
     # {Parameter} is _not_ a subclass because it does not generate lines, only
     # segments of definition lines.)
-    # @abstract
+    #
+    # This class is *abstract*.
     class RbsObject < TypedObject
       abstract!
       
@@ -35,7 +36,8 @@ module Parlour
       end
       # Generates the RBS lines for this object.
       #
-      # @abstract
+      # This method is *abstract*.
+      #
       # @param indent_level [Integer] The indentation level to generate the lines at.
       # @param options [Options] The formatting options to use.
       # @return [Array<String>] The RBS lines, formatted as specified.
@@ -50,7 +52,8 @@ module Parlour
       # into this instance using {merge_into_self}. Each subclass will have its
       # own criteria on what allows objects to be mergeable.
       #
-      # @abstract
+      # This method is *abstract*.
+      #
       # @param others [Array<RbsGenerator::RbsObject>] An array of other {RbsObject} instances.
       # @return [Boolean] Whether this instance may be merged with them.
       def mergeable?(others); end
@@ -64,7 +67,8 @@ module Parlour
       # subclass will do this differently.
       # You MUST ensure that {mergeable?} is true for those instances.
       #
-      # @abstract
+      # This method is *abstract*.
+      #
       # @param others [Array<RbsGenerator::RbsObject>] An array of other {RbsObject} instances.
       # @return [void]
       def merge_into_self(others); end

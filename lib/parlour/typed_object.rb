@@ -148,7 +148,8 @@ module Parlour
     #   - If it is a hash, it must be of the format { Symbol => String }. The
     #     given string will be used instead of calling the symbol.
     #
-    # @abstract
+    # This method is *abstract*.
+    #
     # @return [<Symbol, String>]
     def describe_attrs; end
 
