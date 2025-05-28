@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [9.1.1] - 2025-05-28
+### Fixed
+- Replaced YARD `@abstract` directives, as they now conflict with Sorbet's `abstract!` directives
+  when using Tapioca
+
 ## [9.1.0] - 2025-03-03
 ### Added
 - Constants can now be generated or parsed with heredoc strings. (Thanks @apiology)
