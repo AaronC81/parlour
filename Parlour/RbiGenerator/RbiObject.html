@@ -60,7 +60,7 @@
       </div>
 
       <div id="content"><h1>Class: Parlour::RbiGenerator::RbiObject
-  <span class="abstract note title">Abstract</span>
+  
   
   
 </h1>
@@ -103,12 +103,10 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This class is abstract.</strong>
-  <div class='inline'></div>
-</div>
-
+    
 <p>An abstract class which is subclassed by any classes which can generate entire lines of an RBI, such as <span class='object_link'><a href="Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">Namespace</a></span> and <span class='object_link'><a href="Method.html" title="Parlour::RbiGenerator::Method (class)">Method</a></span>. (As an example, <span class='object_link'><a href="Parameter.html" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span> is <em>not</em> a subclass because it does not generate lines, only segments of definition and signature lines.)</p>
+
+<p>This class is <strong>abstract</strong>.</p>
 
 
   </div>
@@ -186,7 +184,7 @@
   
   
   
-  <span class="abstract note title">abstract</span>
+  
   
   
 
@@ -210,7 +208,7 @@
   
   
   
-  <span class="abstract note title">abstract</span>
+  
   
   
 
@@ -260,7 +258,7 @@
   
   
   
-  <span class="abstract note title">abstract</span>
+  
   
   
 
@@ -284,7 +282,7 @@
   
   
   
-  <span class="abstract note title">abstract</span>
+  
   
   
 
@@ -385,14 +383,14 @@
       <pre class="lines">
 
 
-19
 20
 21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_generator'>generator</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
@@ -450,12 +448,12 @@
       <pre class="lines">
 
 
-28
 29
-30</pre>
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generator'>generator</span>
   <span class='ivar'>@generator</span>
@@ -483,12 +481,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This method is abstract.</strong>
-  <div class='inline'></div>
-</div>
-<p class="note returns_void">This method returns an undefined value.</p>
+    <p class="note returns_void">This method returns an undefined value.</p>
 <p>Assuming that the types throughout this object and its children have been specified as RBI-style types, generalises them into type instances from the <span class='object_link'><a href="../Types.html" title="Parlour::Types (module)">Types</a></span> module.</p>
+
+<p>This method is <strong>abstract</strong>.</p>
 
 
   </div>
@@ -502,10 +498,10 @@
       <pre class="lines">
 
 
-79</pre>
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 79</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generalize_from_rbi!'>generalize_from_rbi!</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
@@ -524,12 +520,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This method is abstract.</strong>
-  <div class='inline'></div>
-</div>
-
+    
 <p>Generates the RBI lines for this object.</p>
+
+<p>This method is <strong>abstract</strong>.</p>
 
 
   </div>
@@ -597,10 +591,10 @@
       <pre class="lines">
 
 
-42</pre>
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_rbi'>generate_rbi</span><span class='lparen'>(</span><span class='id identifier rubyid_indent_level'>indent_level</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
@@ -619,12 +613,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This method is abstract.</strong>
-  <div class='inline'></div>
-</div>
-<p class="note returns_void">This method returns an undefined value.</p>
+    <p class="note returns_void">This method returns an undefined value.</p>
 <p>Given an array of other objects, merges them into this one. Each subclass will do this differently. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbiGenerator::RbiObject#mergeable? (method)">#mergeable?</a></span> is true for those instances.</p>
+
+<p>This method is <strong>abstract</strong>.</p>
 
 
   </div>
@@ -658,10 +650,10 @@
       <pre class="lines">
 
 
-70</pre>
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge_into_self'>merge_into_self</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
@@ -680,12 +672,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This method is abstract.</strong>
-  <div class='inline'></div>
-</div>
-
+    
 <p>Given an array of other objects, returns true if they may be merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbiGenerator::RbiObject#merge_into_self (method)">#merge_into_self</a></span>. Each subclass will have its own criteria on what allows objects to be mergeable.</p>
+
+<p>This method is <strong>abstract</strong>.</p>
 
 
   </div>
@@ -737,10 +727,10 @@
       <pre class="lines">
 
 
-56</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/parlour/rbi_generator/rbi_object.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mergeable?'>mergeable?</span><span class='lparen'>(</span><span class='id identifier rubyid_others'>others</span><span class='rparen'>)</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
@@ -753,7 +743,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed May 28 18:25:54 2025 by
+  Generated on Wed May 28 20:17:12 2025 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.4.4).
 </div>
