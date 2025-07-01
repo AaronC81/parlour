@@ -1,7 +1,8 @@
 # typed: true
 module Parlour
   # The base class for user-defined RBI generation plugins.
-  # @abstract
+  #
+  # This class is *abstract*.
   class Plugin
     extend T::Sig
     extend T::Helpers
@@ -57,7 +58,8 @@ module Parlour
     # Plugin subclasses should redefine this method and do their RBI generation
     # inside it.
     #
-    # @abstract
+    # This method is *abstract*.
+    #
     # @param root [RbiGenerator::Namespace] The root {RbiGenerator::Namespace}.
     # @return [void]
     def generate(root); end
