@@ -55,14 +55,15 @@ module Parlour
       expanded_inclusions = inclusions.map { |i| File.expand_path(i, root) }
       expanded_exclusions = exclusions.map { |e| File.expand_path(e, root) }
 
-      stdin, stdout, stderr, wait_thr = T.unsafe(Open3).popen3(
-        'bundle exec srb tc -p file-table-json',
+      cmd = 'bundle exec srb tc -p file-table-json'
+      stdout, _stderr, io_status = T.unsafe(Open3).capture3(
+        cmd,
         chdir: root
       )
 
-      stdout = T.must(stdout.read)
-      if stdout == ''
-        raise 'unable to get Sorbet file table; the project may be empty or not have Sorbet initialised'
+      if stdout == '' || !io_status.success?
+        raise 'unable to get Sorbet file table with #{cmd.inspect}; ' \
+              'the project may be empty or not have Sorbet initialised'
       end
 
       file_table_hash = JSON.parse(stdout)
