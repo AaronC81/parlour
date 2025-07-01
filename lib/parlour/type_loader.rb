@@ -62,7 +62,7 @@ module Parlour
       )
 
       if stdout == '' || !io_status.success?
-        raise 'unable to get Sorbet file table with #{cmd.inspect}; ' \
+        raise "unable to get Sorbet file table with #{cmd.inspect}; " \
               'the project may be empty or not have Sorbet initialised'
       end
 
