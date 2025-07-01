@@ -61,7 +61,9 @@ module Parlour
         chdir: root
       )
 
-      if stdout == '' || !io_status.success?
+      # ignore output code, which may indicate type checking issues
+      # that aren't blocking us
+      if stdout == ''
         raise "unable to get Sorbet file table with #{cmd.inspect}; " \
               'the project may be empty or not have Sorbet initialised'
       end
