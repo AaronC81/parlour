@@ -7,13 +7,14 @@
 #
 #   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/simplecov-html/all/simplecov-html.rbi
 #
-# simplecov-html-0.12.3
+# simplecov-html-0.13.2
 
 module SimpleCov
 end
 module SimpleCov::Formatter
 end
 class SimpleCov::Formatter::HTMLFormatter
+  def asset_inline(name); end
   def asset_output_path; end
   def assets_path(name); end
   def branchable_result?; end

@@ -7,7 +7,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/rspec-support/all/rspec-support.rbi
 #
-# rspec-support-3.11.0
+# rspec-support-3.13.7
 
 module RSpec
   extend RSpec::Support::Warnings
@@ -63,7 +63,9 @@ module RSpec::Support::Ruby
 end
 module RSpec::Support::RubyFeatures
   def caller_locations_supported?; end
+  def distincts_kw_args_from_positional_hash?; end
   def fork_supported?; end
+  def kw_arg_separation?; end
   def kw_args_supported?; end
   def module_prepends_supported?; end
   def module_refinement_supported?; end
@@ -71,7 +73,9 @@ module RSpec::Support::RubyFeatures
   def required_kw_args_supported?; end
   def ripper_supported?; end
   def self.caller_locations_supported?; end
+  def self.distincts_kw_args_from_positional_hash?; end
   def self.fork_supported?; end
+  def self.kw_arg_separation?; end
   def self.kw_args_supported?; end
   def self.module_prepends_supported?; end
   def self.module_refinement_supported?; end
@@ -80,9 +84,11 @@ module RSpec::Support::RubyFeatures
   def self.ripper_supported?; end
   def self.supports_exception_cause?; end
   def self.supports_rebinding_module_methods?; end
+  def self.supports_syntax_suggest?; end
   def self.supports_taint?; end
   def supports_exception_cause?; end
   def supports_rebinding_module_methods?; end
+  def supports_syntax_suggest?; end
   def supports_taint?; end
 end
 module RSpec::Support::AllExceptionsExceptOnesWeMustNotRescue
@@ -174,14 +180,14 @@ class RSpec::Support::MethodSignatureVerifier
   def min_non_kw_args; end
   def missing_kw_args; end
   def non_kw_args; end
-  def split_args(*args); end
+  def split_args(args); end
   def unlimited_args?; end
   def valid?; end
   def valid_non_kw_args?; end
   def with_expectation(expectation); end
 end
 class RSpec::Support::LooseSignatureVerifier < RSpec::Support::MethodSignatureVerifier
-  def split_args(*args); end
+  def split_args(args); end
 end
 class RSpec::Support::LooseSignatureVerifier::SignatureWithKeywordArgumentsMatcher
   def has_kw_args_in?(args); end
@@ -192,8 +198,8 @@ class RSpec::Support::LooseSignatureVerifier::SignatureWithKeywordArgumentsMatch
   def valid_non_kw_args?(*args); end
 end
 module RSpec::Support::WithKeywordsWhenNeeded
-  def class_exec(klass, *args, &block); end
-  def self.class_exec(klass, *args, &block); end
+  def class_exec(klass, *args, **, &block); end
+  def self.class_exec(klass, *args, **, &block); end
 end
 module RSpec::Support::RecursiveConstMethods
   def const_defined_on?(mod, const_name); end
@@ -225,6 +231,7 @@ class RSpec::Support::ObjectFormatter::InspectableItem < Struct
   def pretty_print(pp); end
   def self.[](*arg0); end
   def self.inspect; end
+  def self.keyword_init?; end
   def self.members; end
   def self.new(*arg0); end
   def text; end
@@ -240,6 +247,7 @@ class RSpec::Support::ObjectFormatter::BaseInspector < Struct
   def self.[](*arg0); end
   def self.can_inspect?(_object); end
   def self.inspect; end
+  def self.keyword_init?; end
   def self.members; end
   def self.new(*arg0); end
 end

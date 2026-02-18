@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 
 module Parser
   class CurrentRuby < Parser::Base
