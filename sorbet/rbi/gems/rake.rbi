@@ -7,7 +7,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/rake/all/rake.rbi
 #
-# rake-13.0.6
+# rake-13.3.1
 
 module Rake
   def self.add_rakelib(*files); end
@@ -94,7 +94,7 @@ module Rake::TaskManager
   def generate_did_you_mean_suggestions(task_name); end
   def generate_message_for_undefined_task(task_name); end
   def generate_name; end
-  def get_description(task); end
+  def get_description; end
   def in_namespace(name); end
   def initialize; end
   def intern(task_class, task_name); end
@@ -141,6 +141,7 @@ module Rake::FileUtilsExt
   def ln(*args, **options, &block); end
   def ln_s(*args, **options, &block); end
   def ln_sf(*args, **options, &block); end
+  def ln_sr(*args, **options, &block); end
   def makedirs(*args, **options, &block); end
   def mkdir(*args, **options, &block); end
   def mkdir_p(*args, **options, &block); end
@@ -179,7 +180,6 @@ class Rake::FileList
   def ==(array); end
   def [](*args, &block); end
   def []=(*args, &block); end
-  def abbrev(*args, &block); end
   def add(*filenames); end
   def add_matching(pattern); end
   def all?(*args, &block); end
@@ -228,6 +228,7 @@ class Rake::FileList
   def existing; end
   def ext(newext = nil); end
   def fetch(*args, &block); end
+  def fetch_values(*args, &block); end
   def fill(*args, &block); end
   def filter!(*args, &block); end
   def filter(*args, &block); end
@@ -252,6 +253,7 @@ class Rake::FileList
   def inject(*args, &block); end
   def insert(*args, &block); end
   def inspect(*args, &block); end
+  def intersect?(*args, &block); end
   def intersection(*args, &block); end
   def is_a?(klass); end
   def join(*args, &block); end
@@ -356,7 +358,6 @@ class Rake::ThreadPool
   def initialize(thread_count); end
   def join; end
   def process_queue_item; end
-  def safe_thread_count; end
   def start_thread; end
   def stat(event, data = nil); end
   def statistics; end
@@ -409,6 +410,7 @@ class Rake::Application
   def init(app_name = nil, argv = nil); end
   def initialize; end
   def invoke_task(task_string); end
+  def load_debug_at_stop_feature; end
   def load_imports; end
   def load_rakefile; end
   def name; end
@@ -456,6 +458,7 @@ class Rake::PseudoStatus
 end
 class Rake::TaskArguments
   def [](index); end
+  def deconstruct_keys(keys); end
   def each(&block); end
   def extras; end
   def fetch(*args, &block); end
@@ -552,7 +555,7 @@ end
 class Rake::EarlyTime
   def <=>(other); end
   def self.allocate; end
-  def self.new(*arg0); end
+  def self.new(*, **); end
   def to_s; end
   extend Singleton::SingletonClassMethods
   include Comparable
@@ -592,6 +595,7 @@ module Rake::DSL
   def ln(*args, **options, &block); end
   def ln_s(*args, **options, &block); end
   def ln_sf(*args, **options, &block); end
+  def ln_sr(*args, **options, &block); end
   def makedirs(*args, **options, &block); end
   def mkdir(*args, **options, &block); end
   def mkdir_p(*args, **options, &block); end
@@ -629,7 +633,7 @@ end
 class Rake::LateTime
   def <=>(other); end
   def self.allocate; end
-  def self.new(*arg0); end
+  def self.new(*, **); end
   def to_s; end
   extend Singleton::SingletonClassMethods
   include Comparable

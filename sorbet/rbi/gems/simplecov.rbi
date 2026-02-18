@@ -7,7 +7,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/simplecov/all/simplecov.rbi
 #
-# simplecov-0.21.2
+# simplecov-0.22.0
 
 module SimpleCov
   def self.adapt_coverage_result; end
@@ -77,9 +77,12 @@ module SimpleCov::Configuration
   def coverage_criterion(criterion = nil); end
   def coverage_criterion_enabled?(criterion); end
   def coverage_dir(dir = nil); end
+  def coverage_for_eval_enabled?; end
+  def coverage_for_eval_supported?; end
   def coverage_path; end
   def coverage_start_arguments_supported?; end
   def enable_coverage(criterion); end
+  def enable_coverage_for_eval; end
   def enable_for_subprocesses(value = nil); end
   def enabled_for_subprocesses?; end
   def filters; end
@@ -252,7 +255,7 @@ class SimpleCov::FileList
   def branch_covered_percent; end
   def compute_coverage_statistics; end
   def compute_coverage_statistics_by_file; end
-  def count(*args, &block); end
+  def count(*args, **, &block); end
   def coverage_statistics; end
   def coverage_statistics_by_file; end
   def covered_branches; end
@@ -260,20 +263,20 @@ class SimpleCov::FileList
   def covered_percent; end
   def covered_percentages; end
   def covered_strength; end
-  def each(*args, &block); end
-  def empty?(*args, &block); end
+  def each(*args, **, &block); end
+  def empty?(*args, **, &block); end
   def initialize(files); end
   def least_covered_file; end
-  def length(*args, &block); end
+  def length(*args, **, &block); end
   def lines_of_code; end
-  def map(*args, &block); end
+  def map(*args, **, &block); end
   def missed_branches; end
   def missed_lines; end
   def never_lines; end
-  def size(*args, &block); end
+  def size(*args, **, &block); end
   def skipped_lines; end
-  def to_a(*args, &block); end
-  def to_ary(*args, &block); end
+  def to_a(*args, **, &block); end
+  def to_ary(*args, **, &block); end
   def total_branches; end
   extend Forwardable
   include Enumerable
@@ -282,13 +285,13 @@ class SimpleCov::Result
   def command_name; end
   def command_name=(arg0); end
   def coverage; end
-  def coverage_statistics(*args, &block); end
-  def coverage_statistics_by_file(*args, &block); end
-  def covered_branches(*args, &block); end
-  def covered_lines(*args, &block); end
-  def covered_percent(*args, &block); end
-  def covered_percentages(*args, &block); end
-  def covered_strength(*args, &block); end
+  def coverage_statistics(*args, **, &block); end
+  def coverage_statistics_by_file(*args, **, &block); end
+  def covered_branches(*args, **, &block); end
+  def covered_lines(*args, **, &block); end
+  def covered_percent(*args, **, &block); end
+  def covered_percentages(*args, **, &block); end
+  def covered_strength(*args, **, &block); end
   def created_at; end
   def created_at=(arg0); end
   def filenames; end
@@ -297,15 +300,15 @@ class SimpleCov::Result
   def format!; end
   def groups; end
   def initialize(original_result, command_name: nil, created_at: nil); end
-  def least_covered_file(*args, &block); end
-  def missed_branches(*args, &block); end
-  def missed_lines(*args, &block); end
+  def least_covered_file(*args, **, &block); end
+  def missed_branches(*args, **, &block); end
+  def missed_lines(*args, **, &block); end
   def original_result; end
   def self.from_hash(hash); end
   def source_files; end
   def to_hash; end
-  def total_branches(*args, &block); end
-  def total_lines(*args, &block); end
+  def total_branches(*args, **, &block); end
+  def total_lines(*args, **, &block); end
   extend Forwardable
 end
 class SimpleCov::Filter
@@ -416,4 +419,17 @@ end
 module SimpleCov::SimulateCoverage
   def call(absolute_path); end
   def self.call(absolute_path); end
+end
+class InvalidName___Class_0x00___CoverageLimits_4 < Struct
+  def maximum_coverage_drop; end
+  def maximum_coverage_drop=(_); end
+  def minimum_coverage; end
+  def minimum_coverage=(_); end
+  def minimum_coverage_by_file; end
+  def minimum_coverage_by_file=(_); end
+  def self.[](*arg0); end
+  def self.inspect; end
+  def self.keyword_init?; end
+  def self.members; end
+  def self.new(*arg0); end
 end
