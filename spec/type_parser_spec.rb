@@ -200,6 +200,23 @@ RSpec.describe Parlour::TypeParser do
         type: 'String')
     end
 
+    it 'works with multiple sigs' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        sig { params(x: Integer).returns(String) }
+        sig { params(x: String).returns(Integer) }
+        def self.foo(x)
+          3
+        end
+      RUBY
+
+      meth = instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0])).only
+      expect(meth).to have_attributes(name: 'foo', return_type: 'Integer',
+        override: false, final: false, class_method: true)
+      expect(meth.parameters.length).to eq 1
+      expect(meth.parameters.first).to have_attributes(name: 'x',
+        type: 'String')
+    end
+
     it 'errors on a self.x method within an eigenclass' do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig { params(x: String).returns(Integer) }
