@@ -6,13 +6,13 @@
 <title>
   Class: Parlour::RbiGenerator::Parameter
   
-    &mdash; Documentation by YARD 0.9.39
+    &mdash; Documentation by YARD 0.9.40
   
 </title>
 
-  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "Parlour::RbiGenerator::Parameter";
@@ -99,16 +99,15 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/rbi_generator/parameter.rb</dd>
+    <dd>lib/parlour/rbi_generator/parameter.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>Represents a method parameter with a Sorbet type signature.</p>
-
+    <p>Represents a method parameter with a Sorbet type signature.</p>
 
   </div>
 </div>
@@ -127,9 +126,7 @@
         <dt id="PREFIXES-constant" class="">PREFIXES =
           <div class="docstring">
   <div class="discussion">
-    
-<p>A mapping of <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> values to the characteristic prefixes each kind has.</p>
-
+    <p>A mapping of <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> values to the characteristic prefixes each kind has.</p>
 
   </div>
 </div>
@@ -176,9 +173,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A string of Ruby code for this parameter’s default value.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>A string of Ruby code for this parameter's default value.</p></div></span>
   
 </li>
 
@@ -205,9 +200,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The kind of parameter that this is.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The kind of parameter that this is.</p></div></span>
   
 </li>
 
@@ -234,9 +227,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The name of this parameter, including any prefixes or suffixes such as <tt>*</tt>.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The name of this parameter, including any prefixes or suffixes such as <code>*</code>.</p></div></span>
   
 </li>
 
@@ -263,9 +254,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A Sorbet string of this parameter’s type, such as <tt>“String”</tt> or <tt>“T.untyped”</tt>.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>A Sorbet string of this parameter's type, such as <code>&quot;String&quot;</code> or <code>&quot;T.untyped&quot;</code>.</p></div></span>
   
 </li>
 
@@ -300,9 +289,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns true if this instance is equal to another method.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Returns true if this instance is equal to another method.</p></div></span>
   
 </li>
 
@@ -370,9 +357,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Create a new method parameter.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Create a new method parameter.</p></div></span>
   
 </li>
 
@@ -394,9 +379,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The name of this parameter, stripped of any prefixes or suffixes.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The name of this parameter, stripped of any prefixes or suffixes.</p></div></span>
   
 </li>
 
@@ -418,9 +401,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A string of how this parameter should be defined in a method definition.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>A string of how this parameter should be defined in a method definition.</p></div></span>
   
 </li>
 
@@ -442,14 +423,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A string of how this parameter should be defined in a Sorbet <code>sig</code>.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>A string of how this parameter should be defined in a Sorbet <code>sig</code>.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 
@@ -467,9 +447,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Create a new method parameter.</p>
-
+    <p>Create a new method parameter.</p>
 
   </div>
 </div>
@@ -479,30 +457,22 @@
     <h4 class="tag_title">Examples:</h4>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Create a simple Integer parameter named <code>num</code>.</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Create a simple Integer parameter named <code>num</code>.</p></div></h5>
       
       <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>num</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Integer</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span></code></pre>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Create a nilable array parameter.</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Create a nilable array parameter.</p></div></h5>
       
       <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>array_of_strings_or_symbols</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T.nilable(T::Array(String, Symbol))</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span></code></pre>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Create a block parameter.</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Create a block parameter.</p></div></h5>
       
       <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&amp;blk</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T.proc.void</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span></code></pre>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Create a parameter with a default value.</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Create a parameter with a default value.</p></div></h5>
       
       <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parameter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>String</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>default:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Parlour</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span></code></pre>
     
@@ -520,9 +490,9 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The name of this parameter. This may start with <tt>*</tt>, <tt>**</tt>, or <tt>&amp;</tt>, or end with <code>:</code>, which will infer the <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> of this parameter. (If it contains none of those, <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> will be <code>:normal</code>.)</p>
-</div>
+        <div class='inline'><p>The name of this parameter. This may start with <code>*</code>, <code>**</code>,
+or <code>&amp;</code>, or end with <code>:</code>, which will infer the <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> of this
+parameter. (If it contains none of those, <span class='object_link'><a href="#kind-instance_method" title="Parlour::RbiGenerator::Parameter#kind (method)">#kind</a></span> will be <code>:normal</code>.)</p></div>
       
     </li>
   
@@ -538,9 +508,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>A Sorbet string of this parameter’s type, such as <tt>“String”</tt> or <tt>“T.untyped”</tt>.</p>
-</div>
+        <div class='inline'><p>A Sorbet string of this parameter's type, such as
+<code>&quot;String&quot;</code> or <code>&quot;T.untyped&quot;</code>.</p></div>
       
     </li>
   
@@ -556,9 +525,10 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>A string of Ruby code for this parameter’s default value. For example, the default value of an empty string would be represented as <tt>“&quot;&quot;”</tt> (or <tt>‘“”’</tt>). The default value of the decimal <code>3.14</code> would be <tt>“3.14”</tt>.</p>
-</div>
+        <div class='inline'><p>A string of Ruby code for this parameter's default value.
+For example, the default value of an empty string would be represented
+as <code>&quot;\&quot;\&quot;&quot;</code> (or <code>'&quot;&quot;'</code>). The default value of the decimal <code>3.14</code>
+would be <code>&quot;3.14&quot;</code>.</p></div>
       
     </li>
   
@@ -622,9 +592,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>A string of Ruby code for this parameter’s default value. For example, the default value of an empty string would be represented as <tt>“&quot;&quot;”</tt> (or <tt>‘“”’</tt>). The default value of the decimal <code>3.14</code> would be <tt>“3.14”</tt>.</p>
-
+    <p>A string of Ruby code for this parameter's default value. For example,
+the default value of an empty string would be represented as <code>&quot;\&quot;\&quot;&quot;</code>
+(or <code>'&quot;&quot;'</code>). The default value of the decimal <code>3.14</code> would be <code>&quot;3.14&quot;</code>.</p>
 
   </div>
 </div>
@@ -678,9 +648,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The kind of parameter that this is. This will be one of <code>:normal</code>, <code>:splat</code>, <code>:double_splat</code>, <code>:block</code> or <code>:keyword</code>.</p>
-
+    <p>The kind of parameter that this is. This will be one of <code>:normal</code>,
+<code>:splat</code>, <code>:double_splat</code>, <code>:block</code> or <code>:keyword</code>.</p>
 
   </div>
 </div>
@@ -734,9 +703,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The name of this parameter, including any prefixes or suffixes such as <tt>*</tt>.</p>
-
+    <p>The name of this parameter, including any prefixes or suffixes such as
+<code>*</code>.</p>
 
   </div>
 </div>
@@ -790,9 +758,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>A Sorbet string of this parameter’s type, such as <tt>“String”</tt> or <tt>“T.untyped”</tt>.</p>
-
+    <p>A Sorbet string of this parameter's type, such as <code>&quot;String&quot;</code> or
+<code>&quot;T.untyped&quot;</code>.</p>
 
   </div>
 </div>
@@ -851,9 +818,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns true if this instance is equal to another method.</p>
-
+    <p>Returns true if this instance is equal to another method.</p>
 
   </div>
 </div>
@@ -871,9 +836,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parlour::RbiGenerator::Parameter</a></span> (or a subclass of it), this will always return false.</p>
-</div>
+        <div class='inline'><p>The other instance. If this is not a <span class='object_link'><a href="" title="Parlour::RbiGenerator::Parameter (class)">Parlour::RbiGenerator::Parameter</a></span> (or a
+subclass of it), this will always return false.</p></div>
       
     </li>
   
@@ -1007,9 +971,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The name of this parameter, stripped of any prefixes or suffixes. For example, <tt>*rest</tt> would become <code>rest</code>, or <code>foo:</code> would become <code>foo</code>.</p>
-
+    <p>The name of this parameter, stripped of any prefixes or suffixes. For
+example, <code>*rest</code> would become <code>rest</code>, or <code>foo:</code> would become <code>foo</code>.</p>
 
   </div>
 </div>
@@ -1071,9 +1034,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>A string of how this parameter should be defined in a method definition.</p>
-
+    <p>A string of how this parameter should be defined in a method definition.</p>
 
   </div>
 </div>
@@ -1137,9 +1098,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>A string of how this parameter should be defined in a Sorbet <code>sig</code>.</p>
-
+    <p>A string of how this parameter should be defined in a Sorbet <code>sig</code>.</p>
 
   </div>
 </div>
@@ -1185,9 +1144,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Apr 12 18:28:20 2026 by
+  Generated on Mon Apr 13 18:42:52 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.39 (ruby-3.4.9).
+  0.9.40 (ruby-3.4.9).
 </div>
 
     </div>

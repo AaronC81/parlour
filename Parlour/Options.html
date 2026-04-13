@@ -6,13 +6,13 @@
 <title>
   Class: Parlour::Options
   
-    &mdash; Documentation by YARD 0.9.39
+    &mdash; Documentation by YARD 0.9.40
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "Parlour::Options";
@@ -99,16 +99,15 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/options.rb</dd>
+    <dd>lib/parlour/options.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>A set of immutable formatting options.</p>
-
+    <p>A set of immutable formatting options.</p>
 
   </div>
 </div>
@@ -144,9 +143,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>If there are at least this many parameters in a signature, then it  is broken onto separate lines.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>If there are at least this many parameters in a signature, then it  is broken onto separate lines.</p></div></span>
   
 </li>
 
@@ -173,9 +170,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Whether to sort all items within a namespace alphabetically.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Whether to sort all items within a namespace alphabetically.</p></div></span>
   
 </li>
 
@@ -202,9 +197,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The number of spaces to use per indent.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The number of spaces to use per indent.</p></div></span>
   
 </li>
 
@@ -239,9 +232,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns a string indented to the given indent level, according to the set <span class='object_link'><a href="#tab_size-instance_method" title="Parlour::Options#tab_size (method)">#tab_size</a></span>.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Returns a string indented to the given indent level, according to the set <span class='object_link'><a href="#tab_size-instance_method" title="Parlour::Options#tab_size (method)">#tab_size</a></span>.</p></div></span>
   
 </li>
 
@@ -265,14 +256,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Creates a new set of formatting options.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Creates a new set of formatting options.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 
@@ -290,9 +280,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Creates a new set of formatting options.</p>
-
+    <p>Creates a new set of formatting options.</p>
 
   </div>
 </div>
@@ -302,9 +290,7 @@
     <h4 class="tag_title">Examples:</h4>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Create Options with <code>break_params</code> of <code>4</code> and <code>tab_size</code> of <code>2</code>.</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Create Options with <code>break_params</code> of <code>4</code> and <code>tab_size</code> of <code>2</code>.</p></div></h5>
       
       <pre class="example code"><code><span class='const'><span class='object_link'><a href="../Parlour.html" title="Parlour (module)">Parlour</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="Parlour::Options (class)">Options</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>break_params:</span> <span class='int'>4</span><span class='comma'>,</span> <span class='label'>tab_size:</span> <span class='int'>2</span><span class='rparen'>)</span></code></pre>
     
@@ -322,9 +308,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>If there are at least this many parameters in a signature, then it is broken onto separate lines.</p>
-</div>
+        <div class='inline'><p>If there are at least this many parameters in a
+signature, then it is broken onto separate lines.</p></div>
       
     </li>
   
@@ -338,9 +323,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The number of spaces to use per indent.</p>
-</div>
+        <div class='inline'><p>The number of spaces to use per indent.</p></div>
       
     </li>
   
@@ -354,9 +337,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether to sort all items within a namespace alphabetically.</p>
-</div>
+        <div class='inline'><p>Whether to sort all items within a
+namespace alphabetically.</p></div>
       
     </li>
   
@@ -406,23 +388,20 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>If there are at least this many parameters in a signature, then it is broken onto separate lines.</p>
-
+    <p>If there are at least this many parameters in a signature, then it
+is broken onto separate lines.</p>
 <pre class="code ruby"><code class="ruby"><span class='comment'># With break_params: 5
 </span><span class='id identifier rubyid_sig'>sig</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='const'>String</span><span class='comma'>,</span> <span class='label'>age:</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='label'>hobbies:</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>country:</span> <span class='const'>Symbol</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_void'>void</span> <span class='rbrace'>}</span>
 
 <span class='comment'># With break_params: 4
 </span><span class='id identifier rubyid_sig'>sig</span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span>
-    <span class='label'>name:</span> <span class='const'>String</span><span class='comma'>,</span>
-    <span class='label'>age:</span> <span class='const'>Integer</span><span class='comma'>,</span>
-    <span class='label'>hobbies:</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span><span class='comma'>,</span>
-    <span class='label'>country:</span> <span class='const'>Symbol</span>
-  <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_void'>void</span>
-<span class='kw'>end</span>
-</code></pre>
-
+<span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span>
+  <span class='label'>name:</span> <span class='const'>String</span><span class='comma'>,</span>
+  <span class='label'>age:</span> <span class='const'>Integer</span><span class='comma'>,</span>
+  <span class='label'>hobbies:</span> <span class='const'>T</span><span class='op'>::</span><span class='const'>Array</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span><span class='comma'>,</span>
+  <span class='label'>country:</span> <span class='const'>Symbol</span>
+<span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_void'>void</span>
+<span class='kw'>end</span></code></pre>
 
   </div>
 </div>
@@ -476,9 +455,12 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Whether to sort all items within a namespace alphabetically. Items which are typically grouped together, such as “include” or “extend” calls, will remain grouped together when sorted. If true, items are sorted by their name when the RBI is generated. If false, items are generated in the order they are added to the namespace.</p>
-
+    <p>Whether to sort all items within a namespace alphabetically.
+Items which are typically grouped together, such as &quot;include&quot; or
+&quot;extend&quot; calls, will remain grouped together when sorted.
+If true, items are sorted by their name when the RBI is generated.
+If false, items are generated in the order they are added to the
+namespace.</p>
 
   </div>
 </div>
@@ -532,9 +514,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The number of spaces to use per indent.</p>
-
+    <p>The number of spaces to use per indent.</p>
 
   </div>
 </div>
@@ -593,9 +573,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns a string indented to the given indent level, according to the set <span class='object_link'><a href="#tab_size-instance_method" title="Parlour::Options#tab_size (method)">#tab_size</a></span>.</p>
-
+    <p>Returns a string indented to the given indent level, according to the
+set <span class='object_link'><a href="#tab_size-instance_method" title="Parlour::Options#tab_size (method)">#tab_size</a></span>.</p>
 
   </div>
 </div>
@@ -613,9 +592,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The indent level, as an integer. 0 is totally unindented.</p>
-</div>
+        <div class='inline'><p>The indent level, as an integer. 0 is totally unindented.</p></div>
       
     </li>
   
@@ -629,9 +606,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The string to indent.</p>
-</div>
+        <div class='inline'><p>The string to indent.</p></div>
       
     </li>
   
@@ -648,9 +623,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The indented string.</p>
-</div>
+        <div class='inline'><p>The indented string.</p></div>
       
     </li>
   
@@ -682,9 +655,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Apr 12 18:28:17 2026 by
+  Generated on Mon Apr 13 18:42:49 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.39 (ruby-3.4.9).
+  0.9.40 (ruby-3.4.9).
 </div>
 
     </div>

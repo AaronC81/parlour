@@ -6,13 +6,13 @@
 <title>
   Class: Parlour::TypeParser
   
-    &mdash; Documentation by YARD 0.9.39
+    &mdash; Documentation by YARD 0.9.40
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "Parlour::TypeParser";
@@ -99,16 +99,15 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/type_parser.rb</dd>
+    <dd>lib/parlour/type_parser.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>Parses Ruby source to find Sorbet type signatures.</p>
-
+    <p>Parses Ruby source to find Sorbet type signatures.</p>
 
   </div>
 </div>
@@ -152,9 +151,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The AST which this type parser should use.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The AST which this type parser should use.</p></div></span>
   
 </li>
 
@@ -179,9 +176,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to load the source into.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to load the source into.</p></div></span>
   
 </li>
 
@@ -208,9 +203,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Whether to raise an error if a node of an unknown kind is encountered.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Whether to raise an error if a node of an unknown kind is encountered.</p></div></span>
   
 </li>
 
@@ -245,9 +238,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">TypeParser</a></span> from a source file and its filename.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">TypeParser</a></span> from a source file and its filename.</p></div></span>
   
 </li>
 
@@ -269,14 +260,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>TODO doc.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>TODO doc.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
     <h2>
       Instance Method Summary
@@ -302,9 +292,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given a node in the AST, finds all heredoc definitions within it and return them as a String.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given a node in the AST, finds all heredoc definitions within it and return them as a String.</p></div></span>
   
 </li>
 
@@ -328,9 +316,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">TypeParser</a></span> from whitequark/parser AST.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">TypeParser</a></span> from whitequark/parser AST.</p></div></span>
   
 </li>
 
@@ -374,9 +360,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given a path to a method in the AST, finds the associated definition and parses them into methods.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given a path to a method in the AST, finds the associated definition and parses them into methods.</p></div></span>
   
 </li>
 
@@ -398,9 +382,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given an AST node representing an RBI type (such as ‘<a href="String">T::Array</a>’), parses it into a generic type.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given an AST node representing an RBI type (such as 'T::<a href="String">Array</a>'), parses it into a generic type.</p></div></span>
   
 </li>
 
@@ -444,9 +426,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given a path to a sig in the AST, finds the associated definition and parses them into methods.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given a path to a sig in the AST, finds the associated definition and parses them into methods.</p></div></span>
   
 </li>
 
@@ -468,14 +448,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given a path to a sig in the AST, parses that sig into an intermediate sig object.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given a path to a sig in the AST, parses that sig into an intermediate sig object.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 
@@ -493,9 +472,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">Parlour::TypeParser</a></span> from whitequark/parser AST.</p>
-
+    <p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">Parlour::TypeParser</a></span> from whitequark/parser AST.</p>
 
   </div>
 </div>
@@ -513,9 +490,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>AST.</p>
-</div>
+        <div class='inline'><p>AST.</p></div>
       
     </li>
   
@@ -531,9 +506,11 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether to raise an error if a node of an unknown kind is encountered. If false, the node is simply ignored; if true, a parse error is raised. Setting this to true is likely to raise errors for lots of non-RBI Ruby code, but setting it to false could miss genuine typed objects if Parlour or your code contains a bug.</p>
-</div>
+        <div class='inline'><p>Whether to raise an error if a node
+of an unknown kind is encountered. If false, the node is simply ignored;
+if true, a parse error is raised. Setting this to true is likely to
+raise errors for lots of non-RBI Ruby code, but setting it to false
+could miss genuine typed objects if Parlour or your code contains a bug.</p></div>
       
     </li>
   
@@ -583,9 +560,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns The AST which this type parser should use.</p>
-
+    <p>Returns The AST which this type parser should use.</p>
 
   </div>
 </div>
@@ -602,9 +577,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The AST which this type parser should use.</p>
-</div>
+        <div class='inline'><p>The AST which this type parser should use.</p></div>
       
     </li>
   
@@ -644,9 +617,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to load the source into.</p>
-
+    <p>Returns The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to load the source into.</p>
 
   </div>
 </div>
@@ -663,9 +634,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to load the source into.</p>
-</div>
+        <div class='inline'><p>The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to load the source into.</p></div>
       
     </li>
   
@@ -705,9 +674,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns Whether to raise an error if a node of an unknown kind is encountered.</p>
-
+    <p>Returns Whether to raise an error if a node of an unknown kind
+is encountered.</p>
 
   </div>
 </div>
@@ -724,9 +692,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether to raise an error if a node of an unknown kind is encountered.</p>
-</div>
+        <div class='inline'><p>Whether to raise an error if a node of an unknown kind
+is encountered.</p></div>
       
     </li>
   
@@ -771,9 +738,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">Parlour::TypeParser</a></span> from a source file and its filename.</p>
-
+    <p>Creates a new <span class='object_link'><a href="" title="Parlour::TypeParser (class)">Parlour::TypeParser</a></span> from a source file and its filename.</p>
 
   </div>
 </div>
@@ -791,9 +756,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>A filename. This does not need to be an actual file; it merely identifies this source.</p>
-</div>
+        <div class='inline'><p>A filename. This does not need to be an actual
+file; it merely identifies this source.</p></div>
       
     </li>
   
@@ -807,9 +771,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The Ruby source code.</p>
-</div>
+        <div class='inline'><p>The Ruby source code.</p></div>
       
     </li>
   
@@ -871,9 +833,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>TODO doc</p>
-
+    <p>TODO doc</p>
 
   </div>
 </div>
@@ -920,18 +880,13 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Given a node in the AST, finds all heredoc definitions within it and return them as a String</p>
-
+    <p>Given a node in the AST, finds all heredoc definitions within it
+and return them as a String</p>
 <p>e.g., for the AST for following code:</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_foo'>foo</span> <span class='op'>=</span> <span class='heredoc_beg'>&lt;&lt;~HEREDOC</span>
-<span class='tstring_content'>  bar
-</span><span class='heredoc_end'>HEREDOC
-</span></code></pre>
-
-<p>this method would return “  barnHEREDOCn”</p>
-
+<p>foo = &lt;&lt;~HEREDOC
+bar
+HEREDOC</p>
+<p>this method would return &quot;  bar\nHEREDOC\n&quot;</p>
 
   </div>
 </div>
@@ -1048,9 +1003,11 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Given a path to a method in the AST, finds the associated definition and parses them into methods. Usually this will return one method; the only exception currently is for attributes, where multiple can be declared in one call, e.g. <tt>attr_reader :x, :y, :z</tt>.</p>
-
+    <p>Given a path to a method in the AST, finds the associated definition and
+parses them into methods.
+Usually this will return one method; the only exception currently is for
+attributes, where multiple can be declared in one call, e.g.
+<code>attr_reader :x, :y, :z</code>.</p>
 
   </div>
 </div>
@@ -1068,9 +1025,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The sig to parse.</p>
-</div>
+        <div class='inline'><p>The sig to parse.</p></div>
       
     </li>
   
@@ -1086,9 +1041,11 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether the method definition this sig is associated with appears inside an eigenclass definition. If true, the returned method is made a class method. If the method definition is already a class method, an exception is thrown as the method will be a class method of the eigenclass, which Parlour can’t represent.</p>
-</div>
+        <div class='inline'><p>Whether the method definition this sig is
+associated with appears inside an eigenclass definition. If true, the
+returned method is made a class method. If the method definition
+is already a class method, an exception is thrown as the method will be
+a class method of the eigenclass, which Parlour can't represent.</p></div>
       
     </li>
   
@@ -1105,9 +1062,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The parsed methods.</p>
-</div>
+        <div class='inline'><p>The parsed methods.</p></div>
       
     </li>
   
@@ -1321,9 +1276,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Given an AST node representing an RBI type (such as ‘<a href="String">T::Array</a>’), parses it into a generic type.</p>
-
+    <p>Given an AST node representing an RBI type (such as 'T::<a href="String">Array</a>'),
+parses it into a generic type.</p>
 
   </div>
 </div>
@@ -2172,9 +2126,12 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Given a path to a sig in the AST, finds the associated definition and parses them into methods. This will raise an exception if the sig is invalid. Usually this will return one method; the only exception currently is for attributes, where multiple can be declared in one call, e.g. <tt>attr_reader :x, :y, :z</tt>.</p>
-
+    <p>Given a path to a sig in the AST, finds the associated definition and
+parses them into methods.
+This will raise an exception if the sig is invalid.
+Usually this will return one method; the only exception currently is for
+attributes, where multiple can be declared in one call, e.g.
+<code>attr_reader :x, :y, :z</code>.</p>
 
   </div>
 </div>
@@ -2192,9 +2149,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The sig to parse.</p>
-</div>
+        <div class='inline'><p>The sig to parse.</p></div>
       
     </li>
   
@@ -2210,9 +2165,11 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether the method definition this sig is associated with appears inside an eigenclass definition. If true, the returned method is made a class method. If the method definition is already a class method, an exception is thrown as the method will be a class method of the eigenclass, which Parlour can’t represent.</p>
-</div>
+        <div class='inline'><p>Whether the method definition this sig is
+associated with appears inside an eigenclass definition. If true, the
+returned method is made a class method. If the method definition
+is already a class method, an exception is thrown as the method will be
+a class method of the eigenclass, which Parlour can't represent.</p></div>
       
     </li>
   
@@ -2229,9 +2186,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The parsed methods.</p>
-</div>
+        <div class='inline'><p>The parsed methods.</p></div>
       
     </li>
   
@@ -2539,9 +2494,11 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Given a path to a sig in the AST, parses that sig into an intermediate sig object. This will raise an exception if the sig is invalid. This is intended to be called by <span class='object_link'><a href="#parse_sig_into_methods-instance_method" title="Parlour::TypeParser#parse_sig_into_methods (method)">#parse_sig_into_methods</a></span>, and shouldn’t be called manually unless you’re doing something hacky.</p>
-
+    <p>Given a path to a sig in the AST, parses that sig into an intermediate
+sig object.
+This will raise an exception if the sig is invalid.
+This is intended to be called by <span class='object_link'><a href="#parse_sig_into_methods-instance_method" title="Parlour::TypeParser#parse_sig_into_methods (method)">#parse_sig_into_methods</a></span>, and shouldn't
+be called manually unless you're doing something hacky.</p>
 
   </div>
 </div>
@@ -2559,9 +2516,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The sig to parse.</p>
-</div>
+        <div class='inline'><p>The sig to parse.</p></div>
       
     </li>
   
@@ -2578,9 +2533,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The parsed sig.</p>
-</div>
+        <div class='inline'><p>The parsed sig.</p></div>
       
     </li>
   
@@ -2730,9 +2683,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Apr 12 18:28:17 2026 by
+  Generated on Mon Apr 13 18:42:49 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.39 (ruby-3.4.9).
+  0.9.40 (ruby-3.4.9).
 </div>
 
     </div>

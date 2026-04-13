@@ -6,13 +6,13 @@
 <title>
   Class: Parlour::ConflictResolver
   
-    &mdash; Documentation by YARD 0.9.39
+    &mdash; Documentation by YARD 0.9.40
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "Parlour::ConflictResolver";
@@ -99,16 +99,16 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/conflict_resolver.rb</dd>
+    <dd>lib/parlour/conflict_resolver.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>Responsible for resolving conflicts (that is, multiple definitions with the same name) between objects defined in the same namespace.</p>
-
+    <p>Responsible for resolving conflicts (that is, multiple definitions with the
+same name) between objects defined in the same namespace.</p>
 
   </div>
 </div>
@@ -149,9 +149,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A new instance of ConflictResolver.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>A new instance of ConflictResolver.</p></div></span>
   
 </li>
 
@@ -173,14 +171,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given a namespace, attempts to automatically resolve conflicts in the namespace’s definitions.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given a namespace, attempts to automatically resolve conflicts in the namespace's definitions.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 
@@ -198,9 +195,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns a new instance of ConflictResolver.</p>
-
+    <p>Returns a new instance of ConflictResolver.</p>
 
   </div>
 </div>
@@ -246,13 +241,19 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Given a namespace, attempts to automatically resolve conflicts in the namespace’s definitions. (A conflict occurs when multiple objects share the same name.)</p>
-
-<p>All children of the given namespace which are also namespaces are processed recursively, so passing <span class='object_link'><a href="RbiGenerator.html#root-instance_method" title="Parlour::RbiGenerator#root (method)">RbiGenerator#root</a></span> will eliminate all conflicts in the entire object tree.</p>
-
-<p>If automatic resolution is not possible, the block passed to this method is invoked and passed two arguments: a message on what the conflict is, and an array of candidate objects. The block should return one of these candidate objects, which will be kept, and all other definitions are deleted. Alternatively, the block may return nil, which will delete all definitions. The block may be invoked many times from one call to <span class='object_link'><a href="#resolve_conflicts-instance_method" title="Parlour::ConflictResolver#resolve_conflicts (method)">#resolve_conflicts</a></span>, one for each unresolvable conflict.</p>
-
+    <p class="note returns_void">This method returns an undefined value.</p><p>Given a namespace, attempts to automatically resolve conflicts in the
+namespace's definitions. (A conflict occurs when multiple objects share
+the same name.)</p>
+<p>All children of the given namespace which are also namespaces are
+processed recursively, so passing <span class='object_link'><a href="RbiGenerator.html#root-instance_method" title="Parlour::RbiGenerator#root (method)">RbiGenerator#root</a></span> will eliminate all
+conflicts in the entire object tree.</p>
+<p>If automatic resolution is not possible, the block passed to this method
+is invoked and passed two arguments: a message on what the conflict is,
+and an array of candidate objects. The block should return one of these
+candidate objects, which will be kept, and all other definitions are
+deleted. Alternatively, the block may return nil, which will delete all
+definitions. The block may be invoked many times from one call to
+<span class='object_link'><a href="#resolve_conflicts-instance_method" title="Parlour::ConflictResolver#resolve_conflicts (method)">#resolve_conflicts</a></span>, one for each unresolvable conflict.</p>
 
   </div>
 </div>
@@ -270,9 +271,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The starting namespace to resolve conflicts in.</p>
-</div>
+        <div class='inline'><p>The starting namespace to
+resolve conflicts in.</p></div>
       
     </li>
   
@@ -291,9 +291,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>A descriptional message on what the conflict is.</p>
-</div>
+        <div class='inline'><p>A descriptional message on what the conflict is.</p></div>
       
     </li>
   
@@ -307,9 +305,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The objects for which there is a conflict.</p>
-</div>
+        <div class='inline'><p>The objects for
+which there is a conflict.</p></div>
       
     </li>
   
@@ -325,9 +322,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>One of the <code>candidates</code>, which will be kept, or nil to keep none of them.</p>
-</div>
+        <div class='inline'><p>One of the <code>candidates</code>, which
+will be kept, or nil to keep none of them.</p></div>
       
     </li>
   
@@ -655,9 +651,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Apr 12 18:28:17 2026 by
+  Generated on Mon Apr 13 18:42:49 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.39 (ruby-3.4.9).
+  0.9.40 (ruby-3.4.9).
 </div>
 
     </div>

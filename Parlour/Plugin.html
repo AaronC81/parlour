@@ -6,13 +6,13 @@
 <title>
   Class: Parlour::Plugin
   
-    &mdash; Documentation by YARD 0.9.39
+    &mdash; Documentation by YARD 0.9.40
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "Parlour::Plugin";
@@ -99,18 +99,16 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/plugin.rb</dd>
+    <dd>lib/parlour/plugin.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>The base class for user-defined RBI generation plugins.</p>
-
-<p>This class is <strong>abstract</strong>.</p>
-
+    <p>The base class for user-defined RBI generation plugins.</p>
+<p>This class is <em>abstract</em>.</p>
 
   </div>
 </div>
@@ -160,9 +158,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The strictness level which this plugin would prefer the generated RBI uses.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The strictness level which this plugin would prefer the generated RBI uses.</p></div></span>
   
 </li>
 
@@ -197,9 +193,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Called automatically by the Ruby interpreter when <span class='object_link'><a href="" title="Parlour::Plugin (class)">Plugin</a></span> is subclassed.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Called automatically by the Ruby interpreter when <span class='object_link'><a href="" title="Parlour::Plugin (class)">Plugin</a></span> is subclassed.</p></div></span>
   
 </li>
 
@@ -221,9 +215,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns all registered plugins, as a hash of their paths to the <span class='object_link'><a href="" title="Parlour::Plugin (class)">Plugin</a></span> instances themselves.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Returns all registered plugins, as a hash of their paths to the <span class='object_link'><a href="" title="Parlour::Plugin (class)">Plugin</a></span> instances themselves.</p></div></span>
   
 </li>
 
@@ -245,14 +237,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Runs an array of plugins on a given generator instance.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Runs an array of plugins on a given generator instance.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
     <h2>
       Instance Method Summary
@@ -278,9 +269,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Plugin subclasses should redefine this method and do their RBI generation inside it.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Plugin subclasses should redefine this method and do their RBI generation inside it.</p></div></span>
   
 </li>
 
@@ -304,14 +293,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>A new instance of Plugin.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>A new instance of Plugin.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 
@@ -330,9 +318,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns a new instance of Plugin.</p>
-
+    <p>Returns a new instance of Plugin.</p>
 
   </div>
 </div>
@@ -374,9 +360,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The strictness level which this plugin would prefer the generated RBI uses. If other plugins request different strictness levels, then the lowest strictness will be used, meaning there is no guarantee that this level will be used.</p>
-
+    <p>The strictness level which this plugin would prefer the generated RBI
+uses. If other plugins request different strictness levels, then the
+lowest strictness will be used, meaning there is no guarantee that this
+level will be used.</p>
 
   </div>
 </div>
@@ -422,9 +409,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Called automatically by the Ruby interpreter when <span class='object_link'><a href="" title="Parlour::Plugin (class)">Parlour::Plugin</a></span> is subclassed. This registers the new subclass into <span class='object_link'><a href="#registered_plugins-class_method" title="Parlour::Plugin.registered_plugins (method)">registered_plugins</a></span>.</p>
-
+    <p class="note returns_void">This method returns an undefined value.</p><p>Called automatically by the Ruby interpreter when <span class='object_link'><a href="" title="Parlour::Plugin (class)">Parlour::Plugin</a></span> is subclassed.
+This registers the new subclass into <span class='object_link'><a href="#registered_plugins-class_method" title="Parlour::Plugin.registered_plugins (method)">registered_plugins</a></span>.</p>
 
   </div>
 </div>
@@ -442,9 +428,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The new plugin.</p>
-</div>
+        <div class='inline'><p>The new plugin.</p></div>
       
     </li>
   
@@ -485,9 +469,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns all registered plugins, as a hash of their paths to the <span class='object_link'><a href="" title="Parlour::Plugin (class)">Parlour::Plugin</a></span> instances themselves.</p>
-
+    <p>Returns all registered plugins, as a hash of their paths to the <span class='object_link'><a href="" title="Parlour::Plugin (class)">Parlour::Plugin</a></span>
+instances themselves.</p>
 
   </div>
 </div>
@@ -539,9 +522,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Runs an array of plugins on a given generator instance.</p>
-
+    <p class="note returns_void">This method returns an undefined value.</p><p>Runs an array of plugins on a given generator instance.</p>
 
   </div>
 </div>
@@ -559,9 +540,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>An array of <span class='object_link'><a href="" title="Parlour::Plugin (class)">Parlour::Plugin</a></span> instances.</p>
-</div>
+        <div class='inline'><p>An array of <span class='object_link'><a href="" title="Parlour::Plugin (class)">Parlour::Plugin</a></span> instances.</p></div>
       
     </li>
   
@@ -575,9 +554,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to run the plugins on.</p>
-</div>
+        <div class='inline'><p>The <span class='object_link'><a href="RbiGenerator.html" title="Parlour::RbiGenerator (class)">RbiGenerator</a></span> to run the plugins on.</p></div>
       
     </li>
   
@@ -593,9 +570,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether to keep running plugins if a plugin throws an exception. If false, the exception is re-raised when caught.</p>
-</div>
+        <div class='inline'><p>Whether to keep running plugins if a plugin
+throws an exception. If false, the exception is re-raised when caught.</p></div>
       
     </li>
   
@@ -658,11 +634,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Plugin subclasses should redefine this method and do their RBI generation inside it.</p>
-
-<p>This method is <strong>abstract</strong>.</p>
-
+    <p class="note returns_void">This method returns an undefined value.</p><p>Plugin subclasses should redefine this method and do their RBI generation
+inside it.</p>
+<p>This method is <em>abstract</em>.</p>
 
   </div>
 </div>
@@ -680,9 +654,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The root <span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">RbiGenerator::Namespace</a></span>.</p>
-</div>
+        <div class='inline'><p>The root <span class='object_link'><a href="RbiGenerator/Namespace.html" title="Parlour::RbiGenerator::Namespace (class)">RbiGenerator::Namespace</a></span>.</p></div>
       
     </li>
   
@@ -711,9 +683,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Apr 12 18:28:17 2026 by
+  Generated on Mon Apr 13 18:42:49 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.39 (ruby-3.4.9).
+  0.9.40 (ruby-3.4.9).
 </div>
 
     </div>

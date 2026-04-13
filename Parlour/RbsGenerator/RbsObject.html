@@ -6,13 +6,13 @@
 <title>
   Class: Parlour::RbsGenerator::RbsObject
   
-    &mdash; Documentation by YARD 0.9.39
+    &mdash; Documentation by YARD 0.9.40
   
 </title>
 
-  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "Parlour::RbsGenerator::RbsObject";
@@ -96,18 +96,19 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/parlour/rbs_generator/rbs_object.rb</dd>
+    <dd>lib/parlour/rbs_generator/rbs_object.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>An abstract class which is subclassed by any classes which can generate entire lines of an RBS, such as <span class='object_link'><a href="Namespace.html" title="Parlour::RbsGenerator::Namespace (class)">Namespace</a></span> and <span class='object_link'><a href="Method.html" title="Parlour::RbsGenerator::Method (class)">Method</a></span>. (As an example, <span class='object_link'><a href="Parameter.html" title="Parlour::RbsGenerator::Parameter (class)">Parameter</a></span> is <em>not</em> a subclass because it does not generate lines, only segments of definition lines.)</p>
-
-<p>This class is <strong>abstract</strong>.</p>
-
+    <p>An abstract class which is subclassed by any classes which can generate
+entire lines of an RBS, such as <span class='object_link'><a href="Namespace.html" title="Parlour::RbsGenerator::Namespace (class)">Namespace</a></span> and <span class='object_link'><a href="Method.html" title="Parlour::RbsGenerator::Method (class)">Method</a></span>. (As an example,
+<span class='object_link'><a href="Parameter.html" title="Parlour::RbsGenerator::Parameter (class)">Parameter</a></span> is <em>not</em> a subclass because it does not generate lines, only
+segments of definition lines.)</p>
+<p>This class is <em>abstract</em>.</p>
 
   </div>
 </div>
@@ -147,9 +148,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>The generator which this object belongs to.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>The generator which this object belongs to.</p></div></span>
   
 </li>
 
@@ -189,9 +188,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Generates the RBS lines for this object.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Generates the RBS lines for this object.</p></div></span>
   
 </li>
 
@@ -215,9 +212,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Creates a new RBS object.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Creates a new RBS object.</p></div></span>
   
 </li>
 
@@ -239,9 +234,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given an array of other objects, merges them into this one.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given an array of other objects, merges them into this one.</p></div></span>
   
 </li>
 
@@ -263,17 +256,17 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Given an array of other objects, returns true if they may be merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbsGenerator::RbsObject#merge_into_self (method)">#merge_into_self</a></span>.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Given an array of other objects, returns true if they may be merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbsGenerator::RbsObject#merge_into_self (method)">#merge_into_self</a></span>.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 
+  
   
   
   
@@ -303,14 +296,10 @@
     
   <div class="note notetag">
     <strong>Note:</strong>
-    <div class='inline'>
-<p>Don’t call this directly.</p>
-</div>
+    <div class='inline'><p>Don't call this directly.</p></div>
   </div>
 
-
 <p>Creates a new RBS object.</p>
-
 
   </div>
 </div>
@@ -328,9 +317,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The current RbsGenerator.</p>
-</div>
+        <div class='inline'><p>The current RbsGenerator.</p></div>
       
     </li>
   
@@ -344,9 +331,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The name of this module.</p>
-</div>
+        <div class='inline'><p>The name of this module.</p></div>
       
     </li>
   
@@ -396,9 +381,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>The generator which this object belongs to.</p>
-
+    <p>The generator which this object belongs to.</p>
 
   </div>
 </div>
@@ -457,11 +440,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Generates the RBS lines for this object.</p>
-
-<p>This method is <strong>abstract</strong>.</p>
-
+    <p>Generates the RBS lines for this object.</p>
+<p>This method is <em>abstract</em>.</p>
 
   </div>
 </div>
@@ -479,9 +459,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The indentation level to generate the lines at.</p>
-</div>
+        <div class='inline'><p>The indentation level to generate the lines at.</p></div>
       
     </li>
   
@@ -495,9 +473,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The formatting options to use.</p>
-</div>
+        <div class='inline'><p>The formatting options to use.</p></div>
       
     </li>
   
@@ -514,9 +490,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>The RBS lines, formatted as specified.</p>
-</div>
+        <div class='inline'><p>The RBS lines, formatted as specified.</p></div>
       
     </li>
   
@@ -550,11 +524,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Given an array of other objects, merges them into this one. Each subclass will do this differently. You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbsGenerator::RbsObject#mergeable? (method)">#mergeable?</a></span> is true for those instances.</p>
-
-<p>This method is <strong>abstract</strong>.</p>
-
+    <p class="note returns_void">This method returns an undefined value.</p><p>Given an array of other objects, merges them into this one. Each
+subclass will do this differently.
+You MUST ensure that <span class='object_link'><a href="#mergeable%3F-instance_method" title="Parlour::RbsGenerator::RbsObject#mergeable? (method)">#mergeable?</a></span> is true for those instances.</p>
+<p>This method is <em>abstract</em>.</p>
 
   </div>
 </div>
@@ -572,9 +545,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>An array of other <span class='object_link'><a href="" title="Parlour::RbsGenerator::RbsObject (class)">Parlour::RbsGenerator::RbsObject</a></span> instances.</p>
-</div>
+        <div class='inline'><p>An array of other <span class='object_link'><a href="" title="Parlour::RbsGenerator::RbsObject (class)">Parlour::RbsGenerator::RbsObject</a></span> instances.</p></div>
       
     </li>
   
@@ -609,11 +580,10 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Given an array of other objects, returns true if they may be merged into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbsGenerator::RbsObject#merge_into_self (method)">#merge_into_self</a></span>. Each subclass will have its own criteria on what allows objects to be mergeable.</p>
-
-<p>This method is <strong>abstract</strong>.</p>
-
+    <p>Given an array of other objects, returns true if they may be merged
+into this instance using <span class='object_link'><a href="#merge_into_self-instance_method" title="Parlour::RbsGenerator::RbsObject#merge_into_self (method)">#merge_into_self</a></span>. Each subclass will have its
+own criteria on what allows objects to be mergeable.</p>
+<p>This method is <em>abstract</em>.</p>
 
   </div>
 </div>
@@ -631,9 +601,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>An array of other <span class='object_link'><a href="" title="Parlour::RbsGenerator::RbsObject (class)">Parlour::RbsGenerator::RbsObject</a></span> instances.</p>
-</div>
+        <div class='inline'><p>An array of other <span class='object_link'><a href="" title="Parlour::RbsGenerator::RbsObject (class)">Parlour::RbsGenerator::RbsObject</a></span> instances.</p></div>
       
     </li>
   
@@ -650,9 +618,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Whether this instance may be merged with them.</p>
-</div>
+        <div class='inline'><p>Whether this instance may be merged with them.</p></div>
       
     </li>
   
@@ -680,9 +646,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Apr 12 18:28:22 2026 by
+  Generated on Mon Apr 13 18:42:54 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.39 (ruby-3.4.9).
+  0.9.40 (ruby-3.4.9).
 </div>
 
     </div>
