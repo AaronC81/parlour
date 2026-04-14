@@ -59,18 +59,39 @@
     if (clicked) clicked.classList.add("clicked");
   }
 
+  function pathForItem(item) {
+    if (!item || !item.id || item.id.indexOf("object_") !== 0) return null;
+    return item.id.substring("object_".length);
+  }
+
   function enableLinks() {
     queryAll("#full_list li").forEach(function(item) {
-      item.addEventListener("click", function(event) {
+      var itemRow = item.querySelector(":scope > .item");
+
+      if (!itemRow) return;
+
+      itemRow.addEventListener("click", function(event) {
         var targetLink;
         var mouseEvent;
         var url;
 
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return true;
+        }
+
         setClicked(item);
         event.stopPropagation();
+        targetLink = event.target.closest("a");
 
         if (window.origin === "null") {
-          if (event.target.tagName === "A") return true;
+          if (targetLink) return true;
 
           targetLink = item.querySelector(":scope > .item .object_link a");
           if (!targetLink) return false;
@@ -94,11 +115,20 @@
           targetLink.dispatchEvent(mouseEvent);
           event.preventDefault();
         } else {
-          url = item.querySelector(".object_link a").getAttribute("href");
+          if (!targetLink || !targetLink.matches(".object_link a")) {
+            targetLink = item.querySelector(":scope > .item .object_link a");
+          }
+          if (!targetLink) return false;
+
+          event.preventDefault();
+          url = targetLink.getAttribute("href");
           try {
             url = new URL(url, window.location.href).href;
           } catch (error) {}
-          window.top.postMessage({ action: "navigate", url: url }, "*");
+          window.top.postMessage(
+            { action: "navigate", url: url, path: pathForItem(item) },
+            "*"
+          );
         }
         return false;
       });
@@ -291,7 +321,7 @@
 
     if (!target) return;
 
-    target.classList.add("clicked");
+    setClicked(target);
     target.classList.remove("collapsed");
 
     var current = target.parentElement;

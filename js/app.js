@@ -3,7 +3,11 @@
     navigationListenerBound: false,
     navigationChangeBound: false,
     navResizerBound: false,
-    searchFrameGlobalsBound: false
+    searchFrameGlobalsBound: false,
+    latestNavigationId: 0,
+    loadingIndicatorTimer: null,
+    navExpanderTimer: null,
+    navExpanderToken: 0
   });
   var safeLocalStorage = {};
   var safeSessionStorage = {};
@@ -34,6 +38,29 @@
   function toggleDisplay(element, visible, displayValue) {
     if (!element) return;
     element.style.display = visible ? (displayValue || "") : "none";
+  }
+
+  function setMainLoading(loading) {
+    var main = query("#main");
+    if (!main) return;
+    main.classList.toggle("loading", !!loading);
+    main.setAttribute("aria-busy", loading ? "true" : "false");
+  }
+
+  function scheduleMainLoading(navigationId) {
+    clearTimeout(appState.loadingIndicatorTimer);
+    appState.loadingIndicatorTimer = setTimeout(function() {
+      if (navigationId === appState.latestNavigationId) {
+        setMainLoading(true);
+      }
+      appState.loadingIndicatorTimer = null;
+    }, 50);
+  }
+
+  function cancelMainLoading() {
+    clearTimeout(appState.loadingIndicatorTimer);
+    appState.loadingIndicatorTimer = null;
+    setMainLoading(false);
   }
 
   function firstNextMatchingSibling(element, selector) {
@@ -453,18 +480,24 @@
   function navExpander() {
     if (typeof pathId === "undefined") return;
 
-    var done = false;
-    var timer = setTimeout(postMessage, 500);
+    var frame = document.getElementById("nav");
+    var token = ++appState.navExpanderToken;
 
     function postMessage() {
-      var frame;
-      if (done) return;
-      clearTimeout(timer);
-      frame = document.getElementById("nav");
-      if (!frame || !frame.contentWindow) return;
-      frame.contentWindow.postMessage({ action: "expand", path: pathId }, "*");
-      done = true;
+      if (token !== appState.navExpanderToken) return;
+      expandNavPath(pathId);
     }
+
+    clearTimeout(appState.navExpanderTimer);
+    if (frame) frame.addEventListener("load", postMessage, { once: true });
+    appState.navExpanderTimer = setTimeout(postMessage, 50);
+  }
+
+  function expandNavPath(path) {
+    var frame = document.getElementById("nav");
+
+    if (path == null || !frame || !frame.contentWindow) return;
+    frame.contentWindow.postMessage({ action: "expand", path: path }, "*");
   }
 
   function focusHashTarget() {
@@ -523,53 +556,81 @@
     window.addEventListener(
       "message",
       async function(event) {
+        var navigationId;
+        var response;
+        var text;
+        var parser;
+        var doc;
+        var classListLink;
+        var contentNode;
+        var content;
+        var url;
+        var hash;
+
         if (!event.data || event.data.action !== "navigate") return;
 
-        var response = await fetch(event.data.url);
-        var text = await response.text();
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(text, "text/html");
-        var classListLink = document.getElementById("class_list_link");
-        var content = doc.querySelector("#main").innerHTML;
+        navigationId = ++appState.latestNavigationId;
+        expandNavPath(event.data.path);
+        scheduleMainLoading(navigationId);
 
-        document.querySelector("#main").innerHTML = content;
-        document.title = doc.head.querySelector("title").innerText;
+        try {
+          response = await fetch(event.data.url);
+          if (navigationId !== appState.latestNavigationId) return;
 
-        queryAll("script", document.head).forEach(function(script) {
-          if (
-            !script.type ||
-            (script.type.indexOf("text/javascript") !== -1 && !script.src)
-          ) {
-            script.remove();
+          text = await response.text();
+          if (navigationId !== appState.latestNavigationId) return;
+
+          parser = new DOMParser();
+          doc = parser.parseFromString(text, "text/html");
+          classListLink = document.getElementById("class_list_link");
+          contentNode = doc.querySelector("#main");
+          if (!contentNode) return;
+          content = contentNode.innerHTML;
+
+          document.querySelector("#main").innerHTML = content;
+          document.title = doc.head.querySelector("title").innerText;
+
+          queryAll("script", document.head).forEach(function(script) {
+            if (
+              !script.type ||
+              (script.type.indexOf("text/javascript") !== -1 && !script.src)
+            ) {
+              script.remove();
+            }
+          });
+
+          queryAll("script", doc.head).forEach(function(script) {
+            if (
+              !script.type ||
+              (script.type.indexOf("text/javascript") !== -1 && !script.src)
+            ) {
+              var newScript = document.createElement("script");
+              newScript.type = "text/javascript";
+              newScript.textContent = script.textContent;
+              document.head.appendChild(newScript);
+            }
+          });
+
+          window.__app();
+          if (navigationId !== appState.latestNavigationId) return;
+
+          if (classListLink && document.getElementById("class_list_link")) {
+            document.getElementById("class_list_link").className =
+              classListLink.className;
           }
-        });
 
-        queryAll("script", doc.head).forEach(function(script) {
-          if (
-            !script.type ||
-            (script.type.indexOf("text/javascript") !== -1 && !script.src)
-          ) {
-            var newScript = document.createElement("script");
-            newScript.type = "text/javascript";
-            newScript.textContent = script.textContent;
-            document.head.appendChild(newScript);
+          url = new URL(event.data.url, "http://localhost");
+          hash = decodeURIComponent(url.hash || "");
+          if (hash) {
+            var target = document.getElementById(hash.substring(1));
+            if (target) target.scrollIntoView();
           }
-        });
-
-        window.__app();
-
-        if (classListLink && document.getElementById("class_list_link")) {
-          document.getElementById("class_list_link").className =
-            classListLink.className;
+          history.pushState({}, document.title, event.data.url);
+        } finally {
+          if (navigationId === appState.latestNavigationId) {
+            cancelMainLoading();
+          }
         }
-
-        var url = new URL(event.data.url, "http://localhost");
-        var hash = decodeURIComponent(url.hash || "");
-        if (hash) {
-          var target = document.getElementById(hash.substring(1));
-          if (target) target.scrollIntoView();
-        }
-        history.pushState({}, document.title, event.data.url);
       },
       false
     );
