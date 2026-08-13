@@ -477,6 +477,39 @@ module Parlour
       end
     end
 
+    # A method-scoped type variable, such as those bound by RBS's
+    # `[U] (...) -> ...` method type parameter syntax, or Sorbet's
+    # `T.type_parameter(:U)`.
+    class TypeVariable < Type
+      sig { params(name: String).void }
+      def initialize(name)
+        @name = name
+      end
+
+      sig { returns(String) }
+      attr_reader :name
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        TypeVariable === other && name == other.name
+      end
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "T.type_parameter(:#{name})"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        name
+      end
+
+      sig { override.returns(String) }
+      def describe
+        name
+      end
+    end
+
     # The explicit lack of a type.
     class Untyped < Type
       sig { params(other: Object).returns(T::Boolean) }

@@ -179,6 +179,152 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     )
   end
 
+  it 'converts a generic class' do
+    box = rbi_gen.root.create_class('Box')
+    box.create_type_member('Elem')
+    box.create_method('set', parameters: [
+      Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::Raw.new('Elem')),
+    ], return_type: nil)
+    box.create_method('get', return_type: Parlour::Types::Raw.new('Elem'))
+
+    converted_box, = *convert
+    expect(converted_box).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(
+      name: 'Box',
+      type_parameters: [:Elem],
+    )
+    expect(converted_box.children.map(&:name)).to match_array(['set', 'get'])
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(converted_box.generate_rbs(0, opts).join("\n")).to eq <<~RBS.strip
+      class Box[Elem]
+        def set: (Elem x) -> void
+
+        def get: () -> Elem
+      end
+    RBS
+    expect(converter.warnings).to eq []
+  end
+
+  it 'converts a generic class parsed from real RBI source, not a hand-built tree' do
+    root = Parlour::TypeParser.from_source('(test)', <<~RUBY).parse_all
+      class Box
+        extend T::Generic
+        Elem = type_member
+
+        sig { params(x: Elem).void }
+        def set(x); end
+
+        sig { returns(Elem) }
+        def get; end
+      end
+    RUBY
+    root.generalize_from_rbi!
+
+    root.children.each { |child| converter.convert_object(child, rbs_gen.root) }
+    converted_box = rbs_gen.root.children.first
+
+    expect(converted_box).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(
+      name: 'Box',
+      type_parameters: [:Elem],
+    )
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(converted_box.generate_rbs(0, opts).join("\n")).to eq <<~RBS.strip
+      class Box[Elem]
+        def set: (Elem x) -> void
+
+        def get: () -> Elem
+      end
+    RBS
+    expect(converter.warnings).to eq []
+  end
+
+  it 'converts a generic module' do
+    rbi_gen.root.create_module('Container') do |mod|
+      mod.create_type_member('T')
+    end
+
+    converted, = *convert
+    expect(converted).to be_a(Parlour::RbsGenerator::ModuleNamespace) & have_attributes(
+      name: 'Container',
+      type_parameters: [:T],
+    )
+  end
+
+  it 'drops type members and their extend T::Generic when converting an interface' do
+    rbi_gen.root.create_module('Container', interface: true) do |mod|
+      mod.create_type_member('T')
+    end
+
+    converted, = *convert
+    expect(converted).to be_a(Parlour::RbsGenerator::InterfaceNamespace) & have_attributes(
+      name: 'Container',
+      children: [],
+    )
+    expect(converter.warnings.length).to eq 1
+  end
+
+  it 'converts methods with type parameters' do
+    rbi_gen.root.create_method('identity', parameters: [
+      Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::TypeVariable.new('U')),
+    ], return_type: Parlour::Types::TypeVariable.new('U'), type_parameters: [:U])
+
+    identity, = *convert
+
+    expect(identity).to be_a(Parlour::RbsGenerator::Method) & have_attributes(
+      name: 'identity',
+      signatures: match_array([
+        have_attributes(
+          parameters: match_array([
+            have_attributes(name: 'x', type: Parlour::Types::TypeVariable.new('U')),
+          ]),
+          return_type: Parlour::Types::TypeVariable.new('U'),
+          type_parameters: [:U],
+        )
+      ]),
+    )
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(identity.generate_rbs(0, opts)).to eq(['def identity: [U] (U x) -> U'])
+  end
+
+  it 'converts a class whose methods each independently declare a same-named type parameter' do
+    # Not a generic class (see 'converts a generic class' below) - each
+    # method's [U] is its own, unconnected declaration that just happens to
+    # share a name.
+    box = rbi_gen.root.create_class('Box')
+    box.create_method('set', parameters: [
+      Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::TypeVariable.new('U')),
+    ], type_parameters: [:U])
+    box.create_method('get', return_type: Parlour::Types::TypeVariable.new('U'), type_parameters: [:U])
+
+    converted_box, = *convert
+    expect(converted_box).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(name: 'Box')
+
+    set = converted_box.children.find { |child| child.name == 'set' }
+    get = converted_box.children.find { |child| child.name == 'get' }
+
+    expect(set).to be_a(Parlour::RbsGenerator::Method) & have_attributes(
+      signatures: match_array([
+        have_attributes(
+          parameters: match_array([
+            have_attributes(name: 'x', type: Parlour::Types::TypeVariable.new('U')),
+          ]),
+          type_parameters: [:U],
+        )
+      ]),
+    )
+    expect(get).to be_a(Parlour::RbsGenerator::Method) & have_attributes(
+      signatures: match_array([
+        have_attributes(return_type: Parlour::Types::TypeVariable.new('U'), type_parameters: [:U])
+      ]),
+    )
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(set.generate_rbs(0, opts)).to eq(['def set: [U] (U x) -> void'])
+    expect(get.generate_rbs(0, opts)).to eq(['def get: [U] () -> U'])
+  end
+
   it 'converts methods with blocks' do
     rbi_gen.root.create_method('foo', parameters: [
       Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),

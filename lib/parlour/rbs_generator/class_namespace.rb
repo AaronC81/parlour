@@ -12,6 +12,7 @@ module Parlour
           generator: Generator,
           name: String,
           superclass: T.nilable(Types::TypeLike),
+          type_parameters: T::Array[Symbol],
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
@@ -22,11 +23,14 @@ module Parlour
       # @param name [String] The name of this class.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
+      # @param type_parameters [Array<Symbol>] This class's type parameters, e.g. +[:K, :V]+
+      #   for +class Box[K, V]+.
       # @param block A block which the new instance yields itself to.
       # @return [void]
-      def initialize(generator, name, superclass, &block)
+      def initialize(generator, name, superclass, type_parameters: [], &block)
         super(generator, name, &T.cast(block, T.nilable(T.proc.params(x: Namespace).void)))
         @superclass = superclass
+        @type_parameters = type_parameters
       end
 
       sig do
@@ -36,10 +40,11 @@ module Parlour
         ).returns(T::Array[String])
       end
       def generate_rbs(indent_level, options)
+        type_parameters_definition = type_parameters.any? ? "[#{type_parameters.join(', ')}]" : ''
         class_definition = @superclass.nil? \
-          ? "class #{name}"
-          : "class #{name} < #{String === @superclass ? @superclass : @superclass.generate_rbs}"
-      
+          ? "class #{name}#{type_parameters_definition}"
+          : "class #{name}#{type_parameters_definition} < #{String === @superclass ? @superclass : @superclass.generate_rbs}"
+
         lines = generate_comments(indent_level, options)
         lines << options.indented(indent_level, class_definition)
         lines += generate_body(indent_level + 1, options)
@@ -50,6 +55,11 @@ module Parlour
       # The superclass of this class, or nil if it doesn't have one.
       # @return [Types::TypeLike, nil]
       attr_reader :superclass
+
+      sig { returns(T::Array[Symbol]) }
+      # This class's type parameters.
+      # @return [Array<Symbol>]
+      attr_reader :type_parameters
 
       sig do
         override.params(
@@ -69,7 +79,8 @@ module Parlour
 
         all_classes = T.cast(all.select { |x| ClassNamespace === x }, T::Array[ClassNamespace])
 
-        all_classes.map(&:superclass).compact.uniq.length <= 1
+        all_classes.map(&:superclass).compact.uniq.length <= 1 &&
+          all_classes.map(&:type_parameters).uniq.length <= 1
       end
 
       sig do 
@@ -95,7 +106,7 @@ module Parlour
 
       sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs
-        (superclass ? [:superclass] : []) + [:children]
+        (superclass ? [:superclass] : []) + (type_parameters.any? ? [:type_parameters] : []) + [:children]
       end
     end
   end

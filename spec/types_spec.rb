@@ -134,4 +134,19 @@ RSpec.describe Parlour::Types do
     it { expect(type.generate_rbs).to eq('::Enumerator[String]') }
     it { expect(type.describe).to eq('Enumerator<String>') }
   end
+
+  describe 'TypeVariable' do
+    subject(:type) {
+      Parlour::Types::TypeVariable.new('U')
+    }
+
+    it { expect(type.name).to eq('U') }
+
+    it { expect(type.generate_rbi).to eq('T.type_parameter(:U)') }
+    it { expect(type.generate_rbs).to eq('U') }
+    it { expect(type.describe).to eq('U') }
+
+    it { expect(type).to eq(Parlour::Types::TypeVariable.new('U')) }
+    it { expect(type).not_to eq(Parlour::Types::TypeVariable.new('V')) }
+  end
 end
