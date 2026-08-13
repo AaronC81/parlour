@@ -90,6 +90,37 @@ RSpec.describe Parlour::TypeLoader do
     expect(get.return_type).to eq Parlour::Types::TypeVariable.new('U')
   end
 
+  it 'loads a class-scoped type member shared by every method' do
+    ns = described_class.load_source(<<-RUBY)
+      class Box
+        extend T::Generic
+        Elem = type_member
+
+        sig { params(x: Elem).void }
+        def set(x); end
+
+        sig { returns(Elem) }
+        def get; end
+      end
+    RUBY
+
+    box = ns.children.find { |child| child.name == 'Box' }
+    expect(box).to be_a Parlour::RbiGenerator::ClassNamespace
+    expect(box.type_members.map(&:name)).to eq ['Elem']
+
+    set = box.children.find { |child| child.name == 'set' }
+    get = box.children.find { |child| child.name == 'get' }
+
+    # Unlike a method-scoped type variable, a reference to a type member is a
+    # bare constant - it isn't wrapped in T.type_parameter, so there's
+    # nothing for #generalize_from_rbi! to convert it into. It stays a Raw.
+    set.generalize_from_rbi!
+    get.generalize_from_rbi!
+
+    expect(set.parameters.map(&:type)).to eq [Parlour::Types::Raw.new('Elem')]
+    expect(get.return_type).to eq Parlour::Types::Raw.new('Elem')
+  end
+
   context 'can load this project' do
     it 'fully' do
       # Is this like a quine, in test form? :)

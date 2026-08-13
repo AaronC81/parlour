@@ -379,6 +379,15 @@ module Parlour
             name: T.must(name).to_s,
             type: T.must(node_to_s(body.to_a[2])),
           )]
+        elsif body.type == :send && body.to_a[0].nil? && body.to_a[1] == :type_member
+          # A type member looks like:
+          #   (casgn nil :Elem (send nil :type_member))
+          # Bounds/variance (`type_member {{ fixed: ... }}`) aren't supported;
+          # that's a block node here, so it falls through to a plain Constant.
+          [Parlour::RbiGenerator::TypeMember.new(
+            generator,
+            name: T.must(name).to_s,
+          )]
         else
           heredocs = find_heredocs(body)
           [Parlour::RbiGenerator::Constant.new(

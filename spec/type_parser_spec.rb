@@ -982,6 +982,26 @@ EOF
     expect(foo).to have_attributes(name: "Foo", type: "String")
   end
 
+  it 'parses type members' do
+    instance = described_class.from_source('(test)', <<-RUBY)
+      class Box
+        extend T::Generic
+        Elem = type_member
+      end
+    RUBY
+
+    root = instance.parse_all
+    expect(root.children.length).to eq 1
+
+    box = root.children.first
+    expect(box).to be_a Parlour::RbiGenerator::ClassNamespace
+    expect(box).to have_attributes(name: 'Box', superclass: nil, final: false, abstract: false)
+
+    elem = box.type_members.first
+    expect(elem).to be_a Parlour::RbiGenerator::TypeMember
+    expect(elem).to have_attributes(name: "Elem")
+  end
+
   describe 'parsing of RBI types into Types::Type' do
     def t(s)
       i = described_class.from_source('(test)', s)

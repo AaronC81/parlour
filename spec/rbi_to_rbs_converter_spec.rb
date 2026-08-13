@@ -254,7 +254,10 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     expect(identity.generate_rbs(0, opts)).to eq(['def identity: [U] (U x) -> U'])
   end
 
-  it 'converts a class whose methods each declare the same type parameter' do
+  it 'converts a class whose methods each independently declare a same-named type parameter' do
+    # Not a generic class (see 'converts a generic class' below) - each
+    # method's [U] is its own, unconnected declaration that just happens to
+    # share a name.
     box = rbi_gen.root.create_class('Box')
     box.create_method('set', parameters: [
       Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::TypeVariable.new('U')),
