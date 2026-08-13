@@ -179,6 +179,57 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     )
   end
 
+  it 'converts a generic class' do
+    box = rbi_gen.root.create_class('Box')
+    box.create_type_member('Elem')
+    box.create_method('set', parameters: [
+      Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::Raw.new('Elem')),
+    ], return_type: nil)
+    box.create_method('get', return_type: Parlour::Types::Raw.new('Elem'))
+
+    converted_box, = *convert
+    expect(converted_box).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(
+      name: 'Box',
+      type_parameters: [:Elem],
+    )
+    expect(converted_box.children.map(&:name)).to match_array(['set', 'get'])
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(converted_box.generate_rbs(0, opts).join("\n")).to eq <<~RBS.strip
+      class Box[Elem]
+        def set: (Elem x) -> void
+
+        def get: () -> Elem
+      end
+    RBS
+    expect(converter.warnings).to eq []
+  end
+
+  it 'converts a generic module' do
+    rbi_gen.root.create_module('Container') do |mod|
+      mod.create_type_member('T')
+    end
+
+    converted, = *convert
+    expect(converted).to be_a(Parlour::RbsGenerator::ModuleNamespace) & have_attributes(
+      name: 'Container',
+      type_parameters: [:T],
+    )
+  end
+
+  it 'drops type members and their extend T::Generic when converting an interface' do
+    rbi_gen.root.create_module('Container', interface: true) do |mod|
+      mod.create_type_member('T')
+    end
+
+    converted, = *convert
+    expect(converted).to be_a(Parlour::RbsGenerator::InterfaceNamespace) & have_attributes(
+      name: 'Container',
+      children: [],
+    )
+    expect(converter.warnings.length).to eq 1
+  end
+
   it 'converts methods with type parameters' do
     rbi_gen.root.create_method('identity', parameters: [
       Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::TypeVariable.new('U')),

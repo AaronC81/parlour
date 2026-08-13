@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added `Parlour::Types::TypeVariable`, representing a reference to a method-scoped type variable
   (RBS's `[U] (...) -> ...` method type parameter syntax, or Sorbet's `T.type_parameter(:U)`).
   (Thanks @apiology)
+- Added support for generic classes/modules (invariant type parameters only; no variance or
+  bounds). `Namespace#create_type_member` adds an RBI `extend T::Generic` / `X = type_member`;
+  `Namespace#create_class`/`create_module` take a `type_parameters:` array for RBS's
+  `class Box[T]` / `module Foo[T]`. `Conversion::RbiToRbs` hoists a class/module's type members
+  into the RBS class/module's `type_parameters`. RBS interfaces are not supported, since RBS has
+  no generic interface syntax. (Thanks @apiology)
 
 ## [9.1.2] - 2025-07-07
 ### Fixed

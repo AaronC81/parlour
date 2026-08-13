@@ -100,6 +100,16 @@ module Parlour
       end
       alias type_aliases aliases
 
+      sig { returns(T::Array[RbiGenerator::TypeMember]) }
+      # The {RbiGenerator::TypeMember} objects from {children}.
+      # @return [Array<RbiGenerator::TypeMember>]
+      def type_members
+        T.cast(
+          children.select { |c| c.is_a?(RbiGenerator::TypeMember) },
+          T::Array[RbiGenerator::TypeMember]
+        )
+      end
+
       sig { returns(T::Array[RbiGenerator::Constant]) }
       # The {RbiGenerator::Constant} objects from {children}.
       # @return [Array<RbiGenerator::Constant>]
@@ -613,6 +623,31 @@ module Parlour
         new_type_alias
       end
 
+      sig { params(name: String, block: T.nilable(T.proc.params(x: TypeMember).void)).returns(TypeMember) }
+      # Adds a new type member (a class- or module-scoped type parameter) to
+      # this namespace. Also adds an +extend T::Generic+ call, if one is not
+      # already present, since Sorbet's +type_member+ requires it.
+      #
+      # @example Add an +Elem+ type member to the class.
+      #   class.create_type_member('Elem') #=> extend T::Generic
+      #                                     #=> Elem = type_member
+      #
+      # @param name [String] The name of the type member.
+      # @param block A block which the new instance yields itself to.
+      # @return [RbiGenerator::TypeMember]
+      def create_type_member(name, &block)
+        create_extend('T::Generic') unless extends.any? { |e| e.name == 'T::Generic' }
+
+        new_type_member = RbiGenerator::TypeMember.new(
+          generator,
+          name: name,
+          &block
+        )
+        move_next_comments(new_type_member)
+        children << new_type_member
+        new_type_member
+      end
+
       sig do
         override.overridable.params(
           others: T::Array[RbiGenerator::RbiObject]
@@ -688,11 +723,16 @@ module Parlour
         eigen_constants, non_eigen_constants = constants.partition(&:eigen_constant)
         eigen_constants.sort_by!(&:name) if options.sort_namespaces
 
-        if includes.any? || extends.any? || aliases.any? || non_eigen_constants.any?
+        if includes.any? || extends.any? || type_members.any? || aliases.any? || non_eigen_constants.any?
           result += (options.sort_namespaces ? includes.sort_by(&:name) : includes)
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? extends.sort_by(&:name) : extends)
+            .flat_map { |x| x.generate_rbi(indent_level, options) }
+            .reject { |x| x.strip == '' }
+          # Never sorted: declaration order is significant for multiple type
+          # members, e.g. Box[K, V].
+          result += type_members
             .flat_map { |x| x.generate_rbi(indent_level, options) }
             .reject { |x| x.strip == '' }
           result += (options.sort_namespaces ? aliases.sort_by(&:name) : aliases)
@@ -747,7 +787,8 @@ module Parlour
 
         first, *rest = remaining_children.reject do |child|
           # We already processed these kinds of children
-          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant) || child.is_a?(TypeAlias)
+          child.is_a?(Include) || child.is_a?(Extend) || child.is_a?(Constant) || child.is_a?(TypeAlias) ||
+            child.is_a?(TypeMember)
         end
         unless first
           # Remove any trailing whitespace due to includes or class attributes

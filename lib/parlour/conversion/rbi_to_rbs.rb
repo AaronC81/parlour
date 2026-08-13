@@ -104,10 +104,11 @@ module Parlour
           end
           klass = new_parent.create_class(
             node.name,
-            superclass: node.superclass
+            superclass: node.superclass,
+            type_parameters: type_member_names(node),
           )
           klass.add_comments(node.comments)
-          node.children.each do |child|
+          children_excluding_type_members(node).each do |child|
             convert_object(child, klass)
           end
 
@@ -197,16 +198,18 @@ module Parlour
 
         when RbiGenerator::ModuleNamespace
           if node.interface
+            add_warning 'RBS interfaces do not support type parameters; dropping', node if node.type_members.any?
             rbs_node = new_parent.create_interface(
               node.name,
             )
           else
             rbs_node = new_parent.create_module(
               node.name,
+              type_parameters: type_member_names(node),
             )
           end
           rbs_node.add_comments(node.comments)
-          node.children.each do |child|
+          children_excluding_type_members(node).each do |child|
             convert_object(child, rbs_node)
           end
 
@@ -222,6 +225,29 @@ module Parlour
         else
           raise "missing conversion for #{node.describe}"
           # TODO: stick a T.absurd here
+        end
+      end
+
+      private
+
+      sig { params(node: RbiGenerator::Namespace).returns(T::Array[Symbol]) }
+      # RBI represents a namespace's type parameters as TypeMember children
+      # (+Elem = type_member+); RBS represents them as an attribute of the
+      # class/module itself (+class Box[Elem]+). This hoists the former into
+      # the latter.
+      def type_member_names(node)
+        node.type_members.map { |type_member| type_member.name.to_sym }
+      end
+
+      sig { params(node: RbiGenerator::Namespace).returns(T::Array[RbiGenerator::RbiObject]) }
+      # TypeMember children are represented on the RBS side as the class/module's
+      # type_parameters (see {type_member_names}), not as their own children, and
+      # RBS has no equivalent of the +extend T::Generic+ that RBI's TypeMember
+      # requires - both are dropped from the child list here.
+      def children_excluding_type_members(node)
+        node.children.reject do |child|
+          RbiGenerator::TypeMember === child ||
+            (RbiGenerator::Extend === child && child.name == 'T::Generic')
         end
       end
     end

@@ -196,6 +196,43 @@ RSpec.describe Parlour::RbiGenerator do
       RUBY
     end
 
+    it 'handles a type member' do
+      klass = subject.root.create_class('Box') do |box|
+        box.create_type_member('Elem')
+        box.create_method('set', parameters: [pa('x', type: 'Elem')], return_type: nil)
+        box.create_method('get', return_type: 'Elem')
+      end
+
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Box
+          extend T::Generic
+          Elem = type_member
+
+          sig { params(x: Elem).void }
+          def set(x); end
+
+          sig { returns(Elem) }
+          def get; end
+        end
+      RUBY
+    end
+
+    it 'does not add a second extend T::Generic for multiple type members' do
+      klass = subject.root.create_class('Box') do |box|
+        box.create_type_member('K')
+        box.create_type_member('V')
+      end
+
+      expect(klass.extends.count { |e| e.name == 'T::Generic' }).to eq 1
+      expect(klass.generate_rbi(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Box
+          extend T::Generic
+          K = type_member
+          V = type_member
+        end
+      RUBY
+    end
+
     it 'handles multiple includes and extends' do
       klass = subject.root.create_class('Foo') do |foo|
         foo.create_extends(['X', 'Y', 'Z'])

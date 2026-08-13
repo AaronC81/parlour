@@ -32,6 +32,15 @@ RSpec.describe Parlour::RbsGenerator do
         end
       RUBY
     end
+
+    it 'generates a generic module correctly' do
+      mod = subject.root.create_module('Container', type_parameters: [:T])
+
+      expect(mod.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        module Container[T]
+        end
+      RUBY
+    end
   end
 
   context 'interface namespace' do
@@ -51,6 +60,20 @@ RSpec.describe Parlour::RbsGenerator do
 
       expect(klass.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
         class Foo
+        end
+      RUBY
+    end
+
+    it 'generates a generic class correctly' do
+      klass = subject.root.create_class('Box', type_parameters: [:K, :V]) do |box|
+        box.create_method('get', [Parlour::RbsGenerator::MethodSignature.new(
+          [pa('key', type: 'K')], 'V'
+        )])
+      end
+
+      expect(klass.generate_rbs(0, opts).join("\n")).to eq fix_heredoc(<<-RUBY)
+        class Box[K, V]
+          def get: (K key) -> V
         end
       RUBY
     end

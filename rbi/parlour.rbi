@@ -737,6 +737,12 @@ module Parlour
 
       sig { params(node: RbiGenerator::RbiObject, new_parent: RbsGenerator::Namespace).void }
       def convert_object(node, new_parent); end
+
+      sig { params(node: RbiGenerator::Namespace).returns(T::Array[Symbol]) }
+      def type_member_names(node); end
+
+      sig { params(node: RbiGenerator::Namespace).returns(T::Array[RbiGenerator::RbiObject]) }
+      def children_excluding_type_members(node); end
     end
   end
 
@@ -1125,6 +1131,9 @@ module Parlour
       sig { returns(T::Array[RbiGenerator::TypeAlias]) }
       def aliases; end
 
+      sig { returns(T::Array[RbiGenerator::TypeMember]) }
+      def type_members; end
+
       sig { returns(T::Array[RbiGenerator::Constant]) }
       def constants; end
 
@@ -1269,6 +1278,9 @@ module Parlour
 
       sig { params(name: String, type: Types::TypeLike, block: T.nilable(T.proc.params(x: TypeAlias).void)).returns(TypeAlias) }
       def create_type_alias(name, type:, &block); end
+
+      sig { params(name: String, block: T.nilable(T.proc.params(x: TypeMember).void)).returns(TypeMember) }
+      def create_type_member(name, &block); end
 
       sig { override.overridable.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -1492,6 +1504,29 @@ module Parlour
       sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs; end
     end
+
+    class TypeMember < RbiObject
+      sig { params(generator: Generator, name: String, block: T.nilable(T.proc.params(x: TypeMember).void)).void }
+      def initialize(generator, name:, &block); end
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
+      def generate_rbi(indent_level, options); end
+
+      sig { override.params(others: T::Array[RbiGenerator::RbiObject]).returns(T::Boolean) }
+      def mergeable?(others); end
+
+      sig { override.params(others: T::Array[RbiGenerator::RbiObject]).void }
+      def merge_into_self(others); end
+
+      sig { override.void }
+      def generalize_from_rbi!; end
+
+      sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
+      def describe_attrs; end
+    end
   end
 
   class RbsGenerator < Generator
@@ -1585,16 +1620,20 @@ module Parlour
           generator: Generator,
           name: String,
           superclass: T.nilable(Types::TypeLike),
+          type_parameters: T::Array[Symbol],
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).void
       end
-      def initialize(generator, name, superclass, &block); end
+      def initialize(generator, name, superclass, type_parameters: [], &block); end
 
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
 
       sig { returns(T.nilable(Types::TypeLike)) }
       attr_reader :superclass
+
+      sig { returns(T::Array[Symbol]) }
+      attr_reader :type_parameters
 
       sig { override.params(others: T::Array[RbsGenerator::RbsObject]).returns(T::Boolean) }
       def mergeable?(others); end
@@ -1768,8 +1807,21 @@ module Parlour
       extend T::Sig
       Child = type_member {{ fixed: RbsObject }}
 
+      sig do
+        params(
+          generator: Generator,
+          name: T.nilable(String),
+          type_parameters: T::Array[Symbol],
+          block: T.nilable(T.proc.params(x: ModuleNamespace).void)
+        ).void
+      end
+      def initialize(generator, name = nil, type_parameters: [], &block); end
+
       sig { override.params(indent_level: Integer, options: Options).returns(T::Array[String]) }
       def generate_rbs(indent_level, options); end
+
+      sig { returns(T::Array[Symbol]) }
+      attr_reader :type_parameters
 
       sig { override.returns(T::Array[T.any(Symbol, T::Hash[Symbol, String])]) }
       def describe_attrs; end
@@ -1808,11 +1860,18 @@ module Parlour
       sig { params(comment: T.any(String, T::Array[String])).void }
       def add_comment_to_next_child(comment); end
 
-      sig { params(name: String, superclass: T.nilable(Types::TypeLike), block: T.nilable(T.proc.params(x: ClassNamespace).void)).returns(ClassNamespace) }
-      def create_class(name, superclass: nil, &block); end
+      sig do
+        params(
+          name: String,
+          superclass: T.nilable(Types::TypeLike),
+          type_parameters: T::Array[Symbol],
+          block: T.nilable(T.proc.params(x: ClassNamespace).void)
+        ).returns(ClassNamespace)
+      end
+      def create_class(name, superclass: nil, type_parameters: [], &block); end
 
-      sig { params(name: String, block: T.nilable(T.proc.params(x: Namespace).void)).returns(ModuleNamespace) }
-      def create_module(name, &block); end
+      sig { params(name: String, type_parameters: T::Array[Symbol], block: T.nilable(T.proc.params(x: Namespace).void)).returns(ModuleNamespace) }
+      def create_module(name, type_parameters: [], &block); end
 
       sig { params(name: String, block: T.nilable(T.proc.params(x: Namespace).void)).returns(InterfaceNamespace) }
       def create_interface(name, &block); end

@@ -148,6 +148,7 @@ module Parlour
         params(
           name: String,
           superclass: T.nilable(Types::TypeLike),
+          type_parameters: T::Array[Symbol],
           block: T.nilable(T.proc.params(x: ClassNamespace).void)
         ).returns(ClassNamespace)
       end
@@ -161,13 +162,18 @@ module Parlour
       # @example Create a class that is the child of another class.
       #   namespace.create_class('Bar', superclass: 'Foo') #=> class Bar < Foo
       #
+      # @example Create a generic class.
+      #   namespace.create_class('Box', type_parameters: [:T]) #=> class Box[T]
+      #
       # @param name [String] The name of this class.
       # @param superclass [String, nil] The superclass of this class, or nil if it doesn't
       #   have one.
+      # @param type_parameters [Array<Symbol>] This class's type parameters, e.g. +[:K, :V]+
+      #   for +class Box[K, V]+.
       # @param block A block which the new instance yields itself to.
       # @return [ClassNamespace]
-      def create_class(name, superclass: nil, &block)
-        new_class = ClassNamespace.new(generator, name, superclass, &block)
+      def create_class(name, superclass: nil, type_parameters: [], &block)
+        new_class = ClassNamespace.new(generator, name, superclass, type_parameters: type_parameters, &block)
         move_next_comments(new_class)
         children << new_class
         new_class
@@ -176,6 +182,7 @@ module Parlour
       sig do
         params(
           name: String,
+          type_parameters: T::Array[Symbol],
           block: T.nilable(T.proc.params(x: Namespace).void)
         ).returns(ModuleNamespace)
       end
@@ -185,10 +192,12 @@ module Parlour
       #   namespace.create_module('Foo')
       #
       # @param name [String] The name of this module.
+      # @param type_parameters [Array<Symbol>] This module's type parameters, e.g. +[:T]+
+      #   for +module Foo[T]+.
       # @param block A block which the new instance yields itself to.
       # @return [ModuleNamespace]
-      def create_module(name, &block)
-        new_module = ModuleNamespace.new(generator, name, &block)
+      def create_module(name, type_parameters: [], &block)
+        new_module = ModuleNamespace.new(generator, name, type_parameters: type_parameters, &T.cast(block, T.nilable(T.proc.params(x: ModuleNamespace).void)))
         move_next_comments(new_module)
         children << new_module
         new_module
