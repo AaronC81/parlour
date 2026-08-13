@@ -203,6 +203,40 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     expect(identity.generate_rbs(0, opts)).to eq(['def identity: [U] (U x) -> U'])
   end
 
+  it 'converts a class whose methods each declare the same type parameter' do
+    box = rbi_gen.root.create_class('Box')
+    box.create_method('set', parameters: [
+      Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::TypeVariable.new('U')),
+    ], type_parameters: [:U])
+    box.create_method('get', return_type: Parlour::Types::TypeVariable.new('U'), type_parameters: [:U])
+
+    converted_box, = *convert
+    expect(converted_box).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(name: 'Box')
+
+    set = converted_box.children.find { |child| child.name == 'set' }
+    get = converted_box.children.find { |child| child.name == 'get' }
+
+    expect(set).to be_a(Parlour::RbsGenerator::Method) & have_attributes(
+      signatures: match_array([
+        have_attributes(
+          parameters: match_array([
+            have_attributes(name: 'x', type: Parlour::Types::TypeVariable.new('U')),
+          ]),
+          type_parameters: [:U],
+        )
+      ]),
+    )
+    expect(get).to be_a(Parlour::RbsGenerator::Method) & have_attributes(
+      signatures: match_array([
+        have_attributes(return_type: Parlour::Types::TypeVariable.new('U'), type_parameters: [:U])
+      ]),
+    )
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(set.generate_rbs(0, opts)).to eq(['def set: [U] (U x) -> void'])
+    expect(get.generate_rbs(0, opts)).to eq(['def get: [U] () -> U'])
+  end
+
   it 'converts methods with blocks' do
     rbi_gen.root.create_method('foo', parameters: [
       Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),
