@@ -722,6 +722,13 @@ RSpec.describe Parlour::TypeParser do
     expect(id).to have_attributes(name: 'id',
       return_type: 'T.type_parameter(:A)',
       type_parameters: [:A, :B])
+
+    id.generalize_from_rbi!
+    expect(id.return_type).to eq Parlour::Types::TypeVariable.new('A')
+    expect(id.parameters.map(&:type)).to eq [
+      Parlour::Types::TypeVariable.new('A'),
+      Parlour::Types::TypeVariable.new('B'),
+    ]
   end
 
   context 'structs' do
@@ -1032,6 +1039,10 @@ EOF
 
     it 'parses booleans' do
       expect(t('T::Boolean')).to eq Parlour::Types::Boolean.new
+    end
+
+    it 'parses type parameter references' do
+      expect(t('T.type_parameter(:U)')).to eq Parlour::Types::TypeVariable.new('U')
     end
 
     it 'parses complex nested types' do

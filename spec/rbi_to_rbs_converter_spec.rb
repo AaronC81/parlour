@@ -179,6 +179,30 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     )
   end
 
+  it 'converts methods with type parameters' do
+    rbi_gen.root.create_method('identity', parameters: [
+      Parlour::RbiGenerator::Parameter.new('x', type: Parlour::Types::TypeVariable.new('U')),
+    ], return_type: Parlour::Types::TypeVariable.new('U'), type_parameters: [:U])
+
+    identity, = *convert
+
+    expect(identity).to be_a(Parlour::RbsGenerator::Method) & have_attributes(
+      name: 'identity',
+      signatures: match_array([
+        have_attributes(
+          parameters: match_array([
+            have_attributes(name: 'x', type: Parlour::Types::TypeVariable.new('U')),
+          ]),
+          return_type: Parlour::Types::TypeVariable.new('U'),
+          type_parameters: [:U],
+        )
+      ]),
+    )
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(identity.generate_rbs(0, opts)).to eq(['def identity: [U] (U x) -> U'])
+  end
+
   it 'converts methods with blocks' do
     rbi_gen.root.create_method('foo', parameters: [
       Parlour::RbiGenerator::Parameter.new('a', type: 'Integer'),

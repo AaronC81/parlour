@@ -889,7 +889,7 @@ module Parlour
           parse_err 'no argument to T.type_parameter', node if args.nil? || args.empty?
           parse_err 'too many arguments to T.type_parameter', node unless args.length == 1
           parse_err 'expected T.type_parameter to be passed a symbol', node unless T.must(args.first).type == :sym
-          Types::Raw.new(T.must(args.first.to_a[0].to_s))
+          Types::TypeVariable.new(T.must(args.first.to_a[0].to_s))
         when :class_of
           parse_err 'no argument to T.class_of', node if args.nil? || args.empty?
           parse_err 'too many arguments to T.class_of', node unless args.length == 1
