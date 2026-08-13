@@ -205,6 +205,40 @@ RSpec.describe Parlour::Conversion::RbiToRbs do
     expect(converter.warnings).to eq []
   end
 
+  it 'converts a generic class parsed from real RBI source, not a hand-built tree' do
+    root = Parlour::TypeParser.from_source('(test)', <<~RUBY).parse_all
+      class Box
+        extend T::Generic
+        Elem = type_member
+
+        sig { params(x: Elem).void }
+        def set(x); end
+
+        sig { returns(Elem) }
+        def get; end
+      end
+    RUBY
+    root.generalize_from_rbi!
+
+    root.children.each { |child| converter.convert_object(child, rbs_gen.root) }
+    converted_box = rbs_gen.root.children.first
+
+    expect(converted_box).to be_a(Parlour::RbsGenerator::ClassNamespace) & have_attributes(
+      name: 'Box',
+      type_parameters: [:Elem],
+    )
+
+    opts = Parlour::Options.new(break_params: 4, tab_size: 2, sort_namespaces: false)
+    expect(converted_box.generate_rbs(0, opts).join("\n")).to eq <<~RBS.strip
+      class Box[Elem]
+        def set: (Elem x) -> void
+
+        def get: () -> Elem
+      end
+    RBS
+    expect(converter.warnings).to eq []
+  end
+
   it 'converts a generic module' do
     rbi_gen.root.create_module('Container') do |mod|
       mod.create_type_member('T')
