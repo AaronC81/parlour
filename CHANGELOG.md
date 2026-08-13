@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+### Added
+- Added `Parlour::Types::TypeVariable`, representing a reference to a method-scoped type variable
+  (RBS's `[U] (...) -> ...` method type parameter syntax, or Sorbet's `T.type_parameter(:U)`).
+  (Thanks @apiology)
+
 ## [9.1.2] - 2025-07-07
 ### Fixed
 - Fixed a possible hang when getting a file list from Sorbet during type loading. (Thanks @apiology

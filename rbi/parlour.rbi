@@ -629,6 +629,26 @@ module Parlour
       def describe; end
     end
 
+    class TypeVariable < Type
+      sig { params(name: String).void }
+      def initialize(name); end
+
+      sig { returns(String) }
+      attr_reader :name
+
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other); end
+
+      sig { override.returns(String) }
+      def generate_rbi; end
+
+      sig { override.returns(String) }
+      def generate_rbs; end
+
+      sig { override.returns(String) }
+      def describe; end
+    end
+
     class Untyped < Type
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other); end
