@@ -200,6 +200,16 @@ RSpec.describe Parlour::TypeParser do
         type: 'String')
     end
 
+    it 'returns nothing for a sig followed by another sig' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        sig { params(x: Integer).returns(String) }
+        sig { params(x: String).returns(Integer) }
+        def foo(x); end
+      RUBY
+
+      expect(instance.parse_sig_into_methods(Parlour::TypeParser::NodePath.new([0]))).to eq []
+    end
+
     it 'errors on a self.x method within an eigenclass' do
       instance = described_class.from_source('(test)', <<-RUBY)
         sig { params(x: String).returns(Integer) }
@@ -671,6 +681,34 @@ RSpec.describe Parlour::TypeParser do
         class_method: true)
       expect(baz).to have_attributes(name: 'baz', return_type: "T.untyped",
         class_method: false)
+    end
+
+    it 'uses the last of several stacked sigs' do
+      instance = described_class.from_source('(test)', <<-RUBY)
+        class A
+          sig { returns(Integer) }
+          def before; end
+
+          sig { params(root: Integer).returns(T::Enumerator[Integer]) }
+          sig { params(root: String).returns(String) }
+          sig { params(root: Integer, blk: T.proc.params(arg0: Integer).void).void }
+          def scan(root, &blk); end
+
+          sig { returns(String) }
+          def after; end
+        end
+      RUBY
+
+      root = instance.parse_all
+      a = root.children.only
+      expect(a.children.map(&:name)).to eq ['before', 'scan', 'after']
+
+      before, scan, after = *a.children
+      expect(before).to have_attributes(return_type: 'Integer')
+      expect(after).to have_attributes(return_type: 'String')
+      expect(scan).to have_attributes(return_type: nil)
+      expect(scan.parameters.map(&:name)).to eq ['root', '&blk']
+      expect(scan.parameters.map(&:type)).to eq ['Integer', 'T.proc.params(arg0: Integer).void']
     end
 
     it 'supports expansion of names like A::B::C' do
