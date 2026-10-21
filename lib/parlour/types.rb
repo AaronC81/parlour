@@ -500,6 +500,29 @@ module Parlour
       end
     end
 
+    # Type for nil. Sorbet has no nil type, so RBI uses NilClass.
+    class Nil < Type
+      sig { params(other: Object).returns(T::Boolean) }
+      def ==(other)
+        Nil === other
+      end
+
+      sig { override.returns(String) }
+      def generate_rbi
+        "NilClass"
+      end
+
+      sig { override.returns(String) }
+      def generate_rbs
+        "nil"
+      end
+
+      sig { override.returns(String) }
+      def describe
+        "nil"
+      end
+    end
+
     # A type which can be called as a function.
     class Proc < Type
       # A parameter to a proc.

@@ -134,4 +134,36 @@ RSpec.describe Parlour::Types do
     it { expect(type.generate_rbs).to eq('::Enumerator[String]') }
     it { expect(type.describe).to eq('Enumerator<String>') }
   end
+
+  describe 'Nil' do
+    subject(:type) { Parlour::Types::Nil.new }
+
+    it { expect(type.generate_rbi).to eq('NilClass') }
+    it { expect(type.generate_rbs).to eq('nil') }
+    it { expect(type.describe).to eq('nil') }
+
+    it { expect(type).to eq(Parlour::Types::Nil.new) }
+    it { expect(type.hash).to eq(Parlour::Types::Nil.new.hash) }
+    it { expect(type).not_to eq(Parlour::Types::Raw.new('NilClass')) }
+
+    context 'inside other types' do
+      it do
+        tuple = Parlour::Types::Tuple.new(['String', type])
+        expect(tuple.generate_rbi).to eq('[String, NilClass]')
+        expect(tuple.generate_rbs).to eq('[String, nil]')
+      end
+
+      it do
+        union = Parlour::Types::Union.new(['String', type])
+        expect(union.generate_rbi).to eq('T.any(String, NilClass)')
+        expect(union.generate_rbs).to eq('(String | nil)')
+      end
+
+      it do
+        nilable = Parlour::Types::Nilable.new(type)
+        expect(nilable.generate_rbi).to eq('T.nilable(NilClass)')
+        expect(nilable.generate_rbs).to eq('nil?')
+      end
+    end
+  end
 end
