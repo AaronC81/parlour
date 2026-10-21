@@ -538,6 +538,12 @@ module Parlour
       # A :def node represents a definition like "def x; end"
       # A :defs node represents a definition like "def self.x; end"
       def_node = path.sibling(1).traverse(ast)
+
+      # Overloaded methods have several sigs in a row before one definition.
+      # Parlour's methods hold one signature, so only the sig next to the
+      # definition is used; earlier sigs are skipped.
+      return [] if sig_node?(def_node)
+
       if def_node.type == :send && [:def, :defs].include?(def_node.children.last.type)
         # bypass inline modifier (e.g. "private")
         def_node = def_node.children.last
